@@ -1,5 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
+
+const React = require('react');
+const ReactDOM = require('react-dom');
 
 const title = 'Incredibly awesome!!!';
 
