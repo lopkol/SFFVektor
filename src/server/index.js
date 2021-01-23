@@ -2,10 +2,20 @@
 
 const express = require('express');
 const path = require('path');
-const { port } = require('./config');
+const { port, resourceBaseUrl } = require('./config');
 
 const app = express();
-app.use('/', express.static(path.join(__dirname, '../static')));
+
+app.set('views', path.resolve(__dirname, 'views'));
+
+app.get('/', async (req, res) => {
+  try {
+    await res.render('index.ejs', { resourceBaseUrl });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
 
 app.listen(port);
 console.log('Server started');
