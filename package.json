@@ -4,8 +4,10 @@
   "description": "awesome",
   "main": "index.js",
   "scripts": {
-    "build-dev": "onchange -i -k 'build-config/*' -- webpack serve --config build-config/webpack.config.js",
+    "build-dev": "webpack serve --config build-config/webpack.config.js",
     "lint": "eslint 'src/**/*.js' 'src/**/*.jsx'",
+    "open": "node scripts/open.js",
+    "start": "onchange -i -k 'build-config/*' -- npm run build-dev",
     "start-server": "onchange -i -k 'src/server/**/*' -- node src/server/index.js",
     "test": "npm run lint"
   },
@@ -23,13 +25,16 @@
     "@babel/core": "7.12.10",
     "@babel/preset-env": "7.12.11",
     "@babel/preset-react": "7.12.10",
+    "await-resource": "0.2.6",
     "babel-loader": "8.2.2",
     "eslint": "7.18.0",
     "eslint-plugin-react": "7.22.0",
     "onchange": "7.1.0",
+    "open": "7.3.1",
     "webpack": "5.17.0",
     "webpack-cli": "4.4.0",
-    "webpack-dev-server": "3.11.2"
+    "webpack-dev-server": "3.11.2",
+    "webpack-shell-plugin-next": "2.1.1"
   },
   "dependencies": {
     "express": "4.17.1",

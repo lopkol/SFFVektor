@@ -1,9 +1,20 @@
 'use strict';
 
 const path = require('path');
+const WebpackShellPlugin = require('webpack-shell-plugin-next');
 
 module.exports = {
   mode: 'development',
+  plugins: [
+    new WebpackShellPlugin({
+      onBuildEnd: {
+        scripts: ['npm run start-server', 'npm run open'],
+        parallel: true
+      }
+    }),
+  ],
+
+
   entry: {
     app: path.resolve(__dirname, '../src/client/index.jsx')
   },
