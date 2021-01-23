@@ -2,8 +2,9 @@
 
 const awaitResources = require('await-resource');
 const open = require('open');
+const { port } = require('../src/server/config');
 
-const devServerUrl = 'http://localhost:9966/index.html';
+const devServerUrl = `http://localhost:${port}/index.html`;
 
 (async () => {
   await awaitResources({ url: [devServerUrl] });
