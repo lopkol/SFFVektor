@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build-dev": "onchange -i -k 'build-config/*' -- webpack serve --config build-config/webpack.config.js",
+    "lint": "eslint 'src/**/*.js' 'src/**/*.jsx'",
     "start-server": "onchange -i -k 'src/server/**/*' -- node src/server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run lint"
   },
   "repository": {
     "type": "git",
