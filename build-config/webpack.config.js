@@ -13,8 +13,6 @@ module.exports = {
       }
     }),
   ],
-
-
   entry: {
     app: path.resolve(__dirname, '../src/client/index.jsx')
   },
