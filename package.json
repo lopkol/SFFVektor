@@ -8,7 +8,7 @@
     "lint": "eslint 'src/**/*.js' 'src/**/*.jsx'",
     "open": "node scripts/open.js",
     "start": "onchange -i -k 'build-config/*' -- npm run build-dev",
-    "start-server": "onchange -i -k 'src/server/**/*' -- node src/server/index.js",
+    "start-server": "onchange -i -k 'src/server/**/*' 'environment/*.env' -- node src/server/index.js",
     "test": "npm run lint"
   },
   "repository": {

@@ -5,8 +5,10 @@ require('dotenv-haphap').config('environment/.env', 'environment/confidential.en
 module.exports = {
   port: process.env.PORT,
   resourceBaseUrl: process.env.RESOURCE_BASE_URL,
+  appBaseUrl: process.env.APP_BASE_URL,
   oauth: {
     clientId: process.env.OAUTH_CLIENT_ID,
-    clientSecret: process.env.OAUTH_CLIENT_SECRET
-  }
+    clientSecret: process.env.OAUTH_CLIENT_SECRET,
+  },
+  allowedUsers: JSON.parse(process.env.ALLOWED_USERS || '[]')
 };
