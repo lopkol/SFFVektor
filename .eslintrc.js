@@ -2,7 +2,7 @@
 
 module.exports = {
   root: true,
-  plugins: ['react'],
+  plugins: ['jasmine', 'react'],
   env: {
     browser: true,
     commonjs: true,
