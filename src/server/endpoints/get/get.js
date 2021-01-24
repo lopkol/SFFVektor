@@ -1,8 +1,8 @@
 'use strict';
 
-const { getSsoAuthUrl } = require('../adapters/google/google');
-const { decode } = require('../adapters/jwt/jwt');
-const { resourceBaseUrl, cookieName } = require('../config');
+const { getSsoAuthUrl } = require('../../adapters/google/google');
+const { decode } = require('../../adapters/jwt/jwt');
+const { resourceBaseUrl, cookieName } = require('../../config');
 
 module.exports = (req, res) => {
   try {
