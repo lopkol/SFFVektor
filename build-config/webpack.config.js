@@ -3,12 +3,15 @@
 const path = require('path');
 const WebpackShellPlugin = require('webpack-shell-plugin-next');
 
+const isWindows = process.platform.startsWith('win');
+const npmCommand = isWindows ? 'npm.cmd' : 'npm';
+
 module.exports = {
   mode: 'development',
   plugins: [
     new WebpackShellPlugin({
       onBuildEnd: {
-        scripts: ['npm run start-server', 'npm run open'],
+        scripts: [`${npmCommand} run start-server`, `${npmCommand} run open`],
         parallel: true
       }
     }),
