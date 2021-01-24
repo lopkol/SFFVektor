@@ -10,5 +10,6 @@ module.exports = {
     clientId: process.env.OAUTH_CLIENT_ID,
     clientSecret: process.env.OAUTH_CLIENT_SECRET,
   },
+  jwtSecret: process.env.JWT_SECRET,
   allowedUsers: JSON.parse(process.env.ALLOWED_USERS || '[]')
 };

@@ -6,6 +6,7 @@ module.exports = {
   env: {
     browser: true,
     commonjs: true,
+    jasmine: true,
     node: true,
     es6: true
   },
