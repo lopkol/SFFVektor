@@ -11,5 +11,6 @@ module.exports = {
     clientSecret: process.env.OAUTH_CLIENT_SECRET,
   },
   jwtSecret: process.env.JWT_SECRET,
+  cookieName: 'jwtToken',
   allowedUsers: JSON.parse(process.env.ALLOWED_USERS || '[]')
 };

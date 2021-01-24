@@ -1,7 +1,8 @@
 'use strict';
 
 const { getUserInfo } = require('../adapters/google/google');
-const { allowedUsers, appBaseUrl } = require('../config');
+const { encode } = require('../adapters/jwt/jwt');
+const { allowedUsers, appBaseUrl, cookieName } = require('../config');
 
 module.exports = async (req, res) => {
   try {
@@ -17,8 +18,10 @@ module.exports = async (req, res) => {
       return;
     }
 
-    res.cookie('beer', '42', {
-      expires: 0,
+    const jwtToken = encode({ email });
+
+    res.cookie(cookieName, jwtToken, {
+      expires: 0
     });
 
     res.redirect(appBaseUrl);
