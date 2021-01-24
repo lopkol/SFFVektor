@@ -9,7 +9,9 @@
     "open": "node scripts/open.js",
     "start": "onchange -i -k 'build-config/*' -- npm run build-dev",
     "start-server": "onchange -i -k 'src/server/**/*' 'environment/*.env' -- node src/server/index.js",
-    "test": "npm run lint"
+    "test": "npm run lint && npm run test:once",
+    "test:once": "jasmine --config=test-helpers/jasmine.json",
+    "test:watch": "onchange -i 'src/**/*.js' 'src/**/*.jsx' -- npm run test:once"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
     "eslint": "7.18.0",
     "eslint-plugin-jasmine": "4.1.1",
     "eslint-plugin-react": "7.22.0",
+    "jasmine": "3.6.4",
     "onchange": "7.1.0",
     "open": "7.3.1",
     "webpack": "5.17.0",
