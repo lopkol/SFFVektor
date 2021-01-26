@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build-dev": "webpack serve --config build-config/webpack.config.js",
+    "docker": "docker-compose up -d",
     "lint": "eslint 'src/**/*.js' 'src/**/*.jsx'",
     "open": "node scripts/open.js",
-    "start": "onchange -i -k 'build-config/*' -- npm run build-dev",
+    "start": "npm run docker && onchange -i -k 'build-config/*' -- npm run build-dev",
     "start-server": "onchange -i -k 'src/server/**/*' 'environment/*.env' -- node src/server/index.js",
+    "stop": "docker-compose down",
     "test": "npm run lint && npm run test:once",
     "test:once": "jasmine --config=test-helpers/jasmine.json",
     "test:watch": "onchange -i 'src/**/*.js' 'src/**/*.jsx' -- npm run test:once"
