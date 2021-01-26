@@ -44,6 +44,7 @@
     "webpack-shell-plugin-next": "2.1.1"
   },
   "dependencies": {
+    "@google-cloud/firestore": "4.8.1",
     "@material-ui/core": "4.11.2",
     "@material-ui/icons": "4.11.2",
     "cookie-parser": "1.4.5",

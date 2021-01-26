@@ -3,14 +3,14 @@ services:
   firestore_emulator:
     image: mtlynch/firestore-emulator
     environment:
-      - FIRESTORE_PROJECT_ID=dummy-project-id
+      - FIRESTORE_PROJECT_ID=sffvektor-dev
       - PORT=8200
     ports:
       - '8201:8200'
   firestore_emulator-tests:
     image: mtlynch/firestore-emulator
     environment:
-      - FIRESTORE_PROJECT_ID=test-project-id
+      - FIRESTORE_PROJECT_ID=sffvektor-test
       - PORT=8200
     ports:
       - '8202:8200'
