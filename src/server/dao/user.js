@@ -1,12 +1,6 @@
 'use strict';
 
-const { Firestore } = require('@google-cloud/firestore');
-const config = require('../config');
-
-const firestore = new Firestore({
-  credentials: config.firestore.credentials,
-  projectId: config.firestore.projectId
-});
+const firestore = require('./firestore');
 
 async function createUser(email) {
   await firestore.collection('users').add({
