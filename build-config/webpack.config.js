@@ -11,7 +11,7 @@ module.exports = {
   plugins: [
     new WebpackShellPlugin({
       onBuildEnd: {
-        scripts: [`${npmCommand} run watch-server`, `${npmCommand} run open`],
+        scripts: [`${npmCommand} run start-server`, `${npmCommand} run open`],
         parallel: true
       }
     }),
