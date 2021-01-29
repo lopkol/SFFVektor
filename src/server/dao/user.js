@@ -2,10 +2,12 @@
 
 const firestore = require('./firestore');
 
-async function createUser(email) {
-  await firestore.collection('users').add({
-    email
-  });
+async function createUser(email, role, genres) {
+  await firestore.collection('users').add({ email, role, genres });
+}
+
+async function getUserById(userId) {
+
 }
 
 async function getUsers() {
@@ -18,5 +20,6 @@ async function getUsers() {
 
 module.exports = {
   createUser,
+  getUserById,
   getUsers
 };
