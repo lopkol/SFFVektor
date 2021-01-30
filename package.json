@@ -6,14 +6,14 @@
   "scripts": {
     "build-dev": "webpack serve --config build-config/webpack.config.js",
     "docker": "docker-compose up -d",
-    "lint": "eslint 'src/**/*.js' 'src/**/*.jsx'",
+    "lint": "eslint \"src/**/*.js\" \"src/**/*.jsx\"",
     "open": "node scripts/open.js",
-    "start": "npm run docker && onchange -i -k 'build-config/*' -- npm run build-dev",
-    "start-server": "onchange -i -k 'src/server/**/*' 'environment/*.env' -- node -r dotenv-haphap/config src/server/index.js dotenv_paths=environment/.env,environment/confidential.env",
+    "start": "npm run docker && onchange -i -k \"build-config/*\" -- npm run build-dev",
+    "start-server": "onchange -i -k \"src/server/**/*\" \"environment/*.env\" -- src/server/index.js ",
     "stop": "docker-compose down",
     "test": "npm run lint && npm run test:once",
-    "test:once": "jasmine --config=test-helpers/jasmine.json",
-    "test:watch": "onchange -i 'src/**/*.js' 'src/**/*.jsx' -- npm run test:once"
+    "test:once": "cross-env NODE_ENV=test jasmine --config=test-helpers/jasmine.json",
+    "test:watch": "onchange -i \"src/**/*.js\" \"src/**/*.jsx\" -- npm run test:once"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "@babel/preset-react": "7.12.10",
     "await-resource": "0.2.6",
     "babel-loader": "8.2.2",
+    "cross-env": "7.0.3",
     "eslint": "7.18.0",
     "eslint-plugin-jasmine": "4.1.1",
     "eslint-plugin-react": "7.22.0",
