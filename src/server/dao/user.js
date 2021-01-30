@@ -2,12 +2,18 @@
 
 const firestore = require('./firestore');
 
-async function createUser(email, role, genres) {
-  await firestore.collection('users').add({ email, role, genres });
+async function createUser(userData) {
+  const user = await firestore.collection('users').add(userData);
+  return user.id;
 }
 
 async function getUserById(userId) {
-
+  const userRef = await firestore.collection('users').doc(userId);
+  const document = await userRef.get();
+  if (!document.exists) {
+    return null;
+  }
+  return document.data();
 }
 
 async function getUsers() {
