@@ -8,18 +8,29 @@ async function createUser(userData) {
 }
 
 async function getUserById(userId) {
-  const userRef = await firestore.collection('users').doc(userId);
-  const document = await userRef.get();
+  const document = await firestore.collection('users').doc(userId).get();
   if (!document.exists) {
     return null;
   }
   return document.data();
 }
 
-async function getUsers() {
-  const result = await firestore.collection('users').get();
+async function getUsersWithProps(userData = {}) {
+  const allUsers = await firestore.collection('users');
+
+  const properties = Object.entries(userData);
+  const filteredUsers = [allUsers];
+  for (let i = 0; i < properties.length; i++) {
+    const [propKey, propValue] = properties[i];
+    const lastRef = filteredUsers[filteredUsers.length - 1];
+    const newRef = await lastRef.where(propKey, '==', propValue);
+    filteredUsers.push(newRef);
+  }
+
+  const filteredUsersRef = filteredUsers[filteredUsers.length - 1];
+  const usersWithProps = await filteredUsersRef.get();
   const users = [];
-  result.forEach(document => users.push(document.data()));
+  usersWithProps.forEach(document => users.push(document.data()));
 
   return users;
 }
@@ -27,5 +38,5 @@ async function getUsers() {
 module.exports = {
   createUser,
   getUserById,
-  getUsers
+  getUsersWithProps
 };
