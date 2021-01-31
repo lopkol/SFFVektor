@@ -19,15 +19,12 @@ async function getUsersWithProps(userData = {}) {
   const allUsers = await firestore.collection('users');
 
   const properties = Object.entries(userData);
-  const filteredUsers = [allUsers];
-  for (let i = 0; i < properties.length; i++) {
-    const [propKey, propValue] = properties[i];
-    const lastRef = filteredUsers[filteredUsers.length - 1];
-    const newRef = await lastRef.where(propKey, '==', propValue);
-    filteredUsers.push(newRef);
-  }
 
-  const filteredUsersRef = filteredUsers[filteredUsers.length - 1];
+  const filteredUsersRef = await properties.reduce(async (lastRef, [propKey, propValue]) => {
+    const newRef = (await lastRef).where(propKey, '==', propValue);
+    return newRef;
+  }, allUsers);
+
   const usersWithProps = await filteredUsersRef.get();
   const users = [];
   usersWithProps.forEach(document => users.push(document.data()));

@@ -36,7 +36,7 @@ describe('user DAO', () => {
     });
   });
 
-  describe('getUsersByProps', () => {
+  describe('getUsersWithProps', () => {
     it('returns an empty array if there is no user with the given properties', async () => {
       const userData1 = { email: 'broccoli', role: 'wizard' };
       const userData2 = { email: 'cauliflower', role: 'witch' };
