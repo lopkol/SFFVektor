@@ -1,6 +1,6 @@
 'use strict';
 
-const firestore = require('./firestore');
+const firestore = require('../firestore');
 
 async function createUser(userData) {
   const user = await firestore.collection('users').add(userData);

@@ -8,7 +8,7 @@
     "docker": "docker-compose up -d",
     "lint": "eslint \"src/**/*.js\" \"src/**/*.jsx\"",
     "open": "node scripts/open.js",
-    "start": "npm run docker && onchange -i -k \"build-config/*\" -- npm run build-dev",
+    "start": "npm run docker && node scripts/seed-data.js && onchange -i -k \"build-config/*\" -- npm run build-dev",
     "start-server": "onchange -i -k \"src/server/**/*\" \"environment/*.env\" -- node src/server/index.js",
     "stop": "docker-compose down",
     "test": "npm run lint && npm run test:once",

@@ -1,7 +1,7 @@
 'use strict';
 
 const { createUser, getUsersWithProps, getUserById } = require('./user');
-const { clearCollection } = require('../../../test-helpers/firestore');
+const { clearCollection } = require('../../../../test-helpers/firestore');
 
 describe('user DAO', () => {
   beforeEach(async () => {
