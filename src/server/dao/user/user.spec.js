@@ -1,6 +1,6 @@
 'use strict';
 
-const { createUser, getUsersWithProps, getUserById } = require('./user');
+const { createUser, getUsersWithProps, getUserById, updateUser } = require('./user');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 
 describe('user DAO', () => {
@@ -15,7 +15,7 @@ describe('user DAO', () => {
       await createUser({ email, role });
       const usersInDb = await getUsersWithProps();
 
-      expect(usersInDb).toEqual([{ email, role }]);
+      expect(usersInDb).toEqual([jasmine.objectContaining({ email, role })]);
     });
   });
 
@@ -57,7 +57,7 @@ describe('user DAO', () => {
 
       const usersWithProps = await getUsersWithProps();
 
-      expect(usersWithProps).toEqual(jasmine.arrayWithExactContents([userData1, userData2]));
+      expect(usersWithProps).toEqual(jasmine.arrayWithExactContents([jasmine.objectContaining(userData1), jasmine.objectContaining(userData2)]));
     });
 
     it('returns the users with the given properties', async () => {
@@ -70,7 +70,21 @@ describe('user DAO', () => {
       const name = 'jancsi';
       const usersWithProps = await getUsersWithProps({ email, name });
 
-      expect(usersWithProps).toEqual([userData1]);
+      expect(usersWithProps).toEqual([jasmine.objectContaining(userData1)]);
+    });
+  });
+
+  describe('updateUser', () => {
+    it('updates the correct user, only updates the given properties, does not change the others', async () => {
+      const userData = { email: 'broccoli', role: 'wizard', name: 'jancsi' };
+      const otherUserData = { email: 'cauliflower', role: 'witch', name: 'jancsi' };
+      const userId = await createUser(userData);
+      await createUser(otherUserData);
+
+      await updateUser(userId, { email: 'cucumber', name: 'juliska' });
+      const updatedUserData = await getUserById(userId);
+
+      expect(updatedUserData).toEqual({ email: 'cucumber', role: 'wizard', name: 'juliska' });
     });
   });
 });
