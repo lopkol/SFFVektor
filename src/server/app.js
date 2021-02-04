@@ -13,5 +13,6 @@ app.set('views', path.resolve(__dirname, 'views'));
 
 app.get('/', require('./endpoints/get/get'));
 app.get('/auth', require('./endpoints/auth'));
+app.get('/users', require('./endpoints/get-users/get-users'));
 
 module.exports = app;
