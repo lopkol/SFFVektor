@@ -1,6 +1,6 @@
 'use strict';
 
-const { createUser, getUsersWithProps, getUserById, updateUser } = require('./user');
+const { createUser, getUsersWithProps, getUserById, updateUser } = require('./users');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 
 describe('user DAO', () => {

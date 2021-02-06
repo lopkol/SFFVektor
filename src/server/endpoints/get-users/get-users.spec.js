@@ -3,7 +3,7 @@
 const request = require('supertest');
 const app = require('../../app');
 const { generateRandomUser } = require('../../../../scripts/generate-data');
-const { createUser } = require('../../dao/user/user');
+const { createUser } = require('../../dao/users/users');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 
 describe('GET /users', () => {
@@ -21,7 +21,7 @@ describe('GET /users', () => {
     userData2.id = userId2;
 
     const response = await request(app.listen())
-      .get('/users')
+      .get('/api/users')
       .expect(200);
 
     expect(response.body).toEqual(jasmine.arrayWithExactContents([userData1, userData2]));

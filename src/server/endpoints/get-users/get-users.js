@@ -1,6 +1,6 @@
 'use strict';
 
-const { getUsersWithProps } = require('../../dao/user/user');
+const { getUsersWithProps } = require('../../dao/users/users');
 
 module.exports = async (req, res) => {
   try {
