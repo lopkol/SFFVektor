@@ -48,6 +48,7 @@
     "@google-cloud/firestore": "4.8.1",
     "@material-ui/core": "4.11.2",
     "@material-ui/icons": "4.11.2",
+    "axios": "0.21.1",
     "cookie-parser": "1.4.5",
     "dotenv-haphap": "3.1.0",
     "ejs": "3.1.5",
