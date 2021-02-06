@@ -1,7 +1,7 @@
 'use strict';
 
 const roleOptions = [
-  { id: 'admin', name: 'koordinátor' },
+  { id: 'admin', name: 'admin' },
   { id: 'user', name: 'zsűri' }
 ];
 
