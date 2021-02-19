@@ -16,5 +16,10 @@ module.exports = {
   firestore: {
     credentials: JSON.parse(process.env.GCP_CREDENTIALS || '{}'),
     projectId: process.env.FIRESTORE_PROJECT_ID
+  },
+  moly: {
+    baseUrl: 'https://moly.hu',
+    sffVektorUsername: process.env.MOLY_SFFVEKTOR_USERNAME,
+    sffVektorPassword: process.env.MOLY_SFFVEKTOR_PASSWORD
   }
 };
