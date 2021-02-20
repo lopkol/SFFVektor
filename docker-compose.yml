@@ -5,8 +5,6 @@ services:
     environment:
       - FIRESTORE_PROJECT_ID=sffvektor-dev
       - PORT=8200
-    ports:
-      - '8201:8200'
   firestore_emulator-tests:
     image: mtlynch/firestore-emulator
     environment:
@@ -14,3 +12,15 @@ services:
       - PORT=8200
     ports:
       - '8202:8200'
+  server:
+    container_name: sffvektor_server
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - '9966:9966'
+    command: npm run start-server
+    depends_on:
+      - firestore_emulator

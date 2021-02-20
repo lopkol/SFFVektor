@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
     const users = await getUsersWithProps();
 
     return res.status(200).send(users);
-    
+
   } catch (error) {
     res.sendStatus(500);
   }
