@@ -13,13 +13,13 @@ describe('Moly login', () => {
       const authenticityToken = await getAuthenticityToken();
       expect(authenticityToken).toEqual(testAuthenticityToken);
     });
-  });*/
+  });
 
-  fdescribe('getUserCredentials', () => {
+  describe('getUserCredentials', () => {
     it('returns the user_credentials', async () => {
       const userCredentials = await getUserCredentials();
 
       expect(userCredentials).toEqual('');
     });
-  });
+  });*/
 });
