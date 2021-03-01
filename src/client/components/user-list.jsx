@@ -13,35 +13,27 @@ const columns = [
   { field: 'email', headerName: 'E-mail cím', width: 150 }
 ];
 
-class UserList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userList: []
-    };
-  }
+function UserList() {
+  const [userList, setUserList] = React.useState([]);
 
-  async componentDidMount() {
+  React.useEffect(async () => {
     const users = await getUsers();
-    this.setState({
-      userList: users
-    });
-    console.log(users);
-  }
-  render() {
-    const rows = this.state.userList.map(user => {
-      const roleName = roleOptions.find(role => role.id === user.role).name;
-      return {
-        ...user,
-        role: roleName
-      };
-    });
-    return  (
-      <div style={{ height: 600, width: '100%' }}>
-        <DataGrid rows={ rows } columns={ columns } pageSize={20} />
-      </div>
-    );
-  }
+    setUserList(users);
+  }, []);
+
+  const rows = userList.map(user => {
+    const roleName = roleOptions.find(role => role.id === user.role).name;
+    return {
+      ...user,
+      role: roleName
+    };
+  });
+  
+  return  (
+    <div style={{ height: 600, width: '100%' }}>
+      <DataGrid rows={ rows } columns={ columns } pageSize={20} />
+    </div>
+  );
 }
 
 module.exports = UserList;

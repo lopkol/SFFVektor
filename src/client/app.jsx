@@ -7,33 +7,24 @@ const UserList = require('./components/user-list');
 
 const title = 'Incredibly awesome!!!';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showUsers: false
-    };
-    this.toggleShowUsers = this.toggleShowUsers.bind(this);
-  }
+function App() {
+  const [showUsers, setShowUsers] = React.useState(false);
 
-  toggleShowUsers() {
-    const currentState = this.state.showUsers;
-    this.setState({
-      showUsers: !currentState
-    });
-  }
-  render () {
-    const buttonText = this.state.showUsers ? 'Hide user list' : 'Show user list';
-    return (
-      <div>
-        <h1>{ title }</h1>
-        <Button variant="contained" color="primary" onClick={ this.toggleShowUsers }>
-          { buttonText }
-        </Button>
-        { this.state.showUsers && <UserList /> }
-      </div>
-    );
-  }
+  const toggleShowUsers = () => {
+    const currentState = showUsers;
+    setShowUsers(!currentState);
+  };
+
+  const buttonText = showUsers ? 'Hide user list' : 'Show user list';
+  return (
+    <div>
+      <h1>{ title }</h1>
+      <Button variant="contained" color="primary" onClick={ toggleShowUsers }>
+        { buttonText }
+      </Button>
+      { showUsers && <UserList /> }
+    </div>
+  );
 }
 
 module.exports = App;
