@@ -21,6 +21,7 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
+    'react/prop-types': 'off',
     'eol-last': 'warn',
     eqeqeq: 'warn',
     indent: ['warn', 2, {

@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css?family=Alegreya&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lora&display=swap');
+
+@import './components/app/navigation/app-header.scss';
+@import './components/app/navigation/sidebar.scss';
+
+* {
+  margin: 0;
+}
+
+body {
+  background-color: rgb(231, 231, 240);
+  font-family: Alegreya;
+  color: rgb(37, 37, 39);
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: Lora;
+}
+
+a {
+  text-decoration: none;
+  &:link, &:visited, &:hover {
+    color: rgb(37, 37, 39);
+  }
+  &:active {
+    color: rgb(35, 121, 179);
+  }
+}
+
+.larger-font {
+  font-size: larger;
+}
+
+.indent {
+  margin-left: 10px;
+}
