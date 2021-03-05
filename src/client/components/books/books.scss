@@ -1,0 +1,30 @@
+#top-navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.top-navbar-button {
+  margin: 5px 10px;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  background: white;
+  
+  &:hover {
+    background: rgb(211, 211, 211);
+  }
+}
+
+.active-top-navbar-button {
+  background: rgb(185, 185, 185);
+  
+  &:hover {
+    background: rgb(139, 139, 139);
+  }
+}
+
+#books-content {
+  padding: 10px;
+  text-align: center;
+}

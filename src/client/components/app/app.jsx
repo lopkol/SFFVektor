@@ -8,7 +8,7 @@ const AppHeader = require('./navigation/app-header');
 const Sidebar = require('./navigation/sidebar');
 const Admin = require('../admin/admin');
 const YearAdmin = require('../admin/year-admin');
-const BookList = require('../books/book-list');
+const Books = require('../books/books');
 
 function App() {
 
@@ -19,9 +19,9 @@ function App() {
         <Sidebar/>
         <main>
           <Switch>
-            <Route exact path="/admin" component={ Admin }/>
-            <Route exact path="/:year/admin" component={ YearAdmin }/>
-            <Route exact path="/:year/:genre" component={ BookList }/>
+            <Route path="/admin" component={ Admin }/>
+            <Route path="/:year/admin" component={ YearAdmin }/>
+            <Route path="/:year/:genre" component={ Books }/>
           </Switch>
         </main>
       </div>
