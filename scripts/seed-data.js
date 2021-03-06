@@ -1,7 +1,7 @@
 'use strict';
 
 const { v4: uuidv4 } = require('uuid');
-const { generateRandomUser } = require('./generate-data');
+const { generateRandomUser } = require('../test-helpers/generate-data');
 const firestore = require('../src/server/dao/firestore');
 const { allowedUsers } = require('../src/server/config');
 const { clearCollection } = require('../test-helpers/firestore');

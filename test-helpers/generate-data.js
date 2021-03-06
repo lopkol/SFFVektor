@@ -32,7 +32,33 @@ function generateRandomUser(props = {}) {
   };
 }
 
+function generateRandomBook(props = {}) {
+  const id = String(randomIntBetween(100000, 1000000));
+  const authorId = String(randomIntBetween(100000, 1000000));
+  const title = capitalize(randomString(randomIntBetween(7, 25)));
+  const molyUrl = '';
+  const series = capitalize(randomString(randomIntBetween(7, 25)));
+  const seriesNum = randomIntBetween(1,4);
+  const isApproved = randomItemFrom([true, false]);
+  const isPending = randomItemFrom([true, false]);
+  const alternatives = [];
+
+  return {
+    id,
+    authorId,
+    title,
+    molyUrl,
+    series,
+    seriesNum,
+    isApproved,
+    isPending,
+    alternatives,
+    ...props
+  };
+}
+
 module.exports = {
   randomString,
-  generateRandomUser
+  generateRandomUser,
+  generateRandomBook
 };

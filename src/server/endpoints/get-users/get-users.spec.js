@@ -2,7 +2,7 @@
 
 const request = require('supertest');
 const app = require('../../app');
-const { generateRandomUser } = require('../../../../scripts/generate-data');
+const { generateRandomUser } = require('../../../../test-helpers/generate-data');
 const { createUser } = require('../../dao/users/users');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 

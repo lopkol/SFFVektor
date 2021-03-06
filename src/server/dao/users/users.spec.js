@@ -9,13 +9,13 @@ describe('user DAO', () => {
   });
 
   describe('createUser', () => {
-    it('creates a user with the given properties', async () => {
+    it('creates a user with the given properties, returns the user id', async () => {
       const email = Math.random().toString();
       const role = 'superhero';
-      await createUser({ email, role });
+      const id = await createUser({ email, role });
       const usersInDb = await getUsersWithProps();
 
-      expect(usersInDb).toEqual([jasmine.objectContaining({ email, role })]);
+      expect(usersInDb).toEqual([{ id, email, role }]);
     });
   });
 
