@@ -9,6 +9,25 @@ function randomIntBetween(min, max) {
 function randomItemFrom(array) {
   return array[randomIntBetween(0, array.length - 1)];
 }
+
+function distinctItemsFrom(array, minCount, maxCount = minCount) {
+  if (minCount > array.length || minCount > maxCount) {
+    throw new Error(`Invalid parameters: ${JSON.stringify({ array, minCount, maxCount }, null, 2)}`);
+  }
+  const max = Math.min(array.length, maxCount);
+  const count = randomIntBetween(minCount, max);
+  const result = [];
+  const remainingOptions = array.slice();
+
+  while (result.length < count) {
+    const nextIndex = randomIntBetween(0, remainingOptions.length - 1);
+    result.push(remainingOptions[nextIndex]);
+    remainingOptions.splice(nextIndex, 1);
+  }
+
+  return result;
+}
+
 function randomString(length = 6) {
   return Math.random().toString(36).substr(2, length);
 }
@@ -37,7 +56,7 @@ function generateRandomBook(props = {}) {
   const id = String(randomIntBetween(100000, 1000000));
   const authorId = String(randomIntBetween(100000, 1000000));
   const title = capitalize(randomString(randomIntBetween(7, 25)));
-  const molyUrl = '';
+  const molyUrl = randomString(16,34);
   const series = capitalize(randomString(randomIntBetween(7, 25)));
   const seriesNum = randomIntBetween(1,4);
   const isApproved = randomItemFrom([true, false]);
@@ -79,6 +98,7 @@ function generateRandomBookList(props = {}) {
 
 module.exports = {
   randomString,
+  distinctItemsFrom,
   generateRandomUser,
   generateRandomBook,
   generateRandomBookList
