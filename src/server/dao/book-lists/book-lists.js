@@ -1,6 +1,7 @@
 'use strict';
 
 const firestore = require('../firestore');
+const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
 
 async function createBookList(bookListData) {
   const id = bookListData.year + bookListData.genre;
@@ -26,34 +27,17 @@ async function updateBookList(id, bookListDataToUpdate) {
 }
 
 async function getBookListsWithProps(bookListData = {}) {
-  const allBookListsRef = await firestore.collection('bookLists');
-
-  const properties = Object.entries(bookListData);
-
-  const filteredBookListsRef = await properties.reduce(async (lastRef, [propKey, propValue]) => {
-    const newRef = (await lastRef).where(propKey, '==', propValue);
-    return newRef;
-  }, allBookListsRef);
+  const filteredBookListsRef = await createFilteredRef('bookLists', bookListData);
 
   const bookListsWithProps = await filteredBookListsRef.get();
-  const bookLists = [];
-  bookListsWithProps.forEach(async document => {
-    bookLists.push({
-      id: document.id,
-      ...(document.data())
-    });
-  });
-
+  const bookLists = mapToDataWithId(bookListsWithProps);
+  
   return bookLists;
 }
 
 async function getBookListsOfJuryMember(userId) {
   const bookListsOfJuryMember = await firestore.collection('bookLists').where('jury', 'array-contains', userId).get();
-  const bookLists = [];
-  bookListsOfJuryMember.forEach(async document => {
-    bookLists.push((await document).data());
-    bookLists[bookLists.length - 1].id = document.id;
-  });
+  const bookLists = mapToDataWithId(bookListsOfJuryMember);
 
   return bookLists;
 }

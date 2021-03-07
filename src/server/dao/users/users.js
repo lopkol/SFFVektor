@@ -1,6 +1,7 @@
 'use strict';
 
 const firestore = require('../firestore');
+const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
 
 async function createUser(userData) {
   const user = await firestore.collection('users').add(userData);
@@ -16,24 +17,10 @@ async function getUserById(id) {
 }
 
 async function getUsersWithProps(userData = {}) {
-  const allUsersRef = await firestore.collection('users');
-
-  const properties = Object.entries(userData);
-
-  const filteredUsersRef = await properties.reduce(async (lastRef, [propKey, propValue]) => {
-    const newRef = (await lastRef).where(propKey, '==', propValue);
-    return newRef;
-  }, allUsersRef);
+  const filteredUsersRef = await createFilteredRef('users', userData);
 
   const usersWithProps = await filteredUsersRef.get();
-  const users = [];
-
-  usersWithProps.forEach(document => {
-    users.push({ 
-      id: document.id,
-      ...(document.data())
-    });
-  });
+  const users = mapToDataWithId(usersWithProps);
 
   return users;
 }
