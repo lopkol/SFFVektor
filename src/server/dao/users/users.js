@@ -7,12 +7,12 @@ async function createUser(userData) {
   return user.id;
 }
 
-async function getUserById(userId) {
-  const user = await firestore.collection('users').doc(userId).get();
+async function getUserById(id) {
+  const user = await firestore.collection('users').doc(id).get();
   if (!user.exists) {
     return null;
   }
-  return user.data();
+  return { id, ...(user.data()) };
 }
 
 async function getUsersWithProps(userData = {}) {
@@ -27,18 +27,28 @@ async function getUsersWithProps(userData = {}) {
 
   const usersWithProps = await filteredUsersRef.get();
   const users = [];
-  usersWithProps.forEach(async document => {
-    users.push((await document).data());
-    users[users.length - 1].id = document.id;
+
+  usersWithProps.forEach(document => {
+    users.push({ 
+      id: document.id,
+      ...(document.data())
+    });
   });
 
   return users;
 }
 
-async function updateUser(userId, userData) {
-  const userRef = firestore.collection('users').doc(userId);
+async function updateUser(id, userData) {
+  let user = await firestore.collection('users').doc(id).get();
+  if (!user.exists) {
+    return null;
+  }
 
+  const userRef = firestore.collection('users').doc(id);
   await userRef.set(userData, { merge: true });
+
+  user = await userRef.get();
+  return { id, ...(user.data()) };
 }
 
 module.exports = {

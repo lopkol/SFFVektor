@@ -1,6 +1,7 @@
 'use strict';
 
-const { roleOptions } = require('../src/options');
+const { roleOptions, genreOptions } = require('../src/options');
+const years = [1977, 1976, 1975, 1974, 1973];
 
 function randomIntBetween(min, max) {
   return Math.floor((max - min + 1) * Math.random()) + min;
@@ -57,8 +58,28 @@ function generateRandomBook(props = {}) {
   };
 }
 
+function generateRandomBookList(props = {}) {
+  const year = randomItemFrom(years);
+  const genre = (randomItemFrom(genreOptions)).id;
+  const url = randomString(randomIntBetween(13, 25));
+  const pendingUrl = randomString(randomIntBetween(13, 25));
+  const jury = [];
+  const books = [];
+
+  return {
+    year,
+    genre,
+    url,
+    pendingUrl,
+    jury,
+    books,
+    ...props
+  };
+}
+
 module.exports = {
   randomString,
   generateRandomUser,
-  generateRandomBook
+  generateRandomBook,
+  generateRandomBookList
 };

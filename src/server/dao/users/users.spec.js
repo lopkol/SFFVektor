@@ -2,6 +2,7 @@
 
 const { createUser, getUsersWithProps, getUserById, updateUser } = require('./users');
 const { clearCollection } = require('../../../../test-helpers/firestore');
+const { generateRandomUser } = require('../../../../test-helpers/generate-data');
 
 describe('user DAO', () => {
   beforeEach(async () => {
@@ -10,23 +11,21 @@ describe('user DAO', () => {
 
   describe('createUser', () => {
     it('creates a user with the given properties, returns the user id', async () => {
-      const email = Math.random().toString();
-      const role = 'superhero';
-      const id = await createUser({ email, role });
+      const userData = generateRandomUser();
+      const id = await createUser(userData);
       const usersInDb = await getUsersWithProps();
 
-      expect(usersInDb).toEqual([{ id, email, role }]);
+      expect(usersInDb).toEqual([{ id, ...userData }]);
     });
   });
 
   describe('getUserById', () => {
     it('returns the user with the given id', async () => {
-      const email = Math.random().toString();
-      const role = 'superhero';
-      const userId = await createUser({ email, role });
+      const userData = generateRandomUser();
+      const id = await createUser(userData);
 
-      const result = await getUserById(userId);
-      expect(result).toEqual({ email, role });
+      const result = await getUserById(id);
+      expect(result).toEqual({ id, ...userData });
     });
 
     it('returns null if there is no user with the given id', async () => {
@@ -38,8 +37,8 @@ describe('user DAO', () => {
 
   describe('getUsersWithProps', () => {
     it('returns an empty array if there is no user with the given properties', async () => {
-      const userData1 = { email: 'broccoli', role: 'wizard' };
-      const userData2 = { email: 'cauliflower', role: 'witch' };
+      const userData1 = generateRandomUser({ email: 'broccoli' });
+      const userData2 = generateRandomUser({ email: 'cauliflower' });
       await createUser(userData1);
       await createUser(userData2);
 
@@ -50,41 +49,63 @@ describe('user DAO', () => {
     });
 
     it('returns all users if called with empty arg', async () => {
-      const userData1 = { email: 'broccoli', role: 'wizard' };
-      const userData2 = { email: 'cauliflower', role: 'witch' };
-      await createUser(userData1);
-      await createUser(userData2);
+      const userData1 = generateRandomUser();
+      const userData2 = generateRandomUser();
+      const id1 = await createUser(userData1);
+      const id2 = await createUser(userData2);
 
       const usersWithProps = await getUsersWithProps();
 
-      expect(usersWithProps).toEqual(jasmine.arrayWithExactContents([jasmine.objectContaining(userData1), jasmine.objectContaining(userData2)]));
+      expect(usersWithProps).toEqual(jasmine.arrayWithExactContents([
+        { id: id1, ...userData1 }, 
+        { id: id2, ...userData2 }
+      ]));
     });
 
     it('returns the users with the given properties', async () => {
-      const userData1 = { email: 'broccoli', role: 'wizard', name: 'jancsi' };
-      const userData2 = { email: 'cauliflower', role: 'witch', name: 'jancsi' };
-      await createUser(userData1);
+      const userData1 = generateRandomUser({ email: 'broccoli', role: 'wizard', name: 'jancsi' });
+      const userData2 = generateRandomUser({ email: 'cauliflower', role: 'witch', name: 'jancsi' });
+      const id = await createUser(userData1);
       await createUser(userData2);
 
       const email = 'broccoli';
       const name = 'jancsi';
       const usersWithProps = await getUsersWithProps({ email, name });
 
-      expect(usersWithProps).toEqual([jasmine.objectContaining(userData1)]);
+      expect(usersWithProps).toEqual([{ id, ...userData1 }]);
     });
   });
 
   describe('updateUser', () => {
+    it('returns null if the id does not exist', async () => {
+      const res = await updateUser('someId', { name: 'jancsi' });
+
+      expect(res).toBe(null);
+    });
+
+    it('returns the user data with the correctly updated properties', async () => {
+      const userData = generateRandomUser();
+      const id = await createUser(userData);
+
+      const email = 'broccoli';
+      const name = 'jancsi';
+      const res = await updateUser(id, { email, name });
+
+      expect(res).toEqual({ ...userData, id, email, name });
+    });
+
     it('updates the correct user, only updates the given properties, does not change the others', async () => {
-      const userData = { email: 'broccoli', role: 'wizard', name: 'jancsi' };
-      const otherUserData = { email: 'cauliflower', role: 'witch', name: 'jancsi' };
-      const userId = await createUser(userData);
+      const userData = generateRandomUser();
+      const otherUserData = generateRandomUser();
+      const id = await createUser(userData);
       await createUser(otherUserData);
 
-      await updateUser(userId, { email: 'cucumber', name: 'juliska' });
-      const updatedUserData = await getUserById(userId);
+      const email = 'cucumber';
+      const name = 'juliska';
+      await updateUser(id, { email, name });
+      const updatedUserData = await getUserById(id);
 
-      expect(updatedUserData).toEqual({ email: 'cucumber', role: 'wizard', name: 'juliska' });
+      expect(updatedUserData).toEqual({ ...userData, id, email, name });
     });
   });
 });

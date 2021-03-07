@@ -12,9 +12,10 @@ async function updateBooks(booksData) {
   const batch = firestore.batch();
 
   booksData.forEach(bookData => {
-    const bookId = bookData.id;
+    const id = bookData.id;
     const bookDataWithoutId = omit(bookData, 'id');
-    const bookRef = firestore.collection('books').doc(bookId);
+    const bookRef = firestore.collection('books').doc(id);
+    
     batch.set(bookRef, bookDataWithoutId, { merge: true });
   });
 
@@ -27,8 +28,7 @@ async function getBooksByIds(bookIds) {
     if (!book.exists) {
       return null;
     }
-    const bookData = book.data();
-    bookData.id = id;
+    const bookData = { id, ...(book.data()) };
     return bookData;
   }));
 
@@ -47,9 +47,11 @@ async function getBooksWithProps(bookData = {}) {
 
   const booksWithProps = await filteredBooksRef.get();
   const books = [];
-  booksWithProps.forEach(async document => {
-    books.push((await document).data());
-    books[books.length - 1].id = document.id;
+  booksWithProps.forEach(document => {
+    books.push({
+      id: document.id,
+      ...(document.data())
+    });
   });
 
   return books;
