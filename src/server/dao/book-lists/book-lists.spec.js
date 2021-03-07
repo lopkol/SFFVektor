@@ -9,7 +9,7 @@ const {
 const { clearCollection } = require('../../../../test-helpers/firestore');
 const { generateRandomBookList } = require('../../../../test-helpers/generate-data');
 
-describe('books DAO', () => {
+describe('booklists DAO', () => {
   beforeEach(async () => {
     await clearCollection('bookLists');
   });
@@ -56,8 +56,8 @@ describe('books DAO', () => {
     });
 
     it('updates the correct booklist and only the given properties', async () => {
-      const bookData1 = generateRandomBookList();
-      const bookData2 = generateRandomBookList();
+      const bookData1 = generateRandomBookList({ year: 1778 });
+      const bookData2 = generateRandomBookList({ year: 1888 });
       
       const id1 = await createBookList(bookData1);
       const id2 = await createBookList(bookData2);

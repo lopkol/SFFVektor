@@ -4,7 +4,7 @@ const { createUser, getUsersWithProps, getUserById, updateUser } = require('./us
 const { clearCollection } = require('../../../../test-helpers/firestore');
 const { generateRandomUser } = require('../../../../test-helpers/generate-data');
 
-describe('user DAO', () => {
+describe('users DAO', () => {
   beforeEach(async () => {
     await clearCollection('users');
   });
@@ -98,14 +98,14 @@ describe('user DAO', () => {
       const userData = generateRandomUser();
       const otherUserData = generateRandomUser();
       const id = await createUser(userData);
-      await createUser(otherUserData);
+      const otherId = await createUser(otherUserData);
 
       const email = 'cucumber';
       const name = 'juliska';
       await updateUser(id, { email, name });
-      const updatedUserData = await getUserById(id);
+      const usersInDb = await getUsersWithProps();
 
-      expect(updatedUserData).toEqual({ ...userData, id, email, name });
+      expect(usersInDb).toEqual(jasmine.arrayWithExactContents([{ ...userData, id, name, email }, { ...otherUserData, id: otherId }]));
     });
   });
 });

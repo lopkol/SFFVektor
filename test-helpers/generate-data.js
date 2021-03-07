@@ -37,6 +37,20 @@ function randomEmail() {
   return randomString(randomIntBetween(5, 10)) + '@gmail.com';
 }
 
+function generateRandomAuthor(props = {}) {
+  const id = String(randomIntBetween(100000, 1000000));
+  const firstName = capitalize(randomString(randomIntBetween(5,12)));
+  const lastName = capitalize(randomString(randomIntBetween(5,12)));
+  const name = firstName + ' ' + lastName;
+  const sortName = lastName + ', ' + firstName;
+  return {
+    id,
+    name,
+    sortName,
+    ...props
+  };
+}
+
 function generateRandomUser(props = {}) {
   const role = randomItemFrom(roleOptions).id;
   const name = capitalize(randomString(randomIntBetween(5,12)));
@@ -99,6 +113,7 @@ function generateRandomBookList(props = {}) {
 module.exports = {
   randomString,
   distinctItemsFrom,
+  generateRandomAuthor,
   generateRandomUser,
   generateRandomBook,
   generateRandomBookList

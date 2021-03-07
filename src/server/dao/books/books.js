@@ -2,7 +2,7 @@
 
 const firestore = require('../firestore');
 const { omit } = require('lodash');
-const { mapToDataWithId, createFilteredRef } = require('../helper-functions');
+const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
 
 async function createBook(bookData) { //no id given! (for books with no moly id)
   const book = await firestore.collection('books').add(bookData);
