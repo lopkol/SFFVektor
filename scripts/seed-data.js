@@ -6,13 +6,24 @@ const { distinctItemsFrom, generateRandomUser, generateRandomBook, generateRando
 const firestore = require('../src/server/dao/firestore');
 const { allowedUsers } = require('../src/server/config');
 const { clearCollection } = require('../test-helpers/firestore');
+const { hashEmail, encrypt } = require('../src/server/adapters/crypto/crypto');
 
 const batch = firestore.batch();
 
 async function addUserToBatch(props = {}) {
   const userId = uuidv4();
   const newUserRef = await firestore.collection('users').doc(userId);
-  await batch.set(newUserRef, generateRandomUser(props));
+
+  const userData = generateRandomUser(props);
+  const hashedEmail = await hashEmail(props.email);
+  const encryptedDetails = await encrypt(props.email);
+  const userDataToSave = {
+    hashedEmail,
+    encryptedDetails,
+    ...omit(userData, 'email')
+  };
+
+  await batch.set(newUserRef, userDataToSave);
   return userId;
 }
 
