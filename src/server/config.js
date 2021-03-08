@@ -21,5 +21,10 @@ module.exports = {
     baseUrl: 'https://moly.hu',
     sffVektorUsername: process.env.MOLY_SFFVEKTOR_USERNAME,
     sffVektorPassword: process.env.MOLY_SFFVEKTOR_PASSWORD
+  },
+  dataEncryption: {
+    secret: process.env.DATA_ENCRYPTION_SECRET,
+    emailHashLength: 64,
+    emailSalt: process.env.EMAIL_SALT
   }
 };

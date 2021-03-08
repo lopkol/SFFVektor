@@ -1,6 +1,6 @@
 'use strict';
 
-const { createUser, getUsersWithProps, getUserById, updateUser } = require('./users');
+const { createUser, updateUser, getUsersWithProps, getUserById } = require('./users');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 const { generateRandomUser } = require('../../../../test-helpers/generate-data');
 
