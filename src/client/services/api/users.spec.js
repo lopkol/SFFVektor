@@ -1,9 +1,9 @@
 'use strict';
 
-const { withServer } = require('../../../test-helpers/server');
-const { createUser } = require('../../server/dao/users/users');
-const { clearCollection } = require('../../../test-helpers/firestore');
-const { generateRandomUser } = require('../../../test-helpers/generate-data');
+const { withServer } = require('../../../../test-helpers/server');
+const { createUser } = require('../../../server/dao/users/users');
+const { clearCollection } = require('../../../../test-helpers/firestore');
+const { generateRandomUser } = require('../../../../test-helpers/generate-data');
 const { getUsers } = require('./users');
 
 describe('client-side user related API calls', () => {
