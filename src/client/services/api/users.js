@@ -1,18 +1,11 @@
 'use strict';
 
-const axios = require('axios');
+const { api } = require('../api');
 
 async function getUsers() {
-  try {
-    const response = await axios.get('/api/users');
-    return response.data;
-  } catch (error) {
-    if (error.response.status === 404) {
-      return null;
-    }
-  
-    throw error;
-  }
+  //TODO: errorhandling..
+  const response = await api.get('/api/users');
+  return response.data;
 }
 
 module.exports = {

@@ -2,5 +2,5 @@
 
 module.exports = {
   cookieName: 'jwtToken',
-  apiUrl: 'localhost:9966'
+  //apiUrl: 'http://localhost:9966'
 };
