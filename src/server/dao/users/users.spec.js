@@ -1,6 +1,6 @@
 'use strict';
 
-const { createUser, updateUser, getUsersWithProps, getUserById } = require('./users');
+const { createUser, updateUser, getUsersByIds, getUsersWithProps } = require('./users');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 const { generateRandomUser } = require('../../../../test-helpers/generate-data');
 
@@ -19,19 +19,28 @@ describe('users DAO', () => {
     });
   });
 
-  describe('getUserById', () => {
-    it('returns the user with the given id', async () => {
-      const userData = generateRandomUser();
-      const id = await createUser(userData);
+  describe('getUsersByIds', () => {
+    it('returns the users with the given ids, in the correct order', async () => {
+      const userData1 = generateRandomUser();
+      const userData2 = generateRandomUser();
+      const userData3 = generateRandomUser();
 
-      const result = await getUserById(id);
-      expect(result).toEqual({ id, ...userData });
+      const id1 = await createUser(userData1);
+      const id2 = await createUser(userData2);
+      const id3 = await createUser(userData3);
+
+      const result = await getUsersByIds([id1, id2, id3]);
+      expect(result).toEqual([
+        { id: id1, ...userData1 },
+        { id: id2, ...userData2 },
+        { id: id3, ...userData3 }
+      ]);
     });
 
     it('returns null if there is no user with the given id', async () => {
-      const result = await getUserById('does-not-exist');
+      const result = await getUsersByIds(['does-not-exist']);
       
-      expect(result).toEqual(null);
+      expect(result).toEqual([null]);
     });
   });
 

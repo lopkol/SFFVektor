@@ -51,21 +51,24 @@ async function updateUser(id, userData) {
   return { id, ...updatedUserData };
 }
 
-async function getUserById(id, { withDetails = true } = {}) {
-  const user = await firestore.collection('users').doc(id).get();
-  if (!user.exists) {
-    return null;
-  }
-  const encryptedData = user.data().encryptedDetails;
-  const userData = omit(user.data(), ['hashedEmail', 'encryptedDetails']);
+async function getUsersByIds(userIds, { withDetails = true } = {}) {
+  const users = await Promise.all(userIds.map(async id => {
+    const user = await firestore.collection('users').doc(id).get();
+    if (!user.exists) {
+      return null;
+    }
+    const encryptedData = user.data().encryptedDetails;
+    const userData = omit(user.data(), ['hashedEmail', 'encryptedDetails']);
 
-  if (!withDetails) {
+    if (!withDetails) {
+      return { id, ...userData };
+    }
+
+    userData.email = await decrypt(encryptedData);
     return { id, ...userData };
-  }
+  }));
 
-  userData.email = await decrypt(encryptedData);
-
-  return { id, ...userData };
+  return users;
 }
 
 async function getUsersWithProps(props = {}, { withDetails = true } = {}) {
@@ -101,6 +104,6 @@ async function getUsersWithProps(props = {}, { withDetails = true } = {}) {
 module.exports = {
   createUser,
   updateUser,
-  getUserById,
+  getUsersByIds,
   getUsersWithProps
 };

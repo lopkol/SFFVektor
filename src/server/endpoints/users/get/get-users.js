@@ -7,8 +7,7 @@ module.exports = async (req, res) => {
     const userData = req.jwtData;
 
     if (userData.role !== 'admin') {
-      res.sendStatus(401);
-      return;
+      return res.sendStatus(401);
     }
 
     const users = await getUsersWithProps();

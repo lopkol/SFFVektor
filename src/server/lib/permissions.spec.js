@@ -13,6 +13,12 @@ describe('permission checkers', () => {
   });
 
   describe('isAciveUser', () => {
+    it('returns false if userId does not exist', async () => {
+      const res = await isActiveUser('1');
+
+      expect(res).toBe(false);
+    });
+
     it('returns false if not an active user', async () => {
       const userData = generateRandomUser({ role: 'potentialJury' });
       const userId = await createUser(userData);
@@ -42,6 +48,12 @@ describe('permission checkers', () => {
   });
 
   describe('isAdmin', () => {
+    it('returns false if userId does not exist', async () => {
+      const res = await isAdmin('1');
+
+      expect(res).toBe(false);
+    });
+
     it('returns false if not admin', async () => {
       const userData = generateRandomUser({ role: 'user' });
       const userId = await createUser(userData);
@@ -62,11 +74,29 @@ describe('permission checkers', () => {
   });
 
   describe('canViewBookList', () => {
+    it('returns false if userId does not exist', async () => {
+      const bookListData = generateRandomBookList({ juryIds: ['1', '2', '3'] });
+      const bookListId = await createBookList(bookListData);
+
+      const res = await canViewBookList('1', bookListId);
+
+      expect(res).toBe(false);
+    });
+
+    it('returns false if book list id does not exist', async () => {
+      const userData = generateRandomUser();
+      const userId = await createUser(userData);
+
+      const res = await canViewBookList(userId, '2020fantasy');
+
+      expect(res).toBe(false);
+    });
+
     it('returns false if not admin and not on jury of booklist', async () => {
       const userData = generateRandomUser({ role: 'user' });
       const userId = await createUser(userData);
 
-      const bookListData = generateRandomBookList({ jury: ['1', '2', '3'] });
+      const bookListData = generateRandomBookList({ juryIds: ['1', '2', '3'] });
       const bookListId = await createBookList(bookListData);
 
       const res = await canViewBookList(userId, bookListId);
@@ -78,7 +108,7 @@ describe('permission checkers', () => {
       const userData = generateRandomUser({ role: 'admin' });
       const userId = await createUser(userData);
 
-      const bookListData = generateRandomBookList({ jury: ['1', '2', '3'] });
+      const bookListData = generateRandomBookList({ juryIds: ['1', '2', '3'] });
       const bookListId = await createBookList(bookListData);
 
       const res = await canViewBookList(userId, bookListId);
@@ -90,7 +120,7 @@ describe('permission checkers', () => {
       const userData = generateRandomUser({ role: 'user' });
       const userId = await createUser(userData);
 
-      const bookListData = generateRandomBookList({ jury: ['1', '2', '3', userId] });
+      const bookListData = generateRandomBookList({ juryIds: ['1', '2', '3', userId] });
       const bookListId = await createBookList(bookListData);
 
       const res = await canViewBookList(userId, bookListId);

@@ -96,16 +96,16 @@ function generateRandomBookList(props = {}) {
   const genre = (randomItemFrom(genreOptions)).id;
   const url = randomString(randomIntBetween(13, 25));
   const pendingUrl = randomString(randomIntBetween(13, 25));
-  const jury = [];
-  const books = [];
+  const juryIds = [];
+  const bookIds = [];
 
   return {
     year,
     genre,
     url,
     pendingUrl,
-    jury,
-    books,
+    juryIds,
+    bookIds,
     ...props
   };
 }

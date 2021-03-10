@@ -54,7 +54,7 @@ async function addBooks(count) {
   return bookIds;
 }
 
-async function addBookListToBatch(props = { year: 2000, genre: 'scifi', jury: [], books: [] }) {
+async function addBookListToBatch(props = { year: 2000, genre: 'scifi', juryIds: [], bookIds: [] }) {
   const bookListId = props.year + props.genre;
   const newBookListRef = await firestore.collection('bookLists').doc(bookListId);
   await batch.set(newBookListRef, generateRandomBookList(props));
@@ -78,26 +78,26 @@ async function addBookListToBatch(props = { year: 2000, genre: 'scifi', jury: []
   await addBookListToBatch({ 
     year: 2000, 
     genre: 'scifi', 
-    books: bookIds.slice(0, 19),
-    jury: distinctItemsFrom(userIds, 9) 
+    bookIds: bookIds.slice(0, 19),
+    juryIds: distinctItemsFrom(userIds, 9) 
   });
   await addBookListToBatch({ 
     year: 2000, 
     genre: 'fantasy', 
-    books: bookIds.slice(19, 40),
-    jury: distinctItemsFrom(userIds, 10) 
+    bookIds: bookIds.slice(19, 40),
+    juryIds: distinctItemsFrom(userIds, 10) 
   });
   await addBookListToBatch({ 
     year: 1999, 
     genre: 'scifi', 
-    books: bookIds.slice(40, 58),
-    jury: distinctItemsFrom(userIds, 10) 
+    bookIds: bookIds.slice(40, 58),
+    juryIds: distinctItemsFrom(userIds, 10) 
   });
   await addBookListToBatch({ 
     year: 1999, 
     genre: 'fantasy', 
-    books: bookIds.slice(58),
-    jury: distinctItemsFrom(userIds, 11) 
+    bookIds: bookIds.slice(58),
+    juryIds: distinctItemsFrom(userIds, 11) 
   });
   
   await batch.commit();
