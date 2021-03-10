@@ -12,7 +12,7 @@ app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')));
 app.use(cookieParser());
 app.set('views', path.resolve(__dirname, 'views'));
 
-app.get('/auth', require('./endpoints/auth'));
+app.get('/auth', require('./endpoints/auth/auth'));
 app.use('/api', apiRouter);
 app.get('*', require('./endpoints/get/get'));
 

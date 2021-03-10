@@ -1,11 +1,11 @@
 'use strict';
 
 const request = require('supertest');
-const app = require('../../app');
-const { generateRandomUser } = require('../../../../test-helpers/generate-data');
-const { createAuthorizationCookie } = require('../../../../test-helpers/authorization');
-const { createUser } = require('../../dao/users/users');
-const { clearCollection } = require('../../../../test-helpers/firestore');
+const app = require('../../../app');
+const { generateRandomUser } = require('../../../../../test-helpers/generate-data');
+const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
+const { createUser } = require('../../../dao/users/users');
+const { clearCollection } = require('../../../../../test-helpers/firestore');
 
 describe('GET /users', () => {
   beforeEach(async () => {
@@ -18,7 +18,17 @@ describe('GET /users', () => {
       .expect(401);
   });
 
-  it('returns with 200 with the user list', async () => {
+  it('responds with 401 if the user is not admin', async () => {
+    const userData = generateRandomUser();
+    await createUser(userData);
+
+    await request(app.listen())
+      .get('/api/users')
+      .set('Cookie', [createAuthorizationCookie({ id: '1', role: 'user' })])
+      .expect(401);
+  });
+
+  it('returns with 200 with the user list if the user is admin', async () => {
     const userData1 = generateRandomUser();
     const userData2 = generateRandomUser();
     const userId1 = await createUser(userData1);

@@ -3,6 +3,7 @@
 const { 
   createBookList,
   updateBookList,
+  getBookListById,
   getBookListsWithProps,
   getBookListsOfJuryMember 
 } = require('./book-lists');
@@ -79,6 +80,22 @@ describe('booklists DAO', () => {
       const bookListsInDb = await getBookListsWithProps();
 
       expect(bookListsInDb).toEqual(jasmine.arrayWithExactContents([expectedBookData1, expectedBookData2]));
+    });
+  });
+
+  describe('getBookListById', () => {
+    it('returns the booklist with the given id', async () => {
+      const bookListData = generateRandomBookList();
+      const id = await createBookList(bookListData);
+
+      const result = await getBookListById(id);
+      expect(result).toEqual({ id, ...bookListData });
+    });
+
+    it('returns null if there is no booklist with the given id', async () => {
+      const result = await getBookListById('does-not-exist');
+      
+      expect(result).toEqual(null);
     });
   });
 

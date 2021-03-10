@@ -26,6 +26,14 @@ async function updateBookList(id, bookListDataToUpdate) {
   return { id, ...(bookList.data()) };
 }
 
+async function getBookListById(id) {
+  const bookList = await firestore.collection('bookLists').doc(id).get();
+  if (!bookList.exists) {
+    return null;
+  }
+  return { id, ...(bookList.data()) };
+}
+
 async function getBookListsWithProps(bookListData = {}) {
   const filteredBookListsRef = await createFilteredRef('bookLists', bookListData);
 
@@ -45,6 +53,7 @@ async function getBookListsOfJuryMember(userId) {
 module.exports = {
   createBookList,
   updateBookList,
+  getBookListById,
   getBookListsWithProps,
   getBookListsOfJuryMember
 };
