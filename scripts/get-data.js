@@ -1,7 +1,9 @@
 'use strict';
 
-const { getUsersWithProps } = require('../src/server/dao/user/user');
+const { getUsersWithProps } = require('../src/server/dao/users/users');
+const { getBookListById } = require('../src/server/dao/book-lists/book-lists');
 
 (async () => {
-  await console.log(await getUsersWithProps());
+  console.log(await getUsersWithProps());
+  console.log(await getBookListById('2020fantasy'));
 })();
