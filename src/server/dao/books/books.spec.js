@@ -1,7 +1,7 @@
 'use strict';
 
 const { omit } = require('lodash');
-const { createBook, updateBooks, getBooksByIds, getBooksWithProps } = require('./books');
+const { createBook, setBooks, getBooksByIds, getBooksWithProps } = require('./books');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 const { generateRandomBook } = require('../../../../test-helpers/generate-data');
 
@@ -20,12 +20,12 @@ describe('books DAO', () => {
     });
   });
 
-  describe('updateBooks', () => {
+  describe('setBooks', () => {
     it('creates books with the given properties if they do not exist', async () => {
       const bookData1 = generateRandomBook({ id: '1' });
       const bookData2 = generateRandomBook({ id: '2' });
 
-      await updateBooks([bookData1, bookData2]);
+      await setBooks([bookData1, bookData2]);
       const booksInDb = await getBooksWithProps();
 
       expect(booksInDb).toEqual(jasmine.arrayWithExactContents([bookData1, bookData2]));
@@ -36,11 +36,11 @@ describe('books DAO', () => {
       const bookData2 = generateRandomBook({ id: '2' });
       const bookData3 = generateRandomBook({ id: '3' });
       
-      await updateBooks([bookData1, bookData2, bookData3]);
+      await setBooks([bookData1, bookData2, bookData3]);
 
       const dataToChange2 = { id: '2', authorId: '3', title: 'War and Peace' };
       const dataToChange3 = { id: '3', series: '' };
-      await updateBooks([dataToChange2, dataToChange3]);
+      await setBooks([dataToChange2, dataToChange3]);
 
       const expectedBookData2 = {
         ...bookData2,
@@ -63,7 +63,7 @@ describe('books DAO', () => {
       const bookData2 = generateRandomBook({ id: '2' });
       const bookData3 = generateRandomBook({ id: '3' });
       
-      await updateBooks([bookData1, bookData2, bookData3]);
+      await setBooks([bookData1, bookData2, bookData3]);
 
       const books = await getBooksByIds(['3', '1']);
 
@@ -74,7 +74,7 @@ describe('books DAO', () => {
       const bookData1 = generateRandomBook({ id: '1' });
       const bookData2 = generateRandomBook({ id: '2' });
 
-      await updateBooks([bookData1, bookData2]);
+      await setBooks([bookData1, bookData2]);
 
       const books = await getBooksByIds(['3', '1']);
 
@@ -88,7 +88,7 @@ describe('books DAO', () => {
       const bookData2 = generateRandomBook({ title: 'Harry Potter' });
       const bookData3 = generateRandomBook({ title: 'Twilight' });
 
-      await updateBooks([bookData1, bookData2, bookData3]);
+      await setBooks([bookData1, bookData2, bookData3]);
 
       const books = await getBooksWithProps({ title: 'some other title' });
 
@@ -100,7 +100,7 @@ describe('books DAO', () => {
       const bookData2 = generateRandomBook({ id: '2' });
       const bookData3 = generateRandomBook({ id: '3' });
       
-      await updateBooks([bookData1, bookData2, bookData3]);
+      await setBooks([bookData1, bookData2, bookData3]);
 
       const books = await getBooksWithProps();
 
@@ -114,7 +114,7 @@ describe('books DAO', () => {
       const bookData4 = generateRandomBook({ authorId: '3', series: 'Harry Potter', isApproved: false });
       const bookData5 = generateRandomBook({ authorId: '22', series: 'Harry Potter', isApproved: false });
 
-      await updateBooks([bookData1, bookData2, bookData3, bookData4, bookData5]);
+      await setBooks([bookData1, bookData2, bookData3, bookData4, bookData5]);
 
       const books = await getBooksWithProps({ authorId: '22', series: 'Harry Potter', isApproved: false });
 

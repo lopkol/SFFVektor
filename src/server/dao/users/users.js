@@ -1,19 +1,23 @@
 'use strict';
 
-const { omit } = require('lodash');
+const { omit, pick } = require('lodash');
 const firestore = require('../firestore');
 const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
 const { hashEmail, encrypt, decrypt } = require('../../adapters/crypto/crypto');
 
+const userProperties = ['email', 'name', 'role', 'molyUserName'];
+//const userPropertiesInDb = ['hashedEmail', 'name', 'role', 'molyUserName', 'encryptedDetails'];
+
 async function createUser(userData) {
+  const userDataToSave = pick(userData, userProperties);
   const [hashedEmail, encryptedDetails] = await Promise.all([
-    hashEmail(userData.email),
-    encrypt(userData.email)
+    hashEmail(userDataToSave.email),
+    encrypt(userDataToSave.email)
   ]);
   const dataToSave = {
     hashedEmail,
     encryptedDetails,
-    ...omit(userData, 'email')
+    ...omit(userDataToSave, 'email')
   };
   const user = await firestore.collection('users').add(dataToSave);
   return user.id;
@@ -24,20 +28,20 @@ async function updateUser(id, userData) {
   if (!user.exists) {
     return null;
   }
-
+  const userDataToSave = pick(userData, userProperties);
   const userRef = firestore.collection('users').doc(id);
 
-  if (!userData.email) {
-    await userRef.set(userData, { merge: true });
+  if (!userDataToSave.email) {
+    await userRef.set(userDataToSave, { merge: true });
   } else {
     const [hashedEmail, encryptedDetails] = await Promise.all([
-      hashEmail(userData.email),
-      encrypt(userData.email)
+      hashEmail(userDataToSave.email),
+      encrypt(userDataToSave.email)
     ]);
     const dataToSave = {
       hashedEmail,
       encryptedDetails,
-      ...omit(userData, 'email')
+      ...omit(userDataToSave, 'email')
     };
     await userRef.set(dataToSave, { merge: true });
   }
@@ -72,15 +76,16 @@ async function getUsersByIds(userIds, { withDetails = true } = {}) {
 }
 
 async function getUsersWithProps(props = {}, { withDetails = true } = {}) {
+  const userDataToQuery = pick(props, userProperties);
   let queryObject;
-  if (props.email) {
+  if (userDataToQuery.email) {
     const hashedEmail = await hashEmail(props.email);
     queryObject = {
       hashedEmail,
-      ...omit(props, 'email')
+      ...omit(userDataToQuery, 'email')
     };
   } else {
-    queryObject = props;
+    queryObject = userDataToQuery;
   }
 
   const filteredUsersRef = await createFilteredRef('users', queryObject);

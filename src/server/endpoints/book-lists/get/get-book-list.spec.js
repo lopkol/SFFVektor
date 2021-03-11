@@ -5,8 +5,8 @@ const app = require('../../../app');
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser } = require('../../../dao/users/users');
 const { createBookList } = require('../../../dao/book-lists/book-lists');
-const { updateBooks } = require('../../../dao/books/books');
-const { updateAuthor } = require('../../../dao/authors/authors');
+const { setBooks } = require('../../../dao/books/books');
+const { createAuthor } = require('../../../dao/authors/authors');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 const { 
   generateRandomAuthor, 
@@ -67,12 +67,12 @@ describe('GET /book-lists/:year/:genre', () => {
 
     const authorData1 = generateRandomAuthor();
     const authorData2 = generateRandomAuthor();
-    await updateAuthor(authorData1);
-    await updateAuthor(authorData2);
+    const authorId1 = await createAuthor(authorData1);
+    const authorId2 = await createAuthor(authorData2);
 
-    const bookData1 = generateRandomBook({ authorId: authorData1.id });
-    const bookData2 = generateRandomBook({ authorId: authorData2.id });
-    await updateBooks([bookData1, bookData2]);
+    const bookData1 = generateRandomBook({ authorId: authorId1 });
+    const bookData2 = generateRandomBook({ authorId: authorId2 });
+    await setBooks([bookData1, bookData2]);
 
     const bookListData = await generateRandomBookList({ juryIds: [userId, userId2, userId3], bookIds: [bookData1.id, bookData2.id] });
     const year = bookListData.year;
@@ -88,8 +88,8 @@ describe('GET /book-lists/:year/:genre', () => {
       id: bookListId,
       ...bookListData,
       books: jasmine.arrayWithExactContents([
-        { ...bookData1, author: authorData1 },
-        { ...bookData2, author: authorData2 }
+        { ...bookData1, author: { id: authorId1, ...authorData1 } },
+        { ...bookData2, author: { id: authorId2, ...authorData2 } }
       ]),
       jury: jasmine.arrayWithExactContents([
         { id: userId, ...userData }, 
@@ -112,12 +112,12 @@ describe('GET /book-lists/:year/:genre', () => {
 
     const authorData1 = generateRandomAuthor();
     const authorData2 = generateRandomAuthor();
-    await updateAuthor(authorData1);
-    await updateAuthor(authorData2);
+    const authorId1 = await createAuthor(authorData1);
+    const authorId2 = await createAuthor(authorData2);
 
-    const bookData1 = generateRandomBook({ authorId: authorData1.id });
-    const bookData2 = generateRandomBook({ authorId: authorData2.id });
-    await updateBooks([bookData1, bookData2]);
+    const bookData1 = generateRandomBook({ authorId: authorId1 });
+    const bookData2 = generateRandomBook({ authorId: authorId2 });
+    await setBooks([bookData1, bookData2]);
 
     const bookListData = await generateRandomBookList({ juryIds: [userId2, userId3], bookIds: [bookData1.id, bookData2.id] });
     const year = bookListData.year;
@@ -133,8 +133,8 @@ describe('GET /book-lists/:year/:genre', () => {
       id: bookListId,
       ...bookListData,
       books: jasmine.arrayWithExactContents([
-        { ...bookData1, author: authorData1 },
-        { ...bookData2, author: authorData2 }
+        { ...bookData1, author: { id: authorId1, ...authorData1 } },
+        { ...bookData2, author: { id: authorId2, ...authorData2 } }
       ]),
       jury: jasmine.arrayWithExactContents([ 
         { id: userId2, ...userData2 }, 

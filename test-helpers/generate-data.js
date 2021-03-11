@@ -38,15 +38,15 @@ function randomEmail() {
 }
 
 function generateRandomAuthor(props = {}) {
-  const id = String(randomIntBetween(100000, 1000000));
   const firstName = capitalize(randomString(randomIntBetween(5,12)));
   const lastName = capitalize(randomString(randomIntBetween(5,12)));
   const name = firstName + ' ' + lastName;
   const sortName = lastName + ', ' + firstName;
+  const isApproved = randomItemFrom([true, false]);
   return {
-    id,
     name,
     sortName,
+    isApproved,
     ...props
   };
 }

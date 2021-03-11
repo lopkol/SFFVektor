@@ -1,23 +1,36 @@
 'use strict';
 
 const firestore = require('../firestore');
-const { omit } = require('lodash');
+const { pick } = require('lodash');
 const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
 
-async function createBook(bookData) { //no id given! (for books with no moly id)
-  const book = await firestore.collection('books').add(bookData);
+const bookProperties = [
+  'molyUrl', 
+  'authorId', 
+  'title', 
+  'series', 
+  'seriesNum', 
+  'isApproved', //boolean
+  'isPending',  //boolean
+  'alternatives', //array
+  'readingPlans'  //array
+];
+
+async function createBook(bookData) { 
+  const bookDataToSave = pick(bookData, bookProperties);
+  const book = await firestore.collection('books').add(bookDataToSave);
   return book.id;
 } 
 
-async function updateBooks(booksData) {
+async function setBooks(booksData) {
   const batch = firestore.batch();
 
   booksData.forEach(bookData => {
     const id = bookData.id;
-    const bookDataWithoutId = omit(bookData, 'id');
+    const bookDataToSave = pick(bookData, bookProperties);
     const bookRef = firestore.collection('books').doc(id);
 
-    batch.set(bookRef, bookDataWithoutId, { merge: true });
+    batch.set(bookRef, bookDataToSave, { merge: true });
   });
 
   await batch.commit();
@@ -36,7 +49,8 @@ async function getBooksByIds(bookIds) {
 }
 
 async function getBooksWithProps(bookData = {}) {
-  const filteredBooksRef = await createFilteredRef('books', bookData);
+  const bookDataToQuery = pick(bookData, bookProperties);
+  const filteredBooksRef = await createFilteredRef('books', bookDataToQuery);
 
   const booksWithProps = await filteredBooksRef.get();
   const books = mapToDataWithId(booksWithProps);
@@ -46,7 +60,7 @@ async function getBooksWithProps(bookData = {}) {
 
 module.exports = {
   createBook,
-  updateBooks,
+  setBooks,
   getBooksByIds,
   getBooksWithProps
 };
