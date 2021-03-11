@@ -4,7 +4,7 @@ const React = require('react');
 const DocumentTitle = require('react-document-title');
 const { Switch, Route } = require('react-router-dom');
 const { getJwtToken } = require('../../services/jwt');
-const { setApiCookie } = require('../../services/api');
+const { setApiCookie } = require('../../services/api/api');
 
 const AppHeader = require('./navigation/app-header');
 const Sidebar = require('./navigation/sidebar');

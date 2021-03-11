@@ -1,7 +1,7 @@
 'use strict';
 
 const jwt = require('../src/server/adapters/jwt/jwt');
-const { setApiCookie } = require('../src/client/services/api');
+const { setApiCookie } = require('../src/client/services/api/api');
 const config = require('../src/server/config');
 
 const createAuthorizationToken = jwtData => jwt.encode(jwtData);

@@ -2,7 +2,7 @@
 
 const React = require('react');
 const { DataGrid } = require('@material-ui/data-grid');
-const { getUsers } = require('../../api/users');
+const { getUsers } = require('../../services/api/users/users');
 const { roleOptions } = require('../../../options');
 
 const columns = [

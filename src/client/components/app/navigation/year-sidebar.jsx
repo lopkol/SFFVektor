@@ -14,7 +14,7 @@ function YearSidebar({ year }) {
     <div className="year-sidebar">
       <p className="sidebar-button larger-font" onClick={ handleClick }>{ year }</p>
       { isOpen && (<Link to={`/${year}/fantasy/list`} className="sidebar-button indent">Fantasy</Link>) }
-      { isOpen && (<Link to={`/${year}/sci-fi/list`} className="sidebar-button indent">Sci-fi</Link>) }
+      { isOpen && (<Link to={`/${year}/scifi/list`} className="sidebar-button indent">Sci-fi</Link>) }
       { isOpen && (<Link to={`/${year}/admin`} className="sidebar-button indent">Admin</Link>) }
     </div>
   );
