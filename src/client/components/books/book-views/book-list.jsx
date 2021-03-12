@@ -27,8 +27,8 @@ function BookList() {
     <div>
       <p>Jelöltlista adatai:</p>
       <ul>
-        <li>év: { bookList.year }</li>
-        <li>műfaj: { bookList.genre }</li>
+        <li>év: { year }</li>
+        <li>műfaj: { genre }</li>
         <li>moly lista url: { bookList.url }</li>
         <li>besorolásra váró polc url: { bookList.pendingUrl }</li>
       </ul>

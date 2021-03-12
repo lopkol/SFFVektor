@@ -5,7 +5,7 @@ const { Link } = require('react-router-dom');
 const YearSidebar = require('./year-sidebar');
 
 function Sidebar() {
-  const years = [2021, 2020, 2019];
+  const years = [2020, 2019];
   return (
     <nav id="sidebar">
       <Link to="/admin" className="sidebar-button larger-font">Admin</Link>

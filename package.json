@@ -69,7 +69,6 @@
     "jwt-simple": "0.5.6",
     "node-fetch": "2.6.1",
     "react": "17.0.1",
-    "react-document-title": "2.0.3",
     "react-dom": "17.0.1",
     "react-router-dom": "5.2.0",
     "serve-favicon": "2.5.0"

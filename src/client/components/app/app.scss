@@ -3,12 +3,13 @@
 
 * {
   margin: 0;
+  box-sizing: border-box;
 }
 
 body {
-  background-color: rgb(231, 231, 240);
+  background-color: #ffdfef;
   font-family: Alegreya;
-  color: rgb(37, 37, 39);
+  color: #04003d;
 }
 
 h1, h2, h3, h4, h5 {
@@ -17,20 +18,19 @@ h1, h2, h3, h4, h5 {
 }
 
 main {
+  margin-top: 40px;
   padding: 10px;
-  position: absolute;
-  top: 40px;
-  left: 100px;
-  right: 0;
+  height: 100%;
+  width: calc(100% - 100px);
 }
 
 a {
   text-decoration: none;
   &:link, &:visited, &:hover {
-    color: rgb(37, 37, 39);
+    color: #04003d;
   }
   &:active {
-    color: rgb(35, 121, 179);
+    color: #FF007F;
   }
 }
 
@@ -44,4 +44,10 @@ a {
 
 .center {
   text-align: center;
+}
+
+#app-div {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
 }
