@@ -16,7 +16,7 @@ describe('booklists DAO', () => {
   });
 
   describe('createBookList', () => {
-    it('creates a booklist with the given properties', async () => {
+    it('creates a book list with the given properties', async () => {
       const bookListData = generateRandomBookList();
       const id = await createBookList(bookListData);
 
@@ -24,7 +24,7 @@ describe('booklists DAO', () => {
       expect(bookListsInDb).toEqual([{ id, ...bookListData }]);
     });
 
-    it('returns null if a booklist with the same year and genre already exists', async () => {
+    it('returns null if a book list with the same year and genre already exists', async () => {
       const bookListData = generateRandomBookList({ year: 1955, genre: 'scifi' });
       const otherBookListData = generateRandomBookList({ year: 1955, genre: 'scifi' });
 
@@ -43,7 +43,7 @@ describe('booklists DAO', () => {
       expect(res).toBe(null);
     });
 
-    it('returns the booklist data with the correctly updated properties', async () => {
+    it('returns the book list data with the correctly updated properties', async () => {
       const bookListData = generateRandomBookList();
       const id = await createBookList(bookListData);
 
@@ -56,7 +56,7 @@ describe('booklists DAO', () => {
       });
     });
 
-    it('updates the correct booklist and only the given properties', async () => {
+    it('updates the correct book list and only the given properties', async () => {
       const bookData1 = generateRandomBookList({ year: 1778 });
       const bookData2 = generateRandomBookList({ year: 1888 });
       
@@ -84,7 +84,7 @@ describe('booklists DAO', () => {
   });
 
   describe('getBookListById', () => {
-    it('returns the booklist with the given id', async () => {
+    it('returns the book list with the given id', async () => {
       const bookListData = generateRandomBookList();
       const id = await createBookList(bookListData);
 
@@ -92,15 +92,15 @@ describe('booklists DAO', () => {
       expect(result).toEqual({ id, ...bookListData });
     });
 
-    it('returns null if there is no booklist with the given id', async () => {
+    it('returns null if there is no book list with the given id', async () => {
       const result = await getBookListById('does-not-exist');
       
       expect(result).toEqual(null);
     });
   });
 
-  describe('getBooksWithProps', () => {
-    it('returns an empty array if there is no book with the given properties', async () => {
+  describe('getBookListsWithProps', () => {
+    it('returns an empty array if there is no book list with the given properties', async () => {
       const bookListData1 = generateRandomBookList({ year: 1944 });
       const bookListData2 = generateRandomBookList({ year: 1956 });
 
@@ -112,7 +112,7 @@ describe('booklists DAO', () => {
       expect(bookLists).toEqual([]);
     });
 
-    it('returns all books if called with empty arg', async () => {
+    it('returns all book lists if called with empty arg', async () => {
       const bookListData1 = generateRandomBookList({ year: 1922 });
       const bookListData2 = generateRandomBookList({ year: 1823 });
       const bookListData3 = generateRandomBookList({ year: 1888 });
@@ -130,7 +130,7 @@ describe('booklists DAO', () => {
       ]));
     });
 
-    it('returns the books with the given properties', async () => {
+    it('returns the book lists with the given properties', async () => {
       const bookListData1 = generateRandomBookList({ year: 1933, genre: 'fantasy' });
       const bookListData2 = generateRandomBookList({ year: 1933, genre: 'scifi' });
       const bookListData3 = generateRandomBookList({ year: 1734, genre: 'fantasy' });
@@ -149,7 +149,7 @@ describe('booklists DAO', () => {
   });
 
   describe('getBookListsOfJuryMember', () => {
-    it('returns the booklists where the given user is a jury member', async () => {
+    it('returns the book lists where the given user is a jury member', async () => {
       const bookListData1 = generateRandomBookList({ year: 1933, juryIds: ['3', '4', '1'] });
       const bookListData2 = generateRandomBookList({ year: 1935, juryIds: ['4', '7', '2', '1'] });
       const bookListData3 = generateRandomBookList({ year: 1734, juryIds: ['3', '7'] });

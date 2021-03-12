@@ -12,8 +12,7 @@ const bookProperties = [
   'seriesNum', 
   'isApproved', //boolean
   'isPending',  //boolean
-  'alternatives', //array
-  'readingPlans'  //array
+  'alternatives' //array
 ];
 
 async function createBook(bookData) { 

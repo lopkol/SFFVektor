@@ -10,7 +10,16 @@ const genreOptions = [
   { id: 'scifi', name: 'sci-fi' }
 ];
 
+const readingPlanOptions = [
+  { id: 'noPlan', name: 'nincs megadva' },
+  { id: 'willRead', name: 'el fogom olvasni' },
+  { id: 'willNotRead', name: 'nem fogom elolvasni' },
+  { id: 'isReading', name: 'éppen olvasom' },
+  { id: 'finished', name: 'elolvastam' }
+];
+
 module.exports = {
   roleOptions,
-  genreOptions
+  genreOptions,
+  readingPlanOptions
 };

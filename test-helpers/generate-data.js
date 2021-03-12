@@ -1,6 +1,7 @@
 'use strict';
 
-const { roleOptions, genreOptions } = require('../src/options');
+const { v4: uuidv4 } = require('uuid');
+const { roleOptions, genreOptions, readingPlanOptions } = require('../src/options');
 const years = [1977, 1976, 1975, 1974, 1973];
 
 function randomIntBetween(min, max) {
@@ -67,8 +68,8 @@ function generateRandomUser(props = {}) {
 }
 
 function generateRandomBook(props = {}) {
-  const id = String(randomIntBetween(100000, 1000000));
-  const authorId = String(randomIntBetween(100000, 1000000));
+  const id = uuidv4();
+  const authorId = uuidv4();
   const title = capitalize(randomString(randomIntBetween(7, 25)));
   const molyUrl = randomString(16,34);
   const series = capitalize(randomString(randomIntBetween(7, 25)));
@@ -87,6 +88,19 @@ function generateRandomBook(props = {}) {
     isApproved,
     isPending,
     alternatives,
+    ...props
+  };
+}
+
+function generateRandomReadingPlan(props = {}) {
+  const userId = uuidv4();
+  const bookId = uuidv4();
+  const status = randomItemFrom(readingPlanOptions.map(statusOption => statusOption.id));
+
+  return {
+    userId,
+    bookId,
+    status,
     ...props
   };
 }
@@ -116,5 +130,6 @@ module.exports = {
   generateRandomAuthor,
   generateRandomUser,
   generateRandomBook,
+  generateRandomReadingPlan,
   generateRandomBookList
 };
