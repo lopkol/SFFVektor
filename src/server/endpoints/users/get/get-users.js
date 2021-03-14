@@ -1,16 +1,20 @@
 'use strict';
 
 const { getUsersWithProps } = require('../../../dao/users/users');
+const { canManageUsers } = require('../../../lib/permissions');
 
 module.exports = async (req, res) => {
   try {
     const userData = req.jwtData;
 
-    if (userData.role !== 'admin') {
-      return res.sendStatus(401);
+    const canSeeUserList = await canManageUsers(userData.id);
+    if (!canSeeUserList) {
+      return res.sendStatus(403);
     }
 
-    const users = await getUsersWithProps();
+    const properties = req.body.userData || {};
+
+    const users = await getUsersWithProps(properties);
 
     return res.status(200).send(users);
 
@@ -18,4 +22,3 @@ module.exports = async (req, res) => {
     res.sendStatus(500);
   }
 };
-

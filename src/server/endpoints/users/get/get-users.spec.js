@@ -18,30 +18,53 @@ describe('GET /users', () => {
       .expect(401);
   });
 
-  it('responds with 401 if the user is not admin', async () => {
-    const userData = generateRandomUser();
-    await createUser(userData);
+  it('responds with 403 if the user is not admin', async () => {
+    const userData = generateRandomUser({ role: 'user' });
+    const id = await createUser(userData);
 
     await request(app.listen())
       .get('/api/users')
-      .set('Cookie', [createAuthorizationCookie({ id: '1', role: 'user' })])
-      .expect(401);
+      .set('Cookie', [createAuthorizationCookie({ id, role: 'user' })])
+      .expect(403);
   });
 
   it('returns with 200 with the user list if the user is admin', async () => {
+    const userData = generateRandomUser({ role: 'admin' });
+    const id = await createUser(userData);
     const userData1 = generateRandomUser();
     const userData2 = generateRandomUser();
     const userId1 = await createUser(userData1);
     const userId2 = await createUser(userData2);
 
-    userData1.id = userId1;
-    userData2.id = userId2;
+    const response = await request(app.listen())
+      .get('/api/users')
+      .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
+      .expect(200);
+
+    expect(response.body).toEqual(jasmine.arrayWithExactContents([
+      { id, ...userData },
+      { id: userId1, ...userData1 }, 
+      { id: userId2, ...userData2 }
+    ]));
+  });
+
+  it('returns the users with the given properties if the request body is not empty', async () => {
+    const userData = generateRandomUser({ role: 'admin' });
+    const id = await createUser(userData);
+    const userData1 = generateRandomUser({ role: 'user' });
+    const userData2 = generateRandomUser({ role: 'user' });
+    const userId1 = await createUser(userData1);
+    const userId2 = await createUser(userData2);
 
     const response = await request(app.listen())
       .get('/api/users')
-      .set('Cookie', [createAuthorizationCookie({ id: '1', role: 'admin' })])
+      .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
+      .send({ userData: { role: 'user' } })
       .expect(200);
 
-    expect(response.body).toEqual(jasmine.arrayWithExactContents([userData1, userData2]));
+    expect(response.body).toEqual(jasmine.arrayWithExactContents([
+      { id: userId1, ...userData1 }, 
+      { id: userId2, ...userData2 }
+    ]));
   });
 });

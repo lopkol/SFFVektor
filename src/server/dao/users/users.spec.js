@@ -10,6 +10,16 @@ describe('users DAO', () => {
   });
 
   describe('createUser', () => {
+    it('returns null if a user with the same email address already exists', async () => {
+      const userData = generateRandomUser({ email: 'unicorn@gmail.com' });
+      await createUser(userData);
+
+      const newUserData = generateRandomUser({ email: 'unicorn@gmail.com' });
+      const res = await createUser(newUserData);
+
+      expect(res).toBe(null);
+    });
+
     it('creates a user with the given properties, returns the user id', async () => {
       const userData = generateRandomUser();
       const id = await createUser(userData);

@@ -31,8 +31,13 @@ async function canViewBookList(userId, bookListId) {
   return isAdminUser || bookListData.juryIds.includes(userId);
 }
 
+async function canManageUsers(userId) {
+  return await isAdmin(userId);
+}
+
 module.exports = {
   isActiveUser,
   isAdmin,
-  canViewBookList
+  canViewBookList,
+  canManageUsers
 };

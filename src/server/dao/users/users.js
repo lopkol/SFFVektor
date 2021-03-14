@@ -14,6 +14,13 @@ async function createUser(userData) {
     hashEmail(userDataToSave.email),
     encrypt(userDataToSave.email)
   ]);
+
+  const usersWithSameEmail = await firestore.collection('users').where('hashedEmail', '==', hashedEmail).get();
+
+  if (!usersWithSameEmail.empty) {
+    return null;
+  }
+  
   const dataToSave = {
     hashedEmail,
     encryptedDetails,
