@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
 
     const jury = await getUsersByIds(bookList.juryIds);
     
-    return res.status(200).send({ ...bookList, books: booksWithAuthors, jury });
+    return res.status(200).send({ bookList, books: booksWithAuthors, jury });
 
   } catch (error) {
     res.sendStatus(500);

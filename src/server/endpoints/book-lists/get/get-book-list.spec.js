@@ -85,8 +85,10 @@ describe('GET /book-lists/:year/:genre', () => {
       .expect(200);
 
     const expectedData = {
-      id: bookListId,
-      ...bookListData,
+      bookList: {
+        id: bookListId,
+        ...bookListData
+      },
       books: jasmine.arrayWithExactContents([
         { ...bookData1, authors: [{ id: authorId1, ...authorData1 }] },
         { ...bookData2, authors: [{ id: authorId2, ...authorData2 }] }
@@ -130,8 +132,10 @@ describe('GET /book-lists/:year/:genre', () => {
       .expect(200);
 
     const expectedData = {
-      id: bookListId,
-      ...bookListData,
+      bookList: {
+        id: bookListId,
+        ...bookListData
+      },
       books: jasmine.arrayWithExactContents([
         { ...bookData1, authors: [{ id: authorId1, ...authorData1 }] },
         { ...bookData2, authors: [{ id: authorId2, ...authorData2 }] }

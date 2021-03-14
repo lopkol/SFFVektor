@@ -104,10 +104,10 @@ function generateRandomReadingPlan(props = {}) {
 }
 
 function generateRandomBookList(props = {}) {
-  const year = randomItemFrom(years);
-  const genre = (randomItemFrom(genreOptions)).id;
-  const url = randomString(randomIntBetween(13, 25));
-  const pendingUrl = randomString(randomIntBetween(13, 25));
+  const year = props.year || randomItemFrom(years);
+  const genre = props.genre || (randomItemFrom(genreOptions)).id;
+  const url = `https://moly.hu/listak/${year}${genre}`;
+  const pendingUrl = `https://moly.hu/polcok/besorolasra-var-${year}`;
   const juryIds = [];
   const bookIds = [];
 

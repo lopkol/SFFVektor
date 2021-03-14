@@ -59,8 +59,10 @@ describe('client-side book list related API calls', () => {
       const bookList = await getBookList({ year, genre });
 
       const expectedData = {
-        id: bookListId,
-        ...bookListData,
+        bookList: {
+          id: bookListId,
+          ...bookListData
+        },
         books: jasmine.arrayWithExactContents([
           { ...bookData1, authors: [{ id: authorId1, ...authorData1 }] },
           { ...bookData2, authors: [{ id: authorId2, ...authorData2 }] }
@@ -102,8 +104,10 @@ describe('client-side book list related API calls', () => {
       const bookList = await getBookList({ year, genre });
 
       const expectedData = {
-        id: bookListId,
-        ...bookListData,
+        bookList: {
+          id: bookListId,
+          ...bookListData
+        },
         books: jasmine.arrayWithExactContents([
           { ...bookData1, authors: [{ id: authorId1, ...authorData1 }] },
           { ...bookData2, authors: [{ id: authorId2, ...authorData2 }] }
