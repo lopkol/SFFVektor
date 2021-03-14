@@ -6,6 +6,12 @@ const { DataGrid } = require('@material-ui/data-grid');
 
 const { getBookList } = require('../../../services/api/book-lists/book-lists');
 
+function authorsToString(authors) {
+  if (authors) {
+    return authors.slice(1).reduce((authorStr, newAuthor) => authorStr.concat(', ' + newAuthor.name), authors[0].name);
+  }
+} 
+
 function BookList() {
   const { year, genre } = useParams();
   const [bookList, setBookList] = React.useState([]);
@@ -19,8 +25,8 @@ function BookList() {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 200 },
-    { field: 'author', headerName: 'Szerző', width: 250 },
-    { field: 'title', headerName: 'Cím', width: 400 }
+    { field: 'authors', headerName: 'Szerző(k)', width: 400 },
+    { field: 'title', headerName: 'Cím', width: 500 }
   ];
 
   return (
@@ -37,7 +43,7 @@ function BookList() {
         <DataGrid
           rows={ books.map(book => ({
             id: book.id,
-            author: book.author.name,
+            authors: authorsToString(book.authors),
             title: book.title
           })) }
           columns={ columns }

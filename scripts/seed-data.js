@@ -3,6 +3,7 @@
 const { v4: uuidv4 } = require('uuid');
 const { omit } = require('lodash');
 const { 
+  randomItemFrom,
   distinctItemsFrom, 
   generateRandomUser, 
   generateRandomBook, 
@@ -51,6 +52,14 @@ async function addAuthorToBatch(props = {}) {
   return authorId;
 }
 
+async function addAuthors(count) {
+  const authorIds = await Promise.all(Array(count).fill(null).map(() => {
+    const authorId = addAuthorToBatch();
+    return authorId;
+  }));
+  return authorIds;
+}
+
 async function addBookToBatch(props = {}) {
   const bookId = uuidv4();
   const newBookRef = await firestore.collection('books').doc(bookId);
@@ -58,10 +67,12 @@ async function addBookToBatch(props = {}) {
   return bookId;
 }
 
-async function addBooksWithAuthor(count, authorId) {
+async function addBooksWithRandomAuthors(count, authorIds) {
   const bookIds = await Promise.all(
-    Array(count).fill(null).map(() => {
-      const bookId = addBookToBatch({ authorId });
+    Array(count).fill(null).map(async () => {
+      const authorNumOfBook = randomItemFrom([1,1,1,1,1,1,2,3]);
+      const authorIdsOfBook = distinctItemsFrom(authorIds, authorNumOfBook);
+      const bookId = await addBookToBatch({ authorIds: authorIdsOfBook });
       return bookId;
     })
   );
@@ -84,15 +95,15 @@ async function addBookListToBatch(props = { year: 2000, genre: 'scifi', juryIds:
 
   const stupidUserIds = await Promise.all([
     addUsersWithRole('admin', 3),
-    addUsersWithRole('user', 7),
+    addUsersWithRole('user', 20),
     ...allowedUsers.map(
       email => addUserToBatch({ email, role: 'admin' })
     )
   ]);
   const userIds = [...stupidUserIds[0], ...stupidUserIds[1], ...stupidUserIds.slice(2)];
   
-  const authorId = await addAuthorToBatch();
-  const bookIds = await addBooksWithAuthor(80, authorId);
+  const authorIds = await addAuthors(60);
+  const bookIds = await addBooksWithRandomAuthors(80, authorIds);
 
   await Promise.all([
     addBookListToBatch({ 

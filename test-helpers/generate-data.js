@@ -4,12 +4,12 @@ const { v4: uuidv4 } = require('uuid');
 const { roleOptions, genreOptions, readingPlanOptions } = require('../src/options');
 const years = [1977, 1976, 1975, 1974, 1973];
 
-const surnames = ['kovács', 'szabó', 'lakatos', 'kolompár', 'vastag', 'szőrös', 'pumpás', 'gonosz', 'csúnya', 'kövér'];
-const givenNames = ['oszkár', 'béla', 'lajos', 'géza', 'tihamér', 'ildikó', 'katalin', 'anikó', 'rozi', 'nikolett'];
+const surnames = ['kovács', 'szabó', 'lakatos', 'kolompár', 'vastag', 'szőrös', 'pumpás', 'gonosz', 'csúnya', 'kövér', 'tóth', 'nagy', 'kis'];
+const givenNames = ['oszkár', 'béla', 'lajos', 'géza', 'tihamér', 'ildikó', 'katalin', 'anikó', 'rozi', 'nikolett', 'kristóf', 'andrás', 'dezső', 'ferenc', 'lili'];
 
-const adjectives = ['titokzatos', 'kegyetlen', 'földönkívüli', 'csúnya', 'gonosz', 'szőrös', 'kövér', 'láthatatlan', 'péniszfejű', 'vonatpótló autóbusszal közlekedő'];
-const actors = ['törpék', 'alienek', 'majomkutyák', 'törpenyulak', 'orkok', 'amazonok', 'kísértetek', 'kecskék', 'szerzetesek', 'mágusok'];
-const actions = ['lázadása', 'véres bosszúja', 'támadása', 'titka', 'rejtélye', 'háborúja', 'szigete', 'hihetetlen kalandjai', 'reneszánsza', 'örök körforgása'];
+const adjectives = ['titokzatos', 'kegyetlen', 'földönkívüli', 'csúnya', 'gonosz', 'szőrös', 'kövér', 'láthatatlan', 'péniszfejű', 'vonatpótló autóbusszal közlekedő', 'náthás', 'féltékeny', 'harapós'];
+const actors = ['törpék', 'alienek', 'majomkutyák', 'törpenyulak', 'orkok', 'amazonok', 'kísértetek', 'kecskék', 'szerzetesek', 'mágusok', 'óriáskígyók', 'fenyőfák', 'szoftverfejlesztők'];
+const actions = ['lázadása', 'véres bosszúja', 'támadása', 'titka', 'rejtélye', 'háborúja', 'szigete', 'hihetetlen kalandjai', 'reneszánsza', 'örök körforgása', 'szexuális élete'];
 
 function randomIntBetween(min, max) {
   return Math.floor((max - min + 1) * Math.random()) + min;
@@ -73,10 +73,12 @@ function generateRandomBook(props = {}) {
   const actor = randomItemFrom(actors);
   const action = randomItemFrom(actions);
   const molyUrlPath = `a ${adjective} ${actor} ${action}`.replace(/\s/g, '-');
+  const authorNum = randomItemFrom([1,1,1,1,1,1,2,3]);
+  const authorIds = Array(authorNum).fill(null).map(() => uuidv4());
 
   return {
     id: uuidv4(),
-    authorId: uuidv4(),
+    authorIds,
     title: `A ${adjective} ${actor} ${action}`,
     molyUrl: `moly.hu/konyvek/${molyUrlPath}`,
     series: `${capitalize(adjective)} ${actor}`,
@@ -122,6 +124,7 @@ function generateRandomBookList(props = {}) {
 
 module.exports = {
   randomString,
+  randomItemFrom,
   distinctItemsFrom,
   generateRandomAuthor,
   generateRandomUser,

@@ -47,8 +47,8 @@ describe('client-side book list related API calls', () => {
       const authorId1 = await createAuthor(authorData1);
       const authorId2 = await createAuthor(authorData2);
 
-      const bookData1 = generateRandomBook({ authorId: authorId1 });
-      const bookData2 = generateRandomBook({ authorId: authorId2 });
+      const bookData1 = generateRandomBook({ authorIds: [authorId1] });
+      const bookData2 = generateRandomBook({ authorIds: [authorId2] });
       await setBooks([bookData1, bookData2]);
 
       const bookListData = await generateRandomBookList({ juryIds: [userId2, userId3], bookIds: [bookData1.id, bookData2.id] });
@@ -62,8 +62,8 @@ describe('client-side book list related API calls', () => {
         id: bookListId,
         ...bookListData,
         books: jasmine.arrayWithExactContents([
-          { ...bookData1, author: { id: authorId1, ...authorData1 } },
-          { ...bookData2, author: { id: authorId2, ...authorData2 } }
+          { ...bookData1, authors: [{ id: authorId1, ...authorData1 }] },
+          { ...bookData2, authors: [{ id: authorId2, ...authorData2 }] }
         ]),
         jury: jasmine.arrayWithExactContents([ 
           { id: userId2, ...userData2 }, 
@@ -90,8 +90,8 @@ describe('client-side book list related API calls', () => {
       const authorId1 = await createAuthor(authorData1);
       const authorId2 = await createAuthor(authorData2);
 
-      const bookData1 = generateRandomBook({ authorId: authorId1 });
-      const bookData2 = generateRandomBook({ authorId: authorId2 });
+      const bookData1 = generateRandomBook({ authorIds: [authorId1] });
+      const bookData2 = generateRandomBook({ authorIds: [authorId2] });
       await setBooks([bookData1, bookData2]);
 
       const bookListData = await generateRandomBookList({ juryIds: [userId, userId2, userId3], bookIds: [bookData1.id, bookData2.id] });
@@ -105,8 +105,8 @@ describe('client-side book list related API calls', () => {
         id: bookListId,
         ...bookListData,
         books: jasmine.arrayWithExactContents([
-          { ...bookData1, author: { id: authorId1, ...authorData1 } },
-          { ...bookData2, author: { id: authorId2, ...authorData2 } }
+          { ...bookData1, authors: [{ id: authorId1, ...authorData1 }] },
+          { ...bookData2, authors: [{ id: authorId2, ...authorData2 }] }
         ]),
         jury: jasmine.arrayWithExactContents([ 
           { id: userId, ...userData }, 

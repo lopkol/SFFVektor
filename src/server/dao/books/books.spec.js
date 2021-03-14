@@ -38,7 +38,7 @@ describe('books DAO', () => {
       
       await setBooks([bookData1, bookData2, bookData3]);
 
-      const dataToChange2 = { id: '2', authorId: '3', title: 'War and Peace' };
+      const dataToChange2 = { id: '2', authorIds: ['3'], title: 'War and Peace' };
       const dataToChange3 = { id: '3', series: '' };
       await setBooks([dataToChange2, dataToChange3]);
 
@@ -108,15 +108,15 @@ describe('books DAO', () => {
     });
 
     it('returns the books with the given properties', async () => {
-      const bookData1 = generateRandomBook({ authorId: '22', series: 'Harry Potter', isApproved: false });
-      const bookData2 = generateRandomBook({ authorId: '22', series: 'Harry Potter', isApproved: true });
-      const bookData3 = generateRandomBook({ authorId: '1', series: 'Lord of the Rings', isApproved: false });
-      const bookData4 = generateRandomBook({ authorId: '3', series: 'Harry Potter', isApproved: false });
-      const bookData5 = generateRandomBook({ authorId: '22', series: 'Harry Potter', isApproved: false });
+      const bookData1 = generateRandomBook({ authorIds: ['22'], series: 'Harry Potter', isApproved: false });
+      const bookData2 = generateRandomBook({ authorIds: ['22'], series: 'Harry Potter', isApproved: true });
+      const bookData3 = generateRandomBook({ authorIds: ['1'], series: 'Lord of the Rings', isApproved: false });
+      const bookData4 = generateRandomBook({ authorIds: ['3'], series: 'Harry Potter', isApproved: false });
+      const bookData5 = generateRandomBook({ authorIds: ['22'], series: 'Harry Potter', isApproved: false });
 
       await setBooks([bookData1, bookData2, bookData3, bookData4, bookData5]);
 
-      const books = await getBooksWithProps({ authorId: '22', series: 'Harry Potter', isApproved: false });
+      const books = await getBooksWithProps({ authorIds: ['22'], series: 'Harry Potter', isApproved: false });
 
       expect(books).toEqual(jasmine.arrayWithExactContents([bookData1, bookData5]));
     });

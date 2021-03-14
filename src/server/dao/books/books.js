@@ -6,7 +6,7 @@ const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
 
 const bookProperties = [
   'molyUrl', 
-  'authorId', 
+  'authorIds', //array
   'title', 
   'series', 
   'seriesNum', 

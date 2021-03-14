@@ -41,7 +41,7 @@ describe('GET /book-lists/:year/:genre', () => {
       .expect(404);
   });
 
-  it('responds with 401 if the user is not allowed to see the book list', async () => {
+  it('responds with 403 if the user is not allowed to see the book list', async () => {
     const userData = generateRandomUser({ role: 'user' });
     const userId = await createUser(userData);
 
@@ -53,7 +53,7 @@ describe('GET /book-lists/:year/:genre', () => {
     await request(app.listen())
       .get(`/api/book-lists/${year}/${genre}`)
       .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'user' })])
-      .expect(401);
+      .expect(403);
   });
 
   it('returns with 200 with the book list data if the user is a jury member of the book list', async () => {
@@ -70,8 +70,8 @@ describe('GET /book-lists/:year/:genre', () => {
     const authorId1 = await createAuthor(authorData1);
     const authorId2 = await createAuthor(authorData2);
 
-    const bookData1 = generateRandomBook({ authorId: authorId1 });
-    const bookData2 = generateRandomBook({ authorId: authorId2 });
+    const bookData1 = generateRandomBook({ authorIds: [authorId1] });
+    const bookData2 = generateRandomBook({ authorIds: [authorId2] });
     await setBooks([bookData1, bookData2]);
 
     const bookListData = await generateRandomBookList({ juryIds: [userId, userId2, userId3], bookIds: [bookData1.id, bookData2.id] });
@@ -88,8 +88,8 @@ describe('GET /book-lists/:year/:genre', () => {
       id: bookListId,
       ...bookListData,
       books: jasmine.arrayWithExactContents([
-        { ...bookData1, author: { id: authorId1, ...authorData1 } },
-        { ...bookData2, author: { id: authorId2, ...authorData2 } }
+        { ...bookData1, authors: [{ id: authorId1, ...authorData1 }] },
+        { ...bookData2, authors: [{ id: authorId2, ...authorData2 }] }
       ]),
       jury: jasmine.arrayWithExactContents([
         { id: userId, ...userData }, 
@@ -115,8 +115,8 @@ describe('GET /book-lists/:year/:genre', () => {
     const authorId1 = await createAuthor(authorData1);
     const authorId2 = await createAuthor(authorData2);
 
-    const bookData1 = generateRandomBook({ authorId: authorId1 });
-    const bookData2 = generateRandomBook({ authorId: authorId2 });
+    const bookData1 = generateRandomBook({ authorIds: [authorId1] });
+    const bookData2 = generateRandomBook({ authorIds: [authorId2] });
     await setBooks([bookData1, bookData2]);
 
     const bookListData = await generateRandomBookList({ juryIds: [userId2, userId3], bookIds: [bookData1.id, bookData2.id] });
@@ -133,8 +133,8 @@ describe('GET /book-lists/:year/:genre', () => {
       id: bookListId,
       ...bookListData,
       books: jasmine.arrayWithExactContents([
-        { ...bookData1, author: { id: authorId1, ...authorData1 } },
-        { ...bookData2, author: { id: authorId2, ...authorData2 } }
+        { ...bookData1, authors: [{ id: authorId1, ...authorData1 }] },
+        { ...bookData2, authors: [{ id: authorId2, ...authorData2 }] }
       ]),
       jury: jasmine.arrayWithExactContents([ 
         { id: userId2, ...userData2 }, 

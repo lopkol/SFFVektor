@@ -21,13 +21,13 @@ module.exports = async (req, res) => {
     const canGetBookList = await canViewBookList(userId, bookListId);
 
     if (!canGetBookList) {
-      return res.sendStatus(401);
+      return res.sendStatus(403);
     }
 
     const books = await getBooksByIds(bookList.bookIds);
     const booksWithAuthors = await Promise.all(books.map(async book => {
-      const author = await getAuthorById(book.authorId);
-      return { ...book, author };
+      const authors = await Promise.all(book.authorIds.map(async authorId => await getAuthorById(authorId)));
+      return { ...book, authors };
     }));
 
     const jury = await getUsersByIds(bookList.juryIds);
