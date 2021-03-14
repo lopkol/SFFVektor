@@ -8,9 +8,9 @@ const { roleOptions } = require('../../../options');
 const columns = [
   { field: 'id', headerName: 'ID', width: 150 },
   { field: 'role', headerName: 'Jogosultság', width: 100 },
-  { field: 'name', headerName: 'Név', width: 130 },
-  { field: 'molyUserName', headerName: 'Molyos felhasználónév', width: 130 },
-  { field: 'email', headerName: 'E-mail cím', width: 150 }
+  { field: 'name', headerName: 'Név', width: 250 },
+  { field: 'molyUserName', headerName: 'Molyos felhasználónév', width: 250 },
+  { field: 'email', headerName: 'E-mail cím', width: 250 }
 ];
 
 function UserList() {
@@ -28,7 +28,7 @@ function UserList() {
       role: roleName
     };
   });
-  
+
   return  (
     <div style={{ height: 600, width: '100%' }}>
       <DataGrid rows={ rows } columns={ columns } pageSize={20} />

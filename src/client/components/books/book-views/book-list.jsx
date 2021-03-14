@@ -18,9 +18,9 @@ function BookList() {
   }, []);
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 400 },
-    { field: 'author', headerName: 'Szerző', width: 150 },
-    { field: 'title', headerName: 'Cím', width: 200 }
+    { field: 'id', headerName: 'ID', width: 200 },
+    { field: 'author', headerName: 'Szerző', width: 250 },
+    { field: 'title', headerName: 'Cím', width: 400 }
   ];
 
   return (
@@ -34,14 +34,14 @@ function BookList() {
       </ul>
       <p>Könyvek:</p>
       <div style={{ height: 600, width: '100%' }}>
-        <DataGrid 
+        <DataGrid
           rows={ books.map(book => ({
             id: book.id,
             author: book.author.name,
             title: book.title
-          })) } 
-          columns={ columns } 
-          pageSize={25} 
+          })) }
+          columns={ columns }
+          pageSize={25}
         />
       </div>
     </div>

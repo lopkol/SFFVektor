@@ -4,6 +4,13 @@ const { v4: uuidv4 } = require('uuid');
 const { roleOptions, genreOptions, readingPlanOptions } = require('../src/options');
 const years = [1977, 1976, 1975, 1974, 1973];
 
+const surnames = ['kovács', 'szabó', 'lakatos', 'kolompár', 'vastag', 'szőrös', 'pumpás', 'gonosz', 'csúnya', 'kövér'];
+const givenNames = ['oszkár', 'béla', 'lajos', 'géza', 'tihamér', 'ildikó', 'katalin', 'anikó', 'rozi', 'nikolett'];
+
+const adjectives = ['titokzatos', 'kegyetlen', 'földönkívüli', 'csúnya', 'gonosz', 'szőrös', 'kövér', 'láthatatlan', 'péniszfejű', 'vonatpótló autóbusszal közlekedő'];
+const actors = ['törpék', 'alienek', 'majomkutyák', 'törpenyulak', 'orkok', 'amazonok', 'kísértetek', 'kecskék', 'szerzetesek', 'mágusok'];
+const actions = ['lázadása', 'véres bosszúja', 'támadása', 'titka', 'rejtélye', 'háborúja', 'szigete', 'hihetetlen kalandjai', 'reneszánsza', 'örök körforgása'];
+
 function randomIntBetween(min, max) {
   return Math.floor((max - min + 1) * Math.random()) + min;
 }
@@ -33,61 +40,50 @@ function randomString(length = 6) {
   return Math.random().toString(36).substr(2, length);
 }
 const capitalize = text => text[0].toUpperCase() + text.slice(1);
-
-function randomEmail() {
-  return randomString(randomIntBetween(5, 10)) + '@gmail.com';
-}
+const randomBoolean = () => randomItemFrom([true, false]);
 
 function generateRandomAuthor(props = {}) {
-  const firstName = capitalize(randomString(randomIntBetween(5,12)));
-  const lastName = capitalize(randomString(randomIntBetween(5,12)));
-  const name = firstName + ' ' + lastName;
-  const sortName = lastName + ', ' + firstName;
-  const isApproved = randomItemFrom([true, false]);
+  const surname = capitalize(randomItemFrom(surnames));
+  const givenName = capitalize(randomItemFrom(givenNames));
+
   return {
-    name,
-    sortName,
-    isApproved,
+    name:`${surname} ${givenName}` ,
+    sortName: `${surname}, ${givenName}`,
+    isApproved: randomBoolean(),
     ...props
   };
 }
 
 function generateRandomUser(props = {}) {
-  const role = randomItemFrom(roleOptions).id;
-  const name = capitalize(randomString(randomIntBetween(5,12)));
-  const email = randomEmail();
-  const molyUserName = randomString(4,10);
+  const surname = randomItemFrom(surnames);
+  const givenName = randomItemFrom(givenNames);
+  const randomInt = randomIntBetween(1, 1000);
 
   return {
-    role,
-    name,
-    email,
-    molyUserName,
+    role: randomItemFrom(roleOptions).id,
+    name: `${capitalize(surname)} ${capitalize(givenName)}`,
+    email: `${surname}.${givenName}.${randomInt}@gmail.com`,
+    molyUserName: `${surname}${givenName}${randomInt}`,
     ...props
   };
 }
 
 function generateRandomBook(props = {}) {
-  const id = uuidv4();
-  const authorId = uuidv4();
-  const title = capitalize(randomString(randomIntBetween(7, 25)));
-  const molyUrl = randomString(16,34);
-  const series = capitalize(randomString(randomIntBetween(7, 25)));
-  const seriesNum = randomIntBetween(1,4);
-  const isApproved = randomItemFrom([true, false]);
-  const isPending = randomItemFrom([true, false]);
-  const alternatives = [];
+  const adjective = randomItemFrom(adjectives);
+  const actor = randomItemFrom(actors);
+  const action = randomItemFrom(actions);
+  const molyUrlPath = `a ${adjective} ${actor} ${action}`.replace(/\s/g, '-');
 
   return {
-    id,
-    authorId,
-    title,
-    molyUrl,
-    series,
-    seriesNum,
-    isApproved,
-    isPending,
-    alternatives,
+    id: uuidv4(),
+    authorId: uuidv4(),
+    title: `A ${adjective} ${actor} ${action}`,
+    molyUrl: `moly.hu/konyvek/${molyUrlPath}`,
+    series: `${capitalize(adjective)} ${actor}`,
+    seriesNum: randomIntBetween(1,6),
+    isApproved: randomBoolean(),
+    isPending: randomBoolean(),
+    alternatives: [],
     ...props
   };
 }
