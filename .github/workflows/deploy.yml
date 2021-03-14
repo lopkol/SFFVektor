@@ -6,8 +6,6 @@ jobs:
     env:
       FIRESTORE_PROJECT_ID: test
       FIRESTORE_EMULATOR_HOST: localhost:8081
-      OAUTH_CLIENT_ID: {{ secrets.OauthClientId }}
-      OAUTH_CLIENT_SECRET: {{ secrets.OauthClientSecret }}
     steps:
       - uses: actions/checkout@v2
       - uses: mickfeech/firestore-emulator-action@0.0.12
@@ -18,3 +16,6 @@ jobs:
           node-version: '14.15.4'
       - run: npm ci
       - run: npm t
+        env:
+          OAUTH_CLIENT_ID: {{ secrets.OauthClientId }}
+          OAUTH_CLIENT_SECRET: {{ secrets.OauthClientSecret }}
