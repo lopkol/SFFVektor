@@ -8,7 +8,7 @@ module.exports = (req, res) => {
   try {
     const jwtToken = req.cookies[cookieName];
     if (!isValidToken(jwtToken)) {
-      const ssoRedirectUrl = getSsoAuthUrl();
+      const ssoRedirectUrl = getSsoAuthUrl({ redirectPath: req.url });
       res.redirect(ssoRedirectUrl);
       return;
     }

@@ -1,5 +1,6 @@
 'use strict';
 
+const base64 = require('base-64');
 const { google } = require('googleapis');
 const config = require('../../config');
 
@@ -15,10 +16,11 @@ const oauth2Client = new google.auth.OAuth2(
   redirectUrl
 );
 
-function getSsoAuthUrl() {
+function getSsoAuthUrl(state) {
   return oauth2Client.generateAuthUrl({
     access_type: 'online',
-    scope: authScopes
+    scope: authScopes,
+    state: base64.encode(JSON.stringify(state))
   });
 }
 

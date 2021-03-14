@@ -59,6 +59,7 @@
     "@material-ui/data-grid": "4.0.0-alpha.19",
     "@material-ui/icons": "4.11.2",
     "axios": "0.21.1",
+    "base-64": "1.0.0",
     "browser-cookies": "1.2.0",
     "cookie-parser": "1.4.5",
     "dotenv-haphap": "3.1.0",

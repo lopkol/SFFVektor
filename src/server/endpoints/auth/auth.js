@@ -1,5 +1,6 @@
 'use strict';
 
+const base64 = require('base-64');
 const { getUserInfo } = require('../../adapters/google/google');
 const { encode } = require('../../adapters/jwt/jwt');
 const { appBaseUrl, cookieName } = require('../../config');
@@ -10,12 +11,13 @@ const { isActiveUser } = require('../../lib/permissions');
 module.exports = async (req, res) => {
   try {
     const authorizationCode = req.query.code;
+    const { redirectPath } = JSON.parse(base64.decode(req.query.state));
+
     if (!authorizationCode) {
       return res.sendStatus(401);
     }
 
     const { email } = await getUserInfo(authorizationCode);
-
     const [user] = await getUsersWithProps({ email });
 
     if (!user) {
@@ -34,9 +36,9 @@ module.exports = async (req, res) => {
       expires: 0
     });
 
-    res.redirect(appBaseUrl);
+    res.redirect(`${appBaseUrl}${redirectPath}`);
   } catch (error) {
     console.log(error);
-    res.sendStatus(401);
+    res.sendStatus(500);
   }
 };
