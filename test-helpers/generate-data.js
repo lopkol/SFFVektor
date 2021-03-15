@@ -30,6 +30,7 @@ function yearWithSuffix(year, suffixType) {
     { endRegEx: /30$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'cal'] },
     { endRegEx: /[4579]0$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'nel'] },
     { endRegEx: /[68]0$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'nal'] },
+    { endRegEx: /[1-9]00$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'zal'] },
     { endRegEx: /000$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'rel'] }
   ];
   
@@ -103,8 +104,8 @@ function generateRandomUser(props = {}) {
   return {
     role: randomItemFrom(roleOptions).id,
     name: `${capitalize(surname)} ${capitalize(givenName)}`,
-    email: `${surname}.${givenName}.${randomInt}@gmail.com`,
-    molyUserName: `${surname}${givenName}${randomInt}`,
+    email: `${removeHungarianAccents(surname + '.' + givenName)}.${randomInt}@gmail.com`,
+    molyUserName: removeHungarianAccents(`${surname}${givenName}${randomInt}`),
     ...props
   };
 }
