@@ -44,8 +44,16 @@ function BookList() {
       <ul>
         <li>év: { year }</li>
         <li>műfaj: { genre }</li>
-        <li>moly lista url: { bookList.url }</li>
-        <li>besorolásra váró polc url: { bookList.pendingUrl }</li>
+        <li>moly lista url: 
+          <a href={ bookList.url } target="_blank" rel="noopener noreferrer">
+            { bookList.url }
+          </a>
+        </li>
+        <li>besorolásra váró polc url: 
+          <a href={ bookList.pendingUrl } target="_blank" rel="noopener noreferrer">
+            { bookList.pendingUrl }
+          </a>
+        </li>
       </ul>
       <p className="book-list larger-font">Könyvek:</p>
       <div style={{ height: 600, width: '100%' }}>

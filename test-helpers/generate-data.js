@@ -11,6 +11,47 @@ const adjectives = ['titokzatos', 'kegyetlen', 'földönkívüli', 'csúnya', 'g
 const actors = ['törpék', 'alienek', 'majomkutyák', 'törpenyulak', 'orkok', 'amazonok', 'kísértetek', 'kecskék', 'szerzetesek', 'mágusok', 'óriáskígyók', 'fenyőfák', 'szoftverfejlesztők'];
 const actions = ['lázadása', 'véres bosszúja', 'támadása', 'titka', 'rejtélye', 'háborúja', 'szigete', 'hihetetlen kalandjai', 'reneszánsza', 'örök körforgása', 'szexuális élete'];
 
+function yearWithSuffix(year, suffixType) {
+  const types = ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'vel'];
+  if (!types.includes(suffixType)) {
+    throw new Error(`Invalid parameters, suffix type must be among ${JSON.stringify(types)}`);
+  }
+  const suffixesForEndings = [
+    { endRegEx: /[14]$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'gyel'] },
+    { endRegEx: /2$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'höz', 'nek', 'vel'] },
+    { endRegEx: /3$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'mal'] },
+    { endRegEx: /5$/, suffixes: ['ben', 'ös', 'től', 'ből', 're', 'ről', 'höz', 'nek', 'tel'] },
+    { endRegEx: /6$/, suffixes: ['ban', 'os', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'tal'] },
+    { endRegEx: /7$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'tel'] },
+    { endRegEx: /8$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'cal'] },
+    { endRegEx: /9$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'cel'] },
+    { endRegEx: /10$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'zel'] },
+    { endRegEx: /20$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'szal'] },
+    { endRegEx: /30$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'cal'] },
+    { endRegEx: /[4579]0$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'nel'] },
+    { endRegEx: /[68]0$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'nal'] },
+    { endRegEx: /000$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'rel'] }
+  ];
+  
+  const suffixesOfYear = suffixesForEndings.find(number => number.endRegEx.test(year)).suffixes || types;
+  const typeIndex = types.indexOf(suffixType);
+
+  return `${year}-${suffixesOfYear[typeIndex]}`;
+}
+
+function removeHungarianAccents(str) {
+  return str
+    .replace(/á/g, 'a')
+    .replace(/é/g, 'e')
+    .replace(/í/g, 'i')
+    .replace(/[óöő]/g, 'o')
+    .replace(/[úüű]/g, 'u');
+}
+
+function turnToUrl(str) {
+  return removeHungarianAccents(str).replace(/\s/g, '-').toLowerCase();
+}
+
 function randomIntBetween(min, max) {
   return Math.floor((max - min + 1) * Math.random()) + min;
 }
@@ -106,8 +147,11 @@ function generateRandomReadingPlan(props = {}) {
 function generateRandomBookList(props = {}) {
   const year = props.year || randomItemFrom(years);
   const genre = props.genre || (randomItemFrom(genreOptions)).id;
-  const url = `https://moly.hu/listak/${year}${genre}`;
-  const pendingUrl = `https://moly.hu/polcok/besorolasra-var-${year}`;
+  const longNameOfGenre = genre === 'fantasy' ? 'fantasy' : 'science fiction';
+  const nameOfList = `${yearWithSuffix(year, 'es')} ${longNameOfGenre} megjelenések`;
+  const nameOfPendingShelf = `Besorolásra vár ${year}`;
+  const url = `https://moly.hu/listak/${turnToUrl(nameOfList)}`;
+  const pendingUrl = `https://moly.hu/polcok/${turnToUrl(nameOfPendingShelf)}`;
   const juryIds = [];
   const bookIds = [];
 
@@ -123,6 +167,9 @@ function generateRandomBookList(props = {}) {
 }
 
 module.exports = {
+  yearWithSuffix,
+  removeHungarianAccents,
+  turnToUrl,
   randomString,
   randomItemFrom,
   distinctItemsFrom,
