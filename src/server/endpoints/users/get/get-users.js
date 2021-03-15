@@ -12,9 +12,7 @@ module.exports = async (req, res) => {
       return res.sendStatus(403);
     }
 
-    const properties = req.body.userData || {};
-
-    const users = await getUsersWithProps(properties);
+    const users = await getUsersWithProps();
 
     return res.status(200).send(users);
 

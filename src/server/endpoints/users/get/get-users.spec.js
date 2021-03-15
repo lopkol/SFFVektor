@@ -47,24 +47,4 @@ describe('GET /users', () => {
       { id: userId2, ...userData2 }
     ]));
   });
-
-  it('returns the users with the given properties if the request body is not empty', async () => {
-    const userData = generateRandomUser({ role: 'admin' });
-    const id = await createUser(userData);
-    const userData1 = generateRandomUser({ role: 'user' });
-    const userData2 = generateRandomUser({ role: 'user' });
-    const userId1 = await createUser(userData1);
-    const userId2 = await createUser(userData2);
-
-    const response = await request(app.listen())
-      .get('/api/users')
-      .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
-      .send({ userData: { role: 'user' } })
-      .expect(200);
-
-    expect(response.body).toEqual(jasmine.arrayWithExactContents([
-      { id: userId1, ...userData1 }, 
-      { id: userId2, ...userData2 }
-    ]));
-  });
 });

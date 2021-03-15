@@ -8,6 +8,16 @@ async function getUsers() {
   return response.data;
 }
 
+async function createUser(userData) {
+  await api.post('/api/users/new', { userData });
+}
+
+async function updateUser(userId, userData) {
+  await api.patch(`/api/users/${userId}`, { userData });
+}
+
 module.exports = {
-  getUsers
+  getUsers,
+  createUser,
+  updateUser
 };
