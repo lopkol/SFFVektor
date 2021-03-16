@@ -5,10 +5,11 @@ const { omit } = require('lodash');
 const { 
   randomItemFrom,
   distinctItemsFrom, 
-  generateRandomUser, 
+  generateRandomUser,
+  generateRandomBookAlternative, 
   generateRandomBook, 
   generateRandomBookList, 
-  generateRandomAuthor 
+  generateRandomAuthor
 } = require('../test-helpers/generate-data');
 const firestore = require('../src/server/dao/firestore');
 const { allowedUsers } = require('../src/server/config');
@@ -60,6 +61,21 @@ async function addAuthors(count) {
   return authorIds;
 }
 
+async function addBookAlternativeToBatch(props = {}) {
+  const alternativeId = uuidv4();
+  const newAlternativeRef = await firestore.collection('bookAlternatives').doc(alternativeId);
+  await batch.set(newAlternativeRef, generateRandomBookAlternative(props));
+  return alternativeId;
+}
+
+async function addAlternatives(count) {
+  const alternativeIds = await Promise.all(Array(count).fill(null).map(() => {
+    const alternativeId = addBookAlternativeToBatch();
+    return alternativeId;
+  }));
+  return alternativeIds;
+}
+
 async function addBookToBatch(props = {}) {
   const bookId = uuidv4();
   const newBookRef = await firestore.collection('books').doc(bookId);
@@ -67,12 +83,16 @@ async function addBookToBatch(props = {}) {
   return bookId;
 }
 
-async function addBooksWithRandomAuthors(count, authorIds) {
+async function addBooksWithRandomAuthorsAndAlternatvies(count, authorIds, alternativeIds) {
+
   const bookIds = await Promise.all(
-    Array(count).fill(null).map(async () => {
+    Array(count).fill(null).map(async (element, index) => {
       const authorNumOfBook = randomItemFrom([1,1,1,1,1,1,2,3]);
       const authorIdsOfBook = distinctItemsFrom(authorIds, authorNumOfBook);
-      const bookId = await addBookToBatch({ authorIds: authorIdsOfBook });
+
+      const alternativeId = alternativeIds[index];
+
+      const bookId = await addBookToBatch({ authorIds: authorIdsOfBook, alternativeIds: [alternativeId] });
       return bookId;
     })
   );
@@ -103,7 +123,8 @@ async function addBookListToBatch(props = { year: 2000, genre: 'scifi', juryIds:
   const userIds = [...stupidUserIds[0], ...stupidUserIds[1], ...stupidUserIds.slice(2)];
   
   const authorIds = await addAuthors(60);
-  const bookIds = await addBooksWithRandomAuthors(80, authorIds);
+  const alternativeIds = await addAlternatives(80);
+  const bookIds = await addBooksWithRandomAuthorsAndAlternatvies(80, authorIds, alternativeIds);
 
   await Promise.all([
     addBookListToBatch({ 
