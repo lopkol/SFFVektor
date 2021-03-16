@@ -2,17 +2,17 @@
 
 const firestore = require('./firestore');
 
-async function createFilteredRef(collectionName, properties) {
-  const allStuffRef = await firestore.collection(collectionName);
+async function constructQuery(collectionName, properties) {
+  const allStuffRef = firestore.collection(collectionName);
 
   const props = Object.entries(properties);
 
-  const filteredStuffRef = await props.reduce(async (lastRef, [propKey, propValue]) => {
-    const newRef = (await lastRef).where(propKey, '==', propValue);
-    return newRef;
+  const query = await props.reduce(async (lastQuery, [propKey, propValue]) => {
+    const newQuery = (await lastQuery).where(propKey, '==', propValue);
+    return newQuery;
   }, allStuffRef);
 
-  return filteredStuffRef;
+  return query;
 }
 
 function mapToDataWithId(querySnapshot) {
@@ -28,6 +28,6 @@ function mapToDataWithId(querySnapshot) {
 }
 
 module.exports = {
-  createFilteredRef,
+  constructQuery,
   mapToDataWithId
 };

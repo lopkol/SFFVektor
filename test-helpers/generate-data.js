@@ -110,11 +110,21 @@ function generateRandomUser(props = {}) {
   };
 }
 
+function generateRandomBookAlternative(props = {}) {
+  const name = randomItemFrom(['magyar', 'eredeti', 'angol', 'német', 'francia']);
+  const url = randomString(15, 30);
+
+  return {
+    name,
+    urls: [{ sequenceId: 1, url }],
+    ...props
+  };
+}
+
 function generateRandomBook(props = {}) {
   const adjective = randomItemFrom(adjectives);
   const actor = randomItemFrom(actors);
   const action = randomItemFrom(actions);
-  const molyUrlPath = `a ${adjective} ${actor} ${action}`.replace(/\s/g, '-');
   const authorNum = randomItemFrom([1,1,1,1,1,1,2,3]);
   const authorIds = Array(authorNum).fill(null).map(() => uuidv4());
 
@@ -122,12 +132,11 @@ function generateRandomBook(props = {}) {
     id: uuidv4(),
     authorIds,
     title: `A ${adjective} ${actor} ${action}`,
-    molyUrl: `moly.hu/konyvek/${molyUrlPath}`,
     series: `${capitalize(adjective)} ${actor}`,
     seriesNum: randomIntBetween(1,6),
     isApproved: randomBoolean(),
     isPending: randomBoolean(),
-    alternatives: [],
+    alternativeIds: [],
     ...props
   };
 }
@@ -176,6 +185,7 @@ module.exports = {
   distinctItemsFrom,
   generateRandomAuthor,
   generateRandomUser,
+  generateRandomBookAlternative,
   generateRandomBook,
   generateRandomReadingPlan,
   generateRandomBookList

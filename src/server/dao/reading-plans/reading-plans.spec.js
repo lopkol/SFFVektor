@@ -86,7 +86,7 @@ describe('reading plans DAO', () => {
   });
 
   describe('getReadingPlansWithProps', () => {
-    it('returns an empty array if there is no readingPlan with the given properties', async () => {
+    it('returns an empty array if there is no reading plan with the given properties', async () => {
       const readingPlanData1 = generateRandomReadingPlan();
       const readingPlanData2 = generateRandomReadingPlan();
       await createReadingPlans([readingPlanData1, readingPlanData2]);
@@ -97,7 +97,7 @@ describe('reading plans DAO', () => {
       expect(readingPlansWithProps).toEqual([]);
     });
 
-    it('returns all readingPlans if called with empty arg', async () => {
+    it('returns all reading plans if called with empty arg', async () => {
       const readingPlanData1 = generateRandomReadingPlan();
       const readingPlanData2 = generateRandomReadingPlan();
       const [id1, id2] = await createReadingPlans([readingPlanData1, readingPlanData2]);
@@ -110,7 +110,7 @@ describe('reading plans DAO', () => {
       ]));
     });
 
-    it('returns the readingPlans with the given properties', async () => {
+    it('returns the reading plans with the given properties', async () => {
       const readingPlanData1 = generateRandomReadingPlan({ userId: '1' });
       const readingPlanData2 = generateRandomReadingPlan({ userId: '2' });
       const [id] = await createReadingPlans([readingPlanData1, readingPlanData2]);

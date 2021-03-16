@@ -2,7 +2,7 @@
 
 const { omit, pick } = require('lodash');
 const firestore = require('../firestore');
-const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
+const { constructQuery, mapToDataWithId } = require('../helper-functions');
 const { hashEmail, encrypt, decrypt } = require('../../adapters/crypto/crypto');
 
 const userProperties = ['email', 'name', 'role', 'molyUserName'];
@@ -97,7 +97,7 @@ async function getUsersWithProps(props = {}, { withDetails = true } = {}) {
     queryObject = userDataToQuery;
   }
 
-  const filteredUsersRef = await createFilteredRef('users', queryObject);
+  const filteredUsersRef = await constructQuery('users', queryObject);
 
   const userSnapshotsWithProps = await filteredUsersRef.get();
   const users = mapToDataWithId(userSnapshotsWithProps);

@@ -2,7 +2,7 @@
 
 const { pick } = require('lodash');
 const firestore = require('../firestore');
-const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
+const { constructQuery, mapToDataWithId } = require('../helper-functions');
 
 const bookListProperties = ['year', 'genre', 'url', 'pendingUrl', 'juryIds', 'bookIds'];
 const modifiableBookListProperties = ['url', 'pendingUrl', 'juryIds', 'bookIds'];
@@ -39,7 +39,7 @@ async function getBookListById(id) {
 
 async function getBookListsWithProps(bookListData = {}) {
   const bookListDataToQuery = pick(bookListData, bookListProperties);
-  const filteredBookListsRef = await createFilteredRef('bookLists', bookListDataToQuery);
+  const filteredBookListsRef = await constructQuery('bookLists', bookListDataToQuery);
 
   const bookListsWithProps = await filteredBookListsRef.get();
   const bookLists = mapToDataWithId(bookListsWithProps);

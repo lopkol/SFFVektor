@@ -2,7 +2,7 @@
 
 const { pick } = require('lodash');
 const firestore = require('../firestore');
-const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
+const { constructQuery, mapToDataWithId } = require('../helper-functions');
 
 const authorProperties = ['name', 'sortName', 'isApproved'];
 
@@ -35,7 +35,7 @@ async function getAuthorById(id) {
 
 async function getAuthorsWithProps(authorData = {}) {
   const authorDataToQuery = pick(authorData, authorProperties);
-  const filteredAuthorsRef = await createFilteredRef('authors', authorDataToQuery);
+  const filteredAuthorsRef = await constructQuery('authors', authorDataToQuery);
 
   const authorsWithProps = await filteredAuthorsRef.get();
   const authors = mapToDataWithId(authorsWithProps);

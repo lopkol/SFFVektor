@@ -2,7 +2,7 @@
 
 const { pick } = require('lodash');
 const firestore = require('../firestore');
-const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
+const { constructQuery, mapToDataWithId } = require('../helper-functions');
 
 const readingPlanProperties = ['userId', 'bookId', 'status']; //only status can be modified
 
@@ -60,7 +60,7 @@ async function updateReadingPlans(readingPlansData) {
     throw new Error('Unsuccesful data update');
   }
 
-  const newReadingPlansData = await Promise.all(readingPlanIds.map(async id => {
+  const updatedReadingPlansData = await Promise.all(readingPlanIds.map(async id => {
     if (id === null) {
       return null;
     } 
@@ -71,12 +71,12 @@ async function updateReadingPlans(readingPlansData) {
     };
   }));
 
-  return newReadingPlansData;
+  return updatedReadingPlansData;
 }
 
 async function getReadingPlansWithProps(readingPlanData) {
   const readingPlanDataToQuery = pick(readingPlanData, readingPlanProperties);
-  const filteredReadingPlansRef = await createFilteredRef('readingPlans', readingPlanDataToQuery);
+  const filteredReadingPlansRef = await constructQuery('readingPlans', readingPlanDataToQuery);
 
   const readingPlansWithProps = await filteredReadingPlansRef.get();
   const readingPlans = mapToDataWithId(readingPlansWithProps);
