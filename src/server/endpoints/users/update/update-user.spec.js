@@ -2,14 +2,18 @@
 
 const request = require('supertest');
 const app = require('../../../app');
-const { generateRandomUser } = require('../../../../../test-helpers/generate-data');
+const { generateRandomUser, generateRandomBookList } = require('../../../../../test-helpers/generate-data');
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser, getUsersByIds } = require('../../../dao/users/users');
+const { createBookList, getBookListsOfJuryMember } = require('../../../dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 
 describe('PATCH /users/:userId', () => {
   beforeEach(async () => {
-    await clearCollection('users');
+    await Promise.all([
+      clearCollection('users'),
+      clearCollection('bookLists')
+    ]);
   });
 
   it('responds with 401 if called without jwt', async () => {
@@ -68,6 +72,32 @@ describe('PATCH /users/:userId', () => {
 
     expect(updatedUserData).toEqual(expectedUserData);
     expect(updatedUserInDb).toEqual(expectedUserData);
+  });
+
+  it('also updates the book lists of the user', async () => {
+    const userData = generateRandomUser({ role: 'admin', email: 'a@gmail.com' });
+    const id = await createUser(userData);
+
+    const otherUserData = generateRandomUser({ role: 'user', email: 'b@gmail.com' });
+    const otherId = await createUser(otherUserData);
+
+    const bookListData1 = generateRandomBookList({ year: 2020, juryIds: [otherId] });
+    const bookListData2 = generateRandomBookList({ year: 2019 });
+
+    await createBookList(bookListData1);
+    const bookListId2 = await createBookList(bookListData2);
+
+    const dataToUpdate = { role: 'admin', molyUserName: 'cica', bookListIds: [bookListId2] };
+
+    await request(app.listen())
+      .patch(`/api/users/${otherId}`)
+      .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
+      .send({ userData: dataToUpdate })
+      .expect(200);
+
+    const bookLists = await getBookListsOfJuryMember(otherId);
+    const bookListIds = bookLists.map(bookList => bookList.id);
+    expect(bookListIds).toEqual(jasmine.arrayWithExactContents([bookListId2]));
   });
 
   it('updates user and responds with 200 and the updated user data if the user is updating his own account (not his role)', async () => {

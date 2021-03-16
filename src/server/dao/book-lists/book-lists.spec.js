@@ -5,7 +5,8 @@ const {
   updateBookList,
   getBookListById,
   getBookListsWithProps,
-  getBookListsOfJuryMember 
+  getBookListsOfJuryMember,
+  updateBookListsOfJuryMember
 } = require('./book-lists');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 const { generateRandomBookList } = require('../../../../test-helpers/generate-data');
@@ -163,6 +164,48 @@ describe('booklists DAO', () => {
       expect(bookLists).toEqual(jasmine.arrayWithExactContents([
         { id: id1, ...bookListData1 },
         { id: id3, ...bookListData3 }
+      ]));
+    });
+  });
+
+  describe('updateBookListsOfJuryMember', () => {
+    it('adds the jury member to the given book lists and removes from all others', async () => {
+      const bookListData1 = generateRandomBookList({ year: 1933, juryIds: ['3', '1', '4'] });
+      const bookListData2 = generateRandomBookList({ year: 1935, juryIds: ['7', '2', '1'] });
+      const bookListData3 = generateRandomBookList({ year: 1734, juryIds: ['3', '7'] });
+
+      const id1 = await createBookList(bookListData1);
+      const id2 = await createBookList(bookListData2);
+      const id3 = await createBookList(bookListData3);
+
+      await updateBookListsOfJuryMember('4', [id2, id3]);
+
+      const bookLists = await getBookListsWithProps();
+
+      expect(bookLists).toEqual(jasmine.arrayWithExactContents([
+        { id: id1, ...bookListData1, juryIds: jasmine.arrayWithExactContents(['3', '1']) },
+        { id: id2, ...bookListData2, juryIds: jasmine.arrayWithExactContents(['7', '2', '1', '4']) },
+        { id: id3, ...bookListData3, juryIds: jasmine.arrayWithExactContents(['3', '7', '4']) }
+      ]));
+    });
+
+    it('works even if user had no book lists earlier', async () => {
+      const bookListData1 = generateRandomBookList({ year: 1933, juryIds: ['3', '1'] });
+      const bookListData2 = generateRandomBookList({ year: 1935, juryIds: ['7', '2', '1'] });
+      const bookListData3 = generateRandomBookList({ year: 1734, juryIds: ['3', '7'] });
+
+      const id1 = await createBookList(bookListData1);
+      const id2 = await createBookList(bookListData2);
+      const id3 = await createBookList(bookListData3);
+
+      await updateBookListsOfJuryMember('4', [id2, id3]);
+
+      const bookLists = await getBookListsWithProps();
+
+      expect(bookLists).toEqual(jasmine.arrayWithExactContents([
+        { id: id1, ...bookListData1, juryIds: jasmine.arrayWithExactContents(['3', '1']) },
+        { id: id2, ...bookListData2, juryIds: jasmine.arrayWithExactContents(['7', '2', '1', '4']) },
+        { id: id3, ...bookListData3, juryIds: jasmine.arrayWithExactContents(['3', '7', '4']) }
       ]));
     });
   });

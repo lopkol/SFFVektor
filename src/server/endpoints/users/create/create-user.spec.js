@@ -2,14 +2,18 @@
 
 const request = require('supertest');
 const app = require('../../../app');
-const { generateRandomUser } = require('../../../../../test-helpers/generate-data');
+const { generateRandomUser, generateRandomBookList } = require('../../../../../test-helpers/generate-data');
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser, getUsersByIds } = require('../../../dao/users/users');
+const { createBookList, getBookListsOfJuryMember } = require('../../../dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 
 describe('POST /users/new', () => {
   beforeEach(async () => {
-    await clearCollection('users');
+    await Promise.all([
+      clearCollection('users'),
+      clearCollection('bookLists')
+    ]);
   });
 
   it('responds with 401 if called without jwt', async () => {
@@ -41,10 +45,33 @@ describe('POST /users/new', () => {
       .expect(201);
 
     const newId = response.body.id;
-
     const [savedUser] = await getUsersByIds([newId]);
-
     expect(savedUser).toEqual({ id: newId, ...newUserData });
+  });
+
+  it('creates a new user and also adds him to the given book lists', async () => {
+    const userData = generateRandomUser({ role: 'admin', email: 'a@gmail.com' });
+    const id = await createUser(userData);
+
+    const bookListData1 = generateRandomBookList({ year: 2020 });
+    const bookListData2 = generateRandomBookList({ year: 2019 });
+
+    const bookListId1 = await createBookList(bookListData1);
+    const bookListId2 = await createBookList(bookListData2);
+
+    const newUserData = generateRandomUser({ email: 'b@gmail.com', bookListIds: [bookListId1, bookListId2] });
+
+    const response = await request(app.listen())
+      .post('/api/users/new')
+      .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
+      .send({ userData: newUserData })
+      .expect(201);
+
+    const newId = response.body.id;
+
+    const bookLists = await getBookListsOfJuryMember(newId);
+    const bookListIds = bookLists.map(bookList => bookList.id);
+    expect(bookListIds).toEqual(jasmine.arrayWithExactContents([bookListId1, bookListId2]));
   });
 
   it('responds with 409 if a user with the given email address already exists', async () => {

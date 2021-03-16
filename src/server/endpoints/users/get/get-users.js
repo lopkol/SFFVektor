@@ -13,6 +13,7 @@ module.exports = async (req, res) => {
     }
 
     const users = await getUsersWithProps();
+    //TODO: add bookLists of users?
 
     return res.status(200).send(users);
 
