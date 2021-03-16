@@ -14,15 +14,14 @@ async function createAuthor(authorData) {
 
 async function updateAuthor(id, authorData) {
   const authorDataToSave = pick(authorData, authorProperties);
-  let author = await firestore.collection('authors').doc(id).get();
-  if (!author.exists) {
+  try {
+    const authorRef = firestore.collection('authors').doc(id);
+    await authorRef.update(authorDataToSave);
+  } catch (error) {
     return null;
   }
-  const authorRef = firestore.collection('authors').doc(id);
 
-  await authorRef.set(authorDataToSave, { merge: true });
-
-  author = await authorRef.get();
+  const author = await firestore.collection('authors').doc(id).get();
   return { id, ...(author.data()) };
 }
 

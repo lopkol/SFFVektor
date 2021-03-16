@@ -10,25 +10,22 @@ const modifiableBookListProperties = ['url', 'pendingUrl', 'juryIds', 'bookIds']
 async function createBookList(bookListData) {
   const bookListDataToSave = pick(bookListData, bookListProperties);
   const id = bookListData.year + bookListData.genre;
-  const bookList = await firestore.collection('bookLists').doc(id).get();
-  if (bookList.exists) {
+  try {
+    await firestore.collection('bookLists').doc(id).create(bookListDataToSave);
+  } catch (error) {
     return null;
   }
-  
-  await firestore.collection('bookLists').doc(id).set(bookListDataToSave);
   return id;
 }
 
 async function updateBookList(id, bookListData) {
-  let bookList = await firestore.collection('bookLists').doc(id).get();
-  if (!bookList.exists) {
+  try {
+    const bookListDataToSave = pick(bookListData, modifiableBookListProperties);
+    await firestore.collection('bookLists').doc(id).update(bookListDataToSave);
+  } catch (error) {
     return null;
   }
-  const bookListDataToSave = pick(bookListData, modifiableBookListProperties);
-  const bookListRef = firestore.collection('bookLists').doc(id);
-  await bookListRef.update(bookListDataToSave);
-
-  bookList = await bookListRef.get();
+  const bookList = await firestore.collection('bookLists').doc(id).get();
   return { id, ...(bookList.data()) };
 }
 
@@ -58,34 +55,38 @@ async function getBookListsOfJuryMember(userId) {
 }
 
 async function updateBookListsOfJuryMember(userId, newBookListIds) {
-  await firestore.runTransaction(async transaction => {
-    const bookListsOfJuryMemberRefs = firestore.collection('bookLists').where('juryIds', 'array-contains', userId);
-    const bookListsOfJuryMember = await transaction.get(bookListsOfJuryMemberRefs);
-    let bookListIdsOfJuryMember = [];
-    bookListsOfJuryMember.forEach(bookList => bookListIdsOfJuryMember.push(bookList.id));
+  try {
+    await firestore.runTransaction(async transaction => {
+      const bookListsOfJuryMemberRefs = firestore.collection('bookLists').where('juryIds', 'array-contains', userId);
+      const bookListsOfJuryMember = await transaction.get(bookListsOfJuryMemberRefs);
+      let bookListIdsOfJuryMember = [];
+      bookListsOfJuryMember.forEach(bookList => bookListIdsOfJuryMember.push(bookList.id));
 
-    const bookListIdsToRemove = bookListIdsOfJuryMember.filter(bookListId => !newBookListIds.includes(bookListId));
-    const bookListIdsToAdd = newBookListIds.filter(bookListId => !bookListIdsOfJuryMember.includes(bookListId));
+      const bookListIdsToRemove = bookListIdsOfJuryMember.filter(bookListId => !newBookListIds.includes(bookListId));
+      const bookListIdsToAdd = newBookListIds.filter(bookListId => !bookListIdsOfJuryMember.includes(bookListId));
 
-    const bookListsToAdd = await Promise.all(bookListIdsToAdd.map(async bookListId => {
-      const bookListRef = firestore.collection('bookLists').doc(bookListId);
-      const bookList = await transaction.get(bookListRef);
-      const juryIds = bookList.data().juryIds;
-      return { ref: bookListRef, newJuryIds: juryIds.concat(userId) };
-    }));
+      const bookListsToAdd = await Promise.all(bookListIdsToAdd.map(async bookListId => {
+        const bookListRef = firestore.collection('bookLists').doc(bookListId);
+        const bookList = await transaction.get(bookListRef);
+        const juryIds = bookList.data().juryIds;
+        return { ref: bookListRef, newJuryIds: juryIds.concat(userId) };
+      }));
 
-    const bookListsToRemove = await Promise.all(bookListIdsToRemove.map(async bookListId => {
-      const bookListRef = firestore.collection('bookLists').doc(bookListId);
-      const bookList = await transaction.get(bookListRef);
-      const juryIds = bookList.data().juryIds;
-      return { ref: bookListRef, newJuryIds: juryIds.filter(juryId => juryId !== userId) };
-    }));
-  
-    const bookListsToUpdate = bookListsToAdd.concat(bookListsToRemove);
-    await Promise.all(bookListsToUpdate.map(async bookListData => {
-      await transaction.update(bookListData.ref, { juryIds: bookListData.newJuryIds });
-    }));
-  });
+      const bookListsToRemove = await Promise.all(bookListIdsToRemove.map(async bookListId => {
+        const bookListRef = firestore.collection('bookLists').doc(bookListId);
+        const bookList = await transaction.get(bookListRef);
+        const juryIds = bookList.data().juryIds;
+        return { ref: bookListRef, newJuryIds: juryIds.filter(juryId => juryId !== userId) };
+      }));
+    
+      const bookListsToUpdate = bookListsToAdd.concat(bookListsToRemove);
+      bookListsToUpdate.map(bookListData => {
+        transaction.update(bookListData.ref, { juryIds: bookListData.newJuryIds });
+      });
+    });
+  } catch (error) {
+    throw new Error('Unsuccesful data update');
+  }
 }
 
 module.exports = {

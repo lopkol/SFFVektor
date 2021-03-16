@@ -1,6 +1,6 @@
 'use strict';
 
-const { createUser, updateUser, getUsersByIds, getUsersWithProps } = require('./users');
+const { createUser, updateUser, getUsersByIds, getUsersWithProps, deleteUser } = require('./users');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 const { generateRandomUser } = require('../../../../test-helpers/generate-data');
 
@@ -125,6 +125,25 @@ describe('users DAO', () => {
       const usersInDb = await getUsersWithProps();
 
       expect(usersInDb).toEqual(jasmine.arrayWithExactContents([{ ...userData, id, name, email }, { ...otherUserData, id: otherId }]));
+    });
+  });
+
+  describe('deleteUser', () => {
+    it('returns null if the user id does not exist', async () => {
+      const res = await deleteUser('notId');
+
+      expect(res).toBe(null);
+    });
+
+    it('deletes the user with the given id, returns the user data', async () => {
+      const userData = generateRandomUser();
+      const id = await createUser(userData);
+
+      const res = await deleteUser(id);
+      expect(res).toEqual({ id, ...userData });
+
+      const users = await getUsersByIds([id]);
+      expect(users).toEqual([null]);
     });
   });
 });

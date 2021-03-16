@@ -7,42 +7,58 @@ const { createFilteredRef, mapToDataWithId } = require('../helper-functions');
 const readingPlanProperties = ['userId', 'bookId', 'status']; //only status can be modified
 
 async function createReadingPlans(readingPlansData) {
-  const batch = firestore.batch();
+  try {
+    const readingPlanIds = readingPlansData.map(readingPlanData => readingPlanData.userId + readingPlanData.bookId);
+    await firestore.runTransaction(async transaction => { 
+      const readingPlans = await Promise.all(readingPlansData.map(async readingPlanData => {
 
-  const readingPlanIds = await Promise.all(readingPlansData.map(async readingPlanData => {
-    const id = readingPlanData.userId + readingPlanData.bookId;
-    const newReadingPlanRef = await firestore.collection('readingPlans').doc(id);
+        const id = readingPlanData.userId + readingPlanData.bookId;
+        const readingPlanRef = firestore.collection('readingPlans').doc(id);
+        const readingPlanSnapshot = await transaction.get(readingPlanRef); 
 
-    const readingPlan = await newReadingPlanRef.get();
-    if (readingPlan.exists) {
-      return null;
-    }
+        return { id, ref: readingPlanRef, snapshot: readingPlanSnapshot };
+      }));
 
-    await batch.set(newReadingPlanRef, readingPlanData);
-    return id;
-  }));
+      readingPlans.map((readingPlan, index) => {
+        if (readingPlan.snapshot.exists) {
+          readingPlanIds[index] = null;
+        } else {
+          transaction.set(readingPlan.ref, readingPlansData[index]);
+        }
+      });
+    });
 
-  await batch.commit();
-  return readingPlanIds;
+    return readingPlanIds;
+  } catch (error) {
+    throw new Error('Unsuccesful data update');
+  }
 }
 
 async function updateReadingPlans(readingPlansData) {
-  const batch = firestore.batch();
+  let readingPlanIds;
+  try {
+    readingPlanIds = readingPlansData.map(readingPlanData => readingPlanData.userId + readingPlanData.bookId);
+    await firestore.runTransaction(async transaction => { 
+      const readingPlans = await Promise.all(readingPlansData.map(async readingPlanData => {
 
-  const readingPlanIds = await Promise.all(readingPlansData.map(async readingPlanData => {
-    const id = readingPlanData.userId + readingPlanData.bookId;
-    const newReadingPlanRef = await firestore.collection('readingPlans').doc(id);
+        const id = readingPlanData.userId + readingPlanData.bookId;
+        const readingPlanRef = firestore.collection('readingPlans').doc(id);
+        const readingPlanSnapshot = await transaction.get(readingPlanRef); 
 
-    const readingPlan = await newReadingPlanRef.get();
-    if (!readingPlan.exists) {
-      return null;
-    }
+        return { id, ref: readingPlanRef, snapshot: readingPlanSnapshot };
+      }));
 
-    await batch.set(newReadingPlanRef, readingPlanData, { merge: true });
-    return id;
-  }));
-
-  await batch.commit();
+      readingPlans.map((readingPlan, index) => {
+        if (!readingPlan.snapshot.exists) {
+          readingPlanIds[index] = null;
+        } else {
+          transaction.update(readingPlan.ref, readingPlansData[index]);
+        }
+      });
+    });
+  } catch (error) {
+    throw new Error('Unsuccesful data update');
+  }
 
   const newReadingPlansData = await Promise.all(readingPlanIds.map(async id => {
     if (id === null) {

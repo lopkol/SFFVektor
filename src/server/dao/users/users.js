@@ -31,29 +31,31 @@ async function createUser(userData) {
 }
 
 async function updateUser(id, userData) {
-  let user = await firestore.collection('users').doc(id).get();
-  if (!user.exists) {
+  const userDataToSave = pick(userData, userProperties);
+  try {
+    const userRef = firestore.collection('users').doc(id);
+
+    if (!userDataToSave.email) {
+      await userRef.update(userDataToSave);
+    } else {
+      const [hashedEmail, encryptedDetails] = await Promise.all([
+        hashEmail(userDataToSave.email),
+        encrypt(userDataToSave.email)
+      ]);
+
+      const dataToSave = {
+        hashedEmail,
+        encryptedDetails,
+        ...omit(userDataToSave, 'email')
+      };
+
+      await userRef.update(dataToSave);
+    }
+  } catch (error) {
     return null;
   }
-  const userDataToSave = pick(userData, userProperties);
-  const userRef = firestore.collection('users').doc(id);
 
-  if (!userDataToSave.email) {
-    await userRef.set(userDataToSave, { merge: true });
-  } else {
-    const [hashedEmail, encryptedDetails] = await Promise.all([
-      hashEmail(userDataToSave.email),
-      encrypt(userDataToSave.email)
-    ]);
-    const dataToSave = {
-      hashedEmail,
-      encryptedDetails,
-      ...omit(userDataToSave, 'email')
-    };
-    await userRef.set(dataToSave, { merge: true });
-  }
-
-  user = await userRef.get();
+  const user = await firestore.collection('users').doc(id).get();
   const encryptedData = user.data().encryptedDetails;
   const updatedUserData = omit(user.data(), ['hashedEmail', 'encryptedDetails']);
 
@@ -113,9 +115,25 @@ async function getUsersWithProps(props = {}, { withDetails = true } = {}) {
   return dataToReturn;
 }
 
+async function deleteUser(id) {
+  const userRef = firestore.collection('users').doc(id);
+  const user = await userRef.get();
+  if (!user.exists) {
+    return null;
+  }
+  await userRef.delete();
+
+  const encryptedData = user.data().encryptedDetails;
+  const userData = omit(user.data(), ['hashedEmail', 'encryptedDetails']);
+  userData.email = await decrypt(encryptedData);
+
+  return { id, ...userData };
+}
+
 module.exports = {
   createUser,
   updateUser,
   getUsersByIds,
-  getUsersWithProps
+  getUsersWithProps,
+  deleteUser
 };
