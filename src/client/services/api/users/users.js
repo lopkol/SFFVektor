@@ -2,13 +2,19 @@
 
 const { api } = require('../api');
 
+//TODO: errorhandling
+
 async function getUsers() {
-  //TODO: errorhandling..
   const response = await api.get('/api/users');
-  return response.data;
+  return response.data.userList;
 }
 
-async function createUser(userData) {
+async function getUser(userId) {
+  const response = await api.get(`/api/users/${userId}`);
+  return response.data.userData;
+}
+
+async function saveUser(userData) {
   await api.post('/api/users/new', { userData });
 }
 
@@ -18,6 +24,7 @@ async function updateUser(userId, userData) {
 
 module.exports = {
   getUsers,
-  createUser,
+  getUser,
+  saveUser,
   updateUser
 };

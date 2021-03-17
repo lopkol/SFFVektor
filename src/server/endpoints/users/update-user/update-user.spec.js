@@ -100,7 +100,7 @@ describe('PATCH /users/:userId', () => {
     expect(bookListIds).toEqual(jasmine.arrayWithExactContents([bookListId2]));
   });
 
-  it('updates user and responds with 200 and the updated user data if the user is updating his own account (not his role)', async () => {
+  it('updates user and responds with 200 and the updated data if the user is updating his own account (not his role)', async () => {
     const userData = generateRandomUser({ role: 'user' });
     const id = await createUser(userData);
 

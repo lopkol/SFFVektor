@@ -41,7 +41,7 @@ describe('GET /users', () => {
       .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
       .expect(200);
 
-    expect(response.body).toEqual(jasmine.arrayWithExactContents([
+    expect(response.body.userList).toEqual(jasmine.arrayWithExactContents([
       { id, ...userData },
       { id: userId1, ...userData1 }, 
       { id: userId2, ...userData2 }

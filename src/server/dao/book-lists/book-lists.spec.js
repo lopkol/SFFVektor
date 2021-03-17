@@ -151,9 +151,9 @@ describe('booklists DAO', () => {
 
   describe('getBookListsOfJuryMember', () => {
     it('returns the book lists where the given user is a jury member', async () => {
-      const bookListData1 = generateRandomBookList({ year: 1933, juryIds: ['3', '4', '1'] });
+      const bookListData1 = generateRandomBookList({ year: 1933, juryIds: ['4', '1', '3'] });
       const bookListData2 = generateRandomBookList({ year: 1935, juryIds: ['4', '7', '2', '1'] });
-      const bookListData3 = generateRandomBookList({ year: 1734, juryIds: ['3', '7'] });
+      const bookListData3 = generateRandomBookList({ year: 1734, juryIds: ['7', '3'] });
 
       const id1 = await createBookList(bookListData1);
       await createBookList(bookListData2);
