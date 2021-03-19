@@ -1,3 +1,6 @@
 .git
 node_modules
 environment
+Dockerfile
+Dockerfile.dev
+.dockerignore
