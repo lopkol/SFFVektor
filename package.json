@@ -6,6 +6,8 @@
   "scripts": {
     "build-dev": "webpack serve --config build-config/webpack.dev.config.js",
     "build-prod": "webpack --config build-config/webpack.prod.config.js",
+    "deploy-client": "npm run build-prod && node scripts/deploy-client.js",
+    "deploy-server-container": "gcloud builds submit --tag gcr.io/sffvektor/staging",
     "docker": "docker-compose build && docker-compose up -d",
     "lint": "eslint \"src/**/*.js\" \"src/**/*.jsx\"",
     "logs": "docker exec -it sffvektor_server tail -f server.log",
