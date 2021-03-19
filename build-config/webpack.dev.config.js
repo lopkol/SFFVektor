@@ -1,12 +1,13 @@
 'use strict';
 
-const path = require('path');
+const { merge } = require('webpack-merge');
 const WebpackShellPlugin = require('webpack-shell-plugin-next');
+const commonConfig = require('./webpack.common.config');
 
 const isWindows = process.platform.startsWith('win');
 const npmCommand = isWindows ? 'npm.cmd' : 'npm';
 
-module.exports = {
+module.exports = merge(commonConfig, {
   mode: 'development',
   plugins: [
     new WebpackShellPlugin({
@@ -16,33 +17,6 @@ module.exports = {
       }
     }),
   ],
-  entry: {
-    app: [path.resolve(__dirname, '../src/client/index.jsx'), path.resolve(__dirname, '../src/client/style.scss')]
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader'],
-      },
-      {
-        test: /\.(css|scss)$/i,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
-      }
-    ],
-  },
-  resolve: {
-    extensions: ['*', '.js', '.jsx'],
-  },
-  output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, '../dist')
-  },
   devServer: {
     stats: 'minimal',
     port: 7878,
@@ -54,4 +28,4 @@ module.exports = {
       'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
     }
   },
-};
+});
