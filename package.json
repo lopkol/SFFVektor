@@ -11,6 +11,7 @@
     "open": "node scripts/open.js",
     "seed": "docker exec -it sffvektor_server node scripts/seed-data.js",
     "start": "npm run docker && onchange -i -k \"build-config/*\" -- npm run build-dev",
+    "start-staging": "node scripts/seed-data.js && node src/server/index.js",
     "start-server": "node scripts/seed-data.js && npm run watch-server > 'server.log' 2>&1",
     "watch-server": "onchange -i -k 'src/server/**/*' 'environment/*.env' -- node src/server/index.js",
     "stop": "docker-compose down",
@@ -47,7 +48,6 @@
     "sass-loader": "11.0.1",
     "style-loader": "2.0.0",
     "supertest": "6.1.1",
-    "uuid": "8.3.2",
     "webpack": "5.17.0",
     "webpack-cli": "4.4.0",
     "webpack-dev-server": "3.11.2",
@@ -73,6 +73,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-router-dom": "5.2.0",
-    "serve-favicon": "2.5.0"
+    "serve-favicon": "2.5.0",
+    "uuid": "8.3.2"
   }
 }
