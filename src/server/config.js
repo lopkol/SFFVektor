@@ -17,6 +17,10 @@ module.exports = {
     credentials: JSON.parse(process.env.GCP_CREDENTIALS || '{}'),
     projectId: process.env.FIRESTORE_PROJECT_ID
   },
+  cloudStorage: {
+    credentials: JSON.parse(process.env.GCP_CREDENTIALS || '{}'),
+    bucketName: process.env.GCS_BUCKET_NAME
+  },
   moly: {
     baseUrl: 'https://moly.hu',
     sffVektorUsername: process.env.MOLY_SFFVEKTOR_USERNAME,
