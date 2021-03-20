@@ -9,7 +9,7 @@ const columns = [
   { field: 'id', headerName: 'ID', width: 150 },
   { field: 'role', headerName: 'Jogosultság', width: 100 },
   { field: 'name', headerName: 'Név', width: 250 },
-  { field: 'molyUserName', headerName: 'Molyos felhasználónév', width: 250 },
+  { field: 'molyUserName', headerName: 'Moly név', width: 250 },
   { field: 'email', headerName: 'E-mail cím', width: 250 }
 ];
 
