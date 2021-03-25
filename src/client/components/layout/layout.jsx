@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function Layout() {
-  const [isSidebarOpen, setSidebarOpen] = React.useState(false);
+  const [isSidebarOpen, setSidebarOpen] = React.useState(true);
   const classes = useStyles();
 
   return (

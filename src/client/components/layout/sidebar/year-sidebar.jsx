@@ -1,11 +1,14 @@
 'use strict';
 
 const React = require('react');
-const classNames = require('classnames');
-const { makeStyles } = require('@material-ui/core');
-const { Link } = require('react-router-dom');
+const { Box, Button, Collapse, List, makeStyles } = require('@material-ui/core');
+const { ChevronRight: ChevronRightIcon, Settings: SettingsIcon, Today: CalendarIcon } = require('@material-ui/icons');
+const { GiSpikedDragonHead: DragonIcon } = require('react-icons/gi');
+const { FaRobot: RobotIcon } = require('react-icons/fa');
 
-const useStyles = (drawerWidth) => makeStyles((theme) => ({
+const NavItem = require('./nav-item');
+
+const useStyles = makeStyles((theme) => ({
   yearSidebar: {
     display: 'flex',
     'flex-direction': 'column'
@@ -18,24 +21,96 @@ const useStyles = (drawerWidth) => makeStyles((theme) => ({
       background: '#ffb1d8',
       borderRadius: '5px'
     }
+  },
+  icon: {
+    marginRight: theme.spacing(1)
+  },
+  button: {
+    fontSize: 'larger',
+    fontWeight: theme.typography.fontWeightMedium,
+    justifyContent: 'flex-start',
+    padding: '10px 8px',
+    textTransform: 'none',
+    width: '100%'
+  },
+  title: {
+    marginRight: 'auto'
+  },
+  indent: {
+    paddingLeft: theme.spacing(2)
   }
-}))();
+}));
 
 function YearSidebar({ year, drawerWidth }) {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setOpen] = React.useState(false);
   const classes = useStyles(drawerWidth);
 
-  const handleClick = () => {
-    setIsOpen(!isOpen);
-  };
+  const navItems = [
+    {
+      title: 'Sci-fi',
+      href: `${year}/scifi`,
+      icon: RobotIcon
+    },
+    {
+      title: 'Fantasy',
+      href: `${year}/fantasy`,
+      icon: DragonIcon
+    },
+    {
+      title: 'Admin',
+      href: `${year}/admin`,
+      icon: SettingsIcon
+    }
+  ];
 
   return (
-    <div className={ classes.yearSidebar }>
-      <p className={ classNames('larger-font', classes.sidebarButton) } onClick={ handleClick }>{ year }</p>
-      { isOpen && (<Link to={`${year}/scifi/list`} className={ classNames('indent', classes.sidebarButton) }>Sci-fi</Link>) }
-      { isOpen && (<Link to={`${year}/fantasy/list`} className={ classNames('indent', classes.sidebarButton) }>Fantasy</Link>) }
-      { isOpen && (<Link to={`${year}/admin`} className={ classNames('indent', classes.sidebarButton) }>Admin</Link>) }
-    </div>
+    <Box 
+      display="flex"
+      flexDirection="column"
+    >
+      <Box width="100%">
+        <Button 
+          className={ classes.button }
+          onClick={ () => setOpen(!isOpen) }
+        >
+          <CalendarIcon
+            className={classes.icon}
+            style={{
+              fontSize: '24'
+            }}
+          />
+          <span className={classes.title}>
+            {year}
+          </span>
+          <ChevronRightIcon 
+            style={{
+              padding: 0,
+              transform: isOpen
+                ? 'rotate(90deg)'
+                : 'rotate(0deg)',
+              transitionDuration: '0.3s',
+              transitionProperty: 'transform',
+            }}
+          />
+        </Button>
+      </Box>
+      <Collapse
+        in={isOpen}
+        timeout="auto"
+      >
+        <List disablePadding>
+          {navItems.map((item) => (
+            <NavItem 
+              className={ classes.indent }
+              href={item.href}
+              key={item.title}
+              title={item.title}
+              icon={item.icon}
+            />
+          ))}
+        </List>
+      </Collapse>
+    </Box>
   );
 }
 

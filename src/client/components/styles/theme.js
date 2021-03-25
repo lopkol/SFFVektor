@@ -9,16 +9,18 @@ const theme = createMuiTheme({
       default: colors.common.white,
       paper: colors.common.white
     },
-    primary: {
-      main: colors.indigo[500]
-    },
-    secondary: {
-      main: colors.indigo[500]
-    },
+    primary: colors.blue,
+    secondary: colors.purple,
     text: {
       primary: colors.blueGrey[900],
       secondary: colors.blueGrey[600]
     }
+  },
+  typography: {
+    fontFamily: [
+      'Montserrat',
+      'sans-serif',
+    ].join(','),
   }
 });
 

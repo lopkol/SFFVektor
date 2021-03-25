@@ -2,7 +2,7 @@
 
 const { createStyles, makeStyles } = require('@material-ui/core');
 
-const useStyles = makeStyles(() => createStyles({
+const useStyles = makeStyles((theme) => createStyles({
   '@global': {
     '*': {
       boxSizing: 'border-box',
@@ -19,8 +19,8 @@ const useStyles = makeStyles(() => createStyles({
       backgroundColor: '#f4f6f8',
       height: '100%',
       width: '100%',
-      'font-family': 'Alegreya',
-      color: '#04003d'
+      'font-family': 'Montserrat',
+      color: theme.palette.text.primary
     },
     main: {
       padding: '10px',
@@ -29,29 +29,19 @@ const useStyles = makeStyles(() => createStyles({
     },
     'h1, h2, h3, h4, h5': {
       margin: '5px',
-      'font-family': 'Lora'
     },
     a: {
       textDecoration: 'none',
       '&:link, &:visited, &:hover': {
-        color: '#04003d'
+        color: theme.palette.text.primary
       },
       '&:active': {
-        color: '#FF007F'
+        color: theme.palette.primary.main
       }
     },
     '#app': {
       height: '100%',
       width: '100%'
-    },
-    '.larger-font': {
-      'font-size': 'larger'
-    },
-    '.indent': {
-      'margin-left': '10px'
-    },
-    '.center': {
-      'text-align': 'center'
     }
   }
 }));

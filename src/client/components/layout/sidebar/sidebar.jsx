@@ -1,12 +1,10 @@
 'use strict';
 
 const React = require('react');
-const classNames = require('classnames');
-
-const { Link } = require('react-router-dom');
 const { Drawer, Divider, IconButton, makeStyles } = require('@material-ui/core');
-const { ChevronLeft: ChevronLeftIcon } = require('@material-ui/icons');
+const { ChevronLeft: ChevronLeftIcon, Settings: SettingsIcon } = require('@material-ui/icons');
 const YearSidebar = require('./year-sidebar');
+const NavItem = require('./nav-item');
 
 const useStyles = (drawerWidth) => makeStyles((theme) => ({
   drawer: {
@@ -14,9 +12,7 @@ const useStyles = (drawerWidth) => makeStyles((theme) => ({
     flexShrink: 0,
   },
   drawerPaper: {
-    width: drawerWidth,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2)
+    width: drawerWidth
   },
   drawerHeader: {
     display: 'flex',
@@ -24,15 +20,6 @@ const useStyles = (drawerWidth) => makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
-  },
-  sidebarButton: {
-    padding: '5px',
-    cursor: 'pointer',
-    
-    '&:hover': {
-      background: '#ffb1d8',
-      borderRadius: '5px'
-    }
   }
 }))();
 
@@ -57,7 +44,12 @@ function Sidebar({ isOpen, onClose, drawerWidth }) {
         </IconButton>
       </div>
       <Divider />
-      <Link to="/admin" className={ classNames('larger-font', classes.sidebarButton) }>Admin</Link>
+      <NavItem 
+        fontsize='larger'
+        href={'admin'}
+        title="Admin"
+        icon={SettingsIcon}
+      />
       { years.map(year => <YearSidebar key={ year } year={ year } drawerWidth={ drawerWidth } />) }
     </Drawer>
   );

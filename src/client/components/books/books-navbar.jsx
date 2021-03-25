@@ -7,7 +7,7 @@ function BooksNavbar({ genre, year }) {
 
   return (
     <div>
-      <h2 className="center">{ year } { genre } jelöltlista</h2>
+      <h2 style={{ textAlign: 'center' }}>{ year } { genre } jelöltlista</h2>
       <nav id="top-navbar">
         <NavLink 
           to="list"
