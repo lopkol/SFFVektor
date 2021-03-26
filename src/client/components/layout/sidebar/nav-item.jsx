@@ -32,11 +32,17 @@ const useStyles = makeStyles((theme) => ({
     '& $icon': {
       color: theme.palette.primary.dark
     }
+  },
+  indented: {
+    paddingLeft: theme.spacing(2)
+  },
+  largerFont: {
+    fontSize: 'larger'
   }
 }));
 
 const NavItem = ({
-  fontsize,
+  indented,
   className,
   href,
   icon: Icon,
@@ -52,11 +58,8 @@ const NavItem = ({
       {...rest}
     >
       <Button
-        style={fontsize && {
-          fontSize: fontsize
-        }}
         activeClassName={classes.active}
-        className={classes.button}
+        className={ classNames(classes.button, indented ? classes.indented : classes.largerFont) }
         component={NavLink}
         to={href}
       >

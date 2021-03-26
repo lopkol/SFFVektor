@@ -9,19 +9,6 @@ const { FaRobot: RobotIcon } = require('react-icons/fa');
 const NavItem = require('./nav-item');
 
 const useStyles = makeStyles((theme) => ({
-  yearSidebar: {
-    display: 'flex',
-    'flex-direction': 'column'
-  },
-  sidebarButton: {
-    padding: '5px',
-    cursor: 'pointer',
-    
-    '&:hover': {
-      background: '#ffb1d8',
-      borderRadius: '5px'
-    }
-  },
   icon: {
     marginRight: theme.spacing(1)
   },
@@ -35,9 +22,6 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginRight: 'auto'
-  },
-  indent: {
-    paddingLeft: theme.spacing(2)
   }
 }));
 
@@ -101,7 +85,7 @@ function YearSidebar({ year, drawerWidth }) {
         <List disablePadding>
           {navItems.map((item) => (
             <NavItem 
-              className={ classes.indent }
+              indented
               href={item.href}
               key={item.title}
               title={item.title}

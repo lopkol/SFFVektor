@@ -2,9 +2,11 @@
 
 const React = require('react');
 const classNames = require('classnames');
+const { Link } = require('react-router-dom');
 const { AppBar, Toolbar, IconButton, Box, makeStyles } = require('@material-ui/core');
 
-const { Menu: MenuIcon, Person: PersonIcon } = require('@material-ui/icons');
+const { Menu: MenuIcon } = require('@material-ui/icons');
+const SffVektorIcon = require('../styles/sff-vektor-icon');
 
 const useStyles = (drawerWidth) => makeStyles((theme) => ({
   root: {
@@ -49,11 +51,11 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
           color="inherit"
           className={ classNames(classes.menuButton, isSidebarOpen && classes.hide ) }
         >
-          <MenuIcon />
+          <MenuIcon size={30}/>
         </IconButton> 
         <Box flexGrow={1} /> 
-        <IconButton onClick={() => { return; }} color="inherit">
-          <PersonIcon />
+        <IconButton color="inherit" component={Link} to={'/'}>
+          <SffVektorIcon color="#23bedb" size={30}/>
         </IconButton>
       </Toolbar>
     </AppBar>
