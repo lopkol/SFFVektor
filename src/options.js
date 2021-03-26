@@ -2,7 +2,8 @@
 
 const roleOptions = [
   { id: 'admin', name: 'admin' },
-  { id: 'user', name: 'zsűri' }
+  { id: 'user', name: 'zsűri' },
+  { id: 'inactive', name: 'inaktív' }
 ];
 
 const genreOptions = [

@@ -2,11 +2,27 @@
 
 const React = require('react');
 const classNames = require('classnames');
-const { Link } = require('react-router-dom');
+const { Routes, Route, Link } = require('react-router-dom');
 const { AppBar, Toolbar, IconButton, Box, makeStyles } = require('@material-ui/core');
+const SubpageToolbar = require('./subpage-toolbar');
 
 const { Menu: MenuIcon } = require('@material-ui/icons');
-const SffVektorIcon = require('../styles/sff-vektor-icon');
+const SffVektorIcon = require('../../styles/sff-vektor-icon');
+
+const subpages = [
+  {
+    path: 'admin/*',
+    type: 'admin'
+  },
+  {
+    path: ':year/admin/*',
+    type: 'yearAdmin'
+  },
+  {
+    path: ':year/:genre/*',
+    type: 'bookList'
+  }
+];
 
 const useStyles = (drawerWidth) => makeStyles((theme) => ({
   root: {
@@ -53,7 +69,12 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
         >
           <MenuIcon size={30}/>
         </IconButton> 
-        <Box flexGrow={1} /> 
+        <Routes>
+          <Route path="/" element={ <Box flexGrow={1}/> } />
+          { subpages.map(subpage => (
+            <Route key={ subpage.type } path={ subpage.path } element={ <SubpageToolbar type={ subpage.type } /> } />
+          )) }
+        </Routes>
         <IconButton color="inherit" component={Link} to={'/'}>
           <SffVektorIcon color="#23bedb" size={30}/>
         </IconButton>

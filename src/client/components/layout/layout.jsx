@@ -6,7 +6,7 @@ const classNames = require('classnames');
 const { Routes, Route } = require('react-router-dom');
 const { makeStyles } = require('@material-ui/core');
 
-const Topbar = require('./topbar');
+const Topbar = require('./topbar/topbar');
 const Sidebar = require('./sidebar/sidebar');
 const Admin = require('../admin/admin');
 const YearAdmin = require('../admin/year-admin');
@@ -68,9 +68,9 @@ function Layout() {
       }) }>
         <main className={ classes.content }>
           <Routes>
-            <Route path="/admin" element={ <Admin /> }/>
-            <Route path="/:year/admin" element={ <YearAdmin /> }/>
-            <Route path="/:year/:genre/*" element={ <Books /> }/>
+            <Route path="admin/*" element={ <Admin /> }/>
+            <Route path=":year/admin/*" element={ <YearAdmin /> }/>
+            <Route path=":year/:genre/*" element={ <Books /> }/>
           </Routes>
         </main>
       </div>

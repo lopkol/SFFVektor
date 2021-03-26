@@ -3,8 +3,8 @@
 const React = require('react');
 const { Box, Button, Collapse, List, makeStyles } = require('@material-ui/core');
 const { ChevronRight: ChevronRightIcon, Settings: SettingsIcon, Today: CalendarIcon } = require('@material-ui/icons');
-const { GiSpikedDragonHead: DragonIcon } = require('react-icons/gi');
-const { FaRobot: RobotIcon } = require('react-icons/fa');
+//const { GiSpikedDragonHead: DragonIcon } = require('react-icons/gi');
+const { FaRobot: RobotIcon, FaDragon: DragonIcon } = require('react-icons/fa');
 
 const NavItem = require('./nav-item');
 

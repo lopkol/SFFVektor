@@ -27,9 +27,6 @@ const useStyles = makeStyles((theme) => createStyles({
       height: '100%',
       width: '100%'
     },
-    'h1, h2, h3, h4, h5': {
-      margin: '5px',
-    },
     a: {
       textDecoration: 'none',
       '&:link, &:visited, &:hover': {
