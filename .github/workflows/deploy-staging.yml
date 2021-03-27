@@ -24,21 +24,21 @@ jobs:
         env:
           FIRESTORE_PROJECT_ID: test
           FIRESTORE_EMULATOR_HOST: localhost:8081
-          OAUTH_CLIENT_ID: ${{ secrets.OauthClientId }}
-          OAUTH_CLIENT_SECRET: ${{ secrets.OauthClientSecret }}
+          OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+          OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
       - id: deploy-client
         run: npm run deploy-client
         env:
           GCS_BUCKET_NAME: sffvektor-staging-resources
-          GCP_CREDENTIALS: ${{ secrets.gcpCredentials }}
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
       - id: seed-staging-db
         run: node scripts/seed-data.js
         env:
           FIRESTORE_PROJECT_ID: sffvektor
-          GCP_CREDENTIALS: ${{ secrets.gcpCredentials }}
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
       - id: deploy-service
         uses: google-github-actions/deploy-cloudrun@main
         with:
           image: gcr.io/sffvektor/staging
           service: sffvektor-staging
-          credentials: ${{ secrets.gcpCredentials }}
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
