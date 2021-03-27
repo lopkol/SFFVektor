@@ -1,0 +1,44 @@
+name: deploy-staging
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - id: checkout-code
+        uses: actions/checkout@v2
+      - id: setup-firestore
+        uses: mickfeech/firestore-emulator-action@0.0.12
+        with:
+          fireStoreProjectID: test
+      - id: setup-node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.15.4'
+      - id: install-dependencies
+        run: npm ci
+      - id: run-tests
+        run: npm t
+        env:
+          FIRESTORE_PROJECT_ID: test
+          FIRESTORE_EMULATOR_HOST: localhost:8081
+          OAUTH_CLIENT_ID: ${{ secrets.OauthClientId }}
+          OAUTH_CLIENT_SECRET: ${{ secrets.OauthClientSecret }}
+      - id: deploy-client
+        run: npm run deploy-client
+        env:
+          GCS_BUCKET_NAME: sffvektor-staging-resources
+          GCP_CREDENTIALS: ${{ secrets.gcpCredentials }}
+      - id: seed-staging-db
+        run: node scripts/seed-data.js
+        env:
+          FIRESTORE_PROJECT_ID: sffvektor
+          GCP_CREDENTIALS: ${{ secrets.gcpCredentials }}
+      - id: deploy-service
+        uses: google-github-actions/deploy-cloudrun@main
+        with:
+          image: gcr.io/sffvektor/staging
+          service: sffvektor-staging
+          credentials: ${{ secrets.gcpCredentials }}
