@@ -10,8 +10,6 @@ describe('GET /', () => {
     await request(app.listen())
       .get('/')
       .expect(302);
-
-    expect(1 + 1).toEqual(6);
   });
 
   it('should redirect to SSO page when called with invalid JWT', async () => {
