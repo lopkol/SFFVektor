@@ -42,3 +42,4 @@ jobs:
           image: gcr.io/sffvektor/staging
           service: sffvektor-staging
           credentials: ${{ secrets.GCP_CREDENTIALS }}
+          region: europe-west3
