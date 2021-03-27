@@ -10,5 +10,6 @@ const { cloudStorage } = require('../src/server/config');
     console.log(`uploaded app.js to bucket ${cloudStorage.bucketName}`);
   } catch (error) {
     console.log(`failed to upload app.js to bucket ${cloudStorage.bucketName}`, error);
+    process.exit(1);
   }
 })();

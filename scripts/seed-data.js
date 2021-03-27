@@ -2,13 +2,13 @@
 
 const { v4: uuidv4 } = require('uuid');
 const { omit } = require('lodash');
-const { 
+const {
   randomItemFrom,
-  distinctItemsFrom, 
+  distinctItemsFrom,
   generateRandomUser,
-  generateRandomBookAlternative, 
-  generateRandomBook, 
-  generateRandomBookList, 
+  generateRandomBookAlternative,
+  generateRandomBook,
+  generateRandomBookList,
   generateRandomAuthor
 } = require('../test-helpers/generate-data');
 const firestore = require('../src/server/dao/firestore');
@@ -83,7 +83,7 @@ async function addBookToBatch(props = {}) {
   return bookId;
 }
 
-async function addBooksWithRandomAuthorsAndAlternatvies(count, authorIds, alternativeIds) {
+async function addBooksWithRandomAuthorsAndAlternatives(count, authorIds, alternativeIds) {
 
   const bookIds = await Promise.all(
     Array(count).fill(null).map(async (element, index) => {
@@ -105,8 +105,8 @@ async function addBookListToBatch(props = { year: 2000, genre: 'scifi', juryIds:
   await batch.set(newBookListRef, generateRandomBookList(props));
 }
 
-(async () => {
-  await Promise.all([ 
+async function seedDb() {
+  await Promise.all([
     clearCollection('users'),
     clearCollection('books'),
     clearCollection('bookLists'),
@@ -121,37 +121,47 @@ async function addBookListToBatch(props = { year: 2000, genre: 'scifi', juryIds:
     )
   ]);
   const userIds = [...stupidUserIds[0], ...stupidUserIds[1], ...stupidUserIds.slice(2)];
-  
+
   const authorIds = await addAuthors(60);
   const alternativeIds = await addAlternatives(80);
-  const bookIds = await addBooksWithRandomAuthorsAndAlternatvies(80, authorIds, alternativeIds);
+  const bookIds = await addBooksWithRandomAuthorsAndAlternatives(80, authorIds, alternativeIds);
 
   await Promise.all([
-    addBookListToBatch({ 
-      year: 2020, 
-      genre: 'scifi', 
+    addBookListToBatch({
+      year: 2020,
+      genre: 'scifi',
       bookIds: bookIds.slice(0, 19),
-      juryIds: distinctItemsFrom(userIds, 9) 
+      juryIds: distinctItemsFrom(userIds, 9)
     }),
-    addBookListToBatch({ 
-      year: 2020, 
-      genre: 'fantasy', 
+    addBookListToBatch({
+      year: 2020,
+      genre: 'fantasy',
       bookIds: bookIds.slice(19, 40),
-      juryIds: distinctItemsFrom(userIds, 10) 
+      juryIds: distinctItemsFrom(userIds, 10)
     }),
-    addBookListToBatch({ 
-      year: 2019, 
-      genre: 'scifi', 
+    addBookListToBatch({
+      year: 2019,
+      genre: 'scifi',
       bookIds: bookIds.slice(40, 58),
-      juryIds: distinctItemsFrom(userIds, 10) 
+      juryIds: distinctItemsFrom(userIds, 10)
     }),
-    addBookListToBatch({ 
-      year: 2019, 
-      genre: 'fantasy', 
+    addBookListToBatch({
+      year: 2019,
+      genre: 'fantasy',
       bookIds: bookIds.slice(58),
-      juryIds: distinctItemsFrom(userIds, 11) 
+      juryIds: distinctItemsFrom(userIds, 11)
     })
   ]);
 
   await batch.commit();
+  console.log('seeding finished successfully');
+}
+
+(async () => {
+  try {
+    await seedDb();
+  } catch (error) {
+    console.log('seeding failed', error);
+    process.exit(1);
+  }
 })();
