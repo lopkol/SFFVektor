@@ -31,11 +31,11 @@ jobs:
         env:
           GCS_BUCKET_NAME: sffvektor-staging-resources
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-      - id: seed-staging-db
-        run: node scripts/seed-data.js
-        env:
-          FIRESTORE_PROJECT_ID: sffvektor
-          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+#     - id: seed-staging-db
+#       run: node scripts/seed-data.js
+#       env:
+#         FIRESTORE_PROJECT_ID: sffvektor
+#         GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
       - id: deploy-service
         uses: google-github-actions/deploy-cloudrun@main
         with:
