@@ -32,17 +32,17 @@ function YearSidebar({ year, drawerWidth }) {
   const navItems = [
     {
       title: 'Sci-fi',
-      href: `${year}/scifi`,
+      href: `/${year}/scifi`,
       icon: RobotIcon
     },
     {
       title: 'Fantasy',
-      href: `${year}/fantasy`,
+      href: `/${year}/fantasy`,
       icon: DragonIcon
     },
     {
       title: 'Admin',
-      href: `${year}/admin`,
+      href: `/${year}/admin`,
       icon: SettingsIcon
     }
   ];

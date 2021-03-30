@@ -45,7 +45,7 @@ function Sidebar({ isOpen, onClose, drawerWidth }) {
       </div>
       <Divider />
       <NavItem 
-        href={'admin'}
+        href={'/admin'}
         title="Admin"
         icon={SettingsIcon}
       />
