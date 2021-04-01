@@ -44,7 +44,15 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+const useTableHeadStyles = makeStyles((theme) => ({
+  headCell: {
+    fontWeight: theme.typography.fontWeightMedium,
+    fontSize: '1.1rem'
+  }
+}));
+
 function EnhancedTableHead(props) {
+  const classes = useTableHeadStyles();
   const { columns, order, orderBy, onRequestSort, withCheckbox } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -56,6 +64,7 @@ function EnhancedTableHead(props) {
         { withCheckbox && <TableCell padding="checkbox"/> }
         {columns.map((column) => (
           <TableCell
+            className={classes.headCell}
             key={column.field}
             align={column.align}
             padding={column.padding}
@@ -94,14 +103,17 @@ const useToolbarStyles = makeStyles((theme) => ({
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.secondary.dark,
       },
+  container: {
+    display: 'flex',
+  },
   title: {
-    flex: '1 1 100%',
+    marginRight: theme.spacing(5)
   },
 }));
 
 function TableToolbar(props) {
   const classes = useToolbarStyles();
-  const { title, numSelected, withCheckbox } = props;
+  const { title, numSelected, withCheckbox, children } = props;
 
   return (
     <Toolbar
@@ -114,9 +126,12 @@ function TableToolbar(props) {
           {numSelected} kijelölt sor
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          {title}
-        </Typography>
+        <div className={classes.container}>
+          <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+            {title}
+          </Typography>
+          { children }
+        </div>
       )}
     </Toolbar>
   );
@@ -159,7 +174,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CustomTable(props) {
   const classes = useStyles();
-  const { title, columns, rows, className, rowSelection } = props;
+  const { title, columns, rows, className, rowSelection, children } = props;
   const columnsWithProps = columns.map(column => ({ ...columnDefaultProps, ...column }));
 
   const [order, setOrder] = React.useState('asc');
@@ -227,7 +242,9 @@ function CustomTable(props) {
           title={title} 
           withCheckbox={ rowSelection === 'checkbox' } 
           numSelected={selectedRows.length}
-        />
+        >
+          {children}
+        </TableToolbar>
         <TableContainer>
           <Table
             className={classes.table}

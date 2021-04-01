@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-//const { Button } = require('@material-ui/core');
+const { Button, makeStyles } = require('@material-ui/core');
 const { getUsers } = require('../../services/api/users/users');
 const { roleOptions } = require('../../../options');
 const CustomTable = require('../common/custom-table');
@@ -25,7 +25,14 @@ function createRow(userData) {
   };
 }
 
+const useStyles = makeStyles(() => ({
+  button: {
+    //textTransform: 'none'
+  },
+}));
+
 function UserManagement() {
+  const classes = useStyles();
   const [rows, setRows] = React.useState([]);
 
   React.useEffect(async () => {
@@ -38,7 +45,11 @@ function UserManagement() {
 
   return  (
     <div>
-      <CustomTable title="Felhasználók" rows={ rows } columns={ columns } rowSelection="click" />
+      <CustomTable title="Felhasználók" rows={ rows } columns={ columns } rowSelection="click">
+        <Button className={classes.button} variant="contained" color="primary" onClick={ () => console.log('új felhasználó hozzáadása') }>
+          Új felhasználó
+        </Button>
+      </CustomTable>
     </div>
   );
 }
