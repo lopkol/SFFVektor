@@ -3,7 +3,7 @@
 const React = require('react');
 const { useParams } = require('react-router-dom');
 
-function BookReadings() {
+function BookReading() {
   const { genre, year } = useParams();
 
   return (
@@ -13,4 +13,4 @@ function BookReadings() {
   );
 }
 
-module.exports = BookReadings;
+module.exports = BookReading;
