@@ -32,7 +32,7 @@ describe('PATCH /users/:userId', () => {
     await request(app.listen())
       .patch(`/api/users/${otherId}`)
       .set('Cookie', [createAuthorizationCookie({ id, role: 'user' })])
-      .send({ userData: { molyUserName: 'Jancsi' } })
+      .send({ userData: { molyUsername: 'Jancsi' } })
       .expect(403);
   });
 
@@ -57,7 +57,7 @@ describe('PATCH /users/:userId', () => {
     const otherUserData = generateRandomUser({ role: 'user', email: 'b@gmail.com' });
     const otherId = await createUser(otherUserData);
 
-    const dataToUpdate = { role: 'admin', molyUserName: 'cica' };
+    const dataToUpdate = { role: 'admin', molyUsername: 'cica' };
 
     const response = await request(app.listen())
       .patch(`/api/users/${otherId}`)
@@ -87,7 +87,7 @@ describe('PATCH /users/:userId', () => {
     await createBookList(bookListData1);
     const bookListId2 = await createBookList(bookListData2);
 
-    const dataToUpdate = { role: 'admin', molyUserName: 'cica', bookListIds: [bookListId2] };
+    const dataToUpdate = { role: 'admin', molyUsername: 'cica', bookListIds: [bookListId2] };
 
     await request(app.listen())
       .patch(`/api/users/${otherId}`)
@@ -104,7 +104,7 @@ describe('PATCH /users/:userId', () => {
     const userData = generateRandomUser({ role: 'user' });
     const id = await createUser(userData);
 
-    const dataToUpdate = { molyUserName: 'unikornis' };
+    const dataToUpdate = { molyUsername: 'unikornis' };
 
     const response = await request(app.listen())
       .patch(`/api/users/${id}`)

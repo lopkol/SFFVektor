@@ -7,7 +7,7 @@ const { roleOptions } = require('../../../options');
 const CustomTable = require('../common/custom-table');
 
 const columns = [
-  { field: 'molyUserName', headerName: 'Moly felhasználónév', orderable: true, component: 'th' },
+  { field: 'molyUsername', headerName: 'Moly felhasználónév', orderable: true, component: 'th' },
   { field: 'email', headerName: 'E-mail cím', orderable: true },
   { field: 'role', headerName: 'Státusz', orderable: true }
 ];
@@ -17,7 +17,7 @@ function createRow(userData) {
   return {
     id: userData.id,
     fields: {
-      molyUserName: userData.molyUserName,
+      molyUsername: userData.molyUsername,
       email: userData.email,
       role: roleName
     },
@@ -30,7 +30,7 @@ function UserManagement() {
 
   React.useEffect(async () => {
     const users = await getUsers();
-    const sortedUsers = users.slice().sort((a,b) => a.molyUserName.localeCompare(b.molyUserName));
+    const sortedUsers = users.slice().sort((a,b) => a.molyUsername.localeCompare(b.molyUsername));
 
     setRows(sortedUsers.map(user => createRow(user)));
   }, []);

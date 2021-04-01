@@ -5,8 +5,8 @@ const firestore = require('../firestore');
 const { constructQuery, mapToDataWithId } = require('../helper-functions');
 const { hashEmail, encrypt, decrypt } = require('../../adapters/crypto/crypto');
 
-const userProperties = ['email', 'name', 'role', 'molyUserName'];
-//const userPropertiesInDb = ['hashedEmail', 'name', 'role', 'molyUserName', 'encryptedDetails'];
+const userProperties = ['email', 'name', 'role', 'molyUsername'];
+//const userPropertiesInDb = ['hashedEmail', 'name', 'role', 'molyUsername', 'encryptedDetails'];
 
 async function createUser(userData) {
   const userDataToSave = pick(userData, userProperties);

@@ -116,11 +116,12 @@ async function seedDb() {
   const stupidUserIds = await Promise.all([
     addUsersWithRole('admin', 3),
     addUsersWithRole('user', 20),
+    addUsersWithRole('inactive', 10),
     ...allowedUsers.map(
       email => addUserToBatch({ email, role: 'admin' })
     )
   ]);
-  const userIds = [...stupidUserIds[0], ...stupidUserIds[1], ...stupidUserIds.slice(2)];
+  const userIds = [...stupidUserIds[0], ...stupidUserIds[1], ...stupidUserIds.slice(3)];
 
   const authorIds = await addAuthors(60);
   const alternativeIds = await addAlternatives(80);

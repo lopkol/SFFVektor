@@ -21,7 +21,7 @@ const bookTableColumns = [
 const juryTableColumns = [
   { field: 'id', headerName: 'ID', width: 300 },
   { field: 'name', headerName: 'Név', width: 300 },
-  { field: 'molyUserName', headerName: 'Moly felhasználónév', width: 300 }
+  { field: 'molyUsername', headerName: 'Moly felhasználónév', width: 300 }
 ];
 
 function BookList() {
@@ -73,7 +73,7 @@ function BookList() {
           rows={ jury.map(juryMember => ({
             id: juryMember.id,
             name: juryMember.name,
-            molyUserName: juryMember.molyUserName
+            molyUsername: juryMember.molyUsername
           })) }
           columns={ juryTableColumns }
           pageSize={20}

@@ -118,7 +118,7 @@ describe('client-side user related API calls', () => {
 
       const otherUserData = generateRandomUser({ email: 'b@gmail.com' });
       const otherId = await createUser(otherUserData);
-      const userDataToUpdate = { molyUserName: 'karika' };
+      const userDataToUpdate = { molyUsername: 'karika' };
 
       await updateUser(otherId, userDataToUpdate);
 
@@ -132,7 +132,7 @@ describe('client-side user related API calls', () => {
       const userId = await createUser(userData);
       await logUserIn({ id: userId, role: 'user' });
 
-      const userDataToUpdate = { molyUserName: 'karika' };
+      const userDataToUpdate = { molyUsername: 'karika' };
       await updateUser(userId, userDataToUpdate);
 
       const [updatedUser] = await getUsersWithProps({ email: 'a@gmail.com' });

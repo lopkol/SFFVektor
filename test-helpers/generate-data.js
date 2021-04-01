@@ -105,7 +105,7 @@ function generateRandomUser(props = {}) {
     role: randomItemFrom(roleOptions).id,
     name: `${capitalize(surname)} ${capitalize(givenName)}`,
     email: `${removeHungarianAccents(surname + '.' + givenName)}.${randomInt}@gmail.com`,
-    molyUserName: removeHungarianAccents(`${surname}${givenName}${randomInt}`),
+    molyUsername: removeHungarianAccents(`${surname}${givenName}${randomInt}`),
     ...props
   };
 }
