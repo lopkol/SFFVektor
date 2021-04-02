@@ -60,8 +60,8 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
   let type = 'home';
   if (useMatch('/admin/*')) {
     type = 'admin';
-  } else if (useMatch(`/${year}/admin/*`)) {
-    type = 'yearAdmin';
+  } else if (useMatch(`/${year}/books/*`)) {
+    type = 'yearBooks';
   } else if (useMatch(`/${year}/${genre}/*`)) {
     type = 'bookList';
   }

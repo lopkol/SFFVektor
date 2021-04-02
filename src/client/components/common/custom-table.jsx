@@ -104,7 +104,10 @@ const useToolbarStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.secondary.dark,
       },
   container: {
+    width: '100%',
     display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   title: {
     marginRight: theme.spacing(5)
@@ -130,7 +133,9 @@ function TableToolbar(props) {
           <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
             {title}
           </Typography>
-          { children }
+          <div className={classes.container}>
+            { children }
+          </div>
         </div>
       )}
     </Toolbar>
@@ -155,6 +160,9 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 400,
+  },
+  controlLabel: {
+    marginLeft: theme.spacing(2),
   },
   selectableRow: {
     cursor: 'pointer'
@@ -181,8 +189,8 @@ function CustomTable(props) {
   const [orderBy, setOrderBy] = React.useState(null);
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [dense, setDense] = React.useState(true);
+  const [rowsPerPage, setRowsPerPage] = React.useState(-1);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -244,6 +252,11 @@ function CustomTable(props) {
           numSelected={selectedRows.length}
         >
           {children}
+          <FormControlLabel
+            className={classes.controlLabel}
+            control={<Switch checked={dense} onChange={handleChangeDense} />}
+            label="Sűrű nézet"
+          />
         </TableToolbar>
         <TableContainer>
           <Table
@@ -331,10 +344,6 @@ function CustomTable(props) {
           } }
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Sűrű nézet"
-      />
     </div>
   );
 }

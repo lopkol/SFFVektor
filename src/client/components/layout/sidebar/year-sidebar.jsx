@@ -41,8 +41,8 @@ function YearSidebar({ year, drawerWidth }) {
       icon: DragonIcon
     },
     {
-      title: 'Admin',
-      href: `/${year}/admin`,
+      title: 'Könyvek',
+      href: `/${year}/books`,
       icon: SettingsIcon
     }
   ];

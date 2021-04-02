@@ -1,11 +1,12 @@
 'use strict';
 
-const { ImBooks: BookListIcon } = require('react-icons/im');
 const { GiWhiteBook: BookIcon } = require('react-icons/gi');
-const { IoMdList: ListIcon, IoMdGrid: TableIcon, IoMdPeople: PeopleIcon } = require('react-icons/io');
+const { VscChecklist: ListIcon } = require('react-icons/vsc');
+const { IoMdGrid: TableIcon, IoMdPeople: PeopleIcon, IoMdSettings: SettingsIcon } = require('react-icons/io');
 const { AiOutlineRead: ReadingIcon } = require('react-icons/ai');
 
 const { genreOptions } = require('../../../../options'); 
+const { yearWithSuffix } = require('../../../../../test-helpers/generate-data');
 
 function getTitle(type, year = null, genre = null) {
   if (type === 'home') {
@@ -16,8 +17,8 @@ function getTitle(type, year = null, genre = null) {
     return `${year} ${genreName}`;
   }
 
-  if (type === 'yearAdmin') {
-    return `${year} admin`;
+  if (type === 'yearBooks') {
+    return `${yearWithSuffix(year, 'es')} könyvek`;
   }
 
   if (type === 'admin') {
@@ -43,26 +44,13 @@ const topNavbar = [
         id: 'bookLists',
         name: 'Jelöltlisták',
         to: 'book-lists',
-        icon: BookListIcon
+        icon: BookIcon
       }
     ]
   },
   {
-    type: 'yearAdmin',
-    buttons: [
-      {
-        id: 'bookLists',
-        name: 'Jelöltlisták',
-        to: 'book-lists',
-        icon: BookListIcon
-      },
-      {
-        id: 'books',
-        name: 'Könyvek',
-        to: 'books',
-        icon: BookIcon
-      }
-    ]
+    type: 'yearBooks',
+    buttons: []
   },
   {
     type: 'bookList',
@@ -84,6 +72,12 @@ const topNavbar = [
         name: 'Táblázat nézet',
         to: 'table',
         icon: TableIcon
+      },
+      {
+        id: 'admin',
+        name: 'Admin',
+        to: 'admin',
+        icon: SettingsIcon
       }
     ]
   }
