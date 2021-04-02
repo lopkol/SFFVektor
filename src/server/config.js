@@ -13,6 +13,7 @@ module.exports = {
   jwtSecret: process.env.JWT_SECRET,
   cookieName: 'jwtToken',
   allowedUsers: JSON.parse(process.env.ALLOWED_USERS || '[]'),
+  users: JSON.parse(process.env.USERS || '[]'),
   firestore: {
     credentials: JSON.parse(process.env.GCP_CREDENTIALS || '{}'),
     projectId: process.env.FIRESTORE_PROJECT_ID

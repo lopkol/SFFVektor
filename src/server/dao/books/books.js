@@ -7,6 +7,7 @@ const { constructQuery, mapToDataWithId } = require('../helper-functions');
 const bookProperties = [
   'authorIds', //array
   'title', 
+  'year',
   'series', 
   'seriesNum', 
   'isApproved', //boolean

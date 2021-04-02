@@ -100,12 +100,14 @@ function generateRandomUser(props = {}) {
   const surname = randomItemFrom(surnames);
   const givenName = randomItemFrom(givenNames);
   const randomInt = randomIntBetween(1, 1000);
+  const molyUsername = removeHungarianAccents(`${surname}${givenName}${randomInt}`);
 
   return {
     role: randomItemFrom(roleOptions).id,
     name: `${capitalize(surname)} ${capitalize(givenName)}`,
     email: `${removeHungarianAccents(surname + '.' + givenName)}.${randomInt}@gmail.com`,
-    molyUsername: removeHungarianAccents(`${surname}${givenName}${randomInt}`),
+    molyUsername,
+    molyUrl: `https://moly.hu/tagok/${molyUsername}`,
     ...props
   };
 }
@@ -122,6 +124,7 @@ function generateRandomBookAlternative(props = {}) {
 }
 
 function generateRandomBook(props = {}) {
+  const year = randomItemFrom(years);
   const adjective = randomItemFrom(adjectives);
   const actor = randomItemFrom(actors);
   const action = randomItemFrom(actions);
@@ -131,6 +134,7 @@ function generateRandomBook(props = {}) {
   return {
     id: uuidv4(),
     authorIds,
+    year,
     title: `A ${adjective} ${actor} ${action}`,
     series: `${capitalize(adjective)} ${actor}`,
     seriesNum: randomIntBetween(1,6),

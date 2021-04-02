@@ -5,41 +5,40 @@ const { omit } = require('lodash');
 const {
   randomItemFrom,
   distinctItemsFrom,
-  generateRandomUser,
   generateRandomBookAlternative,
   generateRandomBook,
   generateRandomBookList,
   generateRandomAuthor
 } = require('../test-helpers/generate-data');
 const firestore = require('../src/server/dao/firestore');
-const { allowedUsers } = require('../src/server/config');
+const { users } = require('../src/server/config');
 const { clearCollection } = require('../test-helpers/firestore');
 const { hashEmail, encrypt } = require('../src/server/adapters/crypto/crypto');
 
 const batch = firestore.batch();
 
-async function addUserToBatch(props) {
+async function addUserToBatch(userData) {
   const userId = uuidv4();
 
-  const userDataToSave = generateRandomUser(props);
   const [hashedEmail, encryptedDetails] = await Promise.all([
-    hashEmail(userDataToSave.email),
-    encrypt(userDataToSave.email)
+    hashEmail(userData.email),
+    encrypt(userData.email)
   ]);
   const dataToSave = {
     hashedEmail,
     encryptedDetails,
-    ...omit(userDataToSave, 'email')
+    ...omit(userData, 'email')
   };
   const newUserRef = await firestore.collection('users').doc(userId);
   await batch.set(newUserRef, dataToSave);
   return userId;
 }
 
-async function addUsersWithRole(role, count) {
+async function addUsers() {
+  console.log(users);
   const userIds = await Promise.all(
-    Array(count).fill(null).map(() => {
-      const userId = addUserToBatch({ role });
+    users.map(userData => {
+      const userId = addUserToBatch(userData);
       return userId;
     })
   );
@@ -113,15 +112,7 @@ async function seedDb() {
     clearCollection('authors')
   ]);
 
-  const stupidUserIds = await Promise.all([
-    addUsersWithRole('admin', 3),
-    addUsersWithRole('user', 20),
-    addUsersWithRole('inactive', 10),
-    ...allowedUsers.map(
-      email => addUserToBatch({ email, role: 'admin' })
-    )
-  ]);
-  const userIds = [...stupidUserIds[0], ...stupidUserIds[1], ...stupidUserIds.slice(3)];
+  const userIds = await addUsers();
 
   const authorIds = await addAuthors(60);
   const alternativeIds = await addAlternatives(80);
