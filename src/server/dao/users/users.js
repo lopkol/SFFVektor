@@ -15,7 +15,7 @@ async function createUser(userData) {
     encrypt(userDataToSave.email)
   ]);
   
-  if (userDataToSave.email !== '') {
+  if (userDataToSave.email) {
     const usersWithSameEmail = await firestore.collection('users').where('hashedEmail', '==', hashedEmail).get();
 
     if (!usersWithSameEmail.empty) {
@@ -37,7 +37,7 @@ async function updateUser(id, userData) {
   try {
     const userRef = firestore.collection('users').doc(id);
 
-    if (!userDataToSave.email) {
+    if (!userDataToSave.hasOwnProperty('email')) {
       await userRef.update(userDataToSave);
     } else {
       const [hashedEmail, encryptedDetails] = await Promise.all([
@@ -45,7 +45,7 @@ async function updateUser(id, userData) {
         encrypt(userDataToSave.email)
       ]);
 
-      if (userDataToSave.email !== '') {
+      if (userDataToSave.email) {
         const usersWithSameEmail = await firestore.collection('users').where('hashedEmail', '==', hashedEmail).get();
     
         if (!usersWithSameEmail.empty && (usersWithSameEmail.size > 1 || usersWithSameEmail.docs[0].id !== id)) {
@@ -58,7 +58,7 @@ async function updateUser(id, userData) {
         encryptedDetails,
         ...omit(userDataToSave, 'email')
       };
-
+  
       await userRef.update(dataToSave);
     }
   } catch (error) {

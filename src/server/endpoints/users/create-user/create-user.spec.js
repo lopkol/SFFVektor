@@ -86,4 +86,17 @@ describe('POST /users/new', () => {
       .send({ userData: newUserData })
       .expect(409);
   });
+
+  it('can always create new user with empty email address', async () => {
+    const userData = generateRandomUser({ role: 'admin', email: '' });
+    const id = await createUser(userData);
+
+    const newUserData = generateRandomUser({ email: '' });
+
+    await request(app.listen())
+      .post('/api/users/new')
+      .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
+      .send({ userData: newUserData })
+      .expect(201);
+  });
 });
