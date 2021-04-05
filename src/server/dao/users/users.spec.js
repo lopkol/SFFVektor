@@ -20,6 +20,16 @@ describe('users DAO', () => {
       expect(res).toBe(null);
     });
 
+    it('can create multiple users with empty string email address', async () => {
+      const userData = generateRandomUser({ email: '' });
+      await createUser(userData);
+
+      const newUserData = generateRandomUser({ email: '' });
+      const res = await createUser(newUserData);
+
+      expect(res).not.toBe(null);
+    });
+
     it('creates a user with the given properties, returns the user id', async () => {
       const userData = generateRandomUser();
       const id = await createUser(userData);
@@ -102,15 +112,40 @@ describe('users DAO', () => {
       expect(res).toBe(null);
     });
 
+    it('returns null if we try to update the email addres to one that is already in use', async () => {
+      const userData = generateRandomUser();
+      const id = await createUser(userData);
+      
+      const email = 'unicorn@gmail.com';
+      const otherUserData = generateRandomUser({ email });
+      await createUser(otherUserData);
+
+      const res = await updateUser(id, { email });
+
+      expect(res).toBe(null);
+    });
+
+    it('can always update email address to empty string', async () => {
+      const userData = generateRandomUser();
+      const id = await createUser(userData);
+      
+      const otherUserData = generateRandomUser({ email: '' });
+      await createUser(otherUserData);
+
+      const res = await updateUser(id, { email: '' });
+
+      expect(res).not.toBe(null);
+    });
+
     it('returns the user data with the correctly updated properties', async () => {
       const userData = generateRandomUser();
       const id = await createUser(userData);
 
-      const email = 'broccoli';
+      const email = userData.email;
       const name = 'jancsi';
       const res = await updateUser(id, { email, name });
 
-      expect(res).toEqual({ ...userData, id, email, name });
+      expect(res).toEqual({ ...userData, id, name });
     });
 
     it('updates the correct user, only updates the given properties, does not change the others', async () => {
