@@ -5,7 +5,7 @@ const { createMuiTheme, colors } = require('@material-ui/core');
 const theme = createMuiTheme({
   palette: {
     background: {
-      dark: '#F4F6F8',
+      dark: colors.blueGrey[50],
       default: colors.common.white,
       paper: colors.common.white
     },

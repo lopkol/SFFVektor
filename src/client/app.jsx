@@ -1,13 +1,12 @@
 'use strict';
 
 const React = require('react');
-const { useRoutes } = require('react-router-dom');
+const { Navigate, useRoutes } = require('react-router-dom');
 const { ThemeProvider } = require('@material-ui/core');
 
 const GlobalStyles = require('./components/styles/global-styles');
 const theme = require('./components/styles/theme');
 
-const Redirect = require('./components/common/redirect');
 const NotFound = require('./components/common/not-found');
 const Layout = require('./components/layout/layout');
 const UserManagement = require('./components/admin/user-management');
@@ -21,7 +20,7 @@ const BookListAdmin = require('./components/books/admin/book-list-admin');
 const routes = [
   { path: '/', element: <Layout /> },
   { path: 'admin', element: <Layout />, children: [
-    { path: '/', element: <Redirect to="users" /> },
+    { path: '/', element: <Navigate to="users" /> },
     { path: 'users', element: <UserManagement /> },
     { path: 'book-lists', element: <BookListManagement /> }
   ] },
@@ -29,13 +28,13 @@ const routes = [
     { path: '/', element: <YearBooks /> }
   ] },
   { path: ':year/:genre', element: <Layout />, children: [
-    { path: '/', element: <Redirect to="list" /> },
+    { path: '/', element: <Navigate to="list" /> },
     { path: 'list', element: <BookList /> },
     { path: 'reading', element: <BookReading /> },
     { path: 'table', element: <BookTable /> },
     { path: 'admin', element: <BookListAdmin /> }
   ] },
-  { path: 'home', element: <Redirect to="/" /> },
+  { path: 'home', element: <Navigate to="/" /> },
   { path: '*', element: <NotFound /> }
 ];
 
