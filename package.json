@@ -13,14 +13,14 @@
     "open": "node scripts/open.js",
     "seed": "node scripts/seed-data.js",
     "seed-dev": "docker exec -it sffvektor_server npm run seed",
-    "start": "npm run docker && onchange -i -k \"build-config/*\" -- npm run build-dev",
+    "start": "npm run docker && onchange -p 100 -i -k \"build-config/*\" -- npm run build-dev",
     "start-staging": "npm run seed && node src/server/index.js",
     "start-server": "node scripts/seed-data.js && npm run watch-server > 'server.log' 2>&1",
-    "watch-server": "onchange -i -k 'src/server/**/*' 'environment/*.env' -- node src/server/index.js",
+    "watch-server": "onchange -p 100 -i -k 'src/server/**/*' 'environment/*.env' -- node src/server/index.js",
     "stop": "docker-compose down",
     "test": "npm run lint && npm run test:once",
     "test:once": "cross-env NODE_ENV=test jasmine --config=test-helpers/jasmine.json",
-    "test:watch": "onchange -i \"src/**/*.js\" \"src/**/*.jsx\" -- npm run test:once"
+    "test:watch": "onchange -p 100 -i \"src/**/*.js\" \"src/**/*.jsx\" -- npm run test:once"
   },
   "repository": {
     "type": "git",
