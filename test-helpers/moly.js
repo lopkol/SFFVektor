@@ -1,19 +1,29 @@
 'use strict';
+const { moly } = require('../src/server/config');
 
 const testBookUrl = '/konyvek/terry-pratchett-stephen-baxter-a-hosszu-kozmosz';
 const testAuthors = [
   {
     name: 'Terry Pratchett',
-    molyUrl: '/alkotok/terry-pratchett'
+    molyUrl: moly.baseUrl + '/alkotok/terry-pratchett'
   },
   {
     name: 'Stephen Baxter',
-    molyUrl: '/alkotok/stephen-baxter'
+    molyUrl: moly.baseUrl + '/alkotok/stephen-baxter'
   }
 ];
 const testBookTitle = 'A Hosszú Kozmosz';
 const testSeries = 'A Hosszú Föld';
 const testSeriesNum = '5';
+const testOriginalVersion = {
+  name: 'eredeti',
+  urls: [moly.baseUrl + '/konyvek/terry-pratchett-stephen-baxter-the-long-cosmos']
+};
+const testHunVersion = {
+  name: 'magyar',
+  urls: [moly.baseUrl + testBookUrl]
+};
+const testAlternatives = [testHunVersion, testOriginalVersion];
 const testBookPage = `<!DOCTYPE html><html lang="hu" prefix="og: http://ogp.me/ns#"><head><title>A Hosszú Kozmosz · Terry Pratchett – Stephen Baxter · Könyv · Moly</title><meta charset="utf-8" /><meta content="Szupernap" name="author" /><meta content="A Hosszú Kozmosz · Terry Pratchett – Stephen Baxter · Könyv" name="title" /><meta content="Árak és vélemények egy helyen! · 2070–2071: Közel hat évtizeddel az Átlépés Napja után a Hosszú Földön a Következők poszthumán társadalma töretlenül fejlődik. A most már hatvanas évei végét taposó Joshua Valienté még egy utolsó, magányos utazást tervez a Felső Meggerekre. Csakhogy a kalandból katasztrófa lesz, és a halál árnyékában egy csapat troll marad az utolsó reménye. Míg Joshuának szembe kell néznie önnön halandóságával, a Hosszú Föld adást fog a csillagokból. A rádiócsillagászok veszik a jelet, de elvontabb úton a trollok és a Nagy Átkelők is. És ennek hatását a Hosszú Föld minden lakója megérzi majd. Az üzenet egyszerű, de mégis elsöprő erejű: CSATLAKOZZATOK!" name="description" /><link href="https://moly.hu/system/covers/big/covers_612848.jpg" rel="image_src" /><meta content="books.book" property="og:type" /><meta content="A Hosszú Kozmosz · Terry Pratchett – Stephen Baxter · Könyv" property="og:title" /><meta content="Árak és vélemények egy helyen! · 2070–2071: Közel hat évtizeddel az Átlépés Napja után a Hosszú Földön a Következők poszthumán társadalma töretlenül fejlődik. A most már hatvanas évei végét taposó Joshua Valienté még egy utolsó, magányos utazást tervez a Felső Meggerekre. Csakhogy a kalandból katasztrófa lesz, és a halál árnyékában egy csapat troll marad az utolsó reménye. Míg Joshuának szembe kell néznie önnön halandóságával, a Hosszú Föld adást fog a csillagokból. A rádiócsillagászok veszik a jelet, de elvontabb úton a trollok és a Nagy Átkelők is. És ennek hatását a Hosszú Föld minden lakója megérzi majd. Az üzenet egyszerű, de mégis elsöprő erejű: CSATLAKOZZATOK!" property="og:description" /><meta content="https://moly.hu/system/covers/big/covers_612848.jpg" property="og:image" /><script type="application/ld+json">
   {
     "@context": "https://schema.org/",
@@ -135,17 +145,470 @@ const testMolySessionCookie = '_moly_session=THl0Nm5kZlhGRlpCZkNtMVNOMVJ1UzVhODN
 const testUserCredentialsCookie = 'user_credentials=e6f1df13dd7b1ab4bbc5475dbbe94710f8620026e67a74c420abd41139ba16bf90069664e9c6bf55c99661ad713af1b3b56a9dc78eff102b751901b6d3d084da%3A%3A543913; path=/; secure; HttpOnly';
 const testUserCredentials = 'user_credentials=e6f1df13dd7b1ab4bbc5475dbbe94710f8620026e67a74c420abd41139ba16bf90069664e9c6bf55c99661ad713af1b3b56a9dc78eff102b751901b6d3d084da%3A%3A543913';
 
+const testBookListUrl = '/listak/2020-as-science-fiction-megjelenesek';
+
+const testBookListPage1 = `<!DOCTYPE html><html lang="hu" prefix="og: http://ogp.me/ns#"><head><title>2020-as science fiction megjelenések · Moly</title><meta charset="utf-8" /><meta content="Szupernap" name="author" /><meta content="Moly" name="description" /><meta content="Moly" property="og:description" /><meta content="moly, könyvmoly, könyvek, olvasás" name="keywords" /><link href="https://moly.hu/listak/2020-as-science-fiction-megjelenesek" rel="canonical" /><meta content="Moly" property="og:site_name" /><meta content="68494421060" property="fb:app_id" /><meta content="https://moly.hu/listak/2020-as-science-fiction-megjelenesek" property="og:url" /><link href="https://feeds2.feedburner.com/moly" rel="alternate" title="Moly-bejegyzések" type="application/atom+xml" /><link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" /><link href="/favicon.ico" rel="icon" type="image/x-icon" /><meta content="Moly" name="application-name" /><link href="/manifest.json" rel="manifest" type="application/json" /><link href="https://moly.hu/moly_books.xml" rel="search" title="Moly.hu könyvkereső" type="application/opensearchdescription+xml" /><meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="AH97R2uL+mvKIn/wyZm7z3TC3WUntU7Ggj5kSMce5AUd4XKN7UBLiWgGyWDVr6jdoguXc/JZBWe915ijvc6UGw==" /><link rel="stylesheet" media="all" href="/assets/application-50c1991d813cbc701f371c97246bdb1e0216fecb47a751e3976e4e452db7eb7c.css" data-turbolinks-track="reload" /><script src="/assets/application-56d90f26ca934eb9b3d7cf338745b091212923e4ada4560b978bafc86cffd606.js" data-turbolinks-track="reload"></script><script src="/assets/charts-5140cc348770bf1b416eb755e46a8885c81e82d118e66fa7b3001a30f58adca3.js"></script><meta content="no-preview" name="turbolinks-cache-control" /><script type="text/javascript" src="/advertisements/ads.js"></script><script>
+//<![CDATA[
+jQuery.timeago.settings.lang="hu";
+//]]>
+</script><script>
+  window.currentUser = 543913;
+  window.readBookIds = [];
+  window.ownedBookIds = [];
+  window.followingUserIds = [];
+  window.followingUserLogins = [];
+  window.hiddenUserIds = [];
+  window.blockerIds = [];
+  window.joinedZoneIds = [];
+  window.joinedCampaignIds = [];
+  window.joinedListIds = [];
+</script>
+
+
+<link href="https://cdn.fuseplatform.net" rel="dns-prefetch" /><link href="https://cdn.fuseplatform.net" rel="preconnect" /><script async src="https://cdn.fuseplatform.net/publift/tags/2/2148/fuse.js"></script></head><body class="user_logged_in layout_lists action_show" id="layout_lists_show"><div data-id="1931" id="top_banner"><div class="container" style="background-color: #e7eff7"><a rel="nofollow" target="_blank" href="/fejlechirdetesek/1931/megnez"><img alt="" src="/system/header_ads/images/1931/image_original.jpg?1617885545" /></a></div></div><div class="container"><nav class="clearfix" id="header"><ul class="topmenu menu"><li class="submenu" id="root_menu"><a href="/"><span>Kezdőlap</span></a><ul class="header_menu"><table style="width: 100%;"><tr><td style="width: 50%;"><ul class="simplesidelinks"><li><a href="/konyvek">Könyvek</a></li><li><a href="/sorozatok">Sorozatok</a></li><li><a href="/alkotok">Alkotók</a></li><li><a href="/kiadok">Kiadók</a></li><li><a href="/cimkek">Címkék</a></li><li><a href="/enciklopedia">Enciklopédia</a></li><li><a href="/idezetek">Idézetek</a></li><li><a href="/polcok">Polcok</a></li><li><a href="/listak">Listák</a></li><li><a href="/esemenyek">Események</a></li><li class="not_for_children"><a href="/hirek">Hírek</a></li></ul></td><td style="width: 50%;"><ul class="simplesidelinks"><li><a href="/zonak">Zónák</a></li><li><a href="/tagok">Tagok</a></li><li><a href="/karcok">Karcok</a></li><li><a href="/kihivasok">Kihívások</a></li><li class="not_for_children"><a href="/szavazasok">Szavazások</a></li><li><a href="/ertekelesek">Értékelések</a></li><li><a href="/triviak">Triviák</a></li><li class="not_for_children"><a href="/eszlelesek">Észlelések</a></li><li><a href="/blogok">Blogok</a></li><li><a href="/piacter">Piactér</a></li><li class="not_for_children"><a href="/utazokonyvek">Utazókönyvek</a></li></ul></td></tr></table></ul></li><li id="search"><form action="/kereses" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" /><input type="text" name="q" id="search_field" class="search_field" placeholder="Keresés" /></form></li><li class="submenu" id="dashboard_menu"><a href="/vezerlo">Új</a><ul><li><a href="/esemenyek/uj">Új esemény</a></li><li><a href="/eszlelesek/uj">Új észlelés</a></li><li><a href="/hirek/uj">Új hír</a></li><li><a href="/idezetek/uj">Új idézet</a></li><li><a href="/karcok/uj">Új karc</a></li><li><a href="/kihivasok/uj">Új kihívás</a></li><li><a href="/konyvek/uj">Új könyv</a></li><li><a href="/listak/uj">Új lista</a></li><li><a href="/olvasasok/hozzaadas">Új olvasmány</a></li><li><a href="/polcok/uj">Új polc</a></li><li><a href="/szavazasok/uj">Új szavazás</a></li><li><a href="/triviak/uj">Új trivia</a></li><li><a href="/utazokonyvek/uj">Új utazókönyv</a></li><li><a href="/uzenetek/uj">Új üzenet</a></li><li><a href="/zonak/uj">Új zóna</a></li></ul></li><img alt="" class="tooltip" height="16" id="jump_menu" title="Gyorsmenü (CTRL+J)" width="16" src="/assets/category-a417c53a77e66617342833d75e31aa97d8c284dfc59669430a054a7408b35645.png" /><script>(function() {
+  Mousetrap.bindGlobal('ctrl+j', function() {
+    $('#jump_menu').click();
+    return false;
+  });
+
+}).call(this);
+</script><li class="submenu" id="user_menu"><a href="/tagok/sadness"><img class="inline_avatar" title="" alt="" height="32" width="32" src="/system/users/missing_small.png" /> Profil</a><ul><li><a href="/tagok/sadness/olvasmanylista">Olvasmánylista</a></li><li><a href="/tagok/sadness/ertekelesek">Értékelések</a></li><li><a href="/tagok/sadness/magankonyvtar">Magánkönyvtár</a></li><li><a href="/tagok/sadness/varolista">Várólista</a></li><li><a href="/tagok/sadness/kivansaglista">Kívánságlista</a></li><li><a href="/tagok/sadness/kolcsonkeresek">Kölcsönkérések</a></li><li><a href="/tagok/sadness/karcok">Karcok</a></li><li><a href="/tagok/sadness/idezetek">Idézetek</a></li><li><a href="/tagok/sadness/triviak">Triviák</a></li><li><a href="/tagok/sadness/polcok">Polcok</a></li><li><a href="/tagok/sadness/alkotoertekelesek">Alkotóértékelések</a></li><li><a href="/tagok/sadness/esemenyek">Események</a></li><li><a href="/tagok/sadness/kihivasok">Kihívások</a></li><li><a href="/tagok/sadness/jelentkezes-listakra">Listák</a></li><li><a href="/tagok/sadness/szavazasok">Szavazások</a></li><li><a href="/tagok/sadness/eszlelesek">Észlelések</a></li><li><a href="/tagok/sadness/linkek">Linkek</a></li><li><a href="/tagok/sadness/blogbejegyzesek">Blogbejegyzések</a></li><li><a href="/tagok/sadness/zona-tagsagok">Zónák</a></li><li><a href="/tagok/sadness/csoportos-ajanlasok">Ajánlások</a></li><li><a href="/tagok/sadness/konyvjelzok">Könyvjelzők</a></li><li><a href="/tagok/sadness/szerkesztes">Beállítások</a></li></ul></li><li class="submenu"><a href="/friss/tagok">Friss</a><ul id="notes_menu"></ul></li><li id="notes_count_for_user"></li><li id="notes_count"></li><li class="not_for_children"><a href="/uzenetek">Üzenetek</a></li><li class="not_for_children" id="unread_waves"></li><li class="not_for_children" id="unread_system_waves"></li><img alt="" height="16" id="refresh_arrow" class="tooltip" title="Frissítés" width="16" src="/assets/arrow-circle-double-9ffe492763e202cc837becda3bbb589a749d5f270b5a839619b54ed6397f9edd.png" /></ul><ul class="topmenu menu toprightmenu"><li><a rel="modal" class="tooltip" title="Tanácsadó" href="/tanacsado"><img alt="" height="16" width="16" src="/assets/compass-c3ec2ced6de4299949e4f38774dc18d4e8ef0dab6aaeeedef15506939bad5e69.png" /></a></li><li><a rel="modal" class="tooltip" title="Szerencsesüti" href="/szerencsesuti"><img alt="" height="16" width="16" src="/assets/cookie-chocolate-eb3d3c8cc318ed260438966d93b2a4085cf548a71aa58f6a692a898d5581e7c7.png" /></a></li><li class="submenu"><a href="/info">Infó</a><ul><li><a href="/sugo">Súgó</a></li><li class="for_editors for_admins"><a href="/zart-sugo">Szerkesztői súgó</a></li><li class="for_admins"><a href="/zart-sugo/admin">Adminsúgó</a></li><li class="for_campaign_editors for_admins"><a href="/zart-sugo/kih%C3%ADv%C3%A1sszerkeszt%C5%91i">Kihívásszerkesztői súgó</a></li><li class="not_for_children"><a href="/blog">Molyblog</a></li><li><a href="/tedd-jobba">Tedd jobbá!</a></li><li class="not_for_children"><a href="/pro-tagsag">Pro tagság</a></li><li><a href="/uzenet-a-molynak">Üzenet a Molynak</a></li><li><a class="external" href="https://meta.moly.hu">meta.moly.hu</a></li><li class="not_for_children"><a href="/molybazar">Molybazár</a></li><li><a href="/rolunk">Rólunk</a></li><li><a href="/dokumentumok/felhasznalasi-feltetelek">Felhasználási feltételek</a></li><li><a href="/dokumentumok/iranyelvek">Irányelvek</a></li><li><a href="/dokumentumok/adatvedelem">Adatvédelem</a></li><li><a href="https://moly.hu/api">API</a></li><li class="for_admins"><a href="/hibajegykezelo">Hibajegykezelő</a></li><li class="for_editors for_campaign_editors for_admins"><a href="/szerkesztoi">Szerkesztői szoba</a></li><li class="for_admins"><a href="/moderatori-friss">Moderátori friss</a></li><li class="for_managers"><a href="/jovairasok">Jóváírások</a></li><li class="for_admins"><a href="/megrendelesek">Megrendelések</a></li><li class="for_admins"><a href="/szamlazasok">Számlázások</a></li><li class="for_admins"><a href="/uzenetkuldes">Üzenetek</a></li></ul></li><li><a href="/kilepes">Kilépés</a></li></ul></nav><div id="layout"><div id="search_area"></div><div class="b970">  <div><!-- 71161633/category_header/category_header -->
+<div data-fuse="22086369401"></div>
+</div>
+</div><div id="main"><div id="content" rel="/listak/2020-as-science-fiction-megjelenesek" role="main"><div class="flash-notice"><a onclick="$(this).parent().fadeOut(); return false" class="right close_button" href="#"><img alt="" height="16" width="16" src="/assets/chevron-ccb6cc67065467de497029d63ad306ba5697b129dc36121998d9ecb136748092.png" /></a><a href="/profilok/543787/szerkesztes">Add meg</a> a nevedet!</div><div class="right"><a class="switch banned_item" title="Szűröm ezentúl" href="/tiltott-elemek/set?bannable_item_id=28442&amp;bannable_item_type=List">Szűröm</a></div><h1>2020-as science fiction megjelenések <span class="subname">lista</span> <span class="counter">21</span></h1><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listak/2020-as-science-fiction-megjelenesek/szerkesztes">!</a><a class="set_checked button_icon right tooltip for_admins for_editors on" title="Jóváhagyás" rel="nofollow" data-confirm="Biztosan leveszed róla a pipát?" href="/szerkesztoi/lattam?checkable_id=28442&amp;checkable_type=List"><img alt="" height="16" width="16" src="/assets/tick-circle-52bc0ef9588421eeb1f20c8adb1f1bd6e559992e17c06fc6bed7989173e83e96.png" /></a><a class="set_hidden button_icon right for_admins tooltip" title="Elrejtés/megjelenítés" rel="nofollow" href="/szerkesztoi/rejtem?hideable_id=28442&amp;hideable_type=List"><img alt="" height="16" width="16" src="/assets/eye-8faea3ce4836c10c275072b5eb863782844947a25cda4ffb9e300f340162a3a4.png" /></a><a class="set_hidden_from_public button_icon right for_editors for_admins tooltip" title="Elrejtés/megjelenítés a közérdekűek közül" rel="nofollow" href="/listak/2020-as-science-fiction-megjelenesek/set_hidden_from_public"><img alt="" height="16" width="16" src="/assets/light-bulb-c054217989f8e838c05226136a0a17e86b8e210454a81e1621890d4ebf2558ca.png" /></a><div class="bookmark_button"><a class="set_editorial_bookmark tooltip invisible" title="Szerkesztői" data-editorial-bookmarkers="[]" href="/konyvjelzok/set_editorial?bookmarkable_id=28442&amp;bookmarkable_type=List">+</a><a class="bookmark button_icon for_users tooltip" title="Könyvjelzőzés" data-bookmarkers="[58017,59988,96148,97246]" href="/konyvjelzok/set?bookmarkable_id=28442&amp;bookmarkable_type=List">+</a></div><div class="vote_button"><a class="votes_count" rel="modal" href="/kedvencek?voteable_id=28442&amp;voteable_type=List">33</a><a class="vote button_icon for_users tooltip" title="Kedvencelés" data-voters="[19401,18619,225290,178620,273298,52564,1630,119980,11084,35370,464190,69584,14747,264434,349910,103473,27966,6842,386771,220881,112050,54201,391921,38863,51088,46605,96907,55877,59988,518610,236,144253,202074]" href="/kedvencek/set?voteable_id=28442&amp;voteable_type=List">*</a></div><p><a class="user_selector" data-id="298359" href="/tagok/sff_vektor">SFF_Vektor</a>&nbsp;<a class="organization tooltip" title="Szervezeti profil" href="/tagok/szervezeti-felhasznalok">U</a> <time datetime="2020-02-02T18:07:48+01:00" class="date" title="2020. február  2., 18:07">2020. február  2., 18:07</time> </p><div class="text"><p>A lista tartalmazza azon magyarul 2020-ban megjelent sci-fi regényeket, amelyek megfelelnek a jelölés feltételeinek (<a href="https://sffvektor.hu/a-jeloltlistakrol/">https://sffvektor.hu/a-jeloltlistakrol/</a>).</p>
+
+<p>Természetesen mi sem veszünk észre mindent, így a közösség segítségét is szeretnénk kérni: ha van olyan könyv, aminek szerintetek a jelöltek listáján a helye, ám mégsem szerepel, jelezzétek az adott listánál kommentben, és megvizsgáljuk a kérdést.</p></div><div id="head"><table><tr><th>Teljesítve</th><td class="right_aligned"><a class="switch" data-remote="true" rel="nofollow" data-method="post" href="/listak/2020-as-science-fiction-megjelenesek/lista-jelentkezesek">Jelentkezem</a> </td></tr><tr><th>Jelentkezők</th><td class="right_aligned"><a rel="modal" class="action" href="/listak/2020-as-science-fiction-megjelenesek/jelentkezok">40</a></td></tr></table></div><div class="user_298359"><div class="add_comment_button"><div class="formbutton"><a class="" href="/hozzaszolasok/uj?commentable_id=28442&amp;commentable_type=List">Új hozzászólás</a><div class="editbox clearfix" style=""><form class="add_comment" id="new_comment" action="/hozzaszolasok" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><ul><input type="hidden" value="List" name="comment[commentable_type]" id="comment_commentable_type" /><input type="hidden" value="28442" name="comment[commentable_id]" id="comment_commentable_id" /><input type="hidden" name="comment[reply_to_id]" id="comment_reply_to_id" /><li><textarea name="comment[comment]">
+</textarea></li><li><input type="submit" name="commit" value="Hozzászól" data-disable-with="Hozzászól" /></li></ul></form></div></div></div><a class="load_comments" href="/hozzaszolasok?commentable_id=28442&amp;commentable_type=List">2 hozzászólás</a></div><div class="wall"><div class="filter_box"><form class="turbo short_token_input" action="/listak/2020-as-science-fiction-megjelenesek" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" /><ul><li><a class="filter_button" href="#">Szűrés</a> <select name="order" class="filter_order" id="wait_order"><option value="">Rendezés szerint</option>
+<option value="alphabetically">Ábécérendben</option>
+<option value="creation_reversed">Listára kerülés ideje alapján</option>
+<option value="readings">Könyvek olvasottsága alapján</option>
+<option value="rating">Könyvek értékelése alapján</option>
+<option value="pages">Oldalszám alapján növekvő</option>
+<option value="pages_reversed">Oldalszám alapján csökkenő</option></select></li><div class="filter_options" style="display: none"><a class="button_icon right tooltip filter_close" title="Szűrések törlése" href="/listak/2020-as-science-fiction-megjelenesek"><img alt="" height="16" width="16" src="/assets/arrow-join-180-483859eb2367a8ea4cf1a384384654001d090c6fa290eca79c9e2c6749a51267.png" /></a><li><input type="text" name="q" id="q" placeholder="Szerző és cím" class="name_filter" /> <select name="filter" id="wait_filter"><option value="">Minden könyv</option>
+<option value="read">Csak az olvasottak</option>
+<option value="unread">Csak az olvasatlanok</option>
+<option value="wait">Csak a várólistámon lévők</option>
+<option value="wish">Csak a kívánságlistámon lévők</option></select></li><li><input type="text" name="tags" id="tags" /></li><li><input type="text" name="minus_tags" id="minus_tags" /></li><script>App.useTokenInput('#tags', '/api/tags_with_names.json', {prePopulate: [], placeholder: '+ címke'})
+App.useTokenInput('#minus_tags', '/api/tags_with_names.json', {prePopulate: [], placeholder: '− címke'})</script></div></ul></form></div></div><div class="endless pagination"><span class="previous_page disabled">« Előző</span> <em class="current">1</em> <a rel="next" href="/listak/2020-as-science-fiction-megjelenesek?page=2">2</a> <a class="next_page" rel="next" href="/listak/2020-as-science-fiction-megjelenesek?page=2">Következő »</a></div><div class="items"><div id="list_item_1116537" class="clearfix list_item list_item_1116537 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1116537/szerkesztes">!</a><div class="left"><a href="/konyvek/lily-brooks-dalton-az-ejfeli-egbolt"><img alt="Lily Brooks-Dalton: Az éjféli égbolt" title="Lily Brooks-Dalton: Az éjféli égbolt" class="tooltip" src="/system/covers/small/covers_631842.jpg?1604426901" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="468669" href="/konyvek/lily-brooks-dalton-az-ejfeli-egbolt">Lily Brooks-Dalton: Az éjféli égbolt</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 82,87%)">83%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1116537/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_979601" class="clearfix list_item list_item_979601 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/979601/szerkesztes">!</a><div class="left"><a href="/konyvek/octavia-e-butler-hibridek"><img alt="Octavia E. Butler: Hibridek" title="Octavia E. Butler: Hibridek" class="tooltip" src="/system/covers/small/covers_587392.jpg?1579081869" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="437321" href="/konyvek/octavia-e-butler-hibridek">Octavia E. Butler: Hibridek</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 76,85%)">76%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/979601/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1095016" class="clearfix list_item list_item_1095016 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1095016/szerkesztes">!</a><div class="left"><a href="/konyvek/ronil-caine-fraktal"><img alt="Ronil Caine: Fraktál" title="Ronil Caine: Fraktál" class="tooltip" src="/system/covers/small/covers_633909.jpg?1602261005" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="470184" href="/konyvek/ronil-caine-fraktal">Ronil Caine: Fraktál</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 78,74%)">74%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1095016/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1025775" class="clearfix list_item list_item_1025775 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1025775/szerkesztes">!</a><div class="left"><a href="/konyvek/jack-campbell-vitez"><img alt="Jack Campbell: Vitéz" title="Jack Campbell: Vitéz" class="tooltip" src="/system/covers/small/covers_611431.jpg?1590757518" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="455056" href="/konyvek/jack-campbell-vitez">Jack Campbell: Vitéz</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 83,76%)">83%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1025775/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1045142" class="clearfix list_item list_item_1045142 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1045142/szerkesztes">!</a><div class="left"><a href="/konyvek/philip-k-dick-urlotto"><img alt="Philip K. Dick: Űrlottó" title="Philip K. Dick: Űrlottó" class="tooltip" src="/system/covers/small/covers_613625.jpg?1591872589" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="456566" href="/konyvek/philip-k-dick-urlotto">Philip K. Dick: Űrlottó</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 78,07%)">77%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1045142/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1096849" class="clearfix list_item list_item_1096849 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1096849/szerkesztes">!</a><div class="left"><a href="/konyvek/william-gibson-mozgaster"><img alt="William Gibson: Mozgástér" title="William Gibson: Mozgástér" class="tooltip" src="/system/covers/small/covers_628243.jpg?1599471478" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="466146" href="/konyvek/william-gibson-mozgaster">William Gibson: Mozgástér</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 75,65%)">69%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1096849/listaelem-szavazasok">Bejelölöm</a></div>  <div><div class="bcontent">
+<!-- 71161633/category_incontent_1/category_incontent_1 -->
+<div data-fuse="22086369407"></div>
+</div>
+</div>
+<div id="list_item_1129000" class="clearfix list_item list_item_1129000 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1129000/szerkesztes">!</a><div class="left"><a href="/konyvek/mund-katalin-szerk-galaktika-364-xl"><img alt="Mund Katalin (szerk.): Galaktika 364 XL" title="Mund Katalin (szerk.): Galaktika 364 XL" class="tooltip" src="/system/covers/small/covers_617102.jpg?1593695412" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="459085" href="/konyvek/mund-katalin-szerk-galaktika-364-xl">Mund Katalin (szerk.): Galaktika 364 XL</a>   <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1129000/listaelem-szavazasok">Bejelölöm</a><div class="sticky_note"><p>James E. Gunn: Halhatatlanok (Galaktika XL 363-364)</p></div></div><div id="list_item_1077137" class="clearfix list_item list_item_1077137 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1077137/szerkesztes">!</a><div class="left"><a href="/konyvek/brandon-hackett-eldobhato-testek"><img alt="Brandon Hackett: Eldobható testek" title="Brandon Hackett: Eldobható testek" class="tooltip" src="/system/covers/small/covers_623883.jpg?1597053047" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="463421" href="/konyvek/brandon-hackett-eldobhato-testek">Brandon Hackett: Eldobható testek</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 88,47%)">89%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1077137/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1115156" class="clearfix list_item list_item_1115156 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1115156/szerkesztes">!</a><div class="left"><a href="/konyvek/thore-d-hansen-a-legtisztabbak"><img alt="Thore D. Hansen: A legtisztábbak" title="Thore D. Hansen: A legtisztábbak" class="tooltip" src="/system/covers/small/covers_637573.jpg?1603909115" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="472507" href="/konyvek/thore-d-hansen-a-legtisztabbak">Thore D. Hansen: A legtisztábbak</a>   <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1115156/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1024313" class="clearfix list_item list_item_1024313 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1024313/szerkesztes">!</a><div class="left"><a href="/konyvek/r-j-hendon-gyomlalo"><img alt="R. J. Hendon: Gyomláló" title="R. J. Hendon: Gyomláló" class="tooltip" src="/system/covers/small/covers_590789.jpg?1580984118" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="439855" href="/konyvek/r-j-hendon-gyomlalo">R. J. Hendon: Gyomláló</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 91,68%)">94%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1024313/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_994487" class="clearfix list_item list_item_994487 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/994487/szerkesztes">!</a><div class="left"><a href="/konyvek/marc-uwe-kling-qualityland"><img alt="Marc-Uwe Kling: QualityLand" title="Marc-Uwe Kling: QualityLand" class="tooltip" src="/system/covers/small/covers_592077.jpg?1581603453" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="440812" href="/konyvek/marc-uwe-kling-qualityland">Marc-Uwe Kling: QualityLand</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 89,65%)">90%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/994487/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1078865" class="clearfix list_item list_item_1078865 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1078865/szerkesztes">!</a><div class="left"><a href="/konyvek/ian-mcewan-mi-gepek"><img alt="Ian McEwan: Mi, gépek" title="Ian McEwan: Mi, gépek" class="tooltip" src="/system/covers/small/covers_625348.jpg?1597832733" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="464339" href="/konyvek/ian-mcewan-mi-gepek">Ian McEwan: Mi, gépek</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 78,41%)">74%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1078865/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_977622" class="clearfix list_item list_item_977622 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/977622/szerkesztes">!</a><div class="left"><a href="/konyvek/richard-morgan-legszomj"><img alt="Richard Morgan: Légszomj" title="Richard Morgan: Légszomj" class="tooltip" src="/system/covers/small/covers_590349.jpg?1580735593" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="436544" href="/konyvek/richard-morgan-legszomj">Richard Morgan: Légszomj</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 76,32%)">74%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/977622/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1078867" class="clearfix list_item list_item_1078867 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1078867/szerkesztes">!</a><div class="left"><a href="/konyvek/christopher-paolini-almok-a-csillagok-kozt-i-ii"><img alt="Christopher Paolini: Álmok a csillagok közt I-II." title="Christopher Paolini: Álmok a csillagok közt I-II." class="tooltip" src="/system/covers/small/covers_631447.jpg?1606949167" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="460492" href="/konyvek/christopher-paolini-almok-a-csillagok-kozt-i-ii">Christopher Paolini: Álmok a csillagok közt I-II.</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 80,32%)">80%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1078867/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1094802" class="clearfix list_item list_item_1094802 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1094802/szerkesztes">!</a><div class="left"><a href="/konyvek/petes-gabor-uj-hunnia-2039-osok-utjan"><img alt="Petes Gábor: Új-Hunnia 2039 – Ősök útján" title="Petes Gábor: Új-Hunnia 2039 – Ősök útján" class="tooltip" src="/system/covers/small/covers_598197.jpg?1584712166" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="445268" href="/konyvek/petes-gabor-uj-hunnia-2039-osok-utjan">Petes Gábor: Új-Hunnia 2039 – Ősök útján</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 66,86%)">48%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1094802/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1029775" class="clearfix list_item list_item_1029775 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1029775/szerkesztes">!</a><div class="left"><a href="/konyvek/terry-pratchett-stephen-baxter-a-hosszu-kozmosz"><img alt="Terry Pratchett – Stephen Baxter: A Hosszú Kozmosz" title="Terry Pratchett – Stephen Baxter: A Hosszú Kozmosz" class="tooltip" src="/system/covers/small/covers_612848.jpg?1591535265" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="456050" href="/konyvek/terry-pratchett-stephen-baxter-a-hosszu-kozmosz">Terry Pratchett – Stephen Baxter: A Hosszú Kozmosz</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 80,28%)">76%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1029775/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1078866" class="clearfix list_item list_item_1078866 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1078866/szerkesztes">!</a><div class="left"><a href="/konyvek/alastair-reynolds-acelszello-nyergeben"><img alt="Alastair Reynolds: Acélszellő nyergében" title="Alastair Reynolds: Acélszellő nyergében" class="tooltip" src="/system/covers/small/covers_626821.jpg?1598633958" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="465257" href="/konyvek/alastair-reynolds-acelszello-nyergeben">Alastair Reynolds: Acélszellő nyergében</a>   <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1078866/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1105959" class="clearfix list_item list_item_1105959 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1105959/szerkesztes">!</a><div class="left"><a href="/konyvek/j-r-dos-santos-halhatatlan"><img alt="J. R. dos Santos: Halhatatlan" title="J. R. dos Santos: Halhatatlan" class="tooltip" src="/system/covers/small/covers_628681.jpg?1599662518" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="466462" href="/konyvek/j-r-dos-santos-halhatatlan">J. R. dos Santos: Halhatatlan</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 92,49%)">95%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1105959/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1029279" class="clearfix list_item list_item_1029279 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1029279/szerkesztes">!</a><div class="left"><a href="/konyvek/john-scalzi-az-utolso-emperator"><img alt="John Scalzi: Az utolsó emperátor" title="John Scalzi: Az utolsó emperátor" class="tooltip" src="/system/covers/small/covers_594320.jpg?1582625082" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="442436" href="/konyvek/john-scalzi-az-utolso-emperator">John Scalzi: Az utolsó emperátor</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 78,57%)">78%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1029279/listaelem-szavazasok">Bejelölöm</a></div><div id="list_item_1068266" class="clearfix list_item list_item_1068266 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1068266/szerkesztes">!</a><div class="left"><a href="/konyvek/michael-walden-csillagikrek"><img alt="Michael Walden: Csillagikrek" title="Michael Walden: Csillagikrek" class="tooltip" src="/system/covers/small/covers_620783.jpg?1595607362" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="461464" href="/konyvek/michael-walden-csillagikrek">Michael Walden: Csillagikrek</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 85,06%)">85%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1068266/listaelem-szavazasok">Bejelölöm</a></div></div><div class="load_buttons"><a class="load_items button" href="/listak/2020-as-science-fiction-megjelenesek?page=2">Tovább</a></div><script>App.setLoadItems()</script></div><aside id="sidebar"><div class="sidebox"><ul class="sidelinks"><li><a href="/tagok/sff_vektor/listak">SFF_Vektor listái</a></li><li><a href="/listak">Listák</a></li></ul></div><div id="actual_side_beam"></div><div id="actual_book_beam"></div><div id="shopwindow"></div><script>$.getScript('/first.js', function(){
+  window.fixContentHeight()
+})</script><div id="side">  <div><!-- 71161633/category_vrec_1/category_vrec_1 -->
+<div data-fuse="22086369404"></div>
+</div>
+</div></aside></div></div></div><a href="/skinhirdetesek/3/megnez" id="leftskin" rel="nofollow" target="_blank"><span class="close">×</span></a><a href="/skinhirdetesek/3/megnez" id="rightskin" rel="nofollow" target="_blank"></a><script>(function() {
+  if (!$.cookie('skinny')) {
+    $('a#leftskin').css({
+      left: -$('a#leftskin').outerWidth()
+    });
+    $('a#rightskin').css({
+      right: -$('a#rightskin').outerWidth()
+    });
+    $('a#leftskin span').html('›');
+    setTimeout(function() {
+      $('#shopwindow').hide();
+      $('a#leftskin').animate({
+        left: 0
+      }, 1000);
+      $('a#rightskin').animate({
+        right: 0
+      }, 1000);
+      return $('a#leftskin span').html('×');
+    }, 2000);
+  }
+
+}).call(this);
+</script><script>(function() {
+  if ($.cookie('skinny')) {
+    $('a#leftskin').css({
+      left: -$('a#leftskin').outerWidth()
+    });
+    $('a#rightskin').css({
+      right: -$('a#rightskin').outerWidth()
+    });
+    $('a#leftskin span').html('›');
+  } else {
+    $('#shopwindow').hide();
+  }
+
+  $('a#leftskin').show();
+
+  $('a#rightskin').show();
+
+  $('a#leftskin, a#rightskin').on('click', function() {
+    var date;
+    date = new Date();
+    date.setMinutes(date.getMinutes() + 180);
+    return $.cookie('skinny', 'hidden', {
+      expires: date
+    });
+  });
+
+  $('a#leftskin span.close, a#rightskin span.close').on('click', function() {
+    var date;
+    if ($('a#leftskin').css('left') === '0px') {
+      $('a#leftskin').animate({
+        left: -$('a#leftskin').outerWidth()
+      }, 500);
+      $('a#rightskin').animate({
+        right: -$('a#rightskin').outerWidth()
+      }, 500);
+      $('a#leftskin span').html('›');
+      date = new Date();
+      date.setMinutes(date.getMinutes() + 180);
+      $.cookie('skinny', 'hidden', {
+        expires: date
+      });
+      $('#shopwindow').fadeIn(1000);
+    } else {
+      $('#shopwindow').hide();
+      $('a#leftskin').animate({
+        left: 0
+      }, 500);
+      $('a#rightskin').animate({
+        right: 0
+      }, 500);
+      $('a#leftskin span').html('×');
+      $.cookie('skinny', null);
+    }
+    return false;
+  });
+
+}).call(this);
+</script><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-95515-23"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-95515-23', { 'anonymize_ip': true });
+</script>
+</body></html>`;
+
+const testBookListPage2 = `<!DOCTYPE html><html lang="hu" prefix="og: http://ogp.me/ns#"><head><title>2020-as science fiction megjelenések · Moly</title><meta charset="utf-8" /><meta content="Szupernap" name="author" /><meta content="Moly" name="description" /><meta content="Moly" property="og:description" /><meta content="moly, könyvmoly, könyvek, olvasás" name="keywords" /><link href="https://moly.hu/listak/2020-as-science-fiction-megjelenesek" rel="canonical" /><meta content="Moly" property="og:site_name" /><meta content="68494421060" property="fb:app_id" /><meta content="https://moly.hu/listak/2020-as-science-fiction-megjelenesek" property="og:url" /><link href="https://feeds2.feedburner.com/moly" rel="alternate" title="Moly-bejegyzések" type="application/atom+xml" /><link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" /><link href="/favicon.ico" rel="icon" type="image/x-icon" /><meta content="Moly" name="application-name" /><link href="/manifest.json" rel="manifest" type="application/json" /><link href="https://moly.hu/moly_books.xml" rel="search" title="Moly.hu könyvkereső" type="application/opensearchdescription+xml" /><meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="RqY2iuqbLcGjDiSzgUU/djx8llWZrPmdQWwhKeDhDL9bOD9AbFCcIwEqkiOdcyxk6rXcQ0xAsjx+hd3CmjF8oQ==" /><link rel="stylesheet" media="all" href="/assets/application-50c1991d813cbc701f371c97246bdb1e0216fecb47a751e3976e4e452db7eb7c.css" data-turbolinks-track="reload" /><script src="/assets/application-56d90f26ca934eb9b3d7cf338745b091212923e4ada4560b978bafc86cffd606.js" data-turbolinks-track="reload"></script><script src="/assets/charts-5140cc348770bf1b416eb755e46a8885c81e82d118e66fa7b3001a30f58adca3.js"></script><meta content="no-preview" name="turbolinks-cache-control" /><script type="text/javascript" src="/advertisements/ads.js"></script><script>
+//<![CDATA[
+jQuery.timeago.settings.lang="hu";
+//]]>
+</script><script>
+  window.currentUser = 543913;
+  window.readBookIds = [];
+  window.ownedBookIds = [];
+  window.followingUserIds = [];
+  window.followingUserLogins = [];
+  window.hiddenUserIds = [];
+  window.blockerIds = [];
+  window.joinedZoneIds = [];
+  window.joinedCampaignIds = [];
+  window.joinedListIds = [];
+</script>
+
+
+<link href="https://cdn.fuseplatform.net" rel="dns-prefetch" /><link href="https://cdn.fuseplatform.net" rel="preconnect" /><script async src="https://cdn.fuseplatform.net/publift/tags/2/2148/fuse.js"></script></head><body class="user_logged_in layout_lists action_show" id="layout_lists_show"><div data-id="1925" id="top_banner"><div class="container" style="background-color: #e7eff7"><a rel="nofollow" target="_blank" href="/fejlechirdetesek/1925/megnez"><img alt="" src="/system/header_ads/images/1925/image_original.png?1617871351" /></a></div></div><div class="container"><nav class="clearfix" id="header"><ul class="topmenu menu"><li class="submenu" id="root_menu"><a href="/"><span>Kezdőlap</span></a><ul class="header_menu"><table style="width: 100%;"><tr><td style="width: 50%;"><ul class="simplesidelinks"><li><a href="/konyvek">Könyvek</a></li><li><a href="/sorozatok">Sorozatok</a></li><li><a href="/alkotok">Alkotók</a></li><li><a href="/kiadok">Kiadók</a></li><li><a href="/cimkek">Címkék</a></li><li><a href="/enciklopedia">Enciklopédia</a></li><li><a href="/idezetek">Idézetek</a></li><li><a href="/polcok">Polcok</a></li><li><a href="/listak">Listák</a></li><li><a href="/esemenyek">Események</a></li><li class="not_for_children"><a href="/hirek">Hírek</a></li></ul></td><td style="width: 50%;"><ul class="simplesidelinks"><li><a href="/zonak">Zónák</a></li><li><a href="/tagok">Tagok</a></li><li><a href="/karcok">Karcok</a></li><li><a href="/kihivasok">Kihívások</a></li><li class="not_for_children"><a href="/szavazasok">Szavazások</a></li><li><a href="/ertekelesek">Értékelések</a></li><li><a href="/triviak">Triviák</a></li><li class="not_for_children"><a href="/eszlelesek">Észlelések</a></li><li><a href="/blogok">Blogok</a></li><li><a href="/piacter">Piactér</a></li><li class="not_for_children"><a href="/utazokonyvek">Utazókönyvek</a></li></ul></td></tr></table></ul></li><li id="search"><form action="/kereses" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" /><input type="text" name="q" id="search_field" class="search_field" placeholder="Keresés" /></form></li><li class="submenu" id="dashboard_menu"><a href="/vezerlo">Új</a><ul><li><a href="/esemenyek/uj">Új esemény</a></li><li><a href="/eszlelesek/uj">Új észlelés</a></li><li><a href="/hirek/uj">Új hír</a></li><li><a href="/idezetek/uj">Új idézet</a></li><li><a href="/karcok/uj">Új karc</a></li><li><a href="/kihivasok/uj">Új kihívás</a></li><li><a href="/konyvek/uj">Új könyv</a></li><li><a href="/listak/uj">Új lista</a></li><li><a href="/olvasasok/hozzaadas">Új olvasmány</a></li><li><a href="/polcok/uj">Új polc</a></li><li><a href="/szavazasok/uj">Új szavazás</a></li><li><a href="/triviak/uj">Új trivia</a></li><li><a href="/utazokonyvek/uj">Új utazókönyv</a></li><li><a href="/uzenetek/uj">Új üzenet</a></li><li><a href="/zonak/uj">Új zóna</a></li></ul></li><img alt="" class="tooltip" height="16" id="jump_menu" title="Gyorsmenü (CTRL+J)" width="16" src="/assets/category-a417c53a77e66617342833d75e31aa97d8c284dfc59669430a054a7408b35645.png" /><script>(function() {
+  Mousetrap.bindGlobal('ctrl+j', function() {
+    $('#jump_menu').click();
+    return false;
+  });
+
+}).call(this);
+</script><li class="submenu" id="user_menu"><a href="/tagok/sadness"><img class="inline_avatar" title="" alt="" height="32" width="32" src="/system/users/missing_small.png" /> Profil</a><ul><li><a href="/tagok/sadness/olvasmanylista">Olvasmánylista</a></li><li><a href="/tagok/sadness/ertekelesek">Értékelések</a></li><li><a href="/tagok/sadness/magankonyvtar">Magánkönyvtár</a></li><li><a href="/tagok/sadness/varolista">Várólista</a></li><li><a href="/tagok/sadness/kivansaglista">Kívánságlista</a></li><li><a href="/tagok/sadness/kolcsonkeresek">Kölcsönkérések</a></li><li><a href="/tagok/sadness/karcok">Karcok</a></li><li><a href="/tagok/sadness/idezetek">Idézetek</a></li><li><a href="/tagok/sadness/triviak">Triviák</a></li><li><a href="/tagok/sadness/polcok">Polcok</a></li><li><a href="/tagok/sadness/alkotoertekelesek">Alkotóértékelések</a></li><li><a href="/tagok/sadness/esemenyek">Események</a></li><li><a href="/tagok/sadness/kihivasok">Kihívások</a></li><li><a href="/tagok/sadness/jelentkezes-listakra">Listák</a></li><li><a href="/tagok/sadness/szavazasok">Szavazások</a></li><li><a href="/tagok/sadness/eszlelesek">Észlelések</a></li><li><a href="/tagok/sadness/linkek">Linkek</a></li><li><a href="/tagok/sadness/blogbejegyzesek">Blogbejegyzések</a></li><li><a href="/tagok/sadness/zona-tagsagok">Zónák</a></li><li><a href="/tagok/sadness/csoportos-ajanlasok">Ajánlások</a></li><li><a href="/tagok/sadness/konyvjelzok">Könyvjelzők</a></li><li><a href="/tagok/sadness/szerkesztes">Beállítások</a></li></ul></li><li class="submenu"><a href="/friss/tagok">Friss</a><ul id="notes_menu"></ul></li><li id="notes_count_for_user"></li><li id="notes_count"></li><li class="not_for_children"><a href="/uzenetek">Üzenetek</a></li><li class="not_for_children" id="unread_waves"></li><li class="not_for_children" id="unread_system_waves"></li><img alt="" height="16" id="refresh_arrow" class="tooltip" title="Frissítés" width="16" src="/assets/arrow-circle-double-9ffe492763e202cc837becda3bbb589a749d5f270b5a839619b54ed6397f9edd.png" /></ul><ul class="topmenu menu toprightmenu"><li><a rel="modal" class="tooltip" title="Tanácsadó" href="/tanacsado"><img alt="" height="16" width="16" src="/assets/compass-c3ec2ced6de4299949e4f38774dc18d4e8ef0dab6aaeeedef15506939bad5e69.png" /></a></li><li><a rel="modal" class="tooltip" title="Szerencsesüti" href="/szerencsesuti"><img alt="" height="16" width="16" src="/assets/cookie-chocolate-eb3d3c8cc318ed260438966d93b2a4085cf548a71aa58f6a692a898d5581e7c7.png" /></a></li><li class="submenu"><a href="/info">Infó</a><ul><li><a href="/sugo">Súgó</a></li><li class="for_editors for_admins"><a href="/zart-sugo">Szerkesztői súgó</a></li><li class="for_admins"><a href="/zart-sugo/admin">Adminsúgó</a></li><li class="for_campaign_editors for_admins"><a href="/zart-sugo/kih%C3%ADv%C3%A1sszerkeszt%C5%91i">Kihívásszerkesztői súgó</a></li><li class="not_for_children"><a href="/blog">Molyblog</a></li><li><a href="/tedd-jobba">Tedd jobbá!</a></li><li class="not_for_children"><a href="/pro-tagsag">Pro tagság</a></li><li><a href="/uzenet-a-molynak">Üzenet a Molynak</a></li><li><a class="external" href="https://meta.moly.hu">meta.moly.hu</a></li><li class="not_for_children"><a href="/molybazar">Molybazár</a></li><li><a href="/rolunk">Rólunk</a></li><li><a href="/dokumentumok/felhasznalasi-feltetelek">Felhasználási feltételek</a></li><li><a href="/dokumentumok/iranyelvek">Irányelvek</a></li><li><a href="/dokumentumok/adatvedelem">Adatvédelem</a></li><li><a href="https://moly.hu/api">API</a></li><li class="for_admins"><a href="/hibajegykezelo">Hibajegykezelő</a></li><li class="for_editors for_campaign_editors for_admins"><a href="/szerkesztoi">Szerkesztői szoba</a></li><li class="for_admins"><a href="/moderatori-friss">Moderátori friss</a></li><li class="for_managers"><a href="/jovairasok">Jóváírások</a></li><li class="for_admins"><a href="/megrendelesek">Megrendelések</a></li><li class="for_admins"><a href="/szamlazasok">Számlázások</a></li><li class="for_admins"><a href="/uzenetkuldes">Üzenetek</a></li></ul></li><li><a href="/kilepes">Kilépés</a></li></ul></nav><div id="layout"><div id="search_area"></div><div class="b970">  <div><!-- 71161633/category_header/category_header -->
+<div data-fuse="22086369401"></div>
+</div>
+</div><div id="main"><div id="content" rel="/listak/2020-as-science-fiction-megjelenesek" role="main"><div class="flash-notice"><a onclick="$(this).parent().fadeOut(); return false" class="right close_button" href="#"><img alt="" height="16" width="16" src="/assets/chevron-ccb6cc67065467de497029d63ad306ba5697b129dc36121998d9ecb136748092.png" /></a><a href="/profilok/543787/szerkesztes">Add meg</a> a nevedet!</div><div class="right"><a class="switch banned_item" title="Szűröm ezentúl" href="/tiltott-elemek/set?bannable_item_id=28442&amp;bannable_item_type=List">Szűröm</a></div><h1>2020-as science fiction megjelenések <span class="subname">lista</span> <span class="counter">21</span></h1><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listak/2020-as-science-fiction-megjelenesek/szerkesztes">!</a><a class="set_checked button_icon right tooltip for_admins for_editors on" title="Jóváhagyás" rel="nofollow" data-confirm="Biztosan leveszed róla a pipát?" href="/szerkesztoi/lattam?checkable_id=28442&amp;checkable_type=List"><img alt="" height="16" width="16" src="/assets/tick-circle-52bc0ef9588421eeb1f20c8adb1f1bd6e559992e17c06fc6bed7989173e83e96.png" /></a><a class="set_hidden button_icon right for_admins tooltip" title="Elrejtés/megjelenítés" rel="nofollow" href="/szerkesztoi/rejtem?hideable_id=28442&amp;hideable_type=List"><img alt="" height="16" width="16" src="/assets/eye-8faea3ce4836c10c275072b5eb863782844947a25cda4ffb9e300f340162a3a4.png" /></a><a class="set_hidden_from_public button_icon right for_editors for_admins tooltip" title="Elrejtés/megjelenítés a közérdekűek közül" rel="nofollow" href="/listak/2020-as-science-fiction-megjelenesek/set_hidden_from_public"><img alt="" height="16" width="16" src="/assets/light-bulb-c054217989f8e838c05226136a0a17e86b8e210454a81e1621890d4ebf2558ca.png" /></a><div class="bookmark_button"><a class="set_editorial_bookmark tooltip invisible" title="Szerkesztői" data-editorial-bookmarkers="[]" href="/konyvjelzok/set_editorial?bookmarkable_id=28442&amp;bookmarkable_type=List">+</a><a class="bookmark button_icon for_users tooltip" title="Könyvjelzőzés" data-bookmarkers="[58017,59988,96148,97246]" href="/konyvjelzok/set?bookmarkable_id=28442&amp;bookmarkable_type=List">+</a></div><div class="vote_button"><a class="votes_count" rel="modal" href="/kedvencek?voteable_id=28442&amp;voteable_type=List">33</a><a class="vote button_icon for_users tooltip" title="Kedvencelés" data-voters="[19401,18619,225290,178620,273298,52564,1630,119980,11084,35370,464190,69584,14747,264434,349910,103473,27966,6842,386771,220881,112050,54201,391921,38863,51088,46605,96907,55877,59988,518610,236,144253,202074]" href="/kedvencek/set?voteable_id=28442&amp;voteable_type=List">*</a></div><p><a class="user_selector" data-id="298359" href="/tagok/sff_vektor">SFF_Vektor</a>&nbsp;<a class="organization tooltip" title="Szervezeti profil" href="/tagok/szervezeti-felhasznalok">U</a> <time datetime="2020-02-02T18:07:48+01:00" class="date" title="2020. február  2., 18:07">2020. február  2., 18:07</time> </p><div class="text"><p>A lista tartalmazza azon magyarul 2020-ban megjelent sci-fi regényeket, amelyek megfelelnek a jelölés feltételeinek (<a href="https://sffvektor.hu/a-jeloltlistakrol/">https://sffvektor.hu/a-jeloltlistakrol/</a>).</p>
+
+<p>Természetesen mi sem veszünk észre mindent, így a közösség segítségét is szeretnénk kérni: ha van olyan könyv, aminek szerintetek a jelöltek listáján a helye, ám mégsem szerepel, jelezzétek az adott listánál kommentben, és megvizsgáljuk a kérdést.</p></div><div id="head"><table><tr><th>Teljesítve</th><td class="right_aligned"><a class="switch" data-remote="true" rel="nofollow" data-method="post" href="/listak/2020-as-science-fiction-megjelenesek/lista-jelentkezesek">Jelentkezem</a> </td></tr><tr><th>Jelentkezők</th><td class="right_aligned"><a rel="modal" class="action" href="/listak/2020-as-science-fiction-megjelenesek/jelentkezok">40</a></td></tr></table></div><div class="user_298359"><div class="add_comment_button"><div class="formbutton"><a class="" href="/hozzaszolasok/uj?commentable_id=28442&amp;commentable_type=List">Új hozzászólás</a><div class="editbox clearfix" style=""><form class="add_comment" id="new_comment" action="/hozzaszolasok" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><ul><input type="hidden" value="List" name="comment[commentable_type]" id="comment_commentable_type" /><input type="hidden" value="28442" name="comment[commentable_id]" id="comment_commentable_id" /><input type="hidden" name="comment[reply_to_id]" id="comment_reply_to_id" /><li><textarea name="comment[comment]">
+</textarea></li><li><input type="submit" name="commit" value="Hozzászól" data-disable-with="Hozzászól" /></li></ul></form></div></div></div><a class="load_comments" href="/hozzaszolasok?commentable_id=28442&amp;commentable_type=List">2 hozzászólás</a></div><div class="wall"><div class="filter_box"><form class="turbo short_token_input" action="/listak/2020-as-science-fiction-megjelenesek" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" /><ul><li><a class="filter_button" href="#">Szűrés</a> <select name="order" class="filter_order" id="wait_order"><option value="">Rendezés szerint</option>
+<option value="alphabetically">Ábécérendben</option>
+<option value="creation_reversed">Listára kerülés ideje alapján</option>
+<option value="readings">Könyvek olvasottsága alapján</option>
+<option value="rating">Könyvek értékelése alapján</option>
+<option value="pages">Oldalszám alapján növekvő</option>
+<option value="pages_reversed">Oldalszám alapján csökkenő</option></select></li><div class="filter_options" style="display: none"><a class="button_icon right tooltip filter_close" title="Szűrések törlése" href="/listak/2020-as-science-fiction-megjelenesek"><img alt="" height="16" width="16" src="/assets/arrow-join-180-483859eb2367a8ea4cf1a384384654001d090c6fa290eca79c9e2c6749a51267.png" /></a><li><input type="text" name="q" id="q" placeholder="Szerző és cím" class="name_filter" /> <select name="filter" id="wait_filter"><option value="">Minden könyv</option>
+<option value="read">Csak az olvasottak</option>
+<option value="unread">Csak az olvasatlanok</option>
+<option value="wait">Csak a várólistámon lévők</option>
+<option value="wish">Csak a kívánságlistámon lévők</option></select></li><li><input type="text" name="tags" id="tags" /></li><li><input type="text" name="minus_tags" id="minus_tags" /></li><script>App.useTokenInput('#tags', '/api/tags_with_names.json', {prePopulate: [], placeholder: '+ címke'})
+App.useTokenInput('#minus_tags', '/api/tags_with_names.json', {prePopulate: [], placeholder: '− címke'})</script></div></ul></form></div></div><div class="endless pagination"><a class="previous_page" rel="prev" href="/listak/2020-as-science-fiction-megjelenesek?page=1">« Előző</a> <a rel="prev" href="/listak/2020-as-science-fiction-megjelenesek?page=1">1</a> <em class="current">2</em> <span class="next_page disabled">Következő »</span></div><div class="items"><div id="list_item_1192236" class="clearfix list_item list_item_1192236 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/listaelemek/1192236/szerkesztes">!</a><div class="left"><a href="/konyvek/michael-crichton-daniel-h-wilson-az-andromeda-evolucio"><img alt="Michael Crichton – Daniel H. Wilson: Az Androméda evolúció" title="Michael Crichton – Daniel H. Wilson: Az Androméda evolúció" class="tooltip" src="/system/covers/small/covers_592795.jpg?1592056558" /></a></div><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="441341" href="/konyvek/michael-crichton-daniel-h-wilson-az-andromeda-evolucio">Michael Crichton – Daniel H. Wilson: Az Androméda evolúció</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 78,82%)">75%</span>  <span class="subtitle"></span></h3></div><a class="switch list_item_vote" href="/listaelemek/1192236/listaelem-szavazasok">Bejelölöm</a></div>  <div><div class="bcontent">
+<!-- 71161633/category_incontent_1/category_incontent_1 -->
+<div data-fuse="22086369407"></div>
+</div>
+</div>
+</div></div><aside id="sidebar"><div class="sidebox"><ul class="sidelinks"><li><a href="/tagok/sff_vektor/listak">SFF_Vektor listái</a></li><li><a href="/listak">Listák</a></li></ul></div><div id="actual_side_beam"></div><div id="actual_book_beam"></div><div id="shopwindow"></div><script>$.getScript('/first.js', function(){
+  window.fixContentHeight()
+})</script><div id="side">  <div><!-- 71161633/category_vrec_1/category_vrec_1 -->
+<div data-fuse="22086369404"></div>
+</div>
+</div></aside></div></div></div><a href="/skinhirdetesek/3/megnez" id="leftskin" rel="nofollow" target="_blank"><span class="close">×</span></a><a href="/skinhirdetesek/3/megnez" id="rightskin" rel="nofollow" target="_blank"></a><script>(function() {
+  if (!$.cookie('skinny')) {
+    $('a#leftskin').css({
+      left: -$('a#leftskin').outerWidth()
+    });
+    $('a#rightskin').css({
+      right: -$('a#rightskin').outerWidth()
+    });
+    $('a#leftskin span').html('›');
+    setTimeout(function() {
+      $('#shopwindow').hide();
+      $('a#leftskin').animate({
+        left: 0
+      }, 1000);
+      $('a#rightskin').animate({
+        right: 0
+      }, 1000);
+      return $('a#leftskin span').html('×');
+    }, 2000);
+  }
+
+}).call(this);
+</script><script>(function() {
+  if ($.cookie('skinny')) {
+    $('a#leftskin').css({
+      left: -$('a#leftskin').outerWidth()
+    });
+    $('a#rightskin').css({
+      right: -$('a#rightskin').outerWidth()
+    });
+    $('a#leftskin span').html('›');
+  } else {
+    $('#shopwindow').hide();
+  }
+
+  $('a#leftskin').show();
+
+  $('a#rightskin').show();
+
+  $('a#leftskin, a#rightskin').on('click', function() {
+    var date;
+    date = new Date();
+    date.setMinutes(date.getMinutes() + 180);
+    return $.cookie('skinny', 'hidden', {
+      expires: date
+    });
+  });
+
+  $('a#leftskin span.close, a#rightskin span.close').on('click', function() {
+    var date;
+    if ($('a#leftskin').css('left') === '0px') {
+      $('a#leftskin').animate({
+        left: -$('a#leftskin').outerWidth()
+      }, 500);
+      $('a#rightskin').animate({
+        right: -$('a#rightskin').outerWidth()
+      }, 500);
+      $('a#leftskin span').html('›');
+      date = new Date();
+      date.setMinutes(date.getMinutes() + 180);
+      $.cookie('skinny', 'hidden', {
+        expires: date
+      });
+      $('#shopwindow').fadeIn(1000);
+    } else {
+      $('#shopwindow').hide();
+      $('a#leftskin').animate({
+        left: 0
+      }, 500);
+      $('a#rightskin').animate({
+        right: 0
+      }, 500);
+      $('a#leftskin span').html('×');
+      $.cookie('skinny', null);
+    }
+    return false;
+  });
+
+}).call(this);
+</script><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-95515-23"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-95515-23', { 'anonymize_ip': true });
+</script>
+</body></html>`;
+
+const testBooksFromList = [
+  'https://moly.hu/konyvek/lily-brooks-dalton-az-ejfeli-egbolt',
+  'https://moly.hu/konyvek/octavia-e-butler-hibridek',
+  'https://moly.hu/konyvek/ronil-caine-fraktal',
+  'https://moly.hu/konyvek/jack-campbell-vitez',
+  'https://moly.hu/konyvek/philip-k-dick-urlotto',
+  'https://moly.hu/konyvek/william-gibson-mozgaster',
+  'https://moly.hu/konyvek/mund-katalin-szerk-galaktika-364-xl',
+  'https://moly.hu/konyvek/brandon-hackett-eldobhato-testek',
+  'https://moly.hu/konyvek/thore-d-hansen-a-legtisztabbak',
+  'https://moly.hu/konyvek/r-j-hendon-gyomlalo',
+  'https://moly.hu/konyvek/marc-uwe-kling-qualityland',
+  'https://moly.hu/konyvek/ian-mcewan-mi-gepek',
+  'https://moly.hu/konyvek/richard-morgan-legszomj',
+  'https://moly.hu/konyvek/christopher-paolini-almok-a-csillagok-kozt-i-ii',
+  'https://moly.hu/konyvek/petes-gabor-uj-hunnia-2039-osok-utjan',
+  'https://moly.hu/konyvek/terry-pratchett-stephen-baxter-a-hosszu-kozmosz',
+  'https://moly.hu/konyvek/alastair-reynolds-acelszello-nyergeben',
+  'https://moly.hu/konyvek/j-r-dos-santos-halhatatlan',
+  'https://moly.hu/konyvek/john-scalzi-az-utolso-emperator',
+  'https://moly.hu/konyvek/michael-walden-csillagikrek',
+  'https://moly.hu/konyvek/michael-crichton-daniel-h-wilson-az-andromeda-evolucio'
+];
+
+const testBookShelfUrl = '/polcok/besorolasra-var-2020';
+
+const testBookShelfPage = `
+<!DOCTYPE html><html lang="hu" prefix="og: http://ogp.me/ns#"><head><title>Besorolásra vár 2020 · Moly</title><meta charset="utf-8" /><meta content="Szupernap" name="author" /><meta content="Moly" name="description" /><meta content="Moly" property="og:description" /><meta content="moly, könyvmoly, könyvek, olvasás" name="keywords" /><link href="https://moly.hu/polcok/besorolasra-var-2020" rel="canonical" /><meta content="Moly" property="og:site_name" /><meta content="68494421060" property="fb:app_id" /><meta content="https://moly.hu/polcok/besorolasra-var-2020" property="og:url" /><link href="https://feeds2.feedburner.com/moly" rel="alternate" title="Moly-bejegyzések" type="application/atom+xml" /><link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" /><link href="/favicon.ico" rel="icon" type="image/x-icon" /><meta content="Moly" name="application-name" /><link href="/manifest.json" rel="manifest" type="application/json" /><link href="https://moly.hu/moly_books.xml" rel="search" title="Moly.hu könyvkereső" type="application/opensearchdescription+xml" /><meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="9caK6ZOBl78UvBB58lcNU4GLlxSEa6moZLCeXeoAP8roWIMjFUomXbaYpunuYR5BV0LdAlGH4glbWWK2kNBP1A==" /><link rel="stylesheet" media="all" href="/assets/application-50c1991d813cbc701f371c97246bdb1e0216fecb47a751e3976e4e452db7eb7c.css" data-turbolinks-track="reload" /><script src="/assets/application-56d90f26ca934eb9b3d7cf338745b091212923e4ada4560b978bafc86cffd606.js" data-turbolinks-track="reload"></script><script src="/assets/charts-5140cc348770bf1b416eb755e46a8885c81e82d118e66fa7b3001a30f58adca3.js"></script><meta content="no-preview" name="turbolinks-cache-control" /><script type="text/javascript" src="/advertisements/ads.js"></script><script>
+//<![CDATA[
+jQuery.timeago.settings.lang="hu";
+//]]>
+</script><script>
+  window.currentUser = 543913;
+  window.readBookIds = [];
+  window.ownedBookIds = [];
+  window.followingUserIds = [];
+  window.followingUserLogins = [];
+  window.hiddenUserIds = [];
+  window.blockerIds = [];
+  window.joinedZoneIds = [];
+  window.joinedCampaignIds = [];
+  window.joinedListIds = [];
+</script>
+
+
+<link href="https://cdn.fuseplatform.net" rel="dns-prefetch" /><link href="https://cdn.fuseplatform.net" rel="preconnect" /><script async src="https://cdn.fuseplatform.net/publift/tags/2/2148/fuse.js"></script></head><body class="user_logged_in layout_tales action_show" id="layout_tales_show"><div data-id="1930" id="top_banner"><div class="container" style="background-color: #e7eff7"><a rel="nofollow" target="_blank" href="/fejlechirdetesek/1930/megnez"><img alt="" src="/system/header_ads/images/1930/image_original.jpg?1617885281" /></a></div></div><div class="container"><nav class="clearfix" id="header"><ul class="topmenu menu"><li class="submenu" id="root_menu"><a href="/"><span>Kezdőlap</span></a><ul class="header_menu"><table style="width: 100%;"><tr><td style="width: 50%;"><ul class="simplesidelinks"><li><a href="/konyvek">Könyvek</a></li><li><a href="/sorozatok">Sorozatok</a></li><li><a href="/alkotok">Alkotók</a></li><li><a href="/kiadok">Kiadók</a></li><li><a href="/cimkek">Címkék</a></li><li><a href="/enciklopedia">Enciklopédia</a></li><li><a href="/idezetek">Idézetek</a></li><li><a href="/polcok">Polcok</a></li><li><a href="/listak">Listák</a></li><li><a href="/esemenyek">Események</a></li><li class="not_for_children"><a href="/hirek">Hírek</a></li></ul></td><td style="width: 50%;"><ul class="simplesidelinks"><li><a href="/zonak">Zónák</a></li><li><a href="/tagok">Tagok</a></li><li><a href="/karcok">Karcok</a></li><li><a href="/kihivasok">Kihívások</a></li><li class="not_for_children"><a href="/szavazasok">Szavazások</a></li><li><a href="/ertekelesek">Értékelések</a></li><li><a href="/triviak">Triviák</a></li><li class="not_for_children"><a href="/eszlelesek">Észlelések</a></li><li><a href="/blogok">Blogok</a></li><li><a href="/piacter">Piactér</a></li><li class="not_for_children"><a href="/utazokonyvek">Utazókönyvek</a></li></ul></td></tr></table></ul></li><li id="search"><form action="/kereses" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" /><input type="text" name="q" id="search_field" class="search_field" placeholder="Keresés" /></form></li><li class="submenu" id="dashboard_menu"><a href="/vezerlo">Új</a><ul><li><a href="/esemenyek/uj">Új esemény</a></li><li><a href="/eszlelesek/uj">Új észlelés</a></li><li><a href="/hirek/uj">Új hír</a></li><li><a href="/idezetek/uj">Új idézet</a></li><li><a href="/karcok/uj">Új karc</a></li><li><a href="/kihivasok/uj">Új kihívás</a></li><li><a href="/konyvek/uj">Új könyv</a></li><li><a href="/listak/uj">Új lista</a></li><li><a href="/olvasasok/hozzaadas">Új olvasmány</a></li><li><a href="/polcok/uj">Új polc</a></li><li><a href="/szavazasok/uj">Új szavazás</a></li><li><a href="/triviak/uj">Új trivia</a></li><li><a href="/utazokonyvek/uj">Új utazókönyv</a></li><li><a href="/uzenetek/uj">Új üzenet</a></li><li><a href="/zonak/uj">Új zóna</a></li></ul></li><img alt="" class="tooltip" height="16" id="jump_menu" title="Gyorsmenü (CTRL+J)" width="16" src="/assets/category-a417c53a77e66617342833d75e31aa97d8c284dfc59669430a054a7408b35645.png" /><script>(function() {
+  Mousetrap.bindGlobal('ctrl+j', function() {
+    $('#jump_menu').click();
+    return false;
+  });
+
+}).call(this);
+</script><li class="submenu" id="user_menu"><a href="/tagok/sadness"><img class="inline_avatar" title="" alt="" height="32" width="32" src="/system/users/missing_small.png" /> Profil</a><ul><li><a href="/tagok/sadness/olvasmanylista">Olvasmánylista</a></li><li><a href="/tagok/sadness/ertekelesek">Értékelések</a></li><li><a href="/tagok/sadness/magankonyvtar">Magánkönyvtár</a></li><li><a href="/tagok/sadness/varolista">Várólista</a></li><li><a href="/tagok/sadness/kivansaglista">Kívánságlista</a></li><li><a href="/tagok/sadness/kolcsonkeresek">Kölcsönkérések</a></li><li><a href="/tagok/sadness/karcok">Karcok</a></li><li><a href="/tagok/sadness/idezetek">Idézetek</a></li><li><a href="/tagok/sadness/triviak">Triviák</a></li><li><a href="/tagok/sadness/polcok">Polcok</a></li><li><a href="/tagok/sadness/alkotoertekelesek">Alkotóértékelések</a></li><li><a href="/tagok/sadness/esemenyek">Események</a></li><li><a href="/tagok/sadness/kihivasok">Kihívások</a></li><li><a href="/tagok/sadness/jelentkezes-listakra">Listák</a></li><li><a href="/tagok/sadness/szavazasok">Szavazások</a></li><li><a href="/tagok/sadness/eszlelesek">Észlelések</a></li><li><a href="/tagok/sadness/linkek">Linkek</a></li><li><a href="/tagok/sadness/blogbejegyzesek">Blogbejegyzések</a></li><li><a href="/tagok/sadness/zona-tagsagok">Zónák</a></li><li><a href="/tagok/sadness/csoportos-ajanlasok">Ajánlások</a></li><li><a href="/tagok/sadness/konyvjelzok">Könyvjelzők</a></li><li><a href="/tagok/sadness/szerkesztes">Beállítások</a></li></ul></li><li class="submenu"><a href="/friss/tagok">Friss</a><ul id="notes_menu"></ul></li><li id="notes_count_for_user"></li><li id="notes_count"></li><li class="not_for_children"><a href="/uzenetek">Üzenetek</a></li><li class="not_for_children" id="unread_waves"></li><li class="not_for_children" id="unread_system_waves"></li><img alt="" height="16" id="refresh_arrow" class="tooltip" title="Frissítés" width="16" src="/assets/arrow-circle-double-9ffe492763e202cc837becda3bbb589a749d5f270b5a839619b54ed6397f9edd.png" /></ul><ul class="topmenu menu toprightmenu"><li><a rel="modal" class="tooltip" title="Tanácsadó" href="/tanacsado"><img alt="" height="16" width="16" src="/assets/compass-c3ec2ced6de4299949e4f38774dc18d4e8ef0dab6aaeeedef15506939bad5e69.png" /></a></li><li><a rel="modal" class="tooltip" title="Szerencsesüti" href="/szerencsesuti"><img alt="" height="16" width="16" src="/assets/cookie-chocolate-eb3d3c8cc318ed260438966d93b2a4085cf548a71aa58f6a692a898d5581e7c7.png" /></a></li><li class="submenu"><a href="/info">Infó</a><ul><li><a href="/sugo">Súgó</a></li><li class="for_editors for_admins"><a href="/zart-sugo">Szerkesztői súgó</a></li><li class="for_admins"><a href="/zart-sugo/admin">Adminsúgó</a></li><li class="for_campaign_editors for_admins"><a href="/zart-sugo/kih%C3%ADv%C3%A1sszerkeszt%C5%91i">Kihívásszerkesztői súgó</a></li><li class="not_for_children"><a href="/blog">Molyblog</a></li><li><a href="/tedd-jobba">Tedd jobbá!</a></li><li class="not_for_children"><a href="/pro-tagsag">Pro tagság</a></li><li><a href="/uzenet-a-molynak">Üzenet a Molynak</a></li><li><a class="external" href="https://meta.moly.hu">meta.moly.hu</a></li><li class="not_for_children"><a href="/molybazar">Molybazár</a></li><li><a href="/rolunk">Rólunk</a></li><li><a href="/dokumentumok/felhasznalasi-feltetelek">Felhasználási feltételek</a></li><li><a href="/dokumentumok/iranyelvek">Irányelvek</a></li><li><a href="/dokumentumok/adatvedelem">Adatvédelem</a></li><li><a href="https://moly.hu/api">API</a></li><li class="for_admins"><a href="/hibajegykezelo">Hibajegykezelő</a></li><li class="for_editors for_campaign_editors for_admins"><a href="/szerkesztoi">Szerkesztői szoba</a></li><li class="for_admins"><a href="/moderatori-friss">Moderátori friss</a></li><li class="for_managers"><a href="/jovairasok">Jóváírások</a></li><li class="for_admins"><a href="/megrendelesek">Megrendelések</a></li><li class="for_admins"><a href="/szamlazasok">Számlázások</a></li><li class="for_admins"><a href="/uzenetkuldes">Üzenetek</a></li></ul></li><li><a href="/kilepes">Kilépés</a></li></ul></nav><div id="layout"><div id="search_area"></div><div class="b970">  <div><!-- 71161633/category_header/category_header -->
+<div data-fuse="22086369401"></div>
+</div>
+</div><div id="main"><div id="content" rel="/polcok/besorolasra-var-2020" role="main"><div class="flash-notice"><a onclick="$(this).parent().fadeOut(); return false" class="right close_button" href="#"><img alt="" height="16" width="16" src="/assets/chevron-ccb6cc67065467de497029d63ad306ba5697b129dc36121998d9ecb136748092.png" /></a><a href="/profilok/543787/szerkesztes">Add meg</a> a nevedet!</div><div class="right"><a class="switch banned_item" title="Szűröm ezentúl" href="/tiltott-elemek/set?bannable_item_id=298934&amp;bannable_item_type=Tale">Szűröm</a></div><div class="user_298359"><h1>Besorolásra vár 2020 <span class="subname">polc</span> <span class="counter">3</span></h1><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/polcok/besorolasra-var-2020/szerkesztes">!</a><a class="set_checked button_icon right tooltip for_admins for_editors" title="Jóváhagyás" rel="nofollow" href="/szerkesztoi/lattam?checkable_id=298934&amp;checkable_type=Tale"><img alt="" height="16" width="16" src="/assets/tick-white-c10121ba1d8f743e1a1f297216e8b4d44a19fae2c281268e41c84fe2bca63dbd.png" /></a><a class="set_hidden button_icon right for_admins tooltip for_owner" title="Privát/nyilvános" rel="nofollow" href="/szerkesztoi/rejtem?hideable_id=298934&amp;hideable_type=Tale"><img alt="" height="16" width="16" src="/assets/eye-8faea3ce4836c10c275072b5eb863782844947a25cda4ffb9e300f340162a3a4.png" /></a><a class="set_hidden_from_public button_icon right for_editors for_admins tooltip" title="Elrejtés/megjelenítés a közérdekűek közül" rel="nofollow" href="/polcok/besorolasra-var-2020/set_hidden_from_public"><img alt="" height="16" width="16" src="/assets/light-bulb-c054217989f8e838c05226136a0a17e86b8e210454a81e1621890d4ebf2558ca.png" /></a><div class="bookmark_button"><a class="set_editorial_bookmark tooltip invisible" title="Szerkesztői" data-editorial-bookmarkers="[]" href="/konyvjelzok/set_editorial?bookmarkable_id=298934&amp;bookmarkable_type=Tale">+</a><a class="bookmark button_icon for_users tooltip" title="Könyvjelzőzés" data-bookmarkers="[]" href="/konyvjelzok/set?bookmarkable_id=298934&amp;bookmarkable_type=Tale">+</a></div><div class="vote_button"><a class="votes_count" rel="modal" href="/kedvencek?voteable_id=298934&amp;voteable_type=Tale">8</a><a class="vote button_icon for_users tooltip" title="Kedvencelés" data-voters="[11084,18619,18672,54201,386771,134475,51088,391921]" href="/kedvencek/set?voteable_id=298934&amp;voteable_type=Tale">*</a></div><p><a class="user_selector" data-id="298359" href="/tagok/sff_vektor">SFF_Vektor</a>&nbsp;<a class="organization tooltip" title="Szervezeti profil" href="/tagok/szervezeti-felhasznalok">U</a> <time datetime="2020-02-17T14:06:20+01:00" class="date" title="2020. február 17., 14:06">2020. február 17., 14:06</time> </p><div class="text"><p>Erre a polcra pakolunk fel minden olyan regényt, amely a zsűri látókörébe került, viszont nem tudjuk azonnal eldönteni, hogy belefér-e valamelyik jelöltlista kereteibe. Ilyen könyvek azok, amiknél nem egyértelmű, hogy sci-fi vagy fantasy (vagy hogy egyáltalán zsánermű-e) az adott regény, illetve megfelel-e a jelölés feltételeinek (<a href="https://sffvektor.hu/a-jeloltlistakrol/">https://sffvektor.hu/a-jeloltlistakrol/</a>). A polcra folyamatosan érkezhetnek ajánlások a Moly felhasználóitól is. Ha egy ajánlásról olvasás nélkül is egyértelműen megállapítható, hogy nem felel meg a követelményeknek, úgy a könyvet erre a polcra nem rakjuk fel, helyette a „Nem jelölt 2020” nevű polcra kerül.</p>
+
+<p>Amennyiben egy könyv a zsűritagok véleménye alapján (az adott mű elolvasása és véleményezése után) valamilyen oknál fogva nem felel meg a jelöltlistára kerülés kritériumainak, akkor átkerül a „Nem jelölt 2020” nevű polcra (indoklással együtt); ha viszont megfelelt, akkor a megfelelő jelöltlistára tesszük fel.</p></div><div class="add_comment_button"><div class="formbutton"><a class="" href="/hozzaszolasok/uj?commentable_id=298934&amp;commentable_type=Tale">Új hozzászólás</a><div class="editbox clearfix" style=""><form class="add_comment" id="new_comment" action="/hozzaszolasok" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><ul><input type="hidden" value="Tale" name="comment[commentable_type]" id="comment_commentable_type" /><input type="hidden" value="298934" name="comment[commentable_id]" id="comment_commentable_id" /><input type="hidden" name="comment[reply_to_id]" id="comment_reply_to_id" /><li><textarea name="comment[comment]">
+</textarea></li><li><input type="submit" name="commit" value="Hozzászól" data-disable-with="Hozzászól" /></li></ul></form></div></div></div><a class="load_comments" href="/hozzaszolasok?commentable_id=298934&amp;commentable_type=Tale">11 hozzászólás</a></div><div class="wall"><div class="filter_box"><form class="turbo short_token_input" action="/polcok/besorolasra-var-2020" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" /><ul><li><a class="filter_button" href="#">Szűrés</a> <input name="hide_shelf" type="hidden" value="0" /><input name="hide_shelf" class="inline" type="checkbox" value="1" checked="checked" id="tale_hide_shelf" /><img alt="" height="16" width="16" class="tooltip" title="Borítók mutatása" src="/assets/book-8be16206d4afb625b60ee4ffd3c88aae84e010c1cf90b00ac72c682f6951c973.png" /></li><div class="filter_options" style="display: none"><a class="button_icon right tooltip filter_close" title="Szűrések törlése" href="/polcok/besorolasra-var-2020"><img alt="" height="16" width="16" src="/assets/arrow-join-180-483859eb2367a8ea4cf1a384384654001d090c6fa290eca79c9e2c6749a51267.png" /></a><li><input type="text" name="q" id="q" placeholder="Szerző és cím" class="name_filter" /> <select name="filter" id="tale_filter"><option value="">Minden könyv</option>
+<option value="read">Csak az olvasottak</option>
+<option value="unread">Csak az olvasatlanok</option>
+<option value="wait">Csak a várólistámon lévők</option>
+<option value="wish">Csak a kívánságlistámon lévők</option></select></li><li><input type="text" name="tags" id="tags" /></li><li><input type="text" name="minus_tags" id="minus_tags" /></li><script>App.useTokenInput('#tags', '/api/tags_with_names.json', {prePopulate: [], placeholder: '+ címke'})
+App.useTokenInput('#minus_tags', '/api/tags_with_names.json', {prePopulate: [], placeholder: '− címke'})</script></div></ul></form></div></div><div class="shelf"><div class="book_with_shop"><a data-allowance="26" href="/konyvek/bedo-zsuzsanna-plastic-love"><img alt="Bedő Zsuzsanna: Plastic love" title="Bedő Zsuzsanna: Plastic love" class="tooltip" src="/system/covers/normal/covers_591534.jpg?1581338987" /></a></div><div class="book_with_shop"><a data-allowance="30" href="/konyvek/sophie-mackintosh-kek-sorsjegy"><img alt="Sophie Mackintosh: Kék sorsjegy" title="Sophie Mackintosh: Kék sorsjegy" class="tooltip" src="/system/covers/normal/covers_592782.jpg?1581941069" /></a></div><div class="book_with_shop"><a class="not_for_children" data-allowance="30" href="/konyvek/lawrence-wright-oktober-vegen"><img alt="Lawrence Wright: Október végén" title="Lawrence Wright: Október végén" class="tooltip" src="/system/covers/normal/covers_632672.jpg?1601646422" /></a></div></div><div id="tale_item_7350422" class="tale_item tale_item_7350422 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/polcelemek/7350422/szerkesztes">!</a><div class="vote_button"><a class="vote button_icon for_users tooltip" title="Kedvencelés" data-voters="[]" href="/kedvencek/set?voteable_id=7350422&amp;voteable_type=TaleItem">*</a></div><a title="Megvásárolható példányok" class="modal button_icon right tooltip not_for_children" href="/konyvek/bedo-zsuzsanna-plastic-love/vasarlas"><img alt="" height="16" width="16" src="/assets/store-32182f16da23f909748905527ccb8c4b7caaa9f3c832110b40ea0434b1f9dd21.png" /></a><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="440433" href="/konyvek/bedo-zsuzsanna-plastic-love">Bedő Zsuzsanna: Plastic love</a>   <span class="subtitle"></span></h3></div><div class="sticky_note"><p>sci-fi vagy sem</p></div></div>  <div><div class="bcontent">
+<!-- 71161633/category_incontent_1/category_incontent_1 -->
+<div data-fuse="22086369407"></div>
+</div>
+</div>
+<div id="tale_item_7821208" class="tale_item tale_item_7821208 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/polcelemek/7821208/szerkesztes">!</a><div class="vote_button"><a class="vote button_icon for_users tooltip" title="Kedvencelés" data-voters="[]" href="/kedvencek/set?voteable_id=7821208&amp;voteable_type=TaleItem">*</a></div><a title="Megvásárolható példányok" class="modal button_icon right tooltip not_for_children" href="/konyvek/sophie-mackintosh-kek-sorsjegy/vasarlas"><img alt="" height="16" width="16" src="/assets/store-32182f16da23f909748905527ccb8c4b7caaa9f3c832110b40ea0434b1f9dd21.png" /></a><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="441330" href="/konyvek/sophie-mackintosh-kek-sorsjegy">Sophie Mackintosh: Kék sorsjegy</a> <span class="like_count" title="Értékelések átlaga (olvasottsággal korrigált átlag: 69,50%)">67%</span>  <span class="subtitle"></span></h3></div><div class="sticky_note"><p>sci-fi vagy sem</p></div></div><div id="tale_item_8289270" class="tale_item tale_item_8289270 user_298359"><a class="edit button_icon for_users tooltip" title="Menü" rel="modal" aria-label="Menü" href="/polcelemek/8289270/szerkesztes">!</a><div class="vote_button"><a class="vote button_icon for_users tooltip" title="Kedvencelés" data-voters="[]" href="/kedvencek/set?voteable_id=8289270&amp;voteable_type=TaleItem">*</a></div><a title="Megvásárolható példányok" class="modal button_icon right tooltip not_for_children" href="/konyvek/lawrence-wright-oktober-vegen/vasarlas"><img alt="" height="16" width="16" src="/assets/store-32182f16da23f909748905527ccb8c4b7caaa9f3c832110b40ea0434b1f9dd21.png" /></a><div class="book_atom"><h3 class="item"><a class="fn book_selector" data-id="469270" href="/konyvek/lawrence-wright-oktober-vegen">Lawrence Wright: Október végén</a>   <span class="subtitle"></span></h3></div><div class="sticky_note"><p>sci-fi vagy sem</p></div></div></div><aside id="sidebar"><div class="sidebox"><ul class="sidelinks"><li><a href="/tagok/sff_vektor/polcok">SFF_Vektor polcai</a></li><li><a href="/polcok">Polcok</a></li></ul></div><div id="actual_side_beam"></div><div id="actual_book_beam"></div><div id="shopwindow"></div><script>$.getScript('/first.js', function(){
+  window.fixContentHeight()
+})</script><div id="side">  <div><!-- 71161633/category_vrec_1/category_vrec_1 -->
+<div data-fuse="22086369404"></div>
+</div>
+</div></aside></div></div></div><a href="/skinhirdetesek/3/megnez" id="leftskin" rel="nofollow" target="_blank"><span class="close">×</span></a><a href="/skinhirdetesek/3/megnez" id="rightskin" rel="nofollow" target="_blank"></a><script>(function() {
+  if ($.cookie('skinny')) {
+    $('a#leftskin').css({
+      left: -$('a#leftskin').outerWidth()
+    });
+    $('a#rightskin').css({
+      right: -$('a#rightskin').outerWidth()
+    });
+    $('a#leftskin span').html('›');
+  } else {
+    $('#shopwindow').hide();
+  }
+
+  $('a#leftskin').show();
+
+  $('a#rightskin').show();
+
+  $('a#leftskin, a#rightskin').on('click', function() {
+    var date;
+    date = new Date();
+    date.setMinutes(date.getMinutes() + 180);
+    return $.cookie('skinny', 'hidden', {
+      expires: date
+    });
+  });
+
+  $('a#leftskin span.close, a#rightskin span.close').on('click', function() {
+    var date;
+    if ($('a#leftskin').css('left') === '0px') {
+      $('a#leftskin').animate({
+        left: -$('a#leftskin').outerWidth()
+      }, 500);
+      $('a#rightskin').animate({
+        right: -$('a#rightskin').outerWidth()
+      }, 500);
+      $('a#leftskin span').html('›');
+      date = new Date();
+      date.setMinutes(date.getMinutes() + 180);
+      $.cookie('skinny', 'hidden', {
+        expires: date
+      });
+      $('#shopwindow').fadeIn(1000);
+    } else {
+      $('#shopwindow').hide();
+      $('a#leftskin').animate({
+        left: 0
+      }, 500);
+      $('a#rightskin').animate({
+        right: 0
+      }, 500);
+      $('a#leftskin span').html('×');
+      $.cookie('skinny', null);
+    }
+    return false;
+  });
+
+}).call(this);
+</script><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-95515-23"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-95515-23', { 'anonymize_ip': true });
+</script>
+</body></html>`;
+
+const testBooksFromShelf = [
+  {
+    url: '/konyvek/bedo-zsuzsanna-plastic-love',
+    note: 'sci-fi vagy sem'
+  },
+  {
+    url: '/konyvek/sophie-mackintosh-kek-sorsjegy',
+    note: 'sci-fi vagy sem'
+  },
+  {
+    url: '/konyvek/lawrence-wright-oktober-vegen',
+    note: 'sci-fi vagy sem'
+  }
+];
+
 module.exports = {
   testBookUrl,
   testAuthors,
   testBookTitle,
   testSeries,
   testSeriesNum,
+  testAlternatives,
   testBookPage,
   testLoginPage,
   testAuthenticityToken,
   testRedirectPage,
   testMolySessionCookie,
   testUserCredentialsCookie,
-  testUserCredentials
+  testUserCredentials,
+  testBookListUrl,
+  testBookListPage1,
+  testBookListPage2,
+  testBooksFromList,
+  testBookShelfUrl,
+  testBookShelfPage,
+  testBooksFromShelf
 };
