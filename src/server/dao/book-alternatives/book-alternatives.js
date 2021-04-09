@@ -9,52 +9,23 @@ const bookAlternativeProperties = [
   'urls' //array
 ];
 
-async function createBookAlternatives(alternativesData) {
-  const alternativeIds = await Promise.all(alternativesData.map(async alternativeData => {
-    const alternativeDataToSave = pick(alternativeData, bookAlternativeProperties);
-    const bookAlternative = await firestore.collection('bookAlternatives').add(alternativeDataToSave);
-    return bookAlternative.id;
-  }));
-  return alternativeIds;
+async function createBookAlternative(alternativeData) {
+  const alternativeDataToSave = pick(alternativeData, bookAlternativeProperties);
+  const bookAlternative = await firestore.collection('bookAlternatives').add(alternativeDataToSave);
+  return bookAlternative.id;
 }
 
-async function updateBookAlternatives(alternativesData) {
-  let alternativeIds;
+async function updateBookAlternative(id, alternativeData) {
+  const alternativeDataToSave = pick(alternativeData, bookAlternativeProperties);
   try {
-    alternativeIds = alternativesData.map(alternative => alternative.id);
-    await firestore.runTransaction(async transaction => { 
-      const alternatives = await Promise.all(alternativesData.map(async alternativeData => {
-
-        const alternativeRef = firestore.collection('bookAlternatives').doc(alternativeData.id);
-        const alternativeSnapshot = await transaction.get(alternativeRef); 
-
-        return { id: alternativeData.id, ref: alternativeRef, snapshot: alternativeSnapshot };
-      }));
-
-      alternatives.map((alternative, index) => {
-        if (!alternative.snapshot.exists) {
-          alternativeIds[index] = null;
-        } else {
-          transaction.update(alternative.ref, alternativesData[index]);
-        }
-      });
-    });
+    const alternativeRef = firestore.collection('bookAlternatives').doc(id);
+    await alternativeRef.update(alternativeDataToSave);
   } catch (error) {
-    throw new Error('Unsuccesful data update');
+    return null;
   }
 
-  const updatedBookAlternatives = await Promise.all(alternativeIds.map(async id => {
-    if (id === null) {
-      return null;
-    } 
-    const alternative = await firestore.collection('bookAlternatives').doc(id).get();
-    return {
-      id: alternative.id,
-      ...alternative.data()
-    };
-  }));
-
-  return updatedBookAlternatives;
+  const alternative = await firestore.collection('bookAlternatives').doc(id).get();
+  return { id, ...(alternative.data()) };
 }
 
 async function getBookAlternativesByIds(alternativeIds) {
@@ -69,6 +40,17 @@ async function getBookAlternativesByIds(alternativeIds) {
   return alternatives;
 }
 
+async function getBookAlternativeWithUrl(url) {
+  const bookAlternatives = await firestore.collection('bookAlternatives').where('urls', 'array-contains', url).get();
+  if (bookAlternatives.size === 0) {
+    return null;
+  }
+
+  const [alternative] = mapToDataWithId(bookAlternatives);
+
+  return alternative;
+}
+
 async function getBookAlternativesWithProps(alternativeData = {}) {
   const bookDataToQuery = pick(alternativeData, bookAlternativeProperties);
   const filteredBookAlternativesRef = await constructQuery('bookAlternatives', bookDataToQuery);
@@ -80,8 +62,9 @@ async function getBookAlternativesWithProps(alternativeData = {}) {
 }
 
 module.exports = {
-  createBookAlternatives,
-  updateBookAlternatives,
+  createBookAlternative,
+  updateBookAlternative,
   getBookAlternativesByIds,
+  getBookAlternativeWithUrl,
   getBookAlternativesWithProps
 };

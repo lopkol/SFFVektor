@@ -12,5 +12,6 @@ router.post('/users/new', require('./endpoints/users/create-user/create-user'));
 router.patch('/users/:userId', require('./endpoints/users/update-user/update-user'));
 
 router.get('/book-lists/:year/:genre', require('./endpoints/book-lists/get-book-list/get-book-list'));
+router.post('/book-lists/:year/:genre/moly-update', require('./endpoints/book-lists/update-from-moly/update-from-moly'));
 
 module.exports = router;

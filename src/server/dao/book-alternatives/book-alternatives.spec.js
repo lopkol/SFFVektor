@@ -1,9 +1,10 @@
 'use strict';
 
 const { 
-  createBookAlternatives, 
-  updateBookAlternatives, 
+  createBookAlternative, 
+  updateBookAlternative, 
   getBookAlternativesByIds, 
+  getBookAlternativeWithUrl,
   getBookAlternativesWithProps 
 } = require('./book-alternatives');
 const { clearCollection } = require('../../../../test-helpers/firestore');
@@ -15,59 +16,53 @@ describe('book alternatives DAO', () => {
     await clearCollection('bookAlternatives');
   });
 
-  describe('createBookAlternatives', () => {
+  describe('createBookAlternative', () => {
     it('creates book alternatives with the given properties, returns the ids', async () => {
-      const alternativeData1 = generateRandomBookAlternative();
-      const alternativeData2 = generateRandomBookAlternative();
-      const [id1, id2] = await createBookAlternatives([alternativeData1, alternativeData2]);
+      const alternativeData = generateRandomBookAlternative();
+      const id = await createBookAlternative(alternativeData);
 
       const alternativesInDb = await getBookAlternativesWithProps();
-      expect(alternativesInDb).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...alternativeData1 },
-        { id: id2, ...alternativeData2 }
-      ]));
+      expect(alternativesInDb).toEqual([{ id: id, ...alternativeData }]);
     });
   });
 
-  describe('updateBookAlternatives', () => {
+  describe('updateBookAlternative', () => {
     it('returns null if the book alternative does not exist', async () => {
-      const alternativeData = generateRandomBookAlternative({ id: uuidv4() });
-      const res = await updateBookAlternatives([alternativeData]);
+      const id = uuidv4();
+      const alternativeData = generateRandomBookAlternative({ id });
+      const res = await updateBookAlternative(id, alternativeData);
 
-      expect(res).toEqual([null]);
+      expect(res).toEqual(null);
     });
 
     it('retruns the correctly updated properties', async () => {
       const alternativeData = generateRandomBookAlternative();
-      const [id] = await createBookAlternatives([alternativeData]);
+      const id = await createBookAlternative(alternativeData);
 
       const alternativeDataToUpdate = { id, name: 'kocka' };
-      const res = await updateBookAlternatives([alternativeDataToUpdate]);
+      const res = await updateBookAlternative(id, alternativeDataToUpdate);
 
-      expect(res).toEqual([{ ...alternativeData, ...alternativeDataToUpdate }]);
+      expect(res).toEqual({ ...alternativeData, ...alternativeDataToUpdate });
     });
 
     it('correctly updates the given book alternatives, does not change the others', async () => {
       const alternativeData1 = generateRandomBookAlternative();
       const alternativeData2 = generateRandomBookAlternative();
       const alternativeData3 = generateRandomBookAlternative();
-      const [id1, id2, id3] = await createBookAlternatives([alternativeData1, alternativeData2, alternativeData3]);
+      const id1 = await createBookAlternative(alternativeData1);
+      const id2 = await createBookAlternative(alternativeData2);
+      const id3 = await createBookAlternative(alternativeData3);
 
-      const newAlternativeData1 = { 
-        id: id1, 
-        name: 'new name 1' 
-      };
       const newAlternativeData2 = { 
-        id: id2,
         name: 'new name 2' 
       };
 
-      await updateBookAlternatives([newAlternativeData1, newAlternativeData2]);
+      await updateBookAlternative(id2, newAlternativeData2);
 
       const res = await getBookAlternativesWithProps();
 
       expect(res).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...alternativeData1, ...newAlternativeData1 },
+        { id: id1, ...alternativeData1 },
         { id: id2, ...alternativeData2, ...newAlternativeData2 },
         { id: id3, ...alternativeData3 }
       ]));
@@ -79,7 +74,9 @@ describe('book alternatives DAO', () => {
       const alternativeData1 = generateRandomBookAlternative();
       const alternativeData2 = generateRandomBookAlternative();
       const alternativeData3 = generateRandomBookAlternative();
-      const [id1, , id3] = await createBookAlternatives([alternativeData1, alternativeData2, alternativeData3]);
+      const id1 = await createBookAlternative(alternativeData1);
+      await createBookAlternative(alternativeData2);
+      const id3 = await createBookAlternative(alternativeData3);
 
       const bookAlternatives = await getBookAlternativesByIds([id3, id1]);
 
@@ -93,7 +90,8 @@ describe('book alternatives DAO', () => {
       const alternativeData1 = generateRandomBookAlternative();
       const alternativeData2 = generateRandomBookAlternative();
 
-      const [id1] = await createBookAlternatives([alternativeData1, alternativeData2]);
+      const id1 = await createBookAlternative(alternativeData1);
+      await createBookAlternative(alternativeData2);
 
       const books = await getBookAlternativesByIds(['no-id', id1]);
 
@@ -101,11 +99,38 @@ describe('book alternatives DAO', () => {
     });
   });
 
+  describe('getBookAlternativeWithUrl', () => {
+    it('returns an null if there is no book alternative with the given url', async () => {
+      const alternativeData1 = generateRandomBookAlternative();
+      const alternativeData2 = generateRandomBookAlternative();
+      await createBookAlternative(alternativeData1);
+      await createBookAlternative(alternativeData2);
+
+      const url = 'nonexistent url';
+      const alternativeWithUrl = await getBookAlternativeWithUrl(url);
+
+      expect(alternativeWithUrl).toBe(null);
+    });
+
+    it('returns the correct book alternative', async () => {
+      const url = 'some url';
+      const alternativeData1 = generateRandomBookAlternative();
+      const alternativeData2 = generateRandomBookAlternative({ urls: [url] });
+      await createBookAlternative(alternativeData1);
+      const id2 = await createBookAlternative(alternativeData2);
+
+      const alternativeWithUrl = await getBookAlternativeWithUrl(url);
+
+      expect(alternativeWithUrl).toEqual({ id: id2, ...alternativeData2 });
+    });
+  });
+
   describe('getReadingPlansWithProps', () => {
     it('returns an empty array if there is no book alternative with the given properties', async () => {
       const alternativeData1 = generateRandomBookAlternative();
       const alternativeData2 = generateRandomBookAlternative();
-      await createBookAlternatives([alternativeData1, alternativeData2]);
+      await createBookAlternative(alternativeData1);
+      await createBookAlternative(alternativeData2);
 
       const name = 'nonexistent name';
       const alternativesWithProps = await getBookAlternativesWithProps({ name });
@@ -117,7 +142,9 @@ describe('book alternatives DAO', () => {
       const alternativeData1 = generateRandomBookAlternative();
       const alternativeData2 = generateRandomBookAlternative();
       const alternativeData3 = generateRandomBookAlternative();
-      const [id1, id2, id3] = await createBookAlternatives([alternativeData1, alternativeData2, alternativeData3]);
+      const id1 = await createBookAlternative(alternativeData1);
+      const id2 = await createBookAlternative(alternativeData2);
+      const id3 = await createBookAlternative(alternativeData3);
 
       const res = await getBookAlternativesWithProps();
 
@@ -132,7 +159,9 @@ describe('book alternatives DAO', () => {
       const alternativeData1 = generateRandomBookAlternative({ name: 'magyar' });
       const alternativeData2 = generateRandomBookAlternative({ name: 'eredeti' });
       const alternativeData3 = generateRandomBookAlternative({ name: 'magyar' });
-      const [id1, , id3] = await createBookAlternatives([alternativeData1, alternativeData2, alternativeData3]);
+      const id1 = await createBookAlternative(alternativeData1);
+      await createBookAlternative(alternativeData2);
+      const id3 = await createBookAlternative(alternativeData3);
 
       const res = await getBookAlternativesWithProps({ name: 'magyar' });
 

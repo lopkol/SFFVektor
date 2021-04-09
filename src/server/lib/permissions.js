@@ -19,7 +19,7 @@ async function isAdmin(userId) {
   return userData.role === 'admin';
 }
 
-async function canViewBookList(userId, bookListId) {
+async function canEditReadingPlans(userId, bookListId) {
   const isActive = await isActiveUser(userId);
   if (!isActive) {
     return false;
@@ -38,6 +38,6 @@ async function canManageUsers(userId) {
 module.exports = {
   isActiveUser,
   isAdmin,
-  canViewBookList,
+  canEditReadingPlans,
   canManageUsers
 };

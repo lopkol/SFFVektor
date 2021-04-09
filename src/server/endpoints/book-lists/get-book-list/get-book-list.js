@@ -4,25 +4,16 @@ const { getBookListById } = require('../../../dao/book-lists/book-lists');
 const { getUsersByIds } = require('../../../dao/users/users');
 const { getBooksByIds } = require('../../../dao/books/books');
 const { getAuthorById } = require('../../../dao/authors/authors');
-const { canViewBookList } = require('../../../lib/permissions');
 const { getBookAlternativesByIds } = require('../../../dao/book-alternatives/book-alternatives');
 
 module.exports = async (req, res) => {
   try {
-    const userId = req.jwtData.id;
-
     const { year, genre } = req.params;
     const bookListId = year + genre;
 
     const bookList = await getBookListById(bookListId);
     if (!bookList) {
       return res.sendStatus(404);
-    }
-
-    const canGetBookList = await canViewBookList(userId, bookListId);
-
-    if (!canGetBookList) {
-      return res.sendStatus(403);
     }
 
     const books = await getBooksByIds(bookList.bookIds);

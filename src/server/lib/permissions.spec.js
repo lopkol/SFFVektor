@@ -1,6 +1,6 @@
 'use strict';
 
-const { isActiveUser, isAdmin, canViewBookList } = require('./permissions');
+const { isActiveUser, isAdmin, canEditReadingPlans } = require('./permissions');
 const { clearCollection } = require('../../../test-helpers/firestore');
 const { createUser } = require('../dao/users/users');
 const { createBookList } = require('../dao/book-lists/book-lists');
@@ -73,12 +73,12 @@ describe('permission checkers', () => {
     });
   });
 
-  describe('canViewBookList', () => {
+  describe('canEditReadingPlans', () => {
     it('returns false if userId does not exist', async () => {
       const bookListData = generateRandomBookList({ juryIds: ['1', '2', '3'] });
       const bookListId = await createBookList(bookListData);
 
-      const res = await canViewBookList('1', bookListId);
+      const res = await canEditReadingPlans('1', bookListId);
 
       expect(res).toBe(false);
     });
@@ -87,7 +87,7 @@ describe('permission checkers', () => {
       const userData = generateRandomUser();
       const userId = await createUser(userData);
 
-      const res = await canViewBookList(userId, '2020fantasy');
+      const res = await canEditReadingPlans(userId, '2020fantasy');
 
       expect(res).toBe(false);
     });
@@ -99,7 +99,7 @@ describe('permission checkers', () => {
       const bookListData = generateRandomBookList({ juryIds: ['1', '2', '3'] });
       const bookListId = await createBookList(bookListData);
 
-      const res = await canViewBookList(userId, bookListId);
+      const res = await canEditReadingPlans(userId, bookListId);
 
       expect(res).toBe(false);
     });
@@ -111,7 +111,7 @@ describe('permission checkers', () => {
       const bookListData = generateRandomBookList({ juryIds: ['1', '2', '3'] });
       const bookListId = await createBookList(bookListData);
 
-      const res = await canViewBookList(userId, bookListId);
+      const res = await canEditReadingPlans(userId, bookListId);
 
       expect(res).toBe(true);
     });
@@ -123,7 +123,7 @@ describe('permission checkers', () => {
       const bookListData = generateRandomBookList({ juryIds: ['1', '2', '3', userId] });
       const bookListId = await createBookList(bookListData);
 
-      const res = await canViewBookList(userId, bookListId);
+      const res = await canEditReadingPlans(userId, bookListId);
 
       expect(res).toBe(true);
     });

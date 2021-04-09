@@ -11,7 +11,7 @@ const {
   testMolySessionCookie,
   testUserCredentialsCookie,
   testUserCredentials
-} = require('../../../../test-helpers/moly');
+} = require('../../../../test-helpers/moly/login');
 
 describe('Moly login', () => {
   afterEach(() => {

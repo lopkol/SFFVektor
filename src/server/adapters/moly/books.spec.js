@@ -21,7 +21,7 @@ const {
   testBookShelfUrl,
   testBookShelfPage,
   testBooksFromShelf
-} = require('../../../../test-helpers/moly');
+} = require('../../../../test-helpers/moly/books-adapter');
 const { moly } = require('../../config');
 
 describe('Moly adapter', () => {
@@ -67,7 +67,7 @@ describe('Moly adapter', () => {
         .get(testBookShelfUrl)
         .reply(200, testBookShelfPage);
 
-      const res = await getBooksFromShelf('https://moly.hu/polcok/besorolasra-var-2020');
+      const res = await getBooksFromShelf(moly.baseUrl + testBookShelfUrl);
       
       expect(res).toEqual(jasmine.arrayWithExactContents(testBooksFromShelf));
     });

@@ -39,6 +39,8 @@ function getTitleAndSeries(document) {
     seriesNum = words.pop();
     series = words.join(' ');
     title = title.slice(0, title.length - 5 - seriesText.length);
+  } else {
+    title = title.slice(0, title.length - 1);
   }
   return { title, series, seriesNum };
 }
@@ -99,7 +101,10 @@ async function getOtherPages(document) {
 async function getBooksFromListPage(document) {
   const bookListNodes = document.querySelectorAll('.book_selector');
 
-  const books = Array.from(bookListNodes).map(linkNode => moly.baseUrl + linkNode.href);
+  const books = Array.from(bookListNodes).map(linkNode => ({
+    url: moly.baseUrl + linkNode.href,
+    id: linkNode.getAttribute('data-id')
+  }));
   return books;
 }
 
@@ -131,9 +136,12 @@ async function getBooksFromShelfPage(document) {
   let books = [];
 
   bookDivs.forEach(bookDiv => {
-    const url = bookDiv.querySelector('.book_selector').href;
-    const note = bookDiv.querySelector('.sticky_note').textContent;
-    books.push({ url, note });
+    const bookLinkNode = bookDiv.querySelector('.book_selector');
+    const url = moly.baseUrl + bookLinkNode.href;
+    const id = bookLinkNode.getAttribute('data-id');
+    const noteNode = bookDiv.querySelector('.sticky_note');
+    const note = noteNode ? noteNode.textContent : '';
+    books.push({ url, id, note });
   });
 
   return books;
@@ -154,9 +162,9 @@ async function getBooksFromShelf(url) {
       return getBooksFromShelfPage(doc);
     }));
 
-    const bookUrlsAndNotes = books.concat(...otherPagesBooks);
+    const bookUrls = books.concat(...otherPagesBooks);
 
-    return bookUrlsAndNotes;
+    return bookUrls;
   } catch (error) {
     throw new Error(`failed to get books from shelf ${url}`);
   }
