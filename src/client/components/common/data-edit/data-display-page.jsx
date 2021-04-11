@@ -2,6 +2,8 @@
 
 const React = require('react');
 const {
+  List,
+  ListItem,
   Typography,
   makeStyles
 } = require('@material-ui/core');
@@ -14,24 +16,27 @@ const useStyles = makeStyles((theme) => ({
   fieldContainer: {
     display: 'flex',
     flexDirection: 'column',
-    margin: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(2),
     minWidth: '400px'
   },
   label: {
-    color: theme.palette.grey[500],
-    marginBottom: theme.spacing(1)
+    color: theme.palette.grey[500]
   },
   value: {
-    paddingLeft: theme.spacing(2),
-    minHeight: theme.typography.fontSize*1.7
+    minHeight: theme.typography.fontSize*2
   }
 }));
 
 function getDisplayValue(field) {
-  if (field.select) {
-    return field.options.find(option => option.id === field.value).name;
+  if (field.type === 'select') {
+    return <ListItem>{ field.options.find(option => option.id === field.value).name }</ListItem>;
+  } else if (field.type === 'tags') {
+    const nameList = field.value.map(optionId => <ListItem key={optionId}>{ field.options.find(option => option.id === optionId).name }</ListItem> );
+    return <List dense>{ nameList }</List>;
   }
-  return field.value;
+  return <ListItem>{ field.value }</ListItem>;
 }
 
 function DataDisplayPage(props) {
@@ -45,9 +50,9 @@ function DataDisplayPage(props) {
           <Typography variant="subtitle2" className={classes.label}>
             {field.label}
           </Typography>
-          <Typography className={classes.value}>
+          <div className={classes.value}>
             {getDisplayValue(field)}
-          </Typography>
+          </div>
         </div>
       )) }
     </div>

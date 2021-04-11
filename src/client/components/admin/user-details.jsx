@@ -9,45 +9,13 @@ const {
 const DialogActions = require('../common/dialog-window/dialog-actions');
 const DialogContent = require('../common/dialog-window/dialog-content');
 const DialogTitle = require('../common/dialog-window/dialog-title');
-const DataDisplayPage = require('../common/data-display-page');
-const DataEditPage = require('../common/data-edit-page');
+const DataDisplayPage = require('../common/data-edit/data-display-page');
+const DataEditPage = require('../common/data-edit/data-edit-page');
+
+const UserInterface = require('../../ui-context');
 
 const { getUser, saveUser, updateUser } = require('../../services/api/users/users');
-const { roleOptions } = require('../../../options');
-
-const emptyUserFields = [
-  {
-    key: 'role',
-    value: 'inactive',
-    label: 'Státusz',
-    select: true,
-    options: roleOptions
-  },
-  {
-    key: 'molyUsername',
-    value: '',
-    label: 'Moly felhasználónév',
-    select: false
-  },
-  {
-    key: 'molyUrl',
-    value: '',
-    label: 'Moly profil link',
-    select: false
-  },
-  {
-    key: 'email',
-    value: '',
-    label: 'E-mail cím',
-    select: false
-  },
-  {
-    key: 'name',
-    value: '',
-    label: 'Név',
-    select: false
-  }
-];
+const { roleOptions, genreOptions } = require('../../../options');
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -58,9 +26,73 @@ const useStyles = makeStyles((theme) => ({
 function UserDetails(props) {
   const classes = useStyles();
   const { handleClose, open, userId } = props;
+  const { bookLists } = React.useContext(UserInterface);
+  
   const [editMode, setEditMode] = React.useState(false);
   const [userData, setUserData] = React.useState({});
+
+  const emptyUserFields = [
+    {
+      key: 'role',
+      value: 'inactive',
+      label: 'Státusz',
+      type: 'select',
+      options: roleOptions
+    },
+    {
+      key: 'molyUsername',
+      value: '',
+      label: 'Moly felhasználónév',
+      type: 'text'
+    },
+    {
+      key: 'molyUrl',
+      value: '',
+      label: 'Moly profil link',
+      type: 'text'
+    },
+    {
+      key: 'email',
+      value: '',
+      label: 'E-mail cím',
+      type: 'text'
+    },
+    {
+      key: 'bookListIds',
+      value: [],
+      label: 'Jelöltlisták',
+      type: 'tags',
+      options: bookLists.map(bookList => {
+        const genreName = genreOptions.find(option => option.id === bookList.genre).name;
+        return {
+          id: bookList.id,
+          name: `${bookList.year} ${genreName}`
+        };
+      })
+    }
+  ];
+
   const [userFields, setUserFields] = React.useState(emptyUserFields);
+
+  const getBookListIdsOfUser = user => {
+    return user.bookLists.map(bookList => bookList.id);
+  };
+  
+  const createFieldsFromUser = user => {
+    return emptyUserFields.map(field => {
+      if (field.key === 'bookListIds') {
+        return {
+          ...field,
+          value: getBookListIdsOfUser(user)
+        };
+      } else {
+        return {
+          ...field,
+          value: user[field.key]
+        };
+      }
+    });
+  };
 
   React.useEffect(async () => {
     if (open) {
@@ -70,13 +102,10 @@ function UserDetails(props) {
         setUserFields(emptyUserFields);
       } else {
         setEditMode(false);
-        const user = await getUser(userId);
-        setUserData(user);
+        const userToEdit = await getUser(userId);
+        setUserData(userToEdit);
 
-        const newUserFields = emptyUserFields.map(field => ({ 
-          ...field,
-          value: user[field.key]
-        }));
+        const newUserFields = createFieldsFromUser(userToEdit);
         setUserFields(newUserFields);
       }
     }
@@ -88,15 +117,12 @@ function UserDetails(props) {
     if (userId === null) {
       handleClose();
     } else {
-      const oldUserFields = emptyUserFields.map(field => ({ 
-        ...field,
-        value: userData[field.key]
-      }));
+      const oldUserFields = createFieldsFromUser(userData);
       setUserFields(oldUserFields);
     }
   }
 
-  function handleFieldChange({ key, value }) {
+  function handleFieldChange(key, value) {
     setUserFields(prevUserFields => prevUserFields.map(field => {
       if (field.key === key) {
         return {
@@ -135,7 +161,7 @@ function UserDetails(props) {
       </DialogTitle>
       <DialogContent dividers>
         { editMode ?
-          <DataEditPage data={userFields} onDataChange={handleFieldChange}/>
+          <DataEditPage data={userFields} handleChange={handleFieldChange}/>
           :
           <DataDisplayPage data={userFields}/>
         }
