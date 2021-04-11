@@ -3,9 +3,9 @@
 const React = require('react');
 const { Box, Button, Collapse, List, makeStyles } = require('@material-ui/core');
 const { ChevronRight: ChevronRightIcon, Settings: SettingsIcon, Today: CalendarIcon } = require('@material-ui/icons');
-//const { GiSpikedDragonHead: DragonIcon } = require('react-icons/gi');
 const { FaRobot: RobotIcon, FaDragon: DragonIcon } = require('react-icons/fa');
 
+const UserInterface = require('../../../ui-context');
 const NavItem = require('./nav-item');
 
 const useStyles = makeStyles((theme) => ({
@@ -26,8 +26,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function YearSidebar({ year, drawerWidth }) {
-  const [isOpen, setOpen] = React.useState(false);
   const classes = useStyles(drawerWidth);
+  const [isOpen, setOpen] = React.useState(false);
+  const { user } = React.useContext(UserInterface);
 
   const navItems = [
     {
@@ -39,13 +40,18 @@ function YearSidebar({ year, drawerWidth }) {
       title: 'Fantasy',
       href: `/${year}/fantasy`,
       icon: DragonIcon
-    },
-    {
-      title: 'Könyvek',
-      href: `/${year}/books`,
-      icon: SettingsIcon
     }
   ];
+
+  if (user.role === 'admin') {
+    navItems.push(
+      {
+        title: 'Könyvek',
+        href: `/${year}/books`,
+        icon: SettingsIcon
+      }
+    );
+  }
 
   return (
     <Box 

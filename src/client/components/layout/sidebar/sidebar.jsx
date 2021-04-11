@@ -3,6 +3,8 @@
 const React = require('react');
 const { Drawer, Divider, IconButton, makeStyles } = require('@material-ui/core');
 const { ChevronLeft: ChevronLeftIcon, Settings: SettingsIcon } = require('@material-ui/icons');
+
+const UserInterface = require('../../../ui-context');
 const YearSidebar = require('./year-sidebar');
 const NavItem = require('./nav-item');
 
@@ -27,6 +29,8 @@ function Sidebar({ isOpen, onClose, drawerWidth }) {
   const years = [2020, 2019];
   const classes = useStyles(drawerWidth);
 
+  const { user } = React.useContext(UserInterface);
+
   return (
     <Drawer
       className={ classes.drawer }
@@ -44,11 +48,13 @@ function Sidebar({ isOpen, onClose, drawerWidth }) {
         </IconButton>
       </div>
       <Divider />
-      <NavItem 
-        href={'/admin'}
-        title="Admin"
-        icon={SettingsIcon}
-      />
+      { user.role === 'admin' && 
+        <NavItem 
+          href={'/admin'}
+          title="Admin"
+          icon={SettingsIcon}
+        /> 
+      }
       { years.map(year => <YearSidebar key={ year } year={ year } drawerWidth={ drawerWidth } />) }
     </Drawer>
   );

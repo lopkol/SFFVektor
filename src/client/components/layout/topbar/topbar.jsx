@@ -12,6 +12,7 @@ const {
   Typography, 
   makeStyles 
 } = require('@material-ui/core');
+const UserInterface = require('../../../ui-context');
 const { getTitle, topNavbar } = require('./topbar-options');
 
 const { Menu: MenuIcon } = require('@material-ui/icons');
@@ -54,7 +55,7 @@ const useStyles = (drawerWidth) => makeStyles((theme) => ({
 
 function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
   const classes = useStyles(drawerWidth);
-
+  const { user } = React.useContext(UserInterface);
   const { genre, year } = useParams();
 
   let type = 'home';
@@ -67,7 +68,10 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
   }
 
   const title = getTitle(type, year, genre);
-  const buttons = topNavbar.find(subpage => subpage.type === type).buttons;
+  let buttons = topNavbar.find(subpage => subpage.type === type).buttons;
+  if (type === 'bookList' && user.role !== 'admin') {
+    buttons = buttons.slice(0, 3);
+  }
 
   return (
     <AppBar 
