@@ -8,7 +8,7 @@ const GlobalStyles = require('./components/styles/global-styles');
 const theme = require('./components/styles/theme');
 
 const { getOwnData } = require('./services/api/users/users');
-//const { getBookLists } = require('./services/api/book-lists/book-lists');
+const { getBookLists } = require('./services/api/book-lists/book-lists');
 const UserInterface = require('./ui-context');
 
 const NotFound = require('./components/common/not-found');
@@ -23,15 +23,16 @@ const BookListAdmin = require('./components/books/admin/book-list-admin');
 
 function App() {
   const [user, setUser] = React.useState({});
-  //const [bookLists, setBookLists] = React.useState([]);
+  const [bookLists, setBookLists] = React.useState([]);
   const [reload, setReload] = React.useState(false);
 
   React.useEffect(async () => {
     const ownUserData = await getOwnData();
     setUser(ownUserData);
 
-    //const allBookLists = await getBookLists();
-    //setBookLists(allBookLists);
+    const allBookLists = await getBookLists();
+    setBookLists(allBookLists);
+
     setReload(false);
   }, [reload]);
 
@@ -72,7 +73,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <UserInterface.Provider value={{ user, changeUIData: () => setReload(true) }}>
+      <UserInterface.Provider value={{ user, bookLists, changeUIData: () => setReload(true) }}>
         { user.role === 'admin' ? useRoutes(adminRoutes) : useRoutes(routes) }
       </UserInterface.Provider>
     </ThemeProvider>

@@ -7,6 +7,20 @@ const { FaRobot: RobotIcon, FaDragon: DragonIcon } = require('react-icons/fa');
 
 const UserInterface = require('../../../ui-context');
 const NavItem = require('./nav-item');
+const { genreOptions } = require('../../../../options');
+
+const getIconOfGenre = (genre) => {
+  switch (genre) {
+    case 'scifi':
+      return RobotIcon;
+    case 'fantasy':
+      return DragonIcon;
+    default:
+      return SettingsIcon;
+  }
+};
+
+const capitalize = text => text[0].toUpperCase() + text.slice(1);
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -28,20 +42,18 @@ const useStyles = makeStyles((theme) => ({
 function YearSidebar({ year, drawerWidth }) {
   const classes = useStyles(drawerWidth);
   const [isOpen, setOpen] = React.useState(false);
-  const { user } = React.useContext(UserInterface);
+  const { user, bookLists } = React.useContext(UserInterface);
+  const bookListsInYear = bookLists.filter(bookList => bookList.year === year);
 
-  const navItems = [
-    {
-      title: 'Sci-fi',
-      href: `/${year}/scifi`,
-      icon: RobotIcon
-    },
-    {
-      title: 'Fantasy',
-      href: `/${year}/fantasy`,
-      icon: DragonIcon
-    }
-  ];
+  const navItems = bookListsInYear.map(bookList => {
+    const genre = bookList.genre;
+    const genreDisplayName = genreOptions.find(option => option.id === genre).name;
+    return {
+      title: capitalize(genreDisplayName),
+      href: `/${year}/${genre}`,
+      icon: getIconOfGenre(genre)
+    };
+  });
 
   if (user.role === 'admin') {
     navItems.push(

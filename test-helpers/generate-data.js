@@ -168,6 +168,7 @@ function generateRandomBookList(props = {}) {
   const pendingUrl = `https://moly.hu/polcok/${turnToUrl(nameOfPendingShelf)}`;
   const juryIds = [];
   const bookIds = [];
+  const archived = false;
 
   return {
     year,
@@ -176,6 +177,7 @@ function generateRandomBookList(props = {}) {
     pendingUrl,
     juryIds,
     bookIds,
+    archived,
     ...props
   };
 }

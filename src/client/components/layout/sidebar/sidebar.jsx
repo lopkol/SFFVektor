@@ -8,6 +8,11 @@ const UserInterface = require('../../../ui-context');
 const YearSidebar = require('./year-sidebar');
 const NavItem = require('./nav-item');
 
+const sortYears = (years) => {
+  const sortedYears = years.slice().sort((a,b) => b-a);
+  return sortedYears;
+};
+
 const useStyles = (drawerWidth) => makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
@@ -26,10 +31,11 @@ const useStyles = (drawerWidth) => makeStyles((theme) => ({
 }))();
 
 function Sidebar({ isOpen, onClose, drawerWidth }) {
-  const years = [2020, 2019];
   const classes = useStyles(drawerWidth);
 
-  const { user } = React.useContext(UserInterface);
+  const { user, bookLists } = React.useContext(UserInterface);
+  const years = bookLists.map(bookList => bookList.year).filter((value, index, self) => self.indexOf(value) === index);
+  const sortedYears = sortYears(years);
 
   return (
     <Drawer
@@ -55,7 +61,7 @@ function Sidebar({ isOpen, onClose, drawerWidth }) {
           icon={SettingsIcon}
         /> 
       }
-      { years.map(year => <YearSidebar key={ year } year={ year } drawerWidth={ drawerWidth } />) }
+      { sortedYears.map(year => <YearSidebar key={ year } year={ year } drawerWidth={ drawerWidth } />) }
     </Drawer>
   );
 }

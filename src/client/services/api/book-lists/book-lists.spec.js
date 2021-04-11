@@ -16,7 +16,7 @@ const {
 } = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 
-const { getBookList } = require('./book-lists');
+const { getBookList, getBookLists } = require('./book-lists');
 
 describe('client-side book list related API calls', () => {
   beforeEach(async () => {
@@ -24,7 +24,8 @@ describe('client-side book list related API calls', () => {
       clearCollection('users'),
       clearCollection('books'),
       clearCollection('bookLists'),
-      clearCollection('authors')
+      clearCollection('authors'),
+      clearCollection('bookAlternatives')
     ]);
   });
 
@@ -81,6 +82,32 @@ describe('client-side book list related API calls', () => {
       };
 
       expect(bookList).toEqual(expectedData);
+    }));
+  });
+
+  describe('getBookLists', () => {
+    it('returns the book lists', withServer(async () => {
+      const userData = generateRandomUser({ role: 'user' });
+      const userId = await createUser(userData);
+
+      await logUserIn({ id: userId, role: 'user' });
+
+      const bookListData1 = await generateRandomBookList({ year: '2020', genre: 'fantasy' });
+      const bookListData2 = await generateRandomBookList({ year: '2020', genre: 'scifi' });
+      const bookListData3 = await generateRandomBookList({ year: '2019', genre: 'scifi' });
+      const bookListId1 = await createBookList(bookListData1);
+      const bookListId2 = await createBookList(bookListData2);
+      const bookListId3 = await createBookList(bookListData3);
+
+      const bookLists = await getBookLists();
+
+      const expectedData = jasmine.arrayWithExactContents([
+        { id: bookListId1, ...bookListData1 },
+        { id: bookListId2, ...bookListData2 },
+        { id: bookListId3, ...bookListData3 }
+      ]);
+
+      expect(bookLists).toEqual(expectedData);
     }));
   });
 });

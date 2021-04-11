@@ -4,8 +4,8 @@ const { pick } = require('lodash');
 const firestore = require('../firestore');
 const { constructQuery, mapToDataWithId } = require('../helper-functions');
 
-const bookListProperties = ['year', 'genre', 'url', 'pendingUrl', 'juryIds', 'bookIds'];
-const modifiableBookListProperties = ['url', 'pendingUrl', 'juryIds', 'bookIds'];
+const bookListProperties = ['year', 'genre', 'url', 'pendingUrl', 'juryIds', 'bookIds', 'archived'];
+const modifiableBookListProperties = ['url', 'pendingUrl', 'juryIds', 'bookIds', 'archived'];
 
 async function createBookList(bookListData) {
   const bookListDataToSave = pick(bookListData, bookListProperties);

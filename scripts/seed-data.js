@@ -132,7 +132,7 @@ async function seedDb() {
       juryIds: distinctItemsFrom(userIds, 10)
     }),
     addBookListToBatch({
-      year: 2019,
+      year: 2018,
       genre: 'scifi',
       bookIds: bookIds.slice(40, 58),
       juryIds: distinctItemsFrom(userIds, 10)
