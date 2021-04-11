@@ -5,7 +5,7 @@ const { createUser, getUsersWithProps } = require('../../../../server/dao/users/
 const { createBookList } = require('../../../../server/dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 const { generateRandomUser, generateRandomBookList } = require('../../../../../test-helpers/generate-data');
-const { getUsers, getUser, saveUser, updateUser } = require('./users');
+const { getOwnData, getUsers, getUser, saveUser, updateUser } = require('./users');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 
 describe('client-side user related API calls', () => {
@@ -18,6 +18,31 @@ describe('client-side user related API calls', () => {
 
   afterEach(() => {
     logUserOut();
+  });
+
+  describe('getOwnData', () => {
+    it('returns own user data', withServer(async () => {
+      const userData = generateRandomUser({ role: 'user' });
+      const userId = await createUser(userData);
+
+      await logUserIn({ id: userId, role: 'user' });
+
+      const bookListData1 = generateRandomBookList({ year: 2020, juryIds: [userId] });
+      const bookListData2 = generateRandomBookList({ year: 2019, juryIds: [userId] });
+      const bookListId1 = await createBookList(bookListData1);
+      const bookListId2 = await createBookList(bookListData2);
+
+      const user = await getOwnData();
+
+      expect(user).toEqual({ 
+        id: userId, 
+        ...userData, 
+        bookLists: jasmine.arrayWithExactContents([
+          { id: bookListId1, ...bookListData1 },
+          { id: bookListId2, ...bookListData2 }
+        ]) 
+      });
+    }));
   });
 
   describe('getUsers', () => {
@@ -68,6 +93,7 @@ describe('client-side user related API calls', () => {
         ]) 
       });
     }));
+    
 
     it('returns the user data of a non-admin user if he is trying to get his own details', withServer(async () => {
       const userData = generateRandomUser({ role: 'user' });
