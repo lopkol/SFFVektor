@@ -13,9 +13,9 @@ router.post('/users/new', require('./endpoints/users/create-user/create-user'));
 router.patch('/users/:userId', require('./endpoints/users/update-user/update-user'));
 
 router.get('/book-lists', require('./endpoints/book-lists/get-book-lists/get-book-lists'));
-router.get('/book-lists/:year/:genre', require('./endpoints/book-lists/get-book-list/get-book-list'));
+router.get('/book-lists/:bookListId', require('./endpoints/book-lists/get-book-list/get-book-list'));
 router.post('/book-lists/new', require('./endpoints/book-lists/create-book-list/create-book-list'));
 router.patch('/book-lists/:bookListId', require('./endpoints/book-lists/update-book-list/update-book-list'));
-router.post('/book-lists/:year/:genre/moly-update', require('./endpoints/book-lists/update-from-moly/update-from-moly'));
+router.post('/book-lists/:bookListId/moly-update', require('./endpoints/book-lists/update-from-moly/update-from-moly'));
 
 module.exports = router;

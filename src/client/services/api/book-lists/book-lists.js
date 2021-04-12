@@ -4,8 +4,8 @@ const { api } = require('../api');
 
 //TODO: error handling
 
-async function getBookList({ year, genre }) {
-  const response = await api.get(`/api/book-lists/${year}/${genre}`);
+async function getBookList(bookListId) {
+  const response = await api.get(`/api/book-lists/${bookListId}`);
   return response.data;
 }
 

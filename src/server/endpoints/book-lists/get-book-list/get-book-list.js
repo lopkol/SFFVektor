@@ -8,8 +8,7 @@ const { getBookAlternativesByIds } = require('../../../dao/book-alternatives/boo
 
 module.exports = async (req, res) => {
   try {
-    const { year, genre } = req.params;
-    const bookListId = year + genre;
+    const { bookListId } = req.params;
 
     const bookList = await getBookListById(bookListId);
     if (!bookList) {

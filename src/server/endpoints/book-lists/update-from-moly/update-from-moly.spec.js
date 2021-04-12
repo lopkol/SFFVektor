@@ -34,7 +34,7 @@ const {
   bookPage4
 } = require('../../../../../test-helpers/moly/book-list-moly-update');
 
-describe('POST /book-lists/:year/:genre/moly-update', () => {
+describe('POST /book-lists/:bookListId/moly-update', () => {
   let originalTimeout;
   beforeEach(async () => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -63,7 +63,7 @@ describe('POST /book-lists/:year/:genre/moly-update', () => {
 
   it('responds with 401 if called without jwt', async () => {
     await request(app.listen())
-      .post('/api/book-lists/2000/scifi/moly-update')
+      .post('/api/book-lists/2000scifi/moly-update')
       .expect(401);
   });
 
@@ -72,7 +72,7 @@ describe('POST /book-lists/:year/:genre/moly-update', () => {
     const userId = await createUser(userData);
 
     await request(app.listen())
-      .post('/api/book-lists/1991/scifi/moly-update')
+      .post('/api/book-lists/1991scifi/moly-update')
       .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'admin' })])
       .expect(404);
   });
@@ -82,12 +82,10 @@ describe('POST /book-lists/:year/:genre/moly-update', () => {
     const userId = await createUser(userData);
 
     const bookListData = generateRandomBookList({ juryIds: [] });
-    const year = bookListData.year;
-    const genre = bookListData.genre;
-    await createBookList(bookListData);
+    const bookListId = await createBookList(bookListData);
 
     await request(app.listen())
-      .post(`/api/book-lists/${year}/${genre}/moly-update`)
+      .post(`/api/book-lists/${bookListId}/moly-update`)
       .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'user' })])
       .expect(403);
   });
@@ -96,7 +94,7 @@ describe('POST /book-lists/:year/:genre/moly-update', () => {
     const userData = generateRandomUser({ role: 'admin' });
     const userId = await createUser(userData);
 
-    const year = 2020;
+    const year = '2020';
     const genre = 'scifi';
     const bookListData = generateRandomBookList({ 
       year, 
@@ -109,7 +107,7 @@ describe('POST /book-lists/:year/:genre/moly-update', () => {
     const bookListId = await createBookList(bookListData);
 
     await request(app.listen())
-      .post(`/api/book-lists/${year}/${genre}/moly-update`)
+      .post(`/api/book-lists/${bookListId}/moly-update`)
       .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'admin' })])
       .expect(200);
 

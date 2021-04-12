@@ -60,11 +60,9 @@ describe('client-side book list related API calls', () => {
       await setBooks([bookData1, bookData2]);
 
       const bookListData = await generateRandomBookList({ juryIds: [userId2, userId3], bookIds: [bookData1.id, bookData2.id] });
-      const year = bookListData.year;
-      const genre = bookListData.genre;
       const bookListId = await createBookList(bookListData);
 
-      const bookList = await getBookList({ year, genre });
+      const bookList = await getBookList(bookListId);
 
       const expectedData = {
         bookList: {

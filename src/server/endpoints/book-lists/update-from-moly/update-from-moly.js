@@ -18,16 +18,15 @@ module.exports = async (req, res) => {
     return res.sendStatus(403);
   }
 
-  const { year, genre } = req.params;
-  const genreName = genreOptions.find(option => option.id === genre).name;
-  const bookListId = year + genre;
+  const { bookListId } = req.params;
   
   const bookList = await getBookListById(bookListId);
   if (!bookList) {
     return res.sendStatus(404);
   }
 
-  const { url, pendingUrl } = bookList;
+  const { url, pendingUrl, year, genre } = bookList;
+  const genreName = genreOptions.find(option => option.id === genre).name;
 
   const bookUrlsFromList = await getBooksFromList(url);
   const bookUrlsFromPendingShelf = await getBooksFromShelf(pendingUrl);

@@ -17,7 +17,7 @@ const {
   generateRandomBookList 
 } = require('../../../../../test-helpers/generate-data');
 
-describe('GET /book-lists/:year/:genre', () => {
+describe('GET /book-lists/:bookListId', () => {
   beforeEach(async () => {
     await Promise.all([
       clearCollection('users'),
@@ -30,7 +30,7 @@ describe('GET /book-lists/:year/:genre', () => {
 
   it('responds with 401 if called without jwt', async () => {
     await request(app.listen())
-      .get('/api/book-lists/2000/fantasy')
+      .get('/api/book-lists/2000fantasy')
       .expect(401);
   });
 
@@ -39,7 +39,7 @@ describe('GET /book-lists/:year/:genre', () => {
     const userId = await createUser(userData);
 
     await request(app.listen())
-      .get('/api/book-lists/2000/fantasy')
+      .get('/api/book-lists/2000fantasy')
       .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'user' })])
       .expect(404);
   });
@@ -68,12 +68,10 @@ describe('GET /book-lists/:year/:genre', () => {
     await setBooks([bookData1, bookData2]);
 
     const bookListData = await generateRandomBookList({ juryIds: [userId2, userId3], bookIds: [bookData1.id, bookData2.id] });
-    const year = bookListData.year;
-    const genre = bookListData.genre;
     const bookListId = await createBookList(bookListData);
 
     const response = await request(app.listen())
-      .get(`/api/book-lists/${year}/${genre}`)
+      .get(`/api/book-lists/${bookListId}`)
       .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'user' })])
       .expect(200);
 
