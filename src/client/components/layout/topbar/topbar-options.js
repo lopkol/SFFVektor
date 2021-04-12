@@ -57,19 +57,19 @@ const topNavbar = [
     buttons: [
       {
         id: 'list',
-        name: 'Lista nézet',
+        name: 'Lista',
         to: 'list',
         icon: ListIcon
       },
       {
         id: 'reading',
-        name: 'Olvasás szerint',
+        name: 'Olvasásaim',
         to: 'reading',
         icon: ReadingIcon
       },
       {
         id: 'table',
-        name: 'Táblázat nézet',
+        name: 'Táblázat',
         to: 'table',
         icon: TableIcon
       },

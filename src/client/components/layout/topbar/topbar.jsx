@@ -8,7 +8,6 @@ const {
   Box, 
   IconButton, 
   Toolbar, 
-  Tooltip, 
   Typography, 
   makeStyles 
 } = require('@material-ui/core');
@@ -17,6 +16,7 @@ const { getTitle, topNavbar } = require('./topbar-options');
 
 const { Menu: MenuIcon } = require('@material-ui/icons');
 const SffVektorIcon = require('../../styles/sff-vektor-icon');
+const TopbarNavItem = require('./topbar-nav-item');
 
 const useStyles = (drawerWidth) => makeStyles((theme) => ({
   appBar: {
@@ -42,11 +42,8 @@ const useStyles = (drawerWidth) => makeStyles((theme) => ({
   title: {
     margin: theme.spacing(2),
   },
-  navButton: {
-    margin: theme.spacing(1)
-  },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
   },
   hide: {
     display: 'none',
@@ -98,15 +95,11 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
             { title }
           </Typography>
           { buttons.map(button => (
-            <Tooltip title={ <p style={{ fontSize: '16px' }} >{ button.name }</p> } key={ button.id } className={classes.navButton}>
-              <IconButton component={ Link } to={ button.to } color="inherit">
-                <button.icon style={{ fontSize: '24px' }} color="white"/>
-              </IconButton>
-            </Tooltip>
+            <TopbarNavItem key={ button.id } title={ button.name } to={ button.to } icon={ button.icon }/>
           )) }
         </Box>
         <IconButton color="inherit" component={Link} to={'/'}>
-          <SffVektorIcon color="#23bedb" size={30}/>
+          <SffVektorIcon color="white" size={30}/>
         </IconButton>
       </Toolbar>
     </AppBar>
