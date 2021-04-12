@@ -5,9 +5,10 @@ const { Box, Button, Collapse, List, makeStyles } = require('@material-ui/core')
 const { ChevronRight: ChevronRightIcon, Settings: SettingsIcon, Today: CalendarIcon } = require('@material-ui/icons');
 const { FaRobot: RobotIcon, FaDragon: DragonIcon } = require('react-icons/fa');
 
-const UserInterface = require('../../../ui-context');
+const UserInterface = require('../../../lib/ui-context');
 const NavItem = require('./nav-item');
 const { genreOptions } = require('../../../../options');
+const { sortBookLists } = require('../../../lib/useful-stuff');
 
 const getIconOfGenre = (genre) => {
   switch (genre) {
@@ -39,11 +40,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function YearSidebar({ year, drawerWidth }) {
+function YearSidebar({ year, drawerWidth, openOnLoad }) {
   const classes = useStyles(drawerWidth);
   const [isOpen, setOpen] = React.useState(false);
   const { user, bookLists } = React.useContext(UserInterface);
-  const bookListsInYear = bookLists.filter(bookList => bookList.year === year);
+  const bookListsInYear = sortBookLists(bookLists.filter(bookList => bookList.year === year));
+
+  React.useEffect(() => {
+    if (openOnLoad) {
+      setOpen(true);
+    }
+  }, []);
 
   const navItems = bookListsInYear.map(bookList => {
     const genre = bookList.genre;

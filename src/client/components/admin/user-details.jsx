@@ -12,10 +12,11 @@ const DialogTitle = require('../common/dialog-window/dialog-title');
 const DataDisplayPage = require('../common/data-edit/data-display-page');
 const DataEditPage = require('../common/data-edit/data-edit-page');
 
-const UserInterface = require('../../ui-context');
+const UserInterface = require('../../lib/ui-context');
 
 const { getUser, saveUser, updateUser } = require('../../services/api/users/users');
 const { roleOptions, genreOptions } = require('../../../options');
+const { sortBookLists } = require('../../lib/useful-stuff');
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 function UserDetails(props) {
   const classes = useStyles();
   const { handleClose, open, userId } = props;
-  const { bookLists } = React.useContext(UserInterface);
+  const { user, bookLists, changeUIData } = React.useContext(UserInterface);
   
   const [editMode, setEditMode] = React.useState(false);
   const [userData, setUserData] = React.useState({});
@@ -75,7 +76,7 @@ function UserDetails(props) {
   const [userFields, setUserFields] = React.useState(emptyUserFields);
 
   const getBookListIdsOfUser = user => {
-    return user.bookLists.map(bookList => bookList.id);
+    return sortBookLists(user.bookLists).map(bookList => bookList.id);
   };
   
   const createFieldsFromUser = user => {
@@ -122,16 +123,28 @@ function UserDetails(props) {
     }
   }
 
-  function handleFieldChange(key, value) {
-    setUserFields(prevUserFields => prevUserFields.map(field => {
-      if (field.key === key) {
-        return {
-          ...field,
-          value: value
-        };
-      }
-      return field;
-    }));
+  function handleFieldChange(event, key, newValue) {
+    if (key === 'bookListIds') {
+      setUserFields(prevUserFields => prevUserFields.map(field => {
+        if (field.key === key) {
+          return {
+            ...field,
+            value: newValue
+          };
+        }
+        return field;
+      }));
+    } else {
+      setUserFields(prevUserFields => prevUserFields.map(field => {
+        if (field.key === event.target.name) {
+          return {
+            ...field,
+            value: event.target.value
+          };
+        }
+        return field;
+      }));
+    }
   }
 
   async function saveData() {
@@ -145,6 +158,9 @@ function UserDetails(props) {
       await saveUser(userDataToSave);
     } else {
       await updateUser(userId, userDataToSave);
+      if (user.id === userId) {
+        changeUIData();
+      }
     }
     handleClose();
   }

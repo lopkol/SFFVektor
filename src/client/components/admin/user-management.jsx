@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { Button, makeStyles } = require('@material-ui/core');
+const { Button } = require('@material-ui/core');
 const UserDetails = require('./user-details');
 const CustomTable = require('../common/custom-table');
 
@@ -14,14 +14,7 @@ const columns = [
   { field: 'role', headerName: 'Státusz', orderable: true }
 ];
 
-const useStyles = makeStyles(() => ({
-  button: {
-    //textTransform: 'none'
-  },
-}));
-
 function UserManagement() {
-  const classes = useStyles();
   const [rows, setRows] = React.useState([]);
   const [reloadData, setReloadData] = React.useState(false);
   const [userDetailsOpen, setUserDetailsOpen] = React.useState(false);
@@ -62,7 +55,7 @@ function UserManagement() {
   return  (
     <div>
       <CustomTable title="Felhasználók" rows={ rows } columns={ columns } rowSelection="click">
-        <Button className={classes.button} variant="contained" color="primary" onClick={ () => handleOpenUserDetails(null) }>
+        <Button variant="contained" color="primary" onClick={ () => handleOpenUserDetails(null) }>
           Új felhasználó
         </Button>
       </CustomTable>

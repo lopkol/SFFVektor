@@ -11,7 +11,7 @@ const {
   Typography, 
   makeStyles 
 } = require('@material-ui/core');
-const UserInterface = require('../../../ui-context');
+const UserInterface = require('../../../lib/ui-context');
 const { getTitle, topNavbar } = require('./topbar-options');
 
 const { Menu: MenuIcon } = require('@material-ui/icons');

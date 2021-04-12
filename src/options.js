@@ -7,8 +7,8 @@ const roleOptions = [
 ];
 
 const genreOptions = [
-  { id: 'fantasy', name: 'fantasy' },
-  { id: 'scifi', name: 'sci-fi' }
+  { id: 'scifi', name: 'sci-fi' },
+  { id: 'fantasy', name: 'fantasy' }
 ];
 
 const readingPlanOptions = [

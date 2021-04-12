@@ -34,7 +34,7 @@ function DataInput(props) {
           label={field.label}
           value={field.value}
           select={field.type === 'select'}
-          onChange={(event, newValue) => handleChange(field.key, newValue)}
+          onChange={(event, newValue) => handleChange(event, field.key, newValue)}
           InputLabelProps={{
             shrink: true
           }}
@@ -54,7 +54,7 @@ function DataInput(props) {
           options={field.options.map(option => option.id)}
           getOptionLabel={optionId => field.options.find(option => option.id === optionId).name}
           value={field.value}
-          onChange={(event, newValue) => handleChange(field.key, newValue)}
+          onChange={(event, newValue) => handleChange(event, field.key, newValue)}
           filterSelectedOptions
           renderInput={(params) => (
             <TextField

@@ -9,22 +9,25 @@ const theme = require('./components/styles/theme');
 
 const { getOwnData } = require('./services/api/users/users');
 const { getBookLists } = require('./services/api/book-lists/book-lists');
-const UserInterface = require('./ui-context');
+const UserInterface = require('./lib/ui-context');
 const { routes, adminRoutes } = require('./routes');
+
+const { sortBookLists } = require('./lib/useful-stuff');
 
 function App() {
   const [user, setUser] = React.useState({});
   const [bookLists, setBookLists] = React.useState([]);
-  const [reload, setReload] = React.useState(false);
+  const [reload, setReload] = React.useState(true);
 
   React.useEffect(async () => {
-    const ownUserData = await getOwnData();
-    setUser(ownUserData);
+    if (reload) {
+      setUser(await getOwnData());
 
-    const allBookLists = await getBookLists();
-    setBookLists(allBookLists);
+      const allBookLists = await getBookLists();
+      setBookLists(sortBookLists(allBookLists));
 
-    setReload(false);
+      setReload(false);
+    }
   }, [reload]);
 
   return (
