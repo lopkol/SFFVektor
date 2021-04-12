@@ -43,10 +43,10 @@ function App() {
       { path: 'users', element: <UserManagement /> },
       { path: 'book-lists', element: <BookListManagement /> }
     ] },
-    { path: ':year/books', element: <Layout />, children: [
+    { path: 'books/:year', element: <Layout />, children: [
       { path: '/', element: <YearBooks /> }
     ] },
-    { path: ':year/:genre', element: <Layout />, children: [
+    { path: 'book-lists/:year/:genre', element: <Layout />, children: [
       { path: '/', element: <Navigate to="list" /> },
       { path: 'list', element: <BookList /> },
       { path: 'reading', element: <BookReading /> },
@@ -59,8 +59,7 @@ function App() {
 
   const routes = [
     { path: '/', element: <Layout /> },
-    { path: ':year/books', element: <NotFound /> },
-    { path: ':year/:genre', element: <Layout />,  children: [
+    { path: 'book-lists/:year/:genre', element: <Layout />,  children: [
       { path: '/', element: <Navigate to="list" /> },
       { path: 'list', element: <BookList /> },
       { path: 'reading', element: <BookReading /> },

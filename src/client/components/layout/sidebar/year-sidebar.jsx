@@ -50,7 +50,7 @@ function YearSidebar({ year, drawerWidth }) {
     const genreDisplayName = genreOptions.find(option => option.id === genre).name;
     return {
       title: capitalize(genreDisplayName),
-      href: `/${year}/${genre}`,
+      href: `/book-lists/${year}/${genre}`,
       icon: getIconOfGenre(genre)
     };
   });
@@ -59,7 +59,7 @@ function YearSidebar({ year, drawerWidth }) {
     navItems.push(
       {
         title: 'Könyvek',
-        href: `/${year}/books`,
+        href: `/books/${year}`,
         icon: SettingsIcon
       }
     );
