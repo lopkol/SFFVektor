@@ -14,7 +14,19 @@ async function getBookLists() {
   return response.data.bookLists;
 }
 
+async function updateBookList(bookListId, bookListData) {
+  const response = await api.patch(`/api/book-lists/${bookListId}`, { bookListData });
+  return response.data.bookList;
+}
+
+async function saveBookList(bookListData) {
+  const response = await api.post('/api/book-lists/new', { bookListData });
+  return response.data.id;
+}
+
 module.exports = {
   getBookList,
-  getBookLists
+  getBookLists,
+  updateBookList,
+  saveBookList
 };

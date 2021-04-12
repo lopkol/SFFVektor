@@ -4,7 +4,7 @@ const { withServer } = require('../../../../../test-helpers/server');
 const { createUser } = require('../../../../server/dao/users/users');
 const { createAuthor } = require('../../../../server/dao/authors/authors');
 const { setBooks } = require('../../../../server/dao/books/books');
-const { createBookList } = require('../../../../server/dao/book-lists/book-lists');
+const { createBookList, getBookListsWithProps } = require('../../../../server/dao/book-lists/book-lists');
 const { createBookAlternative } = require('../../../../server/dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 const { 
@@ -16,7 +16,7 @@ const {
 } = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 
-const { getBookList, getBookLists } = require('./book-lists');
+const { getBookList, getBookLists, updateBookList, saveBookList } = require('./book-lists');
 
 describe('client-side book list related API calls', () => {
   beforeEach(async () => {
@@ -108,6 +108,43 @@ describe('client-side book list related API calls', () => {
       ]);
 
       expect(bookLists).toEqual(expectedData);
+    }));
+  });
+
+  describe('updateBookList', () => {
+    it('updates the book list data correctly', withServer(async () => {
+      const userData = generateRandomUser({ role: 'admin' });
+      const userId = await createUser(userData);
+
+      await logUserIn({ id: userId, role: 'admin' });
+
+      const bookList = generateRandomBookList();
+      const bookListId = await createBookList(bookList);
+      const dataToUpdate = { url: 'new url', archived: true };
+
+      const updatedData = await updateBookList(bookListId, dataToUpdate);
+      const bookListsInDb = await getBookListsWithProps();
+
+      const expectedData = { id: bookListId, ...bookList, ...dataToUpdate };
+
+      expect(bookListsInDb).toEqual([expectedData]);
+      expect(updatedData).toEqual(expectedData);
+    }));
+  });
+
+  describe('saveBookList', () => {
+    it('creates a new book list with the given data', withServer(async () => {
+      const userData = generateRandomUser({ role: 'admin' });
+      const userId = await createUser(userData);
+
+      await logUserIn({ id: userId, role: 'admin' });
+
+      const bookListData = generateRandomBookList();
+      const newId = await saveBookList(bookListData);
+
+      const bookListsInDb = await getBookListsWithProps();
+
+      expect(bookListsInDb).toEqual([{ id: newId, ...bookListData }]);
     }));
   });
 });
