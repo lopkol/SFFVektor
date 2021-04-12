@@ -120,25 +120,25 @@ async function seedDb() {
 
   await Promise.all([
     addBookListToBatch({
-      year: 2020,
+      year: '2020',
       genre: 'scifi',
       bookIds: bookIds.slice(0, 19),
       juryIds: distinctItemsFrom(userIds, 9)
     }),
     addBookListToBatch({
-      year: 2020,
+      year: '2020',
       genre: 'fantasy',
       bookIds: bookIds.slice(19, 40),
       juryIds: distinctItemsFrom(userIds, 10)
     }),
     addBookListToBatch({
-      year: 2018,
+      year: '2018',
       genre: 'scifi',
       bookIds: bookIds.slice(40, 58),
       juryIds: distinctItemsFrom(userIds, 10)
     }),
     addBookListToBatch({
-      year: 2019,
+      year: '2019',
       genre: 'fantasy',
       bookIds: bookIds.slice(58),
       juryIds: distinctItemsFrom(userIds, 11)

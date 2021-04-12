@@ -55,12 +55,13 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
   const { user } = React.useContext(UserInterface);
   const { genre, year } = useParams();
 
+  const [adminPath, yearBooksPath, bookListPath] = [useMatch('/admin/*'), useMatch('/books/*'), useMatch('/book-lists/*')];
   let type = 'home';
-  if (useMatch('/admin/*')) {
+  if (adminPath) {
     type = 'admin';
-  } else if (useMatch('/books/*')) {
+  } else if (yearBooksPath) {
     type = 'yearBooks';
-  } else if (useMatch('/book-lists/*')) {
+  } else if (bookListPath) {
     type = 'bookList';
   }
 

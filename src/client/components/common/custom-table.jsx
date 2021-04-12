@@ -242,6 +242,8 @@ function CustomTable(props) {
   const isSelected = (rowId) => selectedRows.indexOf(rowId) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const pageStart = page * rowsPerPage;
+  const pageEnd = rowsPerPage === -1 ? rows.length : page * rowsPerPage + rowsPerPage;
 
   return (
     <div className={classNames(classes.root, className)}>
@@ -275,7 +277,7 @@ function CustomTable(props) {
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .slice(pageStart, pageEnd)
                 .map(row => {
                   const isItemSelected = isSelected(row.id);
 
@@ -327,7 +329,7 @@ function CustomTable(props) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 20, 30, 50, { value: -1, label: 'Összes' }]}
+          rowsPerPageOptions={[5, 10, 20, 30, 50, { value: -1, label: 'Összes' }]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}

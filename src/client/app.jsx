@@ -19,22 +19,27 @@ function App() {
   const [bookLists, setBookLists] = React.useState([]);
   const [reload, setReload] = React.useState(true);
 
-  React.useEffect(async () => {
+  React.useEffect(() => {
     if (reload) {
-      setUser(await getOwnData());
+      (async () => {
+        setUser(await getOwnData());
 
-      const allBookLists = await getBookLists();
-      setBookLists(sortBookLists(allBookLists));
+        const allBookLists = await getBookLists();
+        setBookLists(sortBookLists(allBookLists));
+      })();
 
       setReload(false);
     }
   }, [reload]);
 
+  const adminRouter = useRoutes(adminRoutes);
+  const router = useRoutes(routes);
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <UserInterface.Provider value={{ user, bookLists, changeUIData: () => setReload(true) }}>
-        { user.role === 'admin' ? useRoutes(adminRoutes) : useRoutes(routes) }
+        { user.role === 'admin' ? adminRouter : router }
       </UserInterface.Provider>
     </ThemeProvider>
   );

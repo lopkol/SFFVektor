@@ -3,10 +3,10 @@
 const React = require('react');
 const { Button } = require('@material-ui/core');
 const UserDetails = require('./user-details');
-const CustomTable = require('../common/custom-table');
+const CustomTable = require('../../common/custom-table');
 
-const { getUsers } = require('../../services/api/users/users');
-const { roleOptions } = require('../../../options');
+const { getUsers } = require('../../../services/api/users/users');
+const { roleOptions } = require('../../../../options');
 
 const columns = [
   { field: 'molyUsername', headerName: 'Moly felhasználónév', orderable: true, component: 'th' },
@@ -16,18 +16,23 @@ const columns = [
 
 function UserManagement() {
   const [rows, setRows] = React.useState([]);
-  const [reloadData, setReloadData] = React.useState(false);
+  const [reloadData, setReloadData] = React.useState(true);
   const [userDetailsOpen, setUserDetailsOpen] = React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState(null);
   
-  React.useEffect(async () => {
-    const users = await getUsers();
-    const sortedUsers = users.slice().sort((a,b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
-
-    setRows(sortedUsers.map(user => createRow(user)));
-    setReloadData(false);
+  React.useEffect(() => {
+    if (reloadData) {
+      (async () => {
+        const users = await getUsers();
+        const sortedUsers = users.slice().sort((a,b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
+        
+        setRows(sortedUsers.map(user => createRow(user)));
+      })();
+      
+      setReloadData(false);
+    }
   }, [reloadData]);
-
+  
   const createRow = (userData) => {
     const roleName = roleOptions.find(role => role.id === userData.role).name;
     return {

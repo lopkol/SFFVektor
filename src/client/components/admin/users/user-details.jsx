@@ -6,17 +6,17 @@ const {
   Dialog,
   makeStyles
 } = require('@material-ui/core');
-const DialogActions = require('../common/dialog-window/dialog-actions');
-const DialogContent = require('../common/dialog-window/dialog-content');
-const DialogTitle = require('../common/dialog-window/dialog-title');
-const DataDisplayPage = require('../common/data-edit/data-display-page');
-const DataEditPage = require('../common/data-edit/data-edit-page');
+const DialogActions = require('../../common/dialog-window/dialog-actions');
+const DialogContent = require('../../common/dialog-window/dialog-content');
+const DialogTitle = require('../../common/dialog-window/dialog-title');
+const DataDisplayPage = require('../../common/data-edit/data-display-page');
+const DataEditPage = require('../../common/data-edit/data-edit-page');
 
-const UserInterface = require('../../lib/ui-context');
+const UserInterface = require('../../../lib/ui-context');
 
-const { getUser, saveUser, updateUser } = require('../../services/api/users/users');
-const { roleOptions, genreOptions } = require('../../../options');
-const { sortBookLists } = require('../../lib/useful-stuff');
+const { getUser, saveUser, updateUser } = require('../../../services/api/users/users');
+const { roleOptions, genreOptions } = require('../../../../options');
+const { sortBookLists } = require('../../../lib/useful-stuff');
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -24,9 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function UserDetails(props) {
+function UserDetails({ handleClose, open, userId }) {
   const classes = useStyles();
-  const { handleClose, open, userId } = props;
   const { user, bookLists, changeUIData } = React.useContext(UserInterface);
   
   const [editMode, setEditMode] = React.useState(false);
@@ -94,21 +93,23 @@ function UserDetails(props) {
       }
     });
   };
-
-  React.useEffect(async () => {
+  
+  React.useEffect(() => {
     if (open) {
-      if (userId === null) {
-        setEditMode(true);
-        setUserData({});
-        setUserFields(emptyUserFields);
-      } else {
-        setEditMode(false);
-        const userToEdit = await getUser(userId);
-        setUserData(userToEdit);
-
-        const newUserFields = createFieldsFromUser(userToEdit);
-        setUserFields(newUserFields);
-      }
+      (async () => {
+        if (userId === null) {
+          setEditMode(true);
+          setUserData({});
+          setUserFields(emptyUserFields);
+        } else {
+          setEditMode(false);
+          const userToEdit = await getUser(userId);
+          setUserData(userToEdit);
+  
+          const newUserFields = createFieldsFromUser(userToEdit);
+          setUserFields(newUserFields);
+        }
+      })();
     }
   }, [open]);
 
@@ -120,30 +121,6 @@ function UserDetails(props) {
     } else {
       const oldUserFields = createFieldsFromUser(userData);
       setUserFields(oldUserFields);
-    }
-  }
-
-  function handleFieldChange(event, key, newValue) {
-    if (key === 'bookListIds') {
-      setUserFields(prevUserFields => prevUserFields.map(field => {
-        if (field.key === key) {
-          return {
-            ...field,
-            value: newValue
-          };
-        }
-        return field;
-      }));
-    } else {
-      setUserFields(prevUserFields => prevUserFields.map(field => {
-        if (field.key === event.target.name) {
-          return {
-            ...field,
-            value: event.target.value
-          };
-        }
-        return field;
-      }));
     }
   }
 
@@ -177,7 +154,7 @@ function UserDetails(props) {
       </DialogTitle>
       <DialogContent dividers>
         { editMode ?
-          <DataEditPage data={userFields} handleChange={handleFieldChange}/>
+          <DataEditPage data={userFields} handleChange={(newUserFields) => setUserFields(newUserFields)}/>
           :
           <DataDisplayPage data={userFields}/>
         }

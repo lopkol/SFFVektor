@@ -5,8 +5,8 @@ const { Navigate } = require('react-router-dom');
 
 const NotFound = require('./components/common/not-found');
 const Layout = require('./components/layout/layout');
-const UserManagement = require('./components/admin/user-management');
-const BookListManagement = require('./components/admin/book-list-management');
+const UserManagement = require('./components/admin/users/user-management');
+const BookListManagement = require('./components/admin/book-lists/book-list-management');
 const YearBooks = require('./components/books/admin/year-books');
 const BookList = require('./components/books/book-list-views/book-list');
 const BookReading = require('./components/books/book-list-views/book-reading');
