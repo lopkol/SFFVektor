@@ -2,7 +2,7 @@
 
 module.exports = {
   root: true,
-  plugins: ['jasmine', 'react'],
+  plugins: ['jasmine', 'react', 'react-hooks'],
   env: {
     browser: true,
     commonjs: true,
@@ -22,6 +22,8 @@ module.exports = {
   },
   rules: {
     'react/prop-types': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    //'react-hooks/exhaustive-deps': 'warn',
     'eol-last': 'warn',
     eqeqeq: 'warn',
     indent: ['warn', 2, {
