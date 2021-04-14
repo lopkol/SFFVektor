@@ -7,12 +7,13 @@ const { moly } = require('../../../config');
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser } = require('../../../dao/users/users');
 const { createBookList, getBookListById } = require('../../../dao/book-lists/book-lists');
-const { getBooksWithProps } = require('../../../dao/books/books');
-const { getAuthorById } = require('../../../dao/authors/authors');
-const { getBookAlternativesByIds } = require('../../../dao/book-alternatives/book-alternatives');
+const { setBooks, getBooksWithProps, getBooksByIds } = require('../../../dao/books/books');
+const { createAuthor, getAuthorById } = require('../../../dao/authors/authors');
+const { createBookAlternative, getBookAlternativesByIds } = require('../../../dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 const { 
   generateRandomUser,
+  generateRandomBook,
   generateRandomBookList 
 } = require('../../../../../test-helpers/generate-data');
 const {
@@ -38,7 +39,7 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
   let originalTimeout;
   beforeEach(async () => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
     await Promise.all([
       clearCollection('users'),
       clearCollection('books'),
@@ -137,5 +138,181 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
     }));
   });
 
-  //TODO: more tests
+  it('does not update author if it already exists, gets the author ID correctly', async () => {
+    const userData = generateRandomUser({ role: 'admin' });
+    const userId = await createUser(userData);
+
+    const authorData = authors[3];
+    const existingAuthorId = await createAuthor(authorData);
+
+    const year = '2020';
+    const genre = 'scifi';
+    const bookListData = generateRandomBookList({ 
+      year, 
+      genre, 
+      url: moly.baseUrl + bookListUrl, 
+      pendingUrl: moly.baseUrl + pendingUrl, 
+      juryIds: [], 
+      bookIds: [] 
+    });
+    const bookListId = await createBookList(bookListData);
+
+    await request(app.listen())
+      .post(`/api/book-lists/${bookListId}/moly-update`)
+      .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'admin' })])
+      .expect(200);
+
+    const bookList = await getBookListById(bookListId);
+
+    const booksInDb = await getBooksWithProps();
+    expect(bookList.bookIds).toEqual(jasmine.arrayWithExactContents(booksInDb.map(book => book.id)));
+
+    const [book] = await getBooksByIds([book4.id]);
+
+    expect(book.authorIds).toEqual([existingAuthorId]);
+  });
+
+  it('gets the book alternative ID correctly if it already exists', async () => {
+    const userData = generateRandomUser({ role: 'admin' });
+    const userId = await createUser(userData);
+
+    const hunAlternative = hunVersions[0];
+    const existingAlternativeId = await createBookAlternative(hunAlternative);
+
+    const bookData = generateRandomBook({ ...book1, alternativeIds: [existingAlternativeId] });
+    await setBooks([bookData]);
+
+    const year = '2020';
+    const genre = 'scifi';
+    const bookListData = generateRandomBookList({ 
+      year, 
+      genre, 
+      url: moly.baseUrl + bookListUrl, 
+      pendingUrl: moly.baseUrl + pendingUrl, 
+      juryIds: [], 
+      bookIds: [] 
+    });
+    const bookListId = await createBookList(bookListData);
+
+    await request(app.listen())
+      .post(`/api/book-lists/${bookListId}/moly-update`)
+      .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'admin' })])
+      .expect(200);
+
+    const [book] = await getBooksByIds([book1.id]);
+    expect(book).toEqual(jasmine.objectContaining(book1));
+
+    const bookAlternativeIds = book.alternativeIds;
+    expect(bookAlternativeIds).toContain(existingAlternativeId);
+  });
+
+  it('updates book details if book already exists but is not approved', async () => {
+    const userData = generateRandomUser({ role: 'admin' });
+    const userId = await createUser(userData);
+
+    const authorData = authors[1];
+    const existingAuthorId = await createAuthor(authorData);
+    const bookData = generateRandomBook({ ...book3, authorIds: [existingAuthorId] }); //wrong author, missing alternatives
+    await setBooks([bookData]);
+
+    const year = '2020';
+    const genre = 'scifi';
+    const bookListData = generateRandomBookList({ 
+      year, 
+      genre, 
+      url: moly.baseUrl + bookListUrl, 
+      pendingUrl: moly.baseUrl + pendingUrl, 
+      juryIds: [], 
+      bookIds: [book3.id] 
+    });
+    const bookListId = await createBookList(bookListData);
+
+    await request(app.listen())
+      .post(`/api/book-lists/${bookListId}/moly-update`)
+      .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'admin' })])
+      .expect(200);
+
+    const [book] = await getBooksByIds([book3.id]);
+    expect(book).toEqual(jasmine.objectContaining(book3));
+    const [authorId] = book.authorIds;
+    const [alternativeId] = book.alternativeIds;
+
+    const author = await getAuthorById(authorId);
+    expect(author).toEqual({ id: authorId, ...authors[2] });
+
+    const [alternative] = await getBookAlternativesByIds([alternativeId]);
+    expect(alternative).toEqual({ id: alternativeId, ...hunVersions[2] });
+  });
+
+  it('does not update book details if book is already approved', async () => {
+    const userData = generateRandomUser({ role: 'admin' });
+    const userId = await createUser(userData);
+
+    const authorData = authors[1];
+    const existingAuthorId = await createAuthor(authorData);
+    const bookData = generateRandomBook({ ...book3, authorIds: [existingAuthorId], isApproved: true }); //wrong author, missing alternatives
+    await setBooks([bookData]);
+
+    const year = '2020';
+    const genre = 'scifi';
+    const bookListData = generateRandomBookList({ 
+      year, 
+      genre, 
+      url: moly.baseUrl + bookListUrl, 
+      pendingUrl: moly.baseUrl + pendingUrl, 
+      juryIds: [], 
+      bookIds: [book3.id] 
+    });
+    const bookListId = await createBookList(bookListData);
+
+    await request(app.listen())
+      .post(`/api/book-lists/${bookListId}/moly-update`)
+      .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'admin' })])
+      .expect(200);
+
+    const [book] = await getBooksByIds([book3.id]);
+    expect(book).toEqual(jasmine.objectContaining({ ...book3, isApproved: true }));
+    const [authorId] = book.authorIds;
+    const alternativeIds = book.alternativeIds;
+
+    const author = await getAuthorById(authorId);
+    expect(author).toEqual({ id: authorId, ...authors[1] });
+    expect(alternativeIds).toEqual([]);
+  });
+
+  it('can still update a book from pending to not pending even if it is approved', async () => {
+    const userData = generateRandomUser({ role: 'admin' });
+    const userId = await createUser(userData);
+
+    const authorData = authors[1];
+    const existingAuthorId = await createAuthor(authorData);
+    const bookData = generateRandomBook({ ...book2, authorIds: [existingAuthorId], isApproved: true, isPending: true });
+    await setBooks([bookData]);
+
+    const year = '2020';
+    const genre = 'scifi';
+    const bookListData = generateRandomBookList({ 
+      year, 
+      genre, 
+      url: moly.baseUrl + bookListUrl, 
+      pendingUrl: moly.baseUrl + pendingUrl, 
+      juryIds: [], 
+      bookIds: [book3.id] 
+    });
+    const bookListId = await createBookList(bookListData);
+
+    await request(app.listen())
+      .post(`/api/book-lists/${bookListId}/moly-update`)
+      .set('Cookie', [createAuthorizationCookie({ id: userId, role: 'admin' })])
+      .expect(200);
+
+    const [book] = await getBooksByIds([book2.id]);
+    expect(book).toEqual(jasmine.objectContaining({ ...book2, isApproved: true, isPending: false }));
+    const [authorId] = book.authorIds;
+    const alternativeIds = book.alternativeIds;
+
+    const author = await getAuthorById(authorId);
+    expect(author).toEqual({ id: authorId, ...authors[1] });
+    expect(alternativeIds).toEqual([]);
+  });
 });

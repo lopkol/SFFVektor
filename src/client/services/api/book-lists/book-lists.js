@@ -24,9 +24,14 @@ async function saveBookList(bookListData) {
   return response.data.id;
 }
 
+async function updateBookListFromMoly(bookListId) {
+  await api.post(`/api/book-lists/${bookListId}/moly-update`);
+}
+
 module.exports = {
   getBookList,
   getBookLists,
   updateBookList,
-  saveBookList
+  saveBookList,
+  updateBookListFromMoly
 };

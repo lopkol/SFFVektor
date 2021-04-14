@@ -1,11 +1,14 @@
 'use strict';
 
+const nock = require('nock');
 const { withServer } = require('../../../../../test-helpers/server');
 const { createUser } = require('../../../../server/dao/users/users');
 const { createAuthor } = require('../../../../server/dao/authors/authors');
 const { setBooks } = require('../../../../server/dao/books/books');
-const { createBookList, getBookListsWithProps } = require('../../../../server/dao/book-lists/book-lists');
-const { createBookAlternative } = require('../../../../server/dao/book-alternatives/book-alternatives');
+const { createBookList, getBookListById, getBookListsWithProps } = require('../../../../server/dao/book-lists/book-lists');
+const { getAuthorById } = require('../../../../server/dao/authors/authors');
+const { getBooksWithProps } = require('../../../../server/dao/books/books');
+const { createBookAlternative, getBookAlternativesByIds } = require('../../../../server/dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 const { 
   generateRandomAuthor, 
@@ -15,8 +18,27 @@ const {
   generateRandomBookList 
 } = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
+const {
+  bookListUrl,
+  pendingUrl,
+  bookUrls,
+  book1,
+  book2,
+  book3,
+  book4,
+  authors,
+  hunVersions,
+  originalVersions,
+  bookListPage,
+  pendingPage,
+  bookPage1,
+  bookPage2,
+  bookPage3,
+  bookPage4
+} = require('../../../../../test-helpers/moly/book-list-moly-update');
+const { moly } = require('../../../../server/config');
 
-const { getBookList, getBookLists, updateBookList, saveBookList } = require('./book-lists');
+const { getBookList, getBookLists, updateBookList, saveBookList, updateBookListFromMoly } = require('./book-lists');
 
 describe('client-side book list related API calls', () => {
   beforeEach(async () => {
@@ -143,6 +165,66 @@ describe('client-side book list related API calls', () => {
       const bookListsInDb = await getBookListsWithProps();
 
       expect(bookListsInDb).toEqual([{ id: newId, ...bookListData }]);
+    }));
+  });
+
+  describe('updateBookListFromMoly', () => {
+    it('updates the book list data from the moly list', withServer(async () => {
+      const originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+      nock(moly.baseUrl)
+        .get(bookListUrl).reply(200, bookListPage)
+        .get(pendingUrl).reply(200, pendingPage)
+        .get(bookUrls[0]).reply(200, bookPage1)
+        .get(bookUrls[1]).reply(200, bookPage2)
+        .get(bookUrls[2]).reply(200, bookPage3)
+        .get(bookUrls[3]).reply(200, bookPage4);
+
+      const userData = generateRandomUser({ role: 'admin' });
+      const userId = await createUser(userData);
+
+      await logUserIn({ id: userId, role: 'admin' });
+  
+      const year = '2020';
+      const genre = 'scifi';
+      const bookListData = generateRandomBookList({ 
+        year, 
+        genre, 
+        url: moly.baseUrl + bookListUrl, 
+        pendingUrl: moly.baseUrl + pendingUrl, 
+        juryIds: [], 
+        bookIds: [] 
+      });
+      const bookListId = await createBookList(bookListData);
+      await updateBookListFromMoly(bookListId);
+  
+      const bookList = await getBookListById(bookListId);
+  
+      const booksInDb = await getBooksWithProps();
+      expect(bookList.bookIds).toEqual(jasmine.arrayWithExactContents(booksInDb.map(book => book.id)));
+  
+      await Promise.all([book1, book2, book3, book4].map(async (book, index) => {
+        const [bookInDb] = await getBooksWithProps({ title: book.title });
+        expect(bookInDb).toEqual(jasmine.objectContaining(book));
+  
+        const [authorId] = bookInDb.authorIds;
+        const author = await getAuthorById(authorId);
+        expect(author).toEqual(jasmine.objectContaining(authors[index]));
+  
+        const alternativeIds = bookInDb.alternativeIds;
+        const alternatives = await getBookAlternativesByIds(alternativeIds);
+        if (index === 2) {
+          expect(alternatives).toEqual([jasmine.objectContaining(hunVersions[2])]);
+        } else {
+          expect(alternatives).toEqual(jasmine.arrayWithExactContents([
+            jasmine.objectContaining(hunVersions[index]),
+            jasmine.objectContaining(originalVersions[index])
+          ]));
+        }
+      }));
+
+      nock.cleanAll();
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     }));
   });
 });

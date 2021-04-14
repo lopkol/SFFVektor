@@ -13,6 +13,7 @@ const bookUrls = [
 ];
 
 const book1 = {
+  id: '468669',
   year: '2020',
   title: 'Az éjféli égbolt',
   series: '',
@@ -22,6 +23,7 @@ const book1 = {
 };
 
 const book2 = {
+  id: '437321',
   year: '2020',
   title: 'Hibridek',
   series: 'Xenogenezis-trilógia',
@@ -31,6 +33,7 @@ const book2 = {
 };
 
 const book3 = {
+  id: '440433',
   year: '2020',
   title: 'Plastic love',
   series: '',
@@ -40,6 +43,7 @@ const book3 = {
 };
 
 const book4 = {
+  id: '441330',
   year: '2020',
   title: 'Kék sorsjegy',
   series: '',

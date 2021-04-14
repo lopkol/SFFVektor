@@ -75,7 +75,6 @@ module.exports = async (req, res) => {
   await updateBookList(bookListId, { bookIds: newBookIds });
   
   return res.sendStatus(200);
-
 };
 
 async function createOrGetAuthor(author) {
@@ -123,13 +122,15 @@ async function constructBookDataToSave(book, isPending) {
   const [bookInDb] = await getBooksByIds([book.id]);
 
   if (bookInDb) {
-    if (bookInDb.isApproved && !bookInDb.isPending) {
-      return null;
-    } else if (bookInDb.isApproved && bookInDb.isPending && !isPending) {
-      return {
-        id: book.id,
-        isPending: false
-      };
+    if (bookInDb.isApproved) {
+      if (bookInDb.isPending && !isPending) {
+        return {
+          id: book.id,
+          isPending: false
+        };
+      } else {
+        return null;
+      }
     }
   }
 
