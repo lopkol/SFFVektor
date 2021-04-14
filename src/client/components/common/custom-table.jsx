@@ -90,8 +90,8 @@ function EnhancedTableHead(props) {
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
+    paddingLeft: 0,
+    paddingRight: 0
   },
   highlight:
     theme.palette.type === 'light' ? 
@@ -109,8 +109,12 @@ const useToolbarStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+  childrenContainer: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
   title: {
-    marginRight: theme.spacing(5)
+    margin: theme.spacing(2)
   },
 }));
 
@@ -133,7 +137,7 @@ function TableToolbar(props) {
           <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
             {title}
           </Typography>
-          <div className={classes.container}>
+          <div className={classes.childrenContainer}>
             { children }
           </div>
         </div>

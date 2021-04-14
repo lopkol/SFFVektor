@@ -53,7 +53,7 @@ const useStyles = (drawerWidth) => makeStyles((theme) => ({
 function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
   const classes = useStyles(drawerWidth);
   const { user } = React.useContext(UserInterface);
-  const { genre, year } = useParams();
+  const { bookListId, year } = useParams();
 
   const [adminPath, yearBooksPath, bookListPath] = [useMatch('/admin/*'), useMatch('/books/*'), useMatch('/book-lists/*')];
   let type = 'home';
@@ -65,7 +65,8 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
     type = 'bookList';
   }
 
-  const title = getTitle(type, year, genre);
+
+  const title = getTitle(type, year, bookListId);
   let buttons = topNavbar.find(subpage => subpage.type === type).buttons;
   if (type === 'bookList' && user.role !== 'admin') {
     buttons = buttons.slice(0, 3);

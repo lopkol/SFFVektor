@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { Button } = require('@material-ui/core');
+const { Button, makeStyles } = require('@material-ui/core');
 const BookListDetails = require('./book-list-details');
 const CustomTable = require('../../common/custom-table');
 
@@ -14,7 +14,16 @@ const columns = [
   { field: 'url', headerName: 'Moly lista link', orderable: true }
 ];
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(2)
+  }
+}));
+
+
 function BookListManagement() {
+  const classes = useStyles();
+
   const [rows, setRows] = React.useState([]);
   const [bookListDetailsOpen, setBookListDetailsOpen] = React.useState(false);
   const [selectedBookListId, setSelectedBookListId] = React.useState(null);
@@ -34,7 +43,7 @@ function BookListManagement() {
         onClick: () => handleOpenBookListDetails(bookList.id)
       };
     };
-    setRows(bookLists.map(bookList => createRow(bookList)));
+    setRows(bookLists.map(createRow));
   }, [bookLists]);
 
   const handleOpenBookListDetails = (bookListId) => {
@@ -50,7 +59,7 @@ function BookListManagement() {
   return  (
     <div>
       <CustomTable title="Jelöltlisták" rows={ rows } columns={ columns } rowSelection="click">
-        <Button variant="contained" color="primary" onClick={ () => handleOpenBookListDetails(null) }>
+        <Button className={classes.button} variant="contained" color="primary" onClick={ () => handleOpenBookListDetails(null) }>
           Új jelöltlista
         </Button>
       </CustomTable>

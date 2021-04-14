@@ -25,25 +25,27 @@ const juryTableColumns = [
 ];
 
 function BookList() {
-  const { year, genre } = useParams();
+  const { bookListId } = useParams();
   const [bookList, setBookList] = React.useState([]);
   const [books, setBooks] = React.useState([]);
   const [jury, setJury] = React.useState([]);
 
-  React.useEffect(async () => {
-    const bookListData = await getBookList({ year, genre });
-    console.log(bookListData);
-    setBookList(bookListData.bookList);
-    setBooks(bookListData.books);
-    setJury(bookListData.jury);
+  React.useEffect(() => {
+    (async () => {
+      const bookListData = await getBookList(bookListId);
+      console.log(bookListData);
+      setBookList(bookListData.bookList);
+      setBooks(bookListData.books);
+      setJury(bookListData.jury);
+    })();
   }, []);
 
   return (
     <div>
       <p className="book-list larger-font">Jelöltlista adatai:</p>
       <ul>
-        <li>év: { year }</li>
-        <li>műfaj: { genre }</li>
+        <li>év: { bookList.year }</li>
+        <li>műfaj: { bookList.genre }</li>
         <li>moly lista url: 
           <a href={ bookList.url } target="_blank" rel="noopener noreferrer">
             { bookList.url }

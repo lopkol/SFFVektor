@@ -57,7 +57,7 @@ function YearSidebar({ year, drawerWidth, openOnLoad }) {
     const genreDisplayName = genreOptions.find(option => option.id === genre).name;
     return {
       title: capitalize(genreDisplayName),
-      href: `/book-lists/${year}/${genre}`,
+      href: `/book-lists/${bookList.id}`,
       icon: getIconOfGenre(genre)
     };
   });

@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { Button } = require('@material-ui/core');
+const { Button, makeStyles } = require('@material-ui/core');
 const UserDetails = require('./user-details');
 const CustomTable = require('../../common/custom-table');
 
@@ -14,7 +14,16 @@ const columns = [
   { field: 'role', headerName: 'Státusz', orderable: true }
 ];
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(2)
+  }
+}));
+
+
 function UserManagement() {
+  const classes = useStyles();
+
   const [rows, setRows] = React.useState([]);
   const [reloadData, setReloadData] = React.useState(true);
   const [userDetailsOpen, setUserDetailsOpen] = React.useState(false);
@@ -26,7 +35,7 @@ function UserManagement() {
         const users = await getUsers();
         const sortedUsers = users.slice().sort((a,b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
         
-        setRows(sortedUsers.map(user => createRow(user)));
+        setRows(sortedUsers.map(createRow));
       })();
       
       setReloadData(false);
@@ -60,7 +69,7 @@ function UserManagement() {
   return  (
     <div>
       <CustomTable title="Felhasználók" rows={ rows } columns={ columns } rowSelection="click">
-        <Button variant="contained" color="primary" onClick={ () => handleOpenUserDetails(null) }>
+        <Button className={classes.button} variant="contained" color="primary" onClick={ () => handleOpenUserDetails(null) }>
           Új felhasználó
         </Button>
       </CustomTable>

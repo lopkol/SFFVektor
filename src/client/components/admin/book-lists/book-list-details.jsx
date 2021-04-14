@@ -17,7 +17,6 @@ const UserInterface = require('../../../lib/ui-context');
 const { getBookList, updateBookList, saveBookList } = require('../../../services/api/book-lists/book-lists');
 const { getUsers } = require('../../../services/api/users/users');
 const { genreOptions } = require('../../../../options');
-//const { sortBookLists } = require('../../../lib/useful-stuff');
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -33,6 +32,7 @@ function BookListDetails({ handleClose, open, bookListId }) {
   const [bookListData, setBookListData] = React.useState({});
   const [users, setUsers] = React.useState([]);
   const [emptyBookListFields, setEmptyBookListFields] = React.useState([]);
+  const [bookListFields, setBookListFields] = React.useState([]);
 
   React.useEffect(() => {
     (async () => {
@@ -87,8 +87,6 @@ function BookListDetails({ handleClose, open, bookListId }) {
       ]);
     })();
   }, []);
-
-  const [bookListFields, setBookListFields] = React.useState([]);
 
   const getJuryIdsOfBookList = bookList => {
     const juryIds = bookList.juryIds;

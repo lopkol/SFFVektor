@@ -8,13 +8,14 @@ const { AiOutlineRead: ReadingIcon } = require('react-icons/ai');
 const { genreOptions } = require('../../../../options'); 
 const { yearWithSuffix } = require('../../../../../test-helpers/generate-data');
 
-function getTitle(type, year = null, genre = null) {
+function getTitle(type, year = null, bookListId = null) {
   if (type === 'home') {
     return '';
   }
   if (type === 'bookList') {
+    const genre = bookListId.slice(4);
     const genreName = genreOptions.find(option => option.id === genre).name;
-    return `${year} ${genreName}`;
+    return `${bookListId.slice(0,4)} ${genreName}`;
   }
 
   if (type === 'yearBooks') {
