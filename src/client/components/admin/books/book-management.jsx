@@ -40,7 +40,7 @@ function BookManagement() {
       (async () => {
         const { books } = await getBookList(bookListId);
         const sortedBooks = sortBooks(books);
-        console.log(sortedBooks);
+        
         setRows(sortedBooks.map(createRow));
         setReloadData(false);
       })();

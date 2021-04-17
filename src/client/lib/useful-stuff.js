@@ -76,7 +76,7 @@ function nameOfBookList(bookListId) {
   return `${yearWithSuffix(year, 'es')} ${genreName} jelöltlista`;
 }
 
-function setEqual(array1, array2) {
+function equalAsSets(array1, array2) {
   for (let i = 0; i < array1.length; i++) {
     if (!array2.includes(array1[i])) {
       return false;
@@ -95,5 +95,5 @@ module.exports = {
   sortBooks,
   getAuthorAndTitle,
   nameOfBookList,
-  setEqual
+  equalAsSets
 };

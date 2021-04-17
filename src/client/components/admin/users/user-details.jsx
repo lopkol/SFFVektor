@@ -14,7 +14,7 @@ const DataDisplayPage = require('../../common/data-edit/data-display-page');
 const DataEditPage = require('../../common/data-edit/data-edit-page');
 
 const UserInterface = require('../../../lib/ui-context');
-const { setEqual } = require('../../../lib/useful-stuff');
+const { equalAsSets } = require('../../../lib/useful-stuff');
 
 const { getUser, saveUser, updateUser } = require('../../../services/api/users/users');
 const { roleOptions, genreOptions } = require('../../../../options');
@@ -145,7 +145,7 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
     console.log('current fields:' + currentFields);
     for (let i = 0; i < savedFields.length; i++) {
       if (Array.isArray(savedFields[i])) {
-        if (!setEqual(savedFields[i], currentFields[i])) {
+        if (!equalAsSets(savedFields[i], currentFields[i])) {
           return true;
         }
       } else if (savedFields[i] !== currentFields[i]) {
