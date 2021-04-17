@@ -4,15 +4,17 @@ const React = require('react');
 const { 
   Button,
   Dialog,
+  DialogActions,
+  DialogContent,
   makeStyles
 } = require('@material-ui/core');
-const DialogActions = require('../../common/dialog-window/dialog-actions');
-const DialogContent = require('../../common/dialog-window/dialog-content');
-const DialogTitle = require('../../common/dialog-window/dialog-title');
+const DialogTitle = require('../../common/dialogs/dialog-title');
+const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
 const DataDisplayPage = require('../../common/data-edit/data-display-page');
 const DataEditPage = require('../../common/data-edit/data-edit-page');
 
 const UserInterface = require('../../../lib/ui-context');
+const { setEqual } = require('../../../lib/useful-stuff');
 
 const { getBookList, updateBookList, saveBookList } = require('../../../services/api/book-lists/book-lists');
 const { getUsers } = require('../../../services/api/users/users');
@@ -22,13 +24,21 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1)
   },
+  dialogActions: {
+    padding: theme.spacing(1)
+  },
+  dialogContent: {
+    padding: theme.spacing(1)
+  },
 }));
 
-function BookListDetails({ handleClose, open, bookListId }) {
+function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
   const classes = useStyles();
   const { changeUIData } = React.useContext(UserInterface);
   
+  const [reloadData, setReloadData] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
+  const [unsavedAlertOpen, setUnsavedAlertOpen] = React.useState(false);
   const [bookListData, setBookListData] = React.useState({});
   const [users, setUsers] = React.useState([]);
   const [emptyBookListFields, setEmptyBookListFields] = React.useState([]);
@@ -76,14 +86,7 @@ function BookListDetails({ handleClose, open, bookListId }) {
             id: user.id,
             name: user.molyUsername
           }))
-        },
-        /*{
-          key: 'bookIds',
-          value: [],
-          label: 'Könyvek',
-          type: 'tags',
-          options: []
-        }*/
+        }
       ]);
     })();
   }, []);
@@ -115,6 +118,12 @@ function BookListDetails({ handleClose, open, bookListId }) {
 
   React.useEffect(() => {
     if (open) {
+      setReloadData(true);
+    }
+  }, [open]);
+
+  React.useEffect(() => {
+    if (reloadData) {
       if (bookListId === null) {
         setEditMode(true);
         setBookListData({});
@@ -129,15 +138,40 @@ function BookListDetails({ handleClose, open, bookListId }) {
           setBookListFields(newBookListFields);
         })();
       }
+      setReloadData(false);
     }
-  }, [open]);
+  }, [reloadData]);
 
-  function exitEditMode() {
-    setEditMode(false);
-    
+  function hasUnsavedData() {
+    if (!editMode) {
+      return false;
+    }
+    let savedFields = [];
     if (bookListId === null) {
-      handleClose();
+      savedFields = emptyBookListFields.map(field => field.value);
     } else {
+      savedFields = createFieldsFromBookList(bookListData).map(field => field.value);
+    }
+    console.log('saved fields:' + savedFields);
+    const currentFields = bookListFields.map(field => field.value);
+    console.log('current fields:' + currentFields);
+    for (let i = 0; i < savedFields.length; i++) {
+      if (Array.isArray(savedFields[i])) {
+        if (!setEqual(savedFields[i], currentFields[i])) {
+          return true;
+        }
+      } else if (savedFields[i] !== currentFields[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+ 
+  function exitEditMode() {
+    if (bookListId === null) {
+      triggerClose();
+    } else {
+      setEditMode(false);
       const oldBookListFields = createFieldsFromBookList(bookListData);
       setBookListFields(oldBookListFields);
     }
@@ -151,32 +185,54 @@ function BookListDetails({ handleClose, open, bookListId }) {
     });
 
     if (bookListId === null) {
-      await saveBookList(bookListDataToSave);
+      const newId = await saveBookList(bookListDataToSave);
+      changeUIData();
+      changeBookListId(newId);
     } else {
       await updateBookList(bookListId, bookListDataToSave);
     }
-    changeUIData();
+    setReloadData(true);
+  }
+
+  function triggerClose() {
+    const unsavedData = hasUnsavedData();
+    if (unsavedData) {
+      setUnsavedAlertOpen(true);
+    } else {
+      setBookListData({});
+      setBookListFields(emptyBookListFields);
+      handleClose();
+    }
+  }
+
+  function handleAlertCancel() {
+    setUnsavedAlertOpen(false);
+  }
+
+  function handleAlertContinue() {
+    setUnsavedAlertOpen(false);
+    setBookListData({});
+    setBookListFields(emptyBookListFields);
     handleClose();
   }
 
   return (
     <Dialog 
-      onClose={handleClose} 
-      aria-labelledby="customized-dialog-title" 
+      onClose={triggerClose} 
+      aria-labelledby="book-list-details" 
       open={open} 
-      disableBackdropClick
     >
-      <DialogTitle id="user-details-title" onClose={handleClose}>
+      <DialogTitle id="user-details-title" onClose={triggerClose}>
         Jelöltlista adatai
       </DialogTitle>
-      <DialogContent dividers>
+      <DialogContent className={classes.dialogContent} dividers>
         { editMode ?
           <DataEditPage data={bookListFields} handleChange={(newBookListFields) => setBookListFields(newBookListFields)}/>
           :
           <DataDisplayPage data={bookListFields}/>
         }
       </DialogContent>
-      <DialogActions>
+      <DialogActions className={classes.dialogActions}>
         { editMode ? 
           <div>
             <Button 
@@ -209,6 +265,7 @@ function BookListDetails({ handleClose, open, bookListId }) {
           </Button>
         } 
       </DialogActions>
+      <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue}/>
     </Dialog>
   );
 }

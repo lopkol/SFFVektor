@@ -120,18 +120,18 @@ describe('client-side user related API calls', () => {
   });
 
   describe('saveUser', () => {
-    it('creates a new user with the given data if current user is admin', withServer(async () => {
+    it('creates a new user with the given data if current user is admin, returns the user id', withServer(async () => {
       const userData = generateRandomUser({ role: 'admin', email: 'a@gmail.com' });
       const userId = await createUser(userData);
 
       await logUserIn({ id: userId, role: 'admin' });
 
       const newUserData = generateRandomUser({ email: 'b@gmail.com' });
-      await saveUser(newUserData);
+      const newId = await saveUser(newUserData);
 
       const [newUser] = await getUsersWithProps({ email: 'b@gmail.com' });
 
-      expect(newUser).toEqual(jasmine.objectContaining(newUserData));
+      expect(newUser).toEqual({ id: newId, ...newUserData });
     }));
   });
 

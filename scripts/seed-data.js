@@ -109,7 +109,8 @@ async function seedDb() {
     clearCollection('users'),
     clearCollection('books'),
     clearCollection('bookLists'),
-    clearCollection('authors')
+    clearCollection('authors'),
+    clearCollection('bookAlternatives')
   ]);
 
   const userIds = await addUsers();

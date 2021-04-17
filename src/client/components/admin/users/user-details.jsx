@@ -4,15 +4,17 @@ const React = require('react');
 const { 
   Button,
   Dialog,
+  DialogActions,
+  DialogContent,
   makeStyles
 } = require('@material-ui/core');
-const DialogActions = require('../../common/dialog-window/dialog-actions');
-const DialogContent = require('../../common/dialog-window/dialog-content');
-const DialogTitle = require('../../common/dialog-window/dialog-title');
+const DialogTitle = require('../../common/dialogs/dialog-title');
+const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
 const DataDisplayPage = require('../../common/data-edit/data-display-page');
 const DataEditPage = require('../../common/data-edit/data-edit-page');
 
 const UserInterface = require('../../../lib/ui-context');
+const { setEqual } = require('../../../lib/useful-stuff');
 
 const { getUser, saveUser, updateUser } = require('../../../services/api/users/users');
 const { roleOptions, genreOptions } = require('../../../../options');
@@ -22,13 +24,21 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1)
   },
+  dialogActions: {
+    padding: theme.spacing(1)
+  },
+  dialogContent: {
+    padding: theme.spacing(1)
+  }
 }));
 
-function UserDetails({ handleClose, open, userId }) {
+function UserDetails({ handleClose, open, userId, changeUserId }) {
   const classes = useStyles();
   const { user, bookLists, changeUIData } = React.useContext(UserInterface);
   
+  const [reloadData, setReloadData] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
+  const [unsavedAlertOpen, setUnsavedAlertOpen] = React.useState(false);
   const [userData, setUserData] = React.useState({});
 
   const emptyUserFields = [
@@ -93,9 +103,15 @@ function UserDetails({ handleClose, open, userId }) {
       }
     });
   };
-  
+
   React.useEffect(() => {
     if (open) {
+      setReloadData(true);
+    }
+  }, [open]);
+  
+  React.useEffect(() => {
+    if (reloadData) {
       (async () => {
         if (userId === null) {
           setEditMode(true);
@@ -110,15 +126,40 @@ function UserDetails({ handleClose, open, userId }) {
           setUserFields(newUserFields);
         }
       })();
+      setReloadData(false);
     }
-  }, [open]);
+  }, [reloadData]);
+
+  function hasUnsavedData() {
+    if (!editMode) {
+      return false;
+    }
+    let savedFields = [];
+    if (userId === null) {
+      savedFields = emptyUserFields.map(field => field.value);
+    } else {
+      savedFields = createFieldsFromUser(userData).map(field => field.value);
+    }
+    console.log('saved fields:' + savedFields);
+    const currentFields = userFields.map(field => field.value);
+    console.log('current fields:' + currentFields);
+    for (let i = 0; i < savedFields.length; i++) {
+      if (Array.isArray(savedFields[i])) {
+        if (!setEqual(savedFields[i], currentFields[i])) {
+          return true;
+        }
+      } else if (savedFields[i] !== currentFields[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   function exitEditMode() {
-    setEditMode(false);
-    
     if (userId === null) {
-      handleClose();
+      triggerClose();
     } else {
+      setEditMode(false);
       const oldUserFields = createFieldsFromUser(userData);
       setUserFields(oldUserFields);
     }
@@ -132,34 +173,56 @@ function UserDetails({ handleClose, open, userId }) {
     });
 
     if (userId === null) {
-      await saveUser(userDataToSave);
+      const newId = await saveUser(userDataToSave);
+      changeUserId(newId);
     } else {
       await updateUser(userId, userDataToSave);
       if (user.id === userId) {
         changeUIData();
       }
     }
+    setReloadData(true);
+  }
+
+  function triggerClose() {
+    const unsavedData = hasUnsavedData();
+    if (unsavedData) {
+      setUnsavedAlertOpen(true);
+    } else {
+      setUserData({});
+      setUserFields(emptyUserFields);
+      handleClose();
+    }
+  }
+
+  function handleAlertCancel() {
+    setUnsavedAlertOpen(false);
+  }
+
+  function handleAlertContinue() {
+    setUnsavedAlertOpen(false);
+    setUserData({});
+    setUserFields(emptyUserFields);
     handleClose();
   }
 
   return (
     <Dialog 
-      onClose={handleClose} 
-      aria-labelledby="customized-dialog-title" 
+      onClose={triggerClose} 
+      aria-labelledby="user-details" 
       open={open} 
-      disableBackdropClick
     >
-      <DialogTitle id="user-details-title" onClose={handleClose}>
+      <DialogTitle id="user-details-title" onClose={triggerClose}>
         Felhasználó adatai
       </DialogTitle>
-      <DialogContent dividers>
+      <DialogContent className={classes.dialogContent} dividers>
         { editMode ?
           <DataEditPage data={userFields} handleChange={(newUserFields) => setUserFields(newUserFields)}/>
           :
           <DataDisplayPage data={userFields}/>
         }
       </DialogContent>
-      <DialogActions>
+      <DialogActions className={classes.DialogActions}>
         { editMode ? 
           <div>
             <Button 
@@ -192,6 +255,7 @@ function UserDetails({ handleClose, open, userId }) {
           </Button>
         } 
       </DialogActions>
+      <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue}/>
     </Dialog>
   );
 }

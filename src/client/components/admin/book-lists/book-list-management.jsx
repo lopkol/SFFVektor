@@ -67,6 +67,7 @@ function BookListManagement() {
         open={bookListDetailsOpen} 
         handleClose={handleCloseBookListDetails} 
         bookListId={selectedBookListId} 
+        changeBookListId={(newId) => setSelectedBookListId(newId)}
       />
     </div>
   );

@@ -76,9 +76,24 @@ function nameOfBookList(bookListId) {
   return `${yearWithSuffix(year, 'es')} ${genreName} jelöltlista`;
 }
 
+function setEqual(array1, array2) {
+  for (let i = 0; i < array1.length; i++) {
+    if (!array2.includes(array1[i])) {
+      return false;
+    }
+  }
+  for (let i = 0; i < array2.length; i++) {
+    if (!array1.includes(array2[i])) {
+      return false;
+    }
+  }
+  return true;
+}
+
 module.exports = {
   sortBookLists,
   sortBooks,
   getAuthorAndTitle,
-  nameOfBookList
+  nameOfBookList,
+  setEqual
 };

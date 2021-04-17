@@ -77,6 +77,7 @@ function UserManagement() {
         open={userDetailsOpen} 
         handleClose={handleCloseUserDetails} 
         userId={selectedUserId} 
+        changeUserId={(newId) => setSelectedUserId(newId)}
       />
     </div>
   );

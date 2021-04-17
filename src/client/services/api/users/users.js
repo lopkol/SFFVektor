@@ -20,7 +20,8 @@ async function getUser(userId) {
 }
 
 async function saveUser(userData) {
-  await api.post('/api/users/new', { userData });
+  const response = await api.post('/api/users/new', { userData });
+  return response.data.id;
 }
 
 async function updateUser(userId, userData) {

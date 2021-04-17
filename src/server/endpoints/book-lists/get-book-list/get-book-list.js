@@ -15,14 +15,14 @@ module.exports = async (req, res) => {
       return res.sendStatus(404);
     }
 
-    const books = await getBooksByIds(bookList.bookIds);
+    const books = await getBooksByIds(bookList.bookIds || []);
     const booksWithAuthorsAndAlternatives = await Promise.all(books.map(async book => {
       const authors = await Promise.all(book.authorIds.map(async authorId => await getAuthorById(authorId)));
       const alternatives = await getBookAlternativesByIds(book.alternativeIds);
       return { ...book, authors, alternatives };
     }));
 
-    const jury = await getUsersByIds(bookList.juryIds);
+    const jury = await getUsersByIds(bookList.juryIds || []);
     
     return res.status(200).send({ bookList, books: booksWithAuthorsAndAlternatives, jury });
 
