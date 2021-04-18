@@ -39,10 +39,15 @@ async function canManageBookLists(userId) {
   return await isAdmin(userId);
 }
 
+async function canManageBooks(userId) {
+  return await isAdmin(userId);
+}
+
 module.exports = {
   isActiveUser,
   isAdmin,
   canEditReadingPlans,
   canManageUsers,
-  canManageBookLists
+  canManageBookLists,
+  canManageBooks
 };

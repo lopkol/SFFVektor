@@ -18,4 +18,7 @@ router.post('/book-lists/new', require('./endpoints/book-lists/create-book-list/
 router.patch('/book-lists/:bookListId', require('./endpoints/book-lists/update-book-list/update-book-list'));
 router.post('/book-lists/:bookListId/moly-update', require('./endpoints/book-lists/update-from-moly/update-from-moly'));
 
+router.get('/books/:year', require('./endpoints/books/get-books/get-books'));
+router.patch('/books/:bookId', require('./endpoints/books/update-book/update-book'));
+
 module.exports = router;

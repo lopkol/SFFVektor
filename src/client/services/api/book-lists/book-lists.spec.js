@@ -3,11 +3,9 @@
 const nock = require('nock');
 const { withServer } = require('../../../../../test-helpers/server');
 const { createUser } = require('../../../../server/dao/users/users');
-const { createAuthor } = require('../../../../server/dao/authors/authors');
-const { setBooks } = require('../../../../server/dao/books/books');
+const { createAuthor, getAuthorById } = require('../../../../server/dao/authors/authors');
+const { setBooks, getBooksWithProps } = require('../../../../server/dao/books/books');
 const { createBookList, getBookListById, getBookListsWithProps } = require('../../../../server/dao/book-lists/book-lists');
-const { getAuthorById } = require('../../../../server/dao/authors/authors');
-const { getBooksWithProps } = require('../../../../server/dao/books/books');
 const { createBookAlternative, getBookAlternativesByIds } = require('../../../../server/dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 const { 

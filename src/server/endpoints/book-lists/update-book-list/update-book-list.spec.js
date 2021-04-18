@@ -2,11 +2,12 @@
 
 const request = require('supertest');
 const app = require('../../../app');
-const { generateRandomUser, generateRandomBookList } = require('../../../../../test-helpers/generate-data');
+
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser } = require('../../../dao/users/users');
 const { createBookList, getBookListById } = require('../../../dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
+const { generateRandomUser, generateRandomBookList } = require('../../../../../test-helpers/generate-data');
 
 describe('PATCH /book-lists/:bookListId', () => {
   beforeEach(async () => {
@@ -67,13 +68,13 @@ describe('PATCH /book-lists/:bookListId', () => {
       .send({ bookListData: dataToUpdate })
       .expect(200);
 
-    const updatedBookListData = response.body.bookList;
+    const updatedBookListData = response.body.bookListData;
     const updatedBookListInDb = await getBookListById(bookListId);
 
-    const expectedUserData = { id: bookListId, ...bookListData, ...dataToUpdate };
+    const expectedBookListData = { id: bookListId, ...bookListData, ...dataToUpdate };
 
-    expect(updatedBookListData).toEqual(expectedUserData);
-    expect(updatedBookListInDb).toEqual(expectedUserData);
+    expect(updatedBookListData).toEqual(expectedBookListData);
+    expect(updatedBookListInDb).toEqual(expectedBookListData);
   });
 
   it('does not update the year and genre', async () => {
@@ -91,12 +92,12 @@ describe('PATCH /book-lists/:bookListId', () => {
       .send({ bookListData: dataToUpdate })
       .expect(200);
 
-    const updatedBookListData = response.body.bookList;
+    const updatedBookListData = response.body.bookListData;
     const updatedBookListInDb = await getBookListById(bookListId);
 
-    const expectedUserData = { id: bookListId, ...bookListData, url: 'some url' };
+    const expectedBookListData = { id: bookListId, ...bookListData, url: 'some url' };
 
-    expect(updatedBookListData).toEqual(expectedUserData);
-    expect(updatedBookListInDb).toEqual(expectedUserData);
+    expect(updatedBookListData).toEqual(expectedBookListData);
+    expect(updatedBookListInDb).toEqual(expectedBookListData);
   });
 });

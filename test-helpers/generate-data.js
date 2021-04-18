@@ -2,7 +2,7 @@
 
 const { v4: uuidv4 } = require('uuid');
 const { roleOptions, genreOptions, readingPlanOptions } = require('../src/options');
-const years = [1977, 1976, 1975, 1974, 1973];
+const years = ['1977', '1976', '1975', '1974', '1973'];
 
 const surnames = ['kovács', 'szabó', 'lakatos', 'kolompár', 'vastag', 'szőrös', 'pumpás', 'gonosz', 'csúnya', 'kövér', 'tóth', 'nagy', 'kis'];
 const givenNames = ['oszkár', 'béla', 'lajos', 'géza', 'tihamér', 'ildikó', 'katalin', 'anikó', 'rozi', 'nikolett', 'kristóf', 'andrás', 'dezső', 'ferenc', 'lili'];

@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
       return res.sendStatus(404);
     }
 
-    return res.status(200).send({ bookList: updatedBookListData });
+    return res.status(200).send({ bookListData: updatedBookListData });
 
   } catch (error) {
     res.sendStatus(500);
