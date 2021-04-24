@@ -58,8 +58,8 @@ describe('POST /book-lists/new', () => {
       .expect(201);
 
     const newId = response.body.id;
-    const savedUser = await getBookListById(newId);
-    expect(savedUser).toEqual({ id: newId, ...newBookListData });
+    const savedBookList = await getBookListById(newId);
+    expect(savedBookList).toEqual({ id: newId, ...newBookListData });
   });
 
   it('responds with 409 if a book list with the given year and genre already exists', async () => {
