@@ -47,6 +47,13 @@ async function getBookListsWithProps(bookListData = {}) {
   return bookLists;
 }
 
+async function getBookListsOfBook(bookId) {
+  const bookListsOfBook = await firestore.collection('bookLists').where('bookIds', 'array-contains', bookId).get();
+  const bookLists = mapToDataWithId(bookListsOfBook);
+
+  return bookLists;
+}
+
 async function getBookListsOfJuryMember(userId) {
   const bookListsOfJuryMember = await firestore.collection('bookLists').where('juryIds', 'array-contains', userId).get();
   const bookLists = mapToDataWithId(bookListsOfJuryMember);
@@ -94,6 +101,7 @@ module.exports = {
   updateBookList,
   getBookListById,
   getBookListsWithProps,
+  getBookListsOfBook,
   getBookListsOfJuryMember,
   updateBookListsOfJuryMember
 };

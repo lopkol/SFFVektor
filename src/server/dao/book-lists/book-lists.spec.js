@@ -5,6 +5,7 @@ const {
   updateBookList,
   getBookListById,
   getBookListsWithProps,
+  getBookListsOfBook,
   getBookListsOfJuryMember,
   updateBookListsOfJuryMember
 } = require('./book-lists');
@@ -145,6 +146,25 @@ describe('booklists DAO', () => {
       expect(bookLists).toEqual(jasmine.arrayWithExactContents([
         { id: id1, ...bookListData1 },
         { id: id2, ...bookListData2 }
+      ]));
+    });
+  });
+
+  describe('getBookListsOfBook', () => {
+    it('returns the book lists of the given book', async () => {
+      const bookListData1 = generateRandomBookList({ year: 1933, bookIds: ['4', '1', '3'] });
+      const bookListData2 = generateRandomBookList({ year: 1935, bookIds: ['4', '7', '2', '1'] });
+      const bookListData3 = generateRandomBookList({ year: 1734, bookIds: ['7', '3'] });
+
+      const id1 = await createBookList(bookListData1);
+      await createBookList(bookListData2);
+      const id3 = await createBookList(bookListData3);
+
+      const bookLists = await getBookListsOfBook('3');
+
+      expect(bookLists).toEqual(jasmine.arrayWithExactContents([
+        { id: id1, ...bookListData1 },
+        { id: id3, ...bookListData3 }
       ]));
     });
   });

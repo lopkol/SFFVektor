@@ -5,12 +5,14 @@ const { createUser } = require('../../../../server/dao/users/users');
 const { createAuthor } = require('../../../../server/dao/authors/authors');
 const { setBooks, getBooksByIds } = require('../../../../server/dao/books/books');
 const { createBookAlternative } = require('../../../../server/dao/book-alternatives/book-alternatives');
+const { createBookList } = require('../../../../server/dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 const { 
   generateRandomAuthor, 
   generateRandomUser, 
   generateRandomBookAlternative,
-  generateRandomBook
+  generateRandomBook,
+  generateRandomBookList
 } = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 
@@ -22,7 +24,8 @@ describe('client-side book list related API calls', () => {
       clearCollection('users'),
       clearCollection('books'),
       clearCollection('authors'),
-      clearCollection('bookAlternatives')
+      clearCollection('bookAlternatives'),
+      clearCollection('bookLists')
     ]);
   });
 
@@ -56,13 +59,28 @@ describe('client-side book list related API calls', () => {
       const bookData2 = generateRandomBook({ year, authorIds: [authorId2], alternativeIds: [alternativeId2, alternativeId3] });
       await setBooks([bookData0, bookData1, bookData2]);
 
+      const bookListData1 = generateRandomBookList({ year, genre: 'fantasy', bookIds: [bookData1.id, bookData2.id, '3'] });
+      const bookListData2 = generateRandomBookList({ year, genre: 'scifi', bookIds: ['4', bookData1.id, '5'] });
+      const bookListId1 = await createBookList(bookListData1);
+      const bookListId2 = await createBookList(bookListData2);
+
       const books = await getBooks(year);
 
       const expectedData = jasmine.arrayWithExactContents([
         { 
           ...bookData1, 
           authors: [{ id: authorId1, ...authorData1 }], 
-          alternatives: [{ id: alternativeId1, ...alternativeData1 }] 
+          alternatives: [{ id: alternativeId1, ...alternativeData1 }],
+          bookLists: jasmine.arrayWithExactContents([
+            {
+              ...bookListData1,
+              id: bookListId1
+            },
+            {
+              ...bookListData2,
+              id: bookListId2
+            }
+          ])
         },
         { 
           ...bookData2, 
@@ -70,7 +88,11 @@ describe('client-side book list related API calls', () => {
           alternatives: jasmine.arrayWithExactContents([
             { id: alternativeId2, ...alternativeData2 }, 
             { id: alternativeId3, ...alternativeData3 }
-          ]) 
+          ]),
+          bookLists: [{
+            ...bookListData1,
+            id: bookListId1
+          }]
         }
       ]);
 
