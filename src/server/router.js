@@ -22,6 +22,7 @@ router.get('/books/:year', require('./endpoints/books/get-books/get-books'));
 router.patch('/books/:bookId', require('./endpoints/books/update-book/update-book'));
 
 router.get('/authors', require('./endpoints/authors/get-authors/get-authors'));
+router.get('/authors/:authorId', require('./endpoints/authors/get-author/get-author'));
 router.post('/authors/new', require('./endpoints/authors/create-author/create-author'));
 router.patch('/authors/:authorId', require('./endpoints/authors/update-author/update-author'));
 

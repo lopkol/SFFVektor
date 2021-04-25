@@ -9,6 +9,11 @@ async function getAuthors() {
   return response.data.authors;
 }
 
+async function getAuthor(authorId) {
+  const response = await api.get(`/api/authors/${authorId}`);
+  return response.data.authorData;
+}
+
 async function updateAuthor(authorId, authorData) {
   const response = await api.patch(`/api/authors/${authorId}`, { authorData });
   return response.data.authorData;
@@ -21,6 +26,7 @@ async function saveAuthor(authorData) {
 
 module.exports = {
   getAuthors,
+  getAuthor,
   updateAuthor,
   saveAuthor
 };

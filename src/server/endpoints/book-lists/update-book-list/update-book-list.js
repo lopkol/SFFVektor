@@ -8,8 +8,8 @@ module.exports = async (req, res) => {
   try {
     const userData = req.jwtData;
 
-    const canAddNewBookList = await canManageBookLists(userData.id);
-    if (!canAddNewBookList) {
+    const canUpdateBookList = await canManageBookLists(userData.id);
+    if (!canUpdateBookList) {
       return res.sendStatus(403);
     }
 

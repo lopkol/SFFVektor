@@ -7,7 +7,7 @@ const { clearCollection } = require('../../../../../test-helpers/firestore');
 const { generateRandomAuthor, generateRandomUser } = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 
-const { getAuthors, updateAuthor, saveAuthor } = require('./authors');
+const { getAuthors, getAuthor, updateAuthor, saveAuthor } = require('./authors');
 
 describe('client-side author related API calls', () => {
   beforeEach(async () => {
@@ -42,6 +42,22 @@ describe('client-side author related API calls', () => {
         { id: authorId2, ...authorData2 },
         { id: authorId3, ...authorData3 }
       ]));
+    }));
+  });
+
+  describe('getAuthor', () => {
+    it('returns the author', withServer(async () => {
+      const userData = generateRandomUser({ role: 'admin' });
+      const userId = await createUser(userData);
+
+      await logUserIn({ id: userId, role: 'admin' });
+
+      const authorData = await generateRandomAuthor();
+      const authorId = await createAuthor(authorData);
+
+      const author = await getAuthor(authorId);
+
+      expect(author).toEqual({ id: authorId, ...authorData });
     }));
   });
 
