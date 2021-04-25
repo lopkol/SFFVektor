@@ -16,7 +16,7 @@ const {
 } = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 
-const { getBooks, updateBook } = require('./books');
+const { getBooks, getBook, updateBook } = require('./books');
 
 describe('client-side book list related API calls', () => {
   beforeEach(async () => {
@@ -97,6 +97,56 @@ describe('client-side book list related API calls', () => {
       ]);
 
       expect(books).toEqual(expectedData);
+    }));
+  });
+
+  describe('getBook', () => {
+    it('returns the book with the given id', withServer(async () => {
+      const userData = generateRandomUser({ role: 'admin' });
+      const userId = await createUser(userData);
+
+      await logUserIn({ id: userId, role: 'admin' });
+
+      const authorData1 = generateRandomAuthor();
+      const authorData2 = generateRandomAuthor();
+      const authorId1 = await createAuthor(authorData1);
+      const authorId2 = await createAuthor(authorData2);
+
+      const alternativeData1 = await generateRandomBookAlternative();
+      const alternativeData2 = await generateRandomBookAlternative();
+      const alternativeData3 = await generateRandomBookAlternative();
+      const alternativeId1 = await createBookAlternative(alternativeData1);
+      const alternativeId2 = await createBookAlternative(alternativeData2);
+      const alternativeId3 = await createBookAlternative(alternativeData3);
+
+      const bookData = generateRandomBook({ authorIds: [authorId1, authorId2], alternativeIds: [alternativeId1, alternativeId2, alternativeId3] });
+      const bookId = bookData.id;
+      await setBooks([bookData]);
+
+      const year = bookData.year;
+      const bookListData1 = generateRandomBookList({ year, genre: 'fantasy', bookIds: [bookId, '6', '3'] });
+      const bookListData2 = generateRandomBookList({ year, genre: 'scifi', bookIds: ['4', bookId, '5'] });
+      const bookListId1 = await createBookList(bookListData1);
+      const bookListId2 = await createBookList(bookListData2);
+
+      const book = await getBook(bookId);
+
+      expect(book).toEqual({ 
+        ...bookData, 
+        authors: jasmine.arrayWithExactContents([
+          { id: authorId1, ...authorData1 },
+          { id: authorId2, ...authorData2 }
+        ]), 
+        alternatives: jasmine.arrayWithExactContents([
+          { id: alternativeId1, ...alternativeData1 },
+          { id: alternativeId2, ...alternativeData2 },
+          { id: alternativeId3, ...alternativeData3 },
+        ]),
+        bookLists: jasmine.arrayWithExactContents([
+          { id: bookListId1, ...bookListData1 },
+          { id: bookListId2, ...bookListData2 }
+        ])
+      });
     }));
   });
 

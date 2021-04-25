@@ -5,8 +5,13 @@ const { api } = require('../api');
 //TODO: error handling
 
 async function getBooks(year) {
-  const response = await api.get(`/api/books/${year}`);
+  const response = await api.get(`/api/books-from-year/${year}`);
   return response.data.books;
+}
+
+async function getBook(bookId) {
+  const response = await api.get(`/api/books/${bookId}`);
+  return response.data.bookData;
 }
 
 async function updateBook(bookId, bookData) {
@@ -16,5 +21,6 @@ async function updateBook(bookId, bookData) {
 
 module.exports = {
   getBooks,
+  getBook,
   updateBook
 };
