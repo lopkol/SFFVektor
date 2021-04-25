@@ -5,9 +5,9 @@ const { isAdmin } = require('../../../lib/permissions');
 
 module.exports = async (req, res) => {
   try {
-    const currentUserData = req.jwtData;
+    const userData = req.jwtData;
 
-    const canGetAuthor = await isAdmin(currentUserData.id);
+    const canGetAuthor = await isAdmin(userData.id);
     if (!(canGetAuthor)) {
       return res.sendStatus(403);
     }

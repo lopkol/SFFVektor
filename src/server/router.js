@@ -26,4 +26,8 @@ router.get('/authors/:authorId', require('./endpoints/authors/get-author/get-aut
 router.post('/authors/new', require('./endpoints/authors/create-author/create-author'));
 router.patch('/authors/:authorId', require('./endpoints/authors/update-author/update-author'));
 
+router.get('/book-alternatives/:bookAlternativeId', require('./endpoints/book-alternatives/get-book-alternative/get-book-alternative'));
+router.post('/book-alternatives/new', require('./endpoints/book-alternatives/create-book-alternative/create-book-alternative'));
+router.patch('/book-alternatives/:bookAlternativeId', require('./endpoints/book-alternatives/update-book-alternative/update-book-alternative'));
+
 module.exports = router;
