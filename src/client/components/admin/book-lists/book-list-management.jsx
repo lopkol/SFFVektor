@@ -3,7 +3,7 @@
 const React = require('react');
 const { Button, makeStyles } = require('@material-ui/core');
 const BookListDetails = require('./book-list-details');
-const CustomTable = require('../../common/custom-table');
+const CustomTable = require('../../common/data-display/custom-table');
 
 const { genreOptions } = require('../../../../options');
 const UserInterface = require('../../../lib/ui-context');

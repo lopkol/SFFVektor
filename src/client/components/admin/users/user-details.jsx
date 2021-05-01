@@ -10,8 +10,8 @@ const {
 } = require('@material-ui/core');
 const DialogTitle = require('../../common/dialogs/dialog-title');
 const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
-const DataDisplayPage = require('../../common/data-edit/data-display-page');
-const DataEditPage = require('../../common/data-edit/data-edit-page');
+const DataDisplayPage = require('../../common/data-display/data-display-page');
+const DataEditPage = require('../../common/form/data-edit-page');
 
 const UserInterface = require('../../../lib/ui-context');
 const { equalAsSets } = require('../../../lib/useful-stuff');

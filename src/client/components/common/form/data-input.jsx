@@ -6,7 +6,8 @@ const {
   TextField, 
   makeStyles,
 } = require('@material-ui/core');
-const { Autocomplete } = require('@material-ui/lab');
+//const { Autocomplete } = require('@material-ui/lab');
+const CustomAutocomplete = require('./custom-autocomplete');
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +28,7 @@ function DataInput(props) {
 
   return (
     <div className={classes.root}>
-      { field.type !== 'tags' ? 
+      { (field.type === 'text' || field.type === 'select') && 
         <TextField
           className={classes.input}
           name={field.key}
@@ -46,8 +47,9 @@ function DataInput(props) {
             </MenuItem>
           )) }
         </TextField> 
-        :
-        <Autocomplete
+      }
+      { (field.type === 'click-tags' || field.type === 'tags') && 
+        <CustomAutocomplete
           className={classes.input}
           multiple
           name={field.key}
@@ -66,7 +68,7 @@ function DataInput(props) {
               label={field.label}
             />
           )}
-        />
+        /> 
       }
     </div>
   );

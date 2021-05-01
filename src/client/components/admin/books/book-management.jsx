@@ -5,7 +5,8 @@ const { useParams } = require('react-router-dom');
 
 const { Button, CircularProgress, makeStyles } = require('@material-ui/core');
 const BookListDetails = require('../book-lists/book-list-details');
-const CustomTable = require('../../common/custom-table');
+const BookDetails = require('./book-details');
+const CustomTable = require('../../common/data-display/custom-table');
 
 const { sortBooks, getAuthorAndTitle, nameOfBookList } = require('../../../lib/useful-stuff');
 const { getBookList, updateBookListFromMoly } = require('../../../services/api/book-lists/book-lists');
@@ -33,7 +34,8 @@ function BookManagement() {
   const [updating, setUpdating] = React.useState(false);
   const [rows, setRows] = React.useState([]);
   const [bookListDetailsOpen, setBookListDetailsOpen] = React.useState(false);
-  //const [bookDetailsOpen, setBookDetailsOpen] = React.useState(false);
+  const [bookDetailsOpen, setBookDetailsOpen] = React.useState(false);
+  const [selectedBookId, setSelectedBookId] = React.useState(null);
 
   React.useEffect(() => {
     if (reloadData) {
@@ -73,12 +75,14 @@ function BookManagement() {
   };
 
   const handleOpenBookDetails = (bookId) => {
-    console.log(`book id: ${bookId}`);
+    setSelectedBookId(bookId);
+    setBookDetailsOpen(true);
   };
 
-  /*const handleCloseBookDetails = () => {
-
-  };*/
+  const handleCloseBookDetails = () => {
+    setBookDetailsOpen(false);
+    setSelectedBookId(null);
+  };
 
   return (
     <div>
@@ -101,6 +105,11 @@ function BookManagement() {
         open={bookListDetailsOpen} 
         handleClose={handleCloseBookListDetails} 
         bookListId={bookListId} 
+      />
+      <BookDetails
+        open={bookDetailsOpen}
+        handleClose={handleCloseBookDetails}
+        bookId={selectedBookId}
       />
     </div>
   );

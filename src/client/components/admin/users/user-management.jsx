@@ -3,7 +3,7 @@
 const React = require('react');
 const { Button, makeStyles } = require('@material-ui/core');
 const UserDetails = require('./user-details');
-const CustomTable = require('../../common/custom-table');
+const CustomTable = require('../../common/data-display/custom-table');
 
 const { getUsers } = require('../../../services/api/users/users');
 const { roleOptions } = require('../../../../options');
