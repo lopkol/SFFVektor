@@ -22,9 +22,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function DataInput(props) {
+function DataInput({ field, handleChange }) {
   const classes = useStyles();
-  const { field, handleChange } = props;
 
   return (
     <div className={classes.root}>
@@ -48,13 +47,15 @@ function DataInput(props) {
           )) }
         </TextField> 
       }
-      { (field.type === 'click-tags' || field.type === 'tags') && 
+      { field.type === 'tags' && 
         <CustomAutocomplete
           className={classes.input}
           multiple
           name={field.key}
           options={field.options.map(option => option.id)}
           getOptionLabel={optionId => field.options.find(option => option.id === optionId).name}
+          getOptionColor={optionId => field.options.find(option => option.id === optionId).color}
+          getOptionOnClick={optionId => field.options.find(option => option.id === optionId).onClick}
           value={field.value}
           onChange={(event, newValue) => handleChange(event, field.key, newValue)}
           filterSelectedOptions

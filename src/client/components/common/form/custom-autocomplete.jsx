@@ -15,17 +15,17 @@ const { Autocomplete } = require('@material-ui/lab');
 
 function CustomAutocomplete(props) {
   //const classes = useStyles();
-  const { getOptionLabel, size, ChipProps } = props;
+  const { getOptionLabel, getOptionColor, getOptionOnClick, size, ChipProps } = props;
 
   const renderTags = (value, getCustomizedTagProps) => (
     <div>
-      { value.map((option, index) => (
+      { value.map((optionId, index) => (
         <Chip
-          key={option.id}
-          label={getOptionLabel(option)}
+          key={optionId}
+          label={getOptionLabel(optionId)}
           size={size}
-          color={option.color || 'default'}
-          onClick={option.onClick}
+          color={getOptionColor(optionId) || 'default'}
+          onClick={getOptionOnClick(optionId)}
           {...getCustomizedTagProps({ index })}
           {...ChipProps}
         />

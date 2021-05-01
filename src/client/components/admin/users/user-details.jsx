@@ -140,9 +140,9 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
     } else {
       savedFields = createFieldsFromUser(userData).map(field => field.value);
     }
-    console.log('saved fields:' + savedFields);
+
     const currentFields = userFields.map(field => field.value);
-    console.log('current fields:' + currentFields);
+    
     for (let i = 0; i < savedFields.length; i++) {
       if (Array.isArray(savedFields[i])) {
         if (!equalAsSets(savedFields[i], currentFields[i])) {
