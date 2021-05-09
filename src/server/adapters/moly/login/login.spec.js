@@ -1,7 +1,7 @@
 'use strict';
 
 const nock = require('nock');
-const { moly } = require('../../config');
+const { moly } = require('../../../config');
 
 const { getAuthenticityToken, getUserCredentials } = require('./login');
 const { 
@@ -9,9 +9,8 @@ const {
   testAuthenticityToken, 
   testRedirectPage, 
   testMolySessionCookie,
-  testUserCredentialsCookie,
-  testUserCredentials
-} = require('../../../../test-helpers/moly/login');
+  testUserCredentialsCookie
+} = require('../../../../../test-helpers/moly/login');
 
 describe('Moly login', () => {
   afterEach(() => {
@@ -44,7 +43,7 @@ describe('Moly login', () => {
 
       const userCredentials = await getUserCredentials();
 
-      expect(userCredentials).toEqual(testUserCredentials);
+      expect(userCredentials).toEqual(testUserCredentialsCookie);
     });
   });
 });
