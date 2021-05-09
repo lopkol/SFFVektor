@@ -4,9 +4,7 @@ const React = require('react');
 const classNames = require('classnames');
 const { 
   Checkbox,
-  FormControlLabel,
   Paper,
-  Switch,
   Table,
   TableBody,
   TableCell,
@@ -165,9 +163,6 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 400,
   },
-  controlLabel: {
-    marginLeft: theme.spacing(2),
-  },
   selectableRow: {
     cursor: 'pointer'
   },
@@ -193,7 +188,6 @@ function CustomTable(props) {
   const [orderBy, setOrderBy] = React.useState(null);
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(-1);
 
   const handleRequestSort = (event, property) => {
@@ -239,10 +233,6 @@ function CustomTable(props) {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (rowId) => selectedRows.indexOf(rowId) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -258,17 +248,12 @@ function CustomTable(props) {
           numSelected={selectedRows.length}
         >
           {children}
-          <FormControlLabel
-            className={classes.controlLabel}
-            control={<Switch checked={dense} onChange={handleChangeDense} />}
-            label="Sűrű nézet"
-          />
         </TableToolbar>
         <TableContainer>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size="small"
             aria-label="enhanced table"
           >
             <EnhancedTableHead
@@ -325,7 +310,7 @@ function CustomTable(props) {
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                <TableRow style={{ height: 33 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
