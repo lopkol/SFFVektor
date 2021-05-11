@@ -1,5 +1,6 @@
 'use strict';
 
+const { cloneDeep } = require('lodash');
 const React = require('react');
 const { 
   Button,
@@ -8,13 +9,16 @@ const {
   DialogContent,
   makeStyles
 } = require('@material-ui/core');
+
 const DialogTitle = require('../../common/dialogs/dialog-title');
 const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
 const DataDisplayPage = require('../../common/data-display/data-display-page');
 const DataEditPage = require('../../common/form/data-edit-page');
 
+const AuthorDetails = require('../authors/author-details');
+
 const UserInterface = require('../../../lib/ui-context');
-const { equalAsSets } = require('../../../lib/useful-stuff');
+const { sortAuthors, equalAsSets } = require('../../../lib/useful-stuff');
 
 const { getBook, updateBook } = require('../../../services/api/books/books');
 const { getAuthors } = require('../../../services/api/authors/authors');
@@ -39,10 +43,9 @@ function BookDetails({ handleClose, open, bookId }) {
   const [reloadData, setReloadData] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
   const [unsavedAlertOpen, setUnsavedAlertOpen] = React.useState(false);
-  const [authors, setAuthors] = React.useState([]);
-  const [reloadAuthors, setReloadAuthors] = React.useState(true);
   const [authorDetailsOpen, setAuthorDetailsOpen] = React.useState(false);
   const [selectedAuthor, setSelectedAuthor] = React.useState(null);
+  const [reloadAuthorDetails, setReloadAuthorDetails] = React.useState(false);
   const [alternatives, setAlternatives] = React.useState([]);
   const [reloadAlternatives, setReloadAlternatives] = React.useState(true);
   const [alternativeDetailsOpen, setAlternativeDetailsOpen] = React.useState(false);
@@ -65,7 +68,7 @@ function BookDetails({ handleClose, open, bookId }) {
     if (reloadData) {
       (async () => {
         const allAuthors = await getAuthors();
-        setAuthors(allAuthors);
+        const sortedAuthors = sortAuthors(allAuthors);
 
         const bookToEdit = await getBook(bookId);
         setBookData(bookToEdit);
@@ -78,16 +81,12 @@ function BookDetails({ handleClose, open, bookId }) {
             value: [],
             label: 'Szerzők',
             type: 'tags',
-            options: allAuthors.map(author => ({
-              id: author.id,
-              name: author.name,
-              color: author.isApproved ? 'default' : 'secondary',
-              onClick: () => {
-                console.log(author.id);
-                setSelectedAuthor(author.id);
-                setAuthorDetailsOpen(true);
-              }
-            }))
+            options: sortedAuthors.map(createAuthorOption),
+            onNew: () => {
+              setSelectedAuthor(null);
+              setAuthorDetailsOpen(true);
+            },
+            newButtonLabel: 'Új szerző'
           },
           {
             key: 'title',
@@ -125,15 +124,22 @@ function BookDetails({ handleClose, open, bookId }) {
         ];
         setEmptyBookFields(emptyFields);
 
-        console.log(emptyFields);
         const newBookFields = createFieldsFromBook(emptyFields, bookToEdit);
-        console.log(newBookFields);
         setBookFields(newBookFields);
       })();
       setReloadData(false);
     }
   }, [reloadData]);
 
+  const createAuthorOption = author => ({
+    id: author.id,
+    name: author.name,
+    color: author.isApproved ? 'default' : 'secondary',
+    onClick: () => {
+      setSelectedAuthor(author.id);
+      setAuthorDetailsOpen(true);
+    }
+  });
   
   const createFieldsFromBook = (fieldArray, book) => fieldArray.map(field => (
     { ...field, value: book[field.key] }
@@ -201,6 +207,29 @@ function BookDetails({ handleClose, open, bookId }) {
     handleClose();
   }
 
+  async function addNewAuthor(newId) {
+    setSelectedAuthor(newId);
+
+    const allAuthors = await getAuthors();
+    const sortedAuthors = sortAuthors(allAuthors);
+    const newAuthorOptions = sortedAuthors.map(createAuthorOption);
+
+    const emptyFields = cloneDeep(emptyBookFields);
+    emptyFields.find(field => field.key === 'authorIds').options = newAuthorOptions;
+    setEmptyBookFields(emptyFields);
+
+    const newBookFields = cloneDeep(bookFields);
+    const authorField = newBookFields.find(field => field.key === 'authorIds');
+    authorField.options = newAuthorOptions;
+    authorField.value.push(newId);
+    setBookFields(newBookFields);
+  }
+
+  function handleCloseAuthorDetails() {
+    setAuthorDetailsOpen(false);
+    setSelectedAuthor(null);
+  }
+
   return (
     <Dialog 
       onClose={triggerClose} 
@@ -252,7 +281,17 @@ function BookDetails({ handleClose, open, bookId }) {
           } 
         </DialogActions>
       }
-      <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue}/>
+      <UnsavedDataAlert 
+        open={unsavedAlertOpen} 
+        handleCancel={handleAlertCancel} 
+        handleOk={handleAlertContinue}
+      />
+      <AuthorDetails 
+        open={authorDetailsOpen}
+        handleClose={handleCloseAuthorDetails}
+        authorId={selectedAuthor}
+        changeAuthorId={(newId) => addNewAuthor(newId)}
+      />
     </Dialog>
   );
 }

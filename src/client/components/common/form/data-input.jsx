@@ -2,6 +2,7 @@
 
 const React = require('react');
 const {
+  Button,
   MenuItem, 
   TextField, 
   makeStyles,
@@ -12,13 +13,16 @@ const CustomAutocomplete = require('./custom-autocomplete');
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 400,
-    '& > * + *': {
-      marginTop: theme.spacing(3),
-    },
   },
   input: {
     margin: theme.spacing(2),
     width: '400px'
+  },
+  newButton: {
+    width: '400px',
+    marginBottom: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2)
   }
 }));
 
@@ -70,6 +74,16 @@ function DataInput({ field, handleChange }) {
             />
           )}
         /> 
+      }
+      { field.onNew && 
+        <Button 
+          className={classes.newButton}
+          variant="outlined"
+          color="primary"
+          onClick={field.onNew}
+        >
+          { field.newButtonLabel }
+        </Button>
       }
     </div>
   );

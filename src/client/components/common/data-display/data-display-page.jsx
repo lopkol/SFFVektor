@@ -39,9 +39,8 @@ function getDisplayValue(field) {
   return <ListItem>{ field.value }</ListItem>;
 }
 
-function DataDisplayPage(props) {
+function DataDisplayPage({ data }) {
   const classes = useStyles();
-  const { data } = props;
 
   return (
     <div className={classes.root}>

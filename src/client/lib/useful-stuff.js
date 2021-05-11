@@ -92,6 +92,7 @@ function equalAsSets(array1, array2) {
 
 module.exports = {
   sortBookLists,
+  sortAuthors,
   sortBooks,
   getAuthorAndTitle,
   nameOfBookList,

@@ -119,6 +119,9 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
   React.useEffect(() => {
     if (open) {
       setReloadData(true);
+    } else {
+      setBookListData({});
+      setBookListFields(emptyBookListFields);
     }
   }, [open]);
 
@@ -152,9 +155,8 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
     } else {
       savedFields = createFieldsFromBookList(bookListData).map(field => field.value);
     }
-    console.log('saved fields:' + savedFields);
     const currentFields = bookListFields.map(field => field.value);
-    console.log('current fields:' + currentFields);
+
     for (let i = 0; i < savedFields.length; i++) {
       if (Array.isArray(savedFields[i])) {
         if (!equalAsSets(savedFields[i], currentFields[i])) {
@@ -199,8 +201,6 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
     if (unsavedData) {
       setUnsavedAlertOpen(true);
     } else {
-      setBookListData({});
-      setBookListFields(emptyBookListFields);
       handleClose();
     }
   }
@@ -211,8 +211,6 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
 
   function handleAlertContinue() {
     setUnsavedAlertOpen(false);
-    setBookListData({});
-    setBookListFields(emptyBookListFields);
     handleClose();
   }
 
@@ -222,7 +220,7 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
       aria-labelledby="book-list-details" 
       open={open} 
     >
-      <DialogTitle id="user-details-title" onClose={triggerClose}>
+      <DialogTitle id="book-list-details-title" onClose={triggerClose}>
         Jelöltlista adatai
       </DialogTitle>
       <DialogContent className={classes.dialogContent} dividers>
