@@ -34,6 +34,20 @@ async function createReadingPlans(readingPlansData) {
   }
 }
 
+async function setReadingPlans(readingPlansData) {
+  const batch = firestore.batch();
+
+  readingPlansData.forEach(readingPlanData => {
+    const id = readingPlanData.userId + readingPlanData.bookId;
+    const readingPlanDataToSave = pick(readingPlanData, readingPlanProperties);
+    const readingPlanRef = firestore.collection('readingPlans').doc(id);
+
+    batch.set(readingPlanRef, readingPlanDataToSave, { merge: true });
+  });
+
+  await batch.commit();
+}
+
 async function updateReadingPlans(readingPlansData) {
   let readingPlanIds;
   try {
@@ -86,6 +100,7 @@ async function getReadingPlansWithProps(readingPlanData) {
 
 module.exports = {
   createReadingPlans,
+  setReadingPlans,
   updateReadingPlans,
   getReadingPlansWithProps
 };

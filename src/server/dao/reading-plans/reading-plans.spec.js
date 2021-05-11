@@ -1,6 +1,6 @@
 'use strict';
 
-const { createReadingPlans, updateReadingPlans, getReadingPlansWithProps } = require('./reading-plans');
+const { createReadingPlans, setReadingPlans, updateReadingPlans, getReadingPlansWithProps } = require('./reading-plans');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 const { generateRandomReadingPlan } = require('../../../../test-helpers/generate-data');
 const { v4: uuidv4 } = require('uuid');
@@ -33,6 +33,49 @@ describe('reading plans DAO', () => {
       const res = await createReadingPlans([otherReadingPlanData]);
 
       expect(res).toEqual([null]);
+    });
+  });
+
+  describe('setReadingPlans', () => {
+    it('creates reading plans with the given properties if they do not exist', async () => {
+      const readingPlanData1 = generateRandomReadingPlan();
+      const readingPlanData2 = generateRandomReadingPlan();
+
+      await setReadingPlans([readingPlanData1, readingPlanData2]);
+      const booksInDb = await getReadingPlansWithProps();
+
+      expect(booksInDb).toEqual(jasmine.arrayWithExactContents([
+        jasmine.objectContaining(readingPlanData1), 
+        jasmine.objectContaining(readingPlanData2)
+      ]));
+    });
+
+    it('updates the correct reading plans and only the given properties', async () => {
+      const readingPlanData1 = generateRandomReadingPlan();
+      const readingPlanData2 = generateRandomReadingPlan();
+      const readingPlanData3 = generateRandomReadingPlan();
+      
+      await setReadingPlans([readingPlanData1, readingPlanData2, readingPlanData3]);
+
+      const newReadingPlanData1 = { 
+        userId: readingPlanData1.userId, 
+        bookId: readingPlanData1.bookId, 
+        status: 'new status 1' 
+      };
+      const newReadingPlanData2 = { 
+        userId: readingPlanData2.userId, 
+        bookId: readingPlanData2.bookId, 
+        status: 'new status 2' 
+      };
+      await setReadingPlans([newReadingPlanData1, newReadingPlanData2]);
+
+      const res = await getReadingPlansWithProps();
+
+      expect(res).toEqual(jasmine.arrayWithExactContents([
+        jasmine.objectContaining({ ...readingPlanData1, ...newReadingPlanData1 }),
+        jasmine.objectContaining({ ...readingPlanData2, ...newReadingPlanData2 }),
+        jasmine.objectContaining(readingPlanData3)
+      ]));
     });
   });
 

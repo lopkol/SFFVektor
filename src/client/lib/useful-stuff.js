@@ -21,12 +21,36 @@ function sortAuthors(authors) {
   return sortedAuthors;
 }
 
-function compareBooks(a,b) {
+function compareBooksByAuthors(a,b) {
   const authorsOfA = sortAuthors(a.authors);
   const authorsOfB = sortAuthors(b.authors);
   const authorsStringOfA = authorsOfA.map(author => author.sortName).join(' ');
   const authorsStringOfB = authorsOfB.map(author => author.sortName).join(' ');
   return authorsStringOfA.localeCompare(authorsStringOfB, 'en', { ignorePunctuation: true });
+}
+
+function compareBooks(a,b) {
+  const authorComparison = compareBooksByAuthors(a,b);
+  if (authorComparison !== 0) {
+    return authorComparison;
+  }
+  if (!a.series) {
+    if (!b.series) {
+      return a.title.localeCompare(b.title, 'en', { ignorePunctuation: true });
+    } else {
+      return a.title.localeCompare(b.series, 'en', { ignorePunctuation: true });
+    }
+  } 
+  if (!b.series) {
+    return a.series.localeCompare(b.title, 'en', { ignorePunctuation: true });
+  } 
+  if (a.series !== b.series) {
+    return a.series.localeCompare(b.series, 'en', { ignorePunctuation: true });
+  }
+  if (a.seriesNum && b.seriesNum) {
+    return parseFloat(a.seriesNum) - parseFloat(b.seriesNum);
+  }
+  return 0;
 }
 
 function sortBooks(books) {

@@ -5,7 +5,7 @@ const { getBooksByIds, setBooks } = require('../../../dao/books/books');
 const { createAuthor, getAuthorsWithProps } = require('../../../dao/authors/authors');
 const { createBookAlternative, getBookAlternativeWithUrl } = require('../../../dao/book-alternatives/book-alternatives');
 
-const { getBookDetails, getBooksFromList, getBooksFromShelf } = require('../../../adapters/moly/books');
+const { getBookDetails, getBooksFromList, getBooksFromShelf } = require('../../../adapters/moly/books/books');
 
 const { isAdmin } = require('../../../lib/permissions');
 const { genreOptions } = require('../../../../options');

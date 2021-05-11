@@ -3,8 +3,8 @@
 const { JSDOM } = require('jsdom');
 const axios = require('axios');
 const rax = require('retry-axios');
-const { moly } = require('../../config');
-const { raxConfig } = require('./rax-config');
+const { moly } = require('../../../config');
+const { raxConfig } = require('../rax-config');
 
 rax.attach();
 
@@ -99,9 +99,9 @@ async function getOtherPages(document) {
 }
 
 async function getBooksFromListPage(document) {
-  const bookListNodes = document.querySelectorAll('.book_selector');
+  const bookLinkNodes = document.querySelectorAll('.book_selector');
 
-  const books = Array.from(bookListNodes).map(linkNode => ({
+  const books = Array.from(bookLinkNodes).map(linkNode => ({
     url: moly.baseUrl + linkNode.href,
     id: linkNode.getAttribute('data-id')
   }));
@@ -170,8 +170,29 @@ async function getBooksFromShelf(url) {
   }
 }
 
+function getBookIdsFromReadingList(document) {
+  const contentDiv = document.getElementById('content');
+
+  const bookNodes = contentDiv.querySelectorAll('.book_selector');
+  const bookIds = Array.from(bookNodes).map(linkNode => linkNode.getAttribute('data-id'));
+
+  return bookIds;
+}
+
+async function getBooksReadByUser(userMolyUrl, userCredentialsCookie) {
+  try {
+    const res = await axios.get(`${userMolyUrl}/olvasmanylista-teljes`, { raxConfig, headers: { Cookie: userCredentialsCookie } });
+    const { document } = (new JSDOM(res.data)).window;
+
+    return getBookIdsFromReadingList(document);
+  } catch (e) {
+    throw new Error(`Failed to get books from ${userMolyUrl}`);
+  }
+}
+
 module.exports = {
   getBookDetails,
   getBooksFromList,
-  getBooksFromShelf
+  getBooksFromShelf,
+  getBooksReadByUser
 };
