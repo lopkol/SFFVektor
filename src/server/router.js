@@ -31,4 +31,7 @@ router.get('/book-alternatives/:bookAlternativeId', require('./endpoints/book-al
 router.post('/book-alternatives/new', require('./endpoints/book-alternatives/create-book-alternative/create-book-alternative'));
 router.patch('/book-alternatives/:bookAlternativeId', require('./endpoints/book-alternatives/update-book-alternative/update-book-alternative'));
 
+router.get('/reading-plans/own/:bookListId', require('./endpoints/reading-plans/get-own/get-own'));
+router.put('/reading-plans/own/:bookListId', require('./endpoints/reading-plans/update-own/update-own'));
+
 module.exports = router;

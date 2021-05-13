@@ -12,7 +12,7 @@ async function createReadingPlans(readingPlansData) {
     await firestore.runTransaction(async transaction => { 
       const readingPlans = await Promise.all(readingPlansData.map(async readingPlanData => {
 
-        const id = readingPlanData.userId + readingPlanData.bookId;
+        const id = readingPlanData.userId.concat(readingPlanData.bookId);
         const readingPlanRef = firestore.collection('readingPlans').doc(id);
         const readingPlanSnapshot = await transaction.get(readingPlanRef); 
 

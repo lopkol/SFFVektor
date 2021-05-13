@@ -12,11 +12,11 @@ const genreOptions = [
 ];
 
 const readingPlanOptions = [
-  { id: 'noPlan', name: 'nincs megadva' },
-  { id: 'willRead', name: 'el fogom olvasni' },
+  { id: 'noPlan', name: 'még nem tudom' },
+  { id: 'willRead', name: 'olvasni fogom' },
   { id: 'willNotRead', name: 'nem fogom elolvasni' },
   { id: 'isReading', name: 'éppen olvasom' },
-  { id: 'finished', name: 'elolvastam' }
+  { id: 'finished', name: 'olvastam' }
 ];
 
 module.exports = {
