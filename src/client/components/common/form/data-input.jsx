@@ -58,7 +58,6 @@ function DataInput({ field, handleChange }) {
           name={field.key}
           options={field.options.map(option => option.id)}
           getOptionLabel={optionId => field.options.find(option => option.id === optionId).name}
-          getOptionColor={optionId => field.options.find(option => option.id === optionId).color}
           getOptionOnClick={optionId => field.options.find(option => option.id === optionId).onClick}
           value={field.value}
           onChange={(event, newValue) => handleChange(event, field.key, newValue)}

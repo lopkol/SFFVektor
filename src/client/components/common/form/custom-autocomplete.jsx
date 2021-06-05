@@ -15,7 +15,7 @@ const { Autocomplete } = require('@material-ui/lab');
 
 function CustomAutocomplete(props) {
   //const classes = useStyles();
-  const { getOptionLabel, getOptionColor, getOptionOnClick, size, ChipProps } = props;
+  const { getOptionLabel, getOptionOnClick, size, ChipProps, ...otherProps } = props;
 
   const renderTags = (value, getCustomizedTagProps) => (
     <div>
@@ -24,7 +24,6 @@ function CustomAutocomplete(props) {
           key={optionId}
           label={getOptionLabel(optionId)}
           size={size}
-          color={getOptionColor(optionId) || 'default'}
           onClick={getOptionOnClick(optionId)}
           {...getCustomizedTagProps({ index })}
           {...ChipProps}
@@ -36,7 +35,9 @@ function CustomAutocomplete(props) {
   return (
     <Autocomplete 
       renderTags={renderTags}
-      {...props}
+      noOptionsText="Nincs találat"
+      getOptionLabel={getOptionLabel}
+      {...otherProps}
     />
   );
 }

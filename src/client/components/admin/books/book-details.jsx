@@ -22,7 +22,6 @@ const { sortAuthors, equalAsSets } = require('../../../lib/useful-stuff');
 
 const { getBook, updateBook } = require('../../../services/api/books/books');
 const { getAuthors } = require('../../../services/api/authors/authors');
-const { getBookAlternative } = require('../../../services/api/book-alternatives/book-alternatives');
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -45,7 +44,6 @@ function BookDetails({ handleClose, open, bookId }) {
   const [unsavedAlertOpen, setUnsavedAlertOpen] = React.useState(false);
   const [authorDetailsOpen, setAuthorDetailsOpen] = React.useState(false);
   const [selectedAuthor, setSelectedAuthor] = React.useState(null);
-  const [reloadAuthorDetails, setReloadAuthorDetails] = React.useState(false);
   const [alternatives, setAlternatives] = React.useState([]);
   const [reloadAlternatives, setReloadAlternatives] = React.useState(true);
   const [alternativeDetailsOpen, setAlternativeDetailsOpen] = React.useState(false);
@@ -86,7 +84,7 @@ function BookDetails({ handleClose, open, bookId }) {
               setSelectedAuthor(null);
               setAuthorDetailsOpen(true);
             },
-            newButtonLabel: 'Új szerző'
+            newButtonLabel: 'Új szerző létrehozása'
           },
           {
             key: 'title',
@@ -131,16 +129,6 @@ function BookDetails({ handleClose, open, bookId }) {
     }
   }, [reloadData]);
 
-  const createAuthorOption = author => ({
-    id: author.id,
-    name: author.name,
-    color: author.isApproved ? 'default' : 'secondary',
-    onClick: () => {
-      setSelectedAuthor(author.id);
-      setAuthorDetailsOpen(true);
-    }
-  });
-  
   const createFieldsFromBook = (fieldArray, book) => fieldArray.map(field => (
     { ...field, value: book[field.key] }
   ));
@@ -207,9 +195,16 @@ function BookDetails({ handleClose, open, bookId }) {
     handleClose();
   }
 
-  async function addNewAuthor(newId) {
-    setSelectedAuthor(newId);
-
+  const createAuthorOption = author => ({
+    id: author.id,
+    name: author.isApproved ? author.name : `\u26A0\uFE0F ${author.name}`,
+    onClick: () => {
+      setSelectedAuthor(author.id);
+      setAuthorDetailsOpen(true);
+    }
+  });
+  
+  async function updateAuthorOptions(newId = null) {
     const allAuthors = await getAuthors();
     const sortedAuthors = sortAuthors(allAuthors);
     const newAuthorOptions = sortedAuthors.map(createAuthorOption);
@@ -221,12 +216,20 @@ function BookDetails({ handleClose, open, bookId }) {
     const newBookFields = cloneDeep(bookFields);
     const authorField = newBookFields.find(field => field.key === 'authorIds');
     authorField.options = newAuthorOptions;
-    authorField.value.push(newId);
+    if (newId) {
+      authorField.value.push(newId);
+    }
     setBookFields(newBookFields);
   }
 
-  function handleCloseAuthorDetails() {
+  async function addNewAuthor(newId) {
+    setSelectedAuthor(newId);
+    await updateAuthorOptions(newId);
+  }
+
+  async function handleCloseAuthorDetails() {
     setAuthorDetailsOpen(false);
+    await updateAuthorOptions();
     setSelectedAuthor(null);
   }
 
