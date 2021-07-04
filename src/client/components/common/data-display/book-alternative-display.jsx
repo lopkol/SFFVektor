@@ -7,8 +7,7 @@ const {
   ListItem
 } = require('@material-ui/core');
 
-function BookAlternativeDisplay({ field }) {
-  const [alternatives] = React.useState(field.value);
+function BookAlternativeDisplay({ alternatives }) {
 
   return (
     <List dense disablePadding>

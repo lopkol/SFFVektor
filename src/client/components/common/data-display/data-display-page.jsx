@@ -38,7 +38,7 @@ function getDisplayValue(field) {
     const nameList = field.value.map(optionId => <ListItem key={optionId}>{ field.options.find(option => option.id === optionId).name }</ListItem> );
     return <List dense>{ nameList }</List>;
   } else if (field.type === 'alternatives') {
-    return <BookAlternativeDisplay field={field}/>;
+    return <BookAlternativeDisplay alternatives={field.value}/>;
   } else if (field.type === 'url') {
     return <ListItem>
       <Link
