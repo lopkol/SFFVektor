@@ -50,7 +50,13 @@ function DataInput({ field, handleChange }) {
         />
       }
       { field.type === 'alternatives' &&
-        <BookAlternativeInput/>
+        <BookAlternativeInput
+          className={classes.fieldContainer}
+          field={field}
+          handleChange={handleChange}
+          inputClass={classes.input}
+          labelClass={classes.label}
+        />
       }
     </div>
   );

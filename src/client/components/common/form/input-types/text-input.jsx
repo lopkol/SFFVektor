@@ -16,9 +16,6 @@ function TextInput ({ className, field, handleChange, inputClass, labelClass }) 
         value={field.value}
         select={field.type === 'select'}
         onChange={(event) => handleChange(event.target.value)}
-        InputLabelProps={{
-          shrink: true
-        }}
         variant="outlined"
       >
         { field.type === 'select' && field.options.map((option) => (

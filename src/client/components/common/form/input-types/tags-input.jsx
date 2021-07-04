@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     justifyContent: 'space-between'
   },
-  newButton: {
+  button: {
     marginBottom: theme.spacing(0.5)
   },
   label: {
@@ -31,7 +31,8 @@ function TagsInput({ className, field, handleChange, inputClass, labelClass }) {
         </Typography>
         { field.onNew && 
           <Button 
-            className={classes.newButton}
+            className={classes.button}
+            variant="outlined"
             size="small"
             color="primary"
             onClick={field.onNew}
