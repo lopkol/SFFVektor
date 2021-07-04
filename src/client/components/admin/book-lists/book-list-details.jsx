@@ -69,13 +69,13 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
           key: 'url',
           value: '',
           label: 'Moly lista link',
-          type: 'text'
+          type: 'url'
         },
         {
           key: 'pendingUrl',
           value: '',
           label: 'Besorolásra váró polc link',
-          type: 'text'
+          type: 'url'
         },
         {
           key: 'juryIds',

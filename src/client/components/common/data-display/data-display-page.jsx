@@ -2,6 +2,7 @@
 
 const React = require('react');
 const {
+  Link,
   List,
   ListItem,
   Typography,
@@ -38,6 +39,17 @@ function getDisplayValue(field) {
     return <List dense>{ nameList }</List>;
   } else if (field.type === 'alternatives') {
     return <BookAlternativeDisplay field={field}/>;
+  } else if (field.type === 'url') {
+    return <ListItem>
+      <Link
+        color="inherit"
+        href={field.value}
+        target="_blank"
+        rel="noopener"
+      >
+        { field.value }
+      </Link>
+    </ListItem>;
   }
   return <ListItem>{ field.value }</ListItem>;
 }

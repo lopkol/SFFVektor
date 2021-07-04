@@ -31,7 +31,7 @@ function DataInput({ field, handleChange }) {
 
   return (
     <div className={classes.root}>
-      { (field.type === 'text' || field.type === 'select') && 
+      { (['text', 'select', 'url'].includes(field.type)) && 
         <TextInput
           className={classes.fieldContainer}
           field={field}

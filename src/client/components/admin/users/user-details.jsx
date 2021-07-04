@@ -59,7 +59,7 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
       key: 'molyUrl',
       value: '',
       label: 'Moly profil link',
-      type: 'text'
+      type: 'url'
     },
     {
       key: 'email',
