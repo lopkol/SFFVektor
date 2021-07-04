@@ -44,10 +44,6 @@ function BookDetails({ handleClose, open, bookId }) {
   const [unsavedAlertOpen, setUnsavedAlertOpen] = React.useState(false);
   const [authorDetailsOpen, setAuthorDetailsOpen] = React.useState(false);
   const [selectedAuthor, setSelectedAuthor] = React.useState(null);
-  const [alternatives, setAlternatives] = React.useState([]);
-  const [reloadAlternatives, setReloadAlternatives] = React.useState(true);
-  const [alternativeDetailsOpen, setAlternativeDetailsOpen] = React.useState(false);
-  const [selectedAlternative, setSelectedAlternative] = React.useState(null);
   const [bookData, setBookData] = React.useState({});
   const [emptyBookFields, setEmptyBookFields] = React.useState([]);
   const [bookFields, setBookFields] = React.useState([]);
@@ -70,8 +66,6 @@ function BookDetails({ handleClose, open, bookId }) {
 
         const bookToEdit = await getBook(bookId);
         setBookData(bookToEdit);
-
-        setAlternatives(bookToEdit.alternatives);
 
         const emptyFields = [
           {
@@ -105,19 +99,10 @@ function BookDetails({ handleClose, open, bookId }) {
             type: 'text'
           },
           {
-            key: 'alternativeIds',
+            key: 'alternatives',
             value: [],
             label: 'Alternatívák',
-            type: 'tags',
-            options: bookToEdit.alternatives.map(alternative => ({
-              id: alternative.id,
-              name: alternative.name,
-              onClick: () => {
-                console.log(alternative.id);
-                setSelectedAlternative(alternative.id);
-                setAlternativeDetailsOpen(true);
-              }
-            }))
+            type: 'alternatives',
           }
         ];
         setEmptyBookFields(emptyFields);

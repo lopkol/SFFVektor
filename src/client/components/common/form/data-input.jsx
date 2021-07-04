@@ -1,14 +1,10 @@
 'use strict';
 
 const React = require('react');
-const {
-  Button,
-  MenuItem, 
-  TextField, 
-  makeStyles,
-} = require('@material-ui/core');
-//const { Autocomplete } = require('@material-ui/lab');
-const CustomAutocomplete = require('./custom-autocomplete');
+const { Button, makeStyles } = require('@material-ui/core');
+const TagsInput = require('./input-types/tags-input');
+const TextInput = require('./input-types/text-input');
+const BookAlternativeInput = require('./input-types/book-alternative-input');
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width: '400px'
   },
   newButton: {
-    width: '400px',
+    //width: '400px',
     marginBottom: theme.spacing(2),
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2)
@@ -32,52 +28,27 @@ function DataInput({ field, handleChange }) {
   return (
     <div className={classes.root}>
       { (field.type === 'text' || field.type === 'select') && 
-        <TextField
-          className={classes.input}
-          name={field.key}
-          label={field.label}
-          value={field.value}
-          select={field.type === 'select'}
-          onChange={(event, newValue) => handleChange(event, field.key, newValue)}
-          InputLabelProps={{
-            shrink: true
-          }}
-          variant="outlined"
-        >
-          { field.type === 'select' && field.options.map((option) => (
-            <MenuItem key={option.id} value={option.id}>
-              {option.name}
-            </MenuItem>
-          )) }
-        </TextField> 
+        <TextInput
+          field={field}
+          inputClass={classes.input}
+          handleChange={handleChange}
+        />
       }
       { field.type === 'tags' && 
-        <CustomAutocomplete
-          className={classes.input}
-          multiple
-          name={field.key}
-          options={field.options.map(option => option.id)}
-          getOptionLabel={optionId => field.options.find(option => option.id === optionId).name}
-          getOptionOnClick={optionId => field.options.find(option => option.id === optionId).onClick}
-          value={field.value}
-          onChange={(event, newValue) => handleChange(event, field.key, newValue)}
-          filterSelectedOptions
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              InputLabelProps={{
-                shrink: true
-              }}
-              variant="outlined"
-              label={field.label}
-            />
-          )}
-        /> 
+        <TagsInput
+          field={field}
+          inputClass={classes.input}
+          handleChange={handleChange}
+        />
+      }
+      { field.type === 'alternatives' &&
+        <BookAlternativeInput/>
       }
       { field.onNew && 
         <Button 
           className={classes.newButton}
           variant="outlined"
+          size="small"
           color="primary"
           onClick={field.onNew}
         >

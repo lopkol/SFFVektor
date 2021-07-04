@@ -13,36 +13,17 @@ const useStyles = makeStyles(() => ({
 
 function DataEditPage({ data, handleChange }) {
   const classes = useStyles();
-  const [fields, setFields] = React.useState([]);
 
-  React.useEffect(() => {
-    setFields(data);
-  }, [data]);
-
-  function handleFieldChange(event, key, newValue) {
-    const fieldToChange = fields.find(field => field.key === key);
-    let newFields = [];
-    if (fieldToChange.type === 'tags') {
-      newFields = fields.map(field => {
-        if (field.key === key) {
-          return {
-            ...field,
-            value: newValue
-          };
-        }
-        return field;
-      });
-    } else {
-      newFields = fields.map(field => {
-        if (field.key === event.target.name) {
-          return {
-            ...field,
-            value: event.target.value
-          };
-        }
-        return field;
-      });
-    }
+  function handleFieldChange({ key, value }) {
+    const newFields = data.map(field => {
+      if (field.key === key) {
+        return {
+          ...field,
+          value
+        };
+      }
+      return field;
+    });
     handleChange(newFields);
   }
 
@@ -54,7 +35,7 @@ function DataEditPage({ data, handleChange }) {
             name={field.key}
             key={field.key}
             field={field}
-            handleChange={handleFieldChange}
+            handleChange={(newValue) => handleFieldChange({ key: field.key, value: newValue })}
           />
         )) }
       </div>
