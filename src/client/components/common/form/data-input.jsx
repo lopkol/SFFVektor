@@ -54,7 +54,6 @@ function DataInput({ field, handleChange }) {
           className={classes.fieldContainer}
           field={field}
           handleChange={handleChange}
-          inputClass={classes.input}
           labelClass={classes.label}
         />
       }

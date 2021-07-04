@@ -8,6 +8,7 @@ const {
   Typography,
   makeStyles
 } = require('@material-ui/core');
+const { Delete: DeleteIcon } = require('@material-ui/icons');
 
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between'
   },
   altNameInput: {
-    width: '300px',
+    width: '250px',
     marginBottom: theme.spacing(1)
   },
   urlListContainer: {
@@ -36,21 +37,27 @@ const useStyles = makeStyles((theme) => ({
   },
   urlFieldContainer: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   urlInput: {
-    width: '100%',
+    width: '320px',
     marginBottom: theme.spacing(1)
   },
   label: {
     marginTop: theme.spacing(1.5)
   },
   button: {
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
+  },
+  deleteButton: {
+    marginBottom: theme.spacing(1),
+    borderRadius: '20px',
+    minWidth: '40px',
   }
 }));
 
-function BookAlternativeInput({ className, field, handleChange, inputClass, labelClass }) {
+function BookAlternativeInput({ className, field, handleChange, labelClass }) {
   const classes = useStyles();
 
   function newAlternative() {
@@ -63,15 +70,27 @@ function BookAlternativeInput({ className, field, handleChange, inputClass, labe
     handleChange(newValue);
   }
 
-  function newUrl(altIndex) {
+  function deleteAlternative(index) {
     let newValue = JSON.parse(JSON.stringify(field.value));
-    newValue[altIndex].urls.push('');
+    newValue.splice(index, 1);
     handleChange(newValue);
   }
 
   function handleNameChange({ index, value }) {
     let newValue = JSON.parse(JSON.stringify(field.value));
     newValue[index].name = value;
+    handleChange(newValue);
+  }
+
+  function newUrl(altIndex) {
+    let newValue = JSON.parse(JSON.stringify(field.value));
+    newValue[altIndex].urls.push('');
+    handleChange(newValue);
+  }
+
+  function deleteUrl({ altIndex, index }) {
+    let newValue = JSON.parse(JSON.stringify(field.value));
+    newValue[altIndex].urls.splice(index, 1);
     handleChange(newValue);
   }
 
@@ -117,6 +136,15 @@ function BookAlternativeInput({ className, field, handleChange, inputClass, labe
             >
               Új link
             </Button>
+            <Button 
+              onClick={() => deleteAlternative(altIndex)}
+              variant="outlined"
+              size="small"
+              color="primary"
+              className={classes.deleteButton}
+            >
+              <DeleteIcon size={20}/>
+            </Button>
           </div>
           <div className={classes.urlListContainer}>
             { alternative.urls.map((url, urlIndex) => (
@@ -129,6 +157,15 @@ function BookAlternativeInput({ className, field, handleChange, inputClass, labe
                   value={url}
                   onChange={(event) => handleUrlChange({ altIndex, index: urlIndex, value: event.target.value })}
                 />
+                <Button 
+                  onClick={() => deleteUrl({ altIndex, index: urlIndex })}
+                  variant="outlined"
+                  size="small"
+                  color="primary"
+                  className={classes.deleteButton}
+                >
+                  <DeleteIcon/>
+                </Button>
               </div>
             )) }
           </div>
