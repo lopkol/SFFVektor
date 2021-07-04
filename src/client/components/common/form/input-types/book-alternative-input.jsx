@@ -61,7 +61,6 @@ function BookAlternativeInput(props) {
           Alternatívák
         </Typography>
         <Button
-          variant="outlined"
           color="primary"
           size="small"
           onClick={newAlternative}
