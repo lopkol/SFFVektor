@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   urlListContainer: {
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: theme.spacing(3)
+    marginLeft: theme.spacing(2)
   },
   urlFieldContainer: {
     display: 'flex',

@@ -7,6 +7,7 @@ const {
   Typography,
   makeStyles
 } = require('@material-ui/core');
+const BookAlternativeDisplay = require('./book-alternative-display');
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +37,7 @@ function getDisplayValue(field) {
     const nameList = field.value.map(optionId => <ListItem key={optionId}>{ field.options.find(option => option.id === optionId).name }</ListItem> );
     return <List dense>{ nameList }</List>;
   } else if (field.type === 'alternatives') {
-    return <div/>;
+    return <BookAlternativeDisplay field={field}/>;
   }
   return <ListItem>{ field.value }</ListItem>;
 }
