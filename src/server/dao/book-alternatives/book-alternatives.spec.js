@@ -1,11 +1,12 @@
 'use strict';
 
 const { 
-  createBookAlternative, 
-  updateBookAlternative, 
-  getBookAlternativesByIds, 
+  createBookAlternative,
+  updateBookAlternative,
+  deleteBookAlternative,
+  getBookAlternativesByIds,
   getBookAlternativeWithUrl,
-  getBookAlternativesWithProps 
+  getBookAlternativesWithProps
 } = require('./book-alternatives');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 const { generateRandomBookAlternative } = require('../../../../test-helpers/generate-data');
@@ -45,7 +46,7 @@ describe('book alternatives DAO', () => {
       expect(res).toEqual({ ...alternativeData, ...alternativeDataToUpdate });
     });
 
-    it('correctly updates the given book alternatives, does not change the others', async () => {
+    it('correctly updates the given book alternative, does not change the others', async () => {
       const alternativeData1 = generateRandomBookAlternative();
       const alternativeData2 = generateRandomBookAlternative();
       const alternativeData3 = generateRandomBookAlternative();
@@ -64,6 +65,31 @@ describe('book alternatives DAO', () => {
       expect(res).toEqual(jasmine.arrayWithExactContents([
         { id: id1, ...alternativeData1 },
         { id: id2, ...alternativeData2, ...newAlternativeData2 },
+        { id: id3, ...alternativeData3 }
+      ]));
+    });
+  });
+
+  describe('deleteBookAlternative', () => {
+    it('returns null if the given id does not exist', async () => {
+      const res = await deleteBookAlternative('no-id');
+      expect(res).toBe(null);
+    });
+
+    it('deletes the alternative with the given id and returns the details', async () => {
+      const alternativeData1 = generateRandomBookAlternative();
+      const alternativeData2 = generateRandomBookAlternative();
+      const alternativeData3 = generateRandomBookAlternative();
+      const id1 = await createBookAlternative(alternativeData1);
+      const id2 = await createBookAlternative(alternativeData2);
+      const id3 = await createBookAlternative(alternativeData3);
+
+      const res = await deleteBookAlternative(id2);
+      expect(res).toEqual({ id: id2, ...alternativeData2 });
+
+      const alternativesInDb = await getBookAlternativesWithProps();
+      expect(alternativesInDb).toEqual(jasmine.arrayWithExactContents([
+        { id: id1, ...alternativeData1 },
         { id: id3, ...alternativeData3 }
       ]));
     });

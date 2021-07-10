@@ -28,6 +28,17 @@ async function updateBookAlternative(id, alternativeData) {
   return { id, ...(alternative.data()) };
 }
 
+async function deleteBookAlternative(id) {
+  const alternativeRef = firestore.collection('bookAlternatives').doc(id);
+  const alternative = await alternativeRef.get();
+  if (!alternative.exists) {
+    return null;
+  }
+  await alternativeRef.delete();
+
+  return { id, ...alternative.data() };
+}
+
 async function getBookAlternativesByIds(alternativeIds) {
   const alternatives = await Promise.all(alternativeIds.map(async id => {
     const alternative = await firestore.collection('bookAlternatives').doc(id).get();
@@ -64,6 +75,7 @@ async function getBookAlternativesWithProps(alternativeData = {}) {
 module.exports = {
   createBookAlternative,
   updateBookAlternative,
+  deleteBookAlternative,
   getBookAlternativesByIds,
   getBookAlternativeWithUrl,
   getBookAlternativesWithProps
