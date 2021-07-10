@@ -3,6 +3,7 @@
 const React = require('react');
 const { Button, makeStyles } = require('@material-ui/core');
 const UserDetails = require('./user-details');
+const MolyLink = require('../../common/data-display/moly-link');
 const CustomTable = require('../../common/data-display/custom-table');
 
 const { getUsers } = require('../../../services/api/users/users');
@@ -47,7 +48,12 @@ function UserManagement() {
     return {
       id: userData.id,
       fields: {
-        molyUsername: userData.molyUsername,
+        molyUsername: (
+          <span>
+            {userData.molyUsername}
+            <MolyLink url={userData.molyUrl}/>
+          </span>
+        ),
         email: userData.email,
         role: roleName
       },

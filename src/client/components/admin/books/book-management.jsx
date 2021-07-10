@@ -6,9 +6,10 @@ const { useParams } = require('react-router-dom');
 const { Button, CircularProgress, makeStyles } = require('@material-ui/core');
 const BookListDetails = require('../book-lists/book-list-details');
 const BookDetails = require('./book-details');
+const BookWithMolyLinks = require('../../books/book-with-moly-links');
 const CustomTable = require('../../common/data-display/custom-table');
 
-const { sortBooks, getAuthorAndTitle, nameOfBookList } = require('../../../lib/useful-stuff');
+const { sortBooks, nameOfBookList } = require('../../../lib/useful-stuff');
 const { getBookList, updateBookListFromMoly } = require('../../../services/api/book-lists/book-lists');
 
 const columns = [
@@ -53,7 +54,7 @@ function BookManagement() {
     return {
       id: book.id,
       fields: {
-        authorAndTitle: getAuthorAndTitle(book)
+        authorAndTitle: <BookWithMolyLinks book={book}/>
       },
       onClick: () => handleOpenBookDetails(book.id)
     };
