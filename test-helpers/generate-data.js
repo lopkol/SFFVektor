@@ -118,7 +118,7 @@ function generateRandomBookAlternative(props = {}) {
 
   return {
     name,
-    urls: [{ sequenceId: 1, url }],
+    urls: [url],
     ...props
   };
 }

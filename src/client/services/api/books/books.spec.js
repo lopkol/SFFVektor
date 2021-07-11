@@ -4,7 +4,7 @@ const { withServer } = require('../../../../../test-helpers/server');
 const { createUser } = require('../../../../server/dao/users/users');
 const { createAuthor } = require('../../../../server/dao/authors/authors');
 const { setBooks, getBooksByIds } = require('../../../../server/dao/books/books');
-const { createBookAlternative } = require('../../../../server/dao/book-alternatives/book-alternatives');
+const { createBookAlternative, getBookAlternativesWithProps } = require('../../../../server/dao/book-alternatives/book-alternatives');
 const { createBookList } = require('../../../../server/dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 const { 
@@ -18,7 +18,7 @@ const { logUserIn, logUserOut } = require('../../../../../test-helpers/authoriza
 
 const { getBooks, getBook, updateBook } = require('./books');
 
-describe('client-side book list related API calls', () => {
+describe('client-side book related API calls', () => {
   beforeEach(async () => {
     await Promise.all([
       clearCollection('users'),
@@ -151,7 +151,7 @@ describe('client-side book list related API calls', () => {
   });
 
   describe('updateBook', () => {
-    it('updates the book list data correctly', withServer(async () => {
+    it('updates the book data correctly', withServer(async () => {
       const userData = generateRandomUser({ role: 'admin' });
       const userId = await createUser(userData);
 
@@ -170,6 +170,41 @@ describe('client-side book list related API calls', () => {
 
       expect(bookInDb).toEqual(expectedData);
       expect(updatedData).toEqual(expectedData);
+    }));
+
+    it('updates the alternatives correctly', withServer(async () => {
+      const userData = generateRandomUser({ role: 'admin' });
+      const userId = await createUser(userData);
+
+      await logUserIn({ id: userId, role: 'admin' });
+
+      const bookAlternative1 = generateRandomBookAlternative();
+      const bookAlternative2 = generateRandomBookAlternative();
+      const alternativeId1 = await createBookAlternative(bookAlternative1);
+      const alternativeId2 = await createBookAlternative(bookAlternative2);
+
+      const previousAlternativeIds = [alternativeId1, alternativeId2];
+      const bookData = generateRandomBook({ alternativeIds: previousAlternativeIds });
+      const bookId = bookData.id;
+      await setBooks([bookData]);
+
+      const updatedBookAlt1 = generateRandomBookAlternative();
+      const newBookAlt3 = generateRandomBookAlternative();
+      const dataToUpdate = {
+        alternativeIds: [alternativeId1, null],
+        alternatives: [{ id: alternativeId1, ...updatedBookAlt1 }, newBookAlt3]
+      };
+
+      const updatedData = await updateBook(bookId, dataToUpdate, previousAlternativeIds);
+
+      const alternativesInDb = await getBookAlternativesWithProps();
+      const alternativeIdsInDb = alternativesInDb.map(alternative => alternative.id);
+
+      const [bookInDb] = await getBooksByIds([bookId]);
+      expect(bookInDb).toEqual(updatedData);
+      expect(bookInDb.alternativeIds).toEqual(jasmine.arrayWithExactContents(alternativeIdsInDb));
+      expect(bookInDb.alternativeIds).toContain(alternativeId1);
+      expect(bookInDb.alternativeIds).not.toContain(alternativeId2);
     }));
   });
 });

@@ -14,8 +14,8 @@ async function getBook(bookId) {
   return response.data.bookData;
 }
 
-async function updateBook(bookId, bookData) {
-  const response = await api.patch(`/api/books/${bookId}`, { bookData });
+async function updateBook(bookId, bookData, previousAlternativeIds = []) {
+  const response = await api.patch(`/api/books/${bookId}`, { bookData, previousAlternativeIds });
   return response.data.bookData;
 }
 
