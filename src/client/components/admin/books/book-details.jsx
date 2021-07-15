@@ -109,6 +109,7 @@ function BookDetails({ handleClose, open, bookId }) {
 
         const newBookFields = createFieldsFromBook(emptyFields, bookToEdit);
         setBookFields(newBookFields);
+        setEditMode(false);
       })();
       setReloadData(false);
     }
@@ -127,7 +128,9 @@ function BookDetails({ handleClose, open, bookId }) {
 
     for (let i = 0; i < savedFields.length; i++) {
       if (Array.isArray(savedFields[i])) {
-        if (!equalAsSets(savedFields[i], currentFields[i])) {
+        const shallowArray1 = savedFields[i].map(fieldEntry => JSON.stringify(fieldEntry));
+        const shallowArray2 = currentFields[i].map(fieldEntry => JSON.stringify(fieldEntry));
+        if (!equalAsSets(shallowArray1, shallowArray2)) {
           return true;
         }
       } else if (savedFields[i] !== currentFields[i]) {
@@ -145,21 +148,18 @@ function BookDetails({ handleClose, open, bookId }) {
 
   async function saveData() {
     //TODO: error handling..
-    /*let userDataToSave = {};
-    userFields.forEach(field => {
-      userDataToSave[field.key] = field.value;
+    let bookDataToSave = {};
+    bookFields.forEach(field => {
+      bookDataToSave[field.key] = field.value;
     });
 
-    if (userId === null) {
-      const newId = await saveUser(userDataToSave);
-      changeUserId(newId);
-    } else {
-      await updateUser(userId, userDataToSave);
-      if (user.id === userId) {
-        changeUIData();
-      }
-    }
-    setReloadData(true);*/
+    const newAlternativeIds = bookDataToSave.alternatives.map(alt => alt.id).filter(alt => alt);
+    bookDataToSave.alternativeIds = newAlternativeIds;
+
+    const previousAlternativeIds = bookData.alternativeIds;
+
+    await updateBook(bookId, bookDataToSave, previousAlternativeIds);
+    setReloadData(true);
   }
 
   function triggerClose() {
