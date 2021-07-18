@@ -44,51 +44,6 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
   const [emptyBookListFields, setEmptyBookListFields] = React.useState([]);
   const [bookListFields, setBookListFields] = React.useState([]);
 
-  React.useEffect(() => {
-    (async () => {
-      const allUsers = await getUsers();
-      setUsers(allUsers);
-
-      setEmptyBookListFields([
-        {
-          key: 'year',
-          value: '',
-          label: 'Év',
-          type: 'text'
-        },
-        {
-          key: 'genre',
-          value: 'scifi',
-          label: 'Műfaj',
-          type: 'select',
-          options: genreOptions
-        },
-        {
-          key: 'url',
-          value: '',
-          label: 'Moly lista link',
-          type: 'url'
-        },
-        {
-          key: 'pendingUrl',
-          value: '',
-          label: 'Besorolásra váró polc link',
-          type: 'url'
-        },
-        {
-          key: 'juryIds',
-          value: [],
-          label: 'Zsűritagok',
-          type: 'tags',
-          options: allUsers.map(user => ({
-            id: user.id,
-            name: user.molyUsername
-          }))
-        }
-      ]);
-    })();
-  }, []);
-
   const getJuryIdsOfBookList = bookList => {
     const juryIds = bookList.juryIds;
     const juryMembers = juryIds.map(id => users.find(user => user.id === id));
@@ -122,7 +77,49 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
 
   React.useEffect(() => {
     if (open) {
-      setReloadData(true);
+      (async () => {
+        const allUsers = await getUsers();
+        setUsers(allUsers);
+  
+        setEmptyBookListFields([
+          {
+            key: 'year',
+            value: '',
+            label: 'Év',
+            type: 'text'
+          },
+          {
+            key: 'genre',
+            value: 'scifi',
+            label: 'Műfaj',
+            type: 'select',
+            options: genreOptions
+          },
+          {
+            key: 'url',
+            value: '',
+            label: 'Moly lista link',
+            type: 'url'
+          },
+          {
+            key: 'pendingUrl',
+            value: '',
+            label: 'Besorolásra váró polc link',
+            type: 'url'
+          },
+          {
+            key: 'juryIds',
+            value: [],
+            label: 'Zsűritagok',
+            type: 'tags',
+            options: allUsers.map(user => ({
+              id: user.id,
+              name: user.molyUsername
+            }))
+          }
+        ]);
+        setReloadData(true);
+      })();
     } else {
       setBookListData({});
       setBookListFields(emptyBookListFields);

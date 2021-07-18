@@ -39,6 +39,10 @@ function BookManagement() {
   const [selectedBookId, setSelectedBookId] = React.useState(null);
 
   React.useEffect(() => {
+    setReloadData(true);
+  }, [bookListId]);
+
+  React.useEffect(() => {
     if (reloadData) {
       (async () => {
         const { books } = await getBookList(bookListId);
@@ -48,7 +52,7 @@ function BookManagement() {
         setReloadData(false);
       })();
     }
-  }, [reloadData, bookListId]);
+  }, [reloadData]);
 
   const createRow = (book) => {
     return {
@@ -56,6 +60,7 @@ function BookManagement() {
       fields: {
         authorAndTitle: <BookWithMolyLinks book={book}/>
       },
+      darkerBackground: book.isPending,
       onClick: () => handleOpenBookDetails(book.id)
     };
   };

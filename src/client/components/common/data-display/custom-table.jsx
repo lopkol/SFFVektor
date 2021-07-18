@@ -16,7 +16,7 @@ const {
   Toolbar,
   Typography,
   lighten, 
-  makeStyles 
+  makeStyles
 } = require('@material-ui/core');
 
 function ascendingComparator(a, b, orderBy) {
@@ -166,6 +166,14 @@ const useStyles = makeStyles((theme) => ({
   selectableRow: {
     cursor: 'pointer'
   },
+  darkerRow: {
+    backgroundColor: theme.palette.action.hover
+  },
+  hoverRow: {
+    '&:hover': {
+      backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+    }
+  },
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',
@@ -272,8 +280,7 @@ function CustomTable(props) {
 
                   return (
                     <TableRow
-                      className={ classNames(rowSelection !== 'none' && classes.selectableRow) }
-                      hover
+                      className={ classNames(classes.hoverRow, rowSelection !== 'none' && classes.selectableRow, row.darkerBackground && classes.darkerRow) }
                       onClick={ (event) => handleClick(event, row.id) }
                       aria-checked={isItemSelected}
                       tabIndex={-1}

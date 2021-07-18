@@ -23,6 +23,10 @@ function YearBooks() {
   const [selectedBookId, setSelectedBookId] = React.useState(null);
 
   React.useEffect(() => {
+    setReloadData(true);
+  }, [year]);
+
+  React.useEffect(() => {
     if (reloadData) {
       (async () => {
         const books = await getBooks(year);
@@ -32,7 +36,7 @@ function YearBooks() {
         setReloadData(false);
       })();
     }
-  }, [reloadData, year]);
+  }, [reloadData]);
 
   const createRow = (book) => {
     return {
@@ -40,6 +44,7 @@ function YearBooks() {
       fields: {
         authorAndTitle: <BookWithMolyLinks book={book}/>
       },
+      darkerBackground: book.isPending,
       onClick: () => handleOpenBookDetails(book.id)
     };
   };
