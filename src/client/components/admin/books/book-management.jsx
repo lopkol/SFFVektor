@@ -83,6 +83,7 @@ function BookManagement() {
   const handleCloseBookDetails = () => {
     setBookDetailsOpen(false);
     setSelectedBookId(null);
+    setReloadData(true);
   };
 
   return (

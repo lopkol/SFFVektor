@@ -155,6 +155,7 @@ function BookDetails({ handleClose, open, bookId }) {
 
     const newAlternativeIds = bookDataToSave.alternatives.map(alt => alt.id).filter(alt => alt);
     bookDataToSave.alternativeIds = newAlternativeIds;
+    bookDataToSave.isApproved = true;
 
     const previousAlternativeIds = bookData.alternativeIds;
 
