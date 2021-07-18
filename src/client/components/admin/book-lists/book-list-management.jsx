@@ -33,7 +33,7 @@ function BookListManagement() {
   const [bookListDetailsOpen, setBookListDetailsOpen] = React.useState(false);
   const [selectedBookListId, setSelectedBookListId] = React.useState(null);
 
-  const { bookLists } = React.useContext(UserInterface);
+  const { bookLists, changeUIData } = React.useContext(UserInterface);
 
   React.useEffect(() => {
     const createRow = (bookList) => {
@@ -68,6 +68,7 @@ function BookListManagement() {
   const handleCloseBookListDetails = () => {
     setBookListDetailsOpen(false);
     setSelectedBookListId(null);
+    changeUIData();
   };
 
   return  (

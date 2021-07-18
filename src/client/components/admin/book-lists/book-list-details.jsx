@@ -143,7 +143,6 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
   
           const newBookListFields = createFieldsFromBookList(bookListToEdit);
           setBookListFields(newBookListFields);
-          setTimeout(() => console.log(bookListFields), 4000);
         })();
       }
       setReloadData(false);
