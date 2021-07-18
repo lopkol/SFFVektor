@@ -17,6 +17,11 @@ const columns = [
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(2)
+  },
+  molyLink: {
+    '&:hover': {
+      textDecoration: 'underline'
+    }
   }
 }));
 
@@ -38,7 +43,16 @@ function BookListManagement() {
         fields: {
           year: bookList.year,
           genre: genreName,
-          url: bookList.url
+          url:
+          <a
+            className={classes.molyLink}
+            href={bookList.url}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {bookList.url}
+          </a>
         },
         onClick: () => handleOpenBookListDetails(bookList.id)
       };
