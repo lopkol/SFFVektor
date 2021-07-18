@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
   const classes = useStyles();
-  const { changeUIData } = React.useContext(UserInterface);
+  const { user, changeUIData } = React.useContext(UserInterface);
   
   const [reloadData, setReloadData] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
@@ -54,16 +54,14 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
           key: 'year',
           value: '',
           label: 'Év',
-          type: 'text',
-          immutable: true
+          type: 'text'
         },
         {
           key: 'genre',
           value: 'scifi',
           label: 'Műfaj',
           type: 'select',
-          options: genreOptions,
-          immutable: true
+          options: genreOptions
         },
         {
           key: 'url',
@@ -107,6 +105,12 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
           ...field,
           value: getJuryIdsOfBookList(bookList)
         };
+      } else if (field.key === 'year' || field.key === 'genre') {
+        return {
+          ...field,
+          immutable: true,
+          value: bookList[field.key]
+        };
       } else {
         return {
           ...field,
@@ -139,6 +143,7 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
   
           const newBookListFields = createFieldsFromBookList(bookListToEdit);
           setBookListFields(newBookListFields);
+          setTimeout(() => console.log(bookListFields), 4000);
         })();
       }
       setReloadData(false);
@@ -230,39 +235,41 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
           <DataDisplayPage data={bookListFields}/>
         }
       </DialogContent>
-      <DialogActions className={classes.dialogActions}>
-        { editMode ? 
-          <div>
-            <Button 
-              className={classes.button} 
-              onClick={exitEditMode} 
-              color="primary" 
-              variant="contained"
-            >
-              Elvetés
-            </Button>
+      { user.role === 'admin' && 
+        <DialogActions className={classes.dialogActions}>
+          { editMode ? 
+            <div>
+              <Button 
+                className={classes.button} 
+                onClick={exitEditMode} 
+                color="primary" 
+                variant="contained"
+              >
+                Elvetés
+              </Button>
+              <Button 
+                className={classes.button} 
+                autoFocus 
+                onClick={saveData} 
+                color="primary" 
+                variant="contained"
+              >
+                Mentés
+              </Button> 
+            </div>
+            :
             <Button 
               className={classes.button} 
               autoFocus 
-              onClick={saveData} 
+              onClick={() => setEditMode(true)} 
               color="primary" 
               variant="contained"
             >
-              Mentés
-            </Button> 
-          </div>
-          :
-          <Button 
-            className={classes.button} 
-            autoFocus 
-            onClick={() => setEditMode(true)} 
-            color="primary" 
-            variant="contained"
-          >
-            Szerkesztés
-          </Button>
-        } 
-      </DialogActions>
+              Szerkesztés
+            </Button>
+          } 
+        </DialogActions>
+      }
       <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue}/>
     </Dialog>
   );

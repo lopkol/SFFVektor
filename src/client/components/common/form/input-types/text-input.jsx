@@ -17,6 +17,7 @@ function TextInput ({ className, field, handleChange, inputClass, labelClass }) 
         select={field.type === 'select'}
         onChange={(event) => handleChange(event.target.value)}
         variant="outlined"
+        disabled={field.immutable}
       >
         { field.type === 'select' && field.options.map((option) => (
           <MenuItem key={option.id} value={option.id}>
