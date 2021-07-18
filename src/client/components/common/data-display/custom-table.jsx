@@ -164,15 +164,13 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 400,
   },
   selectableRow: {
-    cursor: 'pointer'
-  },
-  darkerRow: {
-    backgroundColor: theme.palette.action.hover
-  },
-  hoverRow: {
+    cursor: 'pointer',
     '&:hover': {
       backgroundColor: lighten(theme.palette.secondary.light, 0.85)
     }
+  },
+  darkerRow: {
+    backgroundColor: theme.palette.action.hover
   },
   visuallyHidden: {
     border: 0,
@@ -189,7 +187,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CustomTable(props) {
   const classes = useStyles();
-  const { title, columns, rows, className, rowSelection, children } = props;
+  const { title, columns, rows, className, rowSelection, children, noPagination } = props;
   const columnsWithProps = columns.map(column => ({ ...columnDefaultProps, ...column }));
 
   const [order, setOrder] = React.useState('asc');
@@ -280,7 +278,7 @@ function CustomTable(props) {
 
                   return (
                     <TableRow
-                      className={ classNames(classes.hoverRow, rowSelection !== 'none' && classes.selectableRow, row.darkerBackground && classes.darkerRow) }
+                      className={ classNames(rowSelection !== 'none' && classes.selectableRow, row.darkerBackground && classes.darkerRow) }
                       onClick={ (event) => handleClick(event, row.id) }
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -324,23 +322,25 @@ function CustomTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 20, 30, 50, { value: -1, label: 'Összes' }]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-          labelRowsPerPage="Oldalméret:"
-          labelDisplayedRows={ ({ from, to, count }) => {
-            if (to !== -1) {
-              return `${from}-${to} / ${count}`;
-            } else {
-              return `${from}-${count} / ${count}`;
-            }
-          } }
-        />
+        { !noPagination && 
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 20, 30, 50, { value: -1, label: 'Összes' }]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            labelRowsPerPage="Oldalméret:"
+            labelDisplayedRows={ ({ from, to, count }) => {
+              if (to !== -1) {
+                return `${from}-${to} / ${count}`;
+              } else {
+                return `${from}-${count} / ${count}`;
+              }
+            } }
+          />
+        }
       </Paper>
     </div>
   );

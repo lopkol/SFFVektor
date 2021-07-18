@@ -12,8 +12,8 @@ const genreOptions = [
 ];
 
 const readingPlanOptions = [
-  { id: 'noPlan', name: 'még nem tudom' },
-  { id: 'willRead', name: 'olvasni fogom' },
+  { id: 'noPlan', name: '-' },
+  { id: 'willRead', name: 'tervezem' },
   { id: 'willNotRead', name: 'nem fogom elolvasni' },
   { id: 'isReading', name: 'éppen olvasom' },
   { id: 'finished', name: 'olvastam' }
