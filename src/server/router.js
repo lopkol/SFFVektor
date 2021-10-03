@@ -6,30 +6,30 @@ const router = express.Router();
 
 router.use(express.json(), jwtMiddleware);
 
-router.get('/user', require('./endpoints/users/get-own-data/get-own-data'));
-router.get('/users', require('./endpoints/users/get-users/get-users'));
-router.get('/users/:userId', require('./endpoints/users/get-user/get-user'));
-router.post('/users/new', require('./endpoints/users/create-user/create-user'));
-router.patch('/users/:userId', require('./endpoints/users/update-user/update-user'));
+router.get('/user', require('./endpoints/users/get-self/get-self'));
+router.get('/users', require('./endpoints/users/get-all/get-all'));
+router.get('/users/:userId', require('./endpoints/users/get/get'));
+router.post('/users/new', require('./endpoints/users/create/create'));
+router.patch('/users/:userId', require('./endpoints/users/update/update'));
 
-router.get('/book-lists', require('./endpoints/book-lists/get-book-lists/get-book-lists'));
-router.get('/book-lists/:bookListId', require('./endpoints/book-lists/get-book-list/get-book-list'));
-router.post('/book-lists/new', require('./endpoints/book-lists/create-book-list/create-book-list'));
-router.patch('/book-lists/:bookListId', require('./endpoints/book-lists/update-book-list/update-book-list'));
+router.get('/book-lists', require('./endpoints/book-lists/get-all/get-all'));
+router.get('/book-lists/:bookListId', require('./endpoints/book-lists/get/get'));
+router.post('/book-lists/new', require('./endpoints/book-lists/create/create'));
+router.patch('/book-lists/:bookListId', require('./endpoints/book-lists/update/update'));
 router.post('/book-lists/:bookListId/moly-update', require('./endpoints/book-lists/update-from-moly/update-from-moly'));
 
-router.get('/books-from-year/:year', require('./endpoints/books/get-books/get-books'));
-router.get('/books/:bookId', require('./endpoints/books/get-book/get-book'));
-router.patch('/books/:bookId', require('./endpoints/books/update-book/update-book'));
+router.get('/books-from-year/:year', require('./endpoints/books/get-by-year/get-by-year'));
+router.get('/books/:bookId', require('./endpoints/books/get/get'));
+router.patch('/books/:bookId', require('./endpoints/books/update/update'));
 
-router.get('/authors', require('./endpoints/authors/get-authors/get-authors'));
-router.get('/authors/:authorId', require('./endpoints/authors/get-author/get-author'));
-router.post('/authors/new', require('./endpoints/authors/create-author/create-author'));
-router.patch('/authors/:authorId', require('./endpoints/authors/update-author/update-author'));
+router.get('/authors', require('./endpoints/authors/get-all/get-all'));
+router.get('/authors/:authorId', require('./endpoints/authors/get/get'));
+router.post('/authors/new', require('./endpoints/authors/create/create'));
+router.patch('/authors/:authorId', require('./endpoints/authors/update/update'));
 
-router.get('/book-alternatives/:bookAlternativeId', require('./endpoints/book-alternatives/get-book-alternative/get-book-alternative'));
-router.post('/book-alternatives/new', require('./endpoints/book-alternatives/create-book-alternative/create-book-alternative'));
-router.patch('/book-alternatives/:bookAlternativeId', require('./endpoints/book-alternatives/update-book-alternative/update-book-alternative'));
+router.get('/book-alternatives/:bookAlternativeId', require('./endpoints/book-alternatives/get/get'));
+router.post('/book-alternatives/new', require('./endpoints/book-alternatives/create/create'));
+router.patch('/book-alternatives/:bookAlternativeId', require('./endpoints/book-alternatives/update/update'));
 
 router.get('/reading-plans/own/:bookListId', require('./endpoints/reading-plans/get-own/get-own'));
 router.put('/reading-plans/own/:bookListId', require('./endpoints/reading-plans/update-own/update-own'));
