@@ -8,7 +8,7 @@ const { clearCollection } = require('../../../../../test-helpers/firestore');
 const { generateRandomUser, generateRandomBookList, generateRandomReadingPlan } = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 
-const { getOwnReadingPlans, updateOwnReadingPlans } = require('./reading-plans');
+const { getOwnReadingPlans, updateOwnReadingPlans, getAllReadingPlansForBookList } = require('./reading-plans');
 
 describe('client-side reading plan related API calls', () => {
   beforeEach(async () => {
@@ -114,6 +114,58 @@ describe('client-side reading plan related API calls', () => {
         jasmine.objectContaining(newReadingPlan1),
         jasmine.objectContaining(newReadingPlan2)
       ]));
+    }));
+  });
+
+  describe('getAllReadingPlansForBookList', () => {
+    it('returns all reading plans for the given book list, grouped by book', withServer(async () => {
+      const userData1 = generateRandomUser({ role: 'user' });
+      const userId1 = await createUser(userData1);
+      const userData2 = generateRandomUser();
+      const userId2 = await createUser(userData2);
+
+      await logUserIn({ id: userId1, role: 'user' });
+
+      const bookId1 = '12345';
+      const bookId2 = '67890';
+      const bookId3 = '76543';
+
+      const readingPlanData1 = generateRandomReadingPlan({ userId: userId1, bookId: bookId1 });
+      const readingPlanData2 = generateRandomReadingPlan({ userId: userId1, bookId: bookId3 });
+      const readingPlanData3 = generateRandomReadingPlan({ userId: userId2, bookId: bookId2 });
+      const readingPlanData4 = generateRandomReadingPlan({ userId: userId2, bookId: bookId3 });
+
+      await createReadingPlans([readingPlanData1, readingPlanData2, readingPlanData3, readingPlanData4]);
+
+      const bookListData = generateRandomBookList({ juryIds: [userId1, userId2], bookIds: [bookId1, bookId2, bookId3] });
+      const bookListId = await createBookList(bookListData);
+
+      const res = await getAllReadingPlansForBookList(bookListId);
+
+      const expectedReadingPlans = [
+        jasmine.arrayWithExactContents([
+          jasmine.objectContaining(readingPlanData1),
+          jasmine.objectContaining({
+            userId: userId2,
+            bookId: bookId1,
+            status: 'noPlan'
+          })
+        ]),
+        jasmine.arrayWithExactContents([
+          jasmine.objectContaining(readingPlanData3),
+          jasmine.objectContaining({
+            userId: userId1,
+            bookId: bookId2,
+            status: 'noPlan'
+          })
+        ]),
+        jasmine.arrayWithExactContents([
+          jasmine.objectContaining(readingPlanData2),
+          jasmine.objectContaining(readingPlanData4)
+        ])
+      ];
+      
+      expect(res).toEqual(jasmine.arrayWithExactContents(expectedReadingPlans));
     }));
   });
 });

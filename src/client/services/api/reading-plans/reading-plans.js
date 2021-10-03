@@ -16,7 +16,13 @@ async function updateOwnReadingPlans(bookListId, newReadingPlans) {
   await api.put(`/api/reading-plans/own/${bookListId}`, { readingPlans: newReadingPlans });
 }
 
+async function getAllReadingPlansForBookList(bookListId) {
+  const response = await api.get(`/api/reading-plans/all/${bookListId}`);
+  return response.data.readingPlansByBook;
+}
+
 module.exports = {
   getOwnReadingPlans,
-  updateOwnReadingPlans
+  updateOwnReadingPlans,
+  getAllReadingPlansForBookList
 };
