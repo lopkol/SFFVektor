@@ -29,7 +29,9 @@ module.exports = async (req, res) => {
       userId,
       status: 'noPlan'
     }));
-    await createReadingPlans(newReadingPlansData);
+    if (newReadingPlansData.length) {
+      await createReadingPlans(newReadingPlansData);
+    }
 
     const newReadingPlans = newReadingPlansData.map(readingPlanData => ({
       ...readingPlanData,
