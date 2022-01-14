@@ -9,7 +9,7 @@ const BookListDetails = require('../../admin/book-lists/book-list-details');
 const BookDetails = require('../../admin/books/book-details');
 const BookWithMolyLinks = require('../../books/book-with-moly-links');
 const CustomTable = require('../../common/data-display/custom-table');
-const NoJuryMemberView = require('./no-jury-member');
+const ReadingPlanStats = require('../../common/data-display/reading-plan-stats');
 
 const { sortBooks, nameOfBookList } = require('../../../lib/useful-stuff');
 const { getBookList } = require('../../../services/api/book-lists/book-lists');
@@ -99,15 +99,17 @@ function BookList() {
 
   return (
     <div>
-      { isJuryMember ?
-        <CustomTable title={nameOfBookList(bookListId)} rows={ rows } columns={ columns } rowSelection="click">
-          <Button className={classes.button} variant="contained" color="primary" onClick={ () => handleOpenBookListDetails(bookListId) }>
-            Részletek
-          </Button>
-        </CustomTable>
-        :
-        <NoJuryMemberView bookListId={bookListId} handleOpenBookListDetails={ () => handleOpenBookListDetails(bookListId) }/>
+      { isJuryMember &&
+        <ReadingPlanStats 
+          min={{ book: 20, read: 10, plan: 15 }}
+          max={{ book: 24, read: 13, plan: 16 }}
+        />
       }
+      <CustomTable title={nameOfBookList(bookListId)} rows={ rows } columns={ columns } rowSelection="click">
+        <Button className={classes.button} variant="contained" color="primary" onClick={ () => handleOpenBookListDetails(bookListId) }>
+          Részletek
+        </Button>
+      </CustomTable>
       <BookListDetails 
         open={bookListDetailsOpen} 
         handleClose={handleCloseBookListDetails} 

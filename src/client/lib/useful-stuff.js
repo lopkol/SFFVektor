@@ -114,11 +114,14 @@ function equalAsSets(array1, array2) {
   return true;
 }
 
+const capitalize = text => text[0].toUpperCase() + text.slice(1);
+
 module.exports = {
   sortBookLists,
   sortAuthors,
   sortBooks,
   getAuthorAndTitle,
   nameOfBookList,
-  equalAsSets
+  equalAsSets,
+  capitalize
 };

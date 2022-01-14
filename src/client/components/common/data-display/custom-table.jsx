@@ -187,7 +187,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CustomTable(props) {
   const classes = useStyles();
-  const { title, columns, rows, className, rowSelection, children, noPagination } = props;
+  const { title, columns, rows, className, rowSelection, children, noPagination, noToolbar } = props;
   const columnsWithProps = columns.map(column => ({ ...columnDefaultProps, ...column }));
 
   const [order, setOrder] = React.useState('asc');
@@ -248,13 +248,15 @@ function CustomTable(props) {
   return (
     <div className={classNames(classes.root, className)}>
       <Paper className={classes.paper}>
-        <TableToolbar 
-          title={title} 
-          withCheckbox={ rowSelection === 'checkbox' } 
-          numSelected={selectedRows.length}
-        >
-          {children}
-        </TableToolbar>
+        { !noToolbar &&
+          <TableToolbar 
+            title={title} 
+            withCheckbox={ rowSelection === 'checkbox' } 
+            numSelected={selectedRows.length}
+          >
+            {children}
+          </TableToolbar>
+        }
         <TableContainer>
           <Table
             className={classes.table}
