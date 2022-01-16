@@ -4,7 +4,7 @@ const React = require('react');
 const { makeStyles } = require('@material-ui/core');
 const CustomTable = require('./custom-table');
 const { capitalize } = require('../../../lib/useful-stuff');
-const { readingLimit } = require('../../../const');
+const { readingLimit } = require('../../../../options');
 
 const columns = [
   { field: 'header', headerName: '', orderable: false },

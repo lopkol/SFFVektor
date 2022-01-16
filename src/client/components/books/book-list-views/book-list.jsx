@@ -37,6 +37,7 @@ function BookList() {
   const [bookDetailsOpen, setBookDetailsOpen] = React.useState(false);
   const [selectedBookId, setSelectedBookId] = React.useState(null);
   const [isJuryMember, setIsJuryMember] = React.useState(false);
+  const [readingStats, setReadingStats] = React.useState(null);
 
   React.useEffect(() => {
     setReloadData(true);
@@ -49,17 +50,53 @@ function BookList() {
         const approvedBooks = books.filter(book => book.isApproved);
         const sortedBooks = sortBooks(approvedBooks);
 
-        const readingPlans = await getOwnReadingPlans(bookListId);
-        if (!readingPlans) {
+        const ownReadingPlans = await getOwnReadingPlans(bookListId);
+        if (!ownReadingPlans) {
           setIsJuryMember(false);
+          setReadingStats(null);
         } else {
           setIsJuryMember(true);
           const booksWithReadingPlans = sortedBooks.map(book => {
-            const readingPlan = readingPlans.find(plan => plan.bookId === book.id);
+            const readingPlan = ownReadingPlans.find(plan => plan.bookId === book.id);
             const readingPlanForBook = readingPlan ? readingPlan.status : 'noPlan';
             return assign(book, { readingPlan: readingPlanForBook });
           });
           setRows(booksWithReadingPlans.map(createRow));
+          const stats = {
+            min: {
+              book: 0,
+              read: 0,
+              plan: 0
+            },
+            max: {
+              book: 0,
+              read: 0,
+              plan: 0
+            }
+          };
+          booksWithReadingPlans.forEach(book => {
+            if (!book.isPending) {
+              stats.min.book++;
+              switch (book.readingPlan) {
+                case 'finished':
+                  stats.min.read++;
+                // eslint-disable-next-line no-fallthrough
+                case 'isReading':
+                case 'willRead':
+                  stats.min.plan++;
+              }
+            }
+            stats.max.book++;
+            switch (book.readingPlan) {
+              case 'finished':
+                stats.max.read++;
+              // eslint-disable-next-line no-fallthrough
+              case 'isReading':
+              case 'willRead':
+                stats.max.plan++;
+            }
+          });
+          setReadingStats(stats);
         }
         setReloadData(false);
       })();
@@ -99,10 +136,10 @@ function BookList() {
 
   return (
     <div>
-      { isJuryMember &&
+      { readingStats &&
         <ReadingPlanStats 
-          min={{ book: 20, read: 10, plan: 15 }}
-          max={{ book: 24, read: 13, plan: 16 }}
+          min={readingStats.min}
+          max={readingStats.max}
         />
       }
       <CustomTable title={nameOfBookList(bookListId)} rows={ rows } columns={ columns } rowSelection="click">

@@ -19,8 +19,11 @@ const readingPlanOptions = [
   { id: 'finished', name: 'olvastam' }
 ];
 
+const readingLimit = (numberOfBooks) => Math.min(20, Math.floor(numberOfBooks/2) + 1);
+
 module.exports = {
   roleOptions,
   genreOptions,
-  readingPlanOptions
+  readingPlanOptions,
+  readingLimit
 };
