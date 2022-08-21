@@ -1,6 +1,6 @@
 {
   "spec_dir": "src",
-  "spec_files": ["**/*.spec.js"],
+  "spec_files": ["**/*.spec.js", "**/*.spec.jsx"],
   "helpers": ["../test-helpers/test-setup.js"],
   "random": false,
   "stopSpecOnExpectationFailure": false
