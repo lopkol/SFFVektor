@@ -32,7 +32,7 @@ jobs:
           GCS_BUCKET_NAME: sffvektor-staging-resources
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
       - id: setup-gcloud-cli
-        uses: google-github-actions/setup-gcloud@master
+        uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: sffvektor
           service_account_key: ${{ secrets.GCP_CREDENTIALS }}
