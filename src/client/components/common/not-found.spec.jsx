@@ -1,14 +1,23 @@
 'use strict';
 
 const React = require('react');
-const { render, screen } = require('@testing-library/react');
-const { MemoryRouter } = require('react-router-dom');
+const { render, screen, fireEvent } = require('@testing-library/react');
+const { Router } = require('react-router-dom');
+const { createMemoryHistory } = require('history');
 const NotFound = require('./not-found');
 
-describe('dummy test for checking test setup', () => {
-  it('renders something', () => {
-    render(<NotFound />, { wrapper: MemoryRouter });
+describe('NotFound component', () => {
+  it('should redirect to start page when clicking redirect button', async () => {
+    const history = createMemoryHistory();
+    history.push('/there/is/nothing/here/bro');
 
-    expect(screen.getByRole('button')).toHaveTextContent('Vissza a kezdőlapra');
+    render(
+      <Router location={history.location} navigator={history}>
+        <NotFound />
+      </Router>
+    );
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(history.location.pathname).toEqual('/');
   });
 });
