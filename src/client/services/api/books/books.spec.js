@@ -7,9 +7,9 @@ const { setBooks, getBooksByIds } = require('../../../../server/dao/books/books'
 const { createBookAlternative, getBookAlternativesWithProps } = require('../../../../server/dao/book-alternatives/book-alternatives');
 const { createBookList } = require('../../../../server/dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { 
-  generateRandomAuthor, 
-  generateRandomUser, 
+const {
+  generateRandomAuthor,
+  generateRandomUser,
   generateRandomBookAlternative,
   generateRandomBook,
   generateRandomBookList
@@ -67,9 +67,9 @@ describe('client-side book related API calls', () => {
       const books = await getBooks(year);
 
       const expectedData = jasmine.arrayWithExactContents([
-        { 
-          ...bookData1, 
-          authors: [{ id: authorId1, ...authorData1 }], 
+        {
+          ...bookData1,
+          authors: [{ id: authorId1, ...authorData1 }],
           alternatives: [{ id: alternativeId1, ...alternativeData1 }],
           bookLists: jasmine.arrayWithExactContents([
             {
@@ -82,11 +82,11 @@ describe('client-side book related API calls', () => {
             }
           ])
         },
-        { 
-          ...bookData2, 
-          authors: [{ id: authorId2, ...authorData2 }], 
+        {
+          ...bookData2,
+          authors: [{ id: authorId2, ...authorData2 }],
           alternatives: jasmine.arrayWithExactContents([
-            { id: alternativeId2, ...alternativeData2 }, 
+            { id: alternativeId2, ...alternativeData2 },
             { id: alternativeId3, ...alternativeData3 }
           ]),
           bookLists: [{
@@ -131,12 +131,12 @@ describe('client-side book related API calls', () => {
 
       const book = await getBook(bookId);
 
-      expect(book).toEqual({ 
-        ...bookData, 
+      expect(book).toEqual({
+        ...bookData,
         authors: jasmine.arrayWithExactContents([
           { id: authorId1, ...authorData1 },
           { id: authorId2, ...authorData2 }
-        ]), 
+        ]),
         alternatives: jasmine.arrayWithExactContents([
           { id: alternativeId1, ...alternativeData1 },
           { id: alternativeId2, ...alternativeData2 },

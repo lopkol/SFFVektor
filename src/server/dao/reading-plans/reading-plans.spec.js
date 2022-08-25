@@ -45,7 +45,7 @@ describe('reading plans DAO', () => {
       const booksInDb = await getReadingPlansWithProps();
 
       expect(booksInDb).toEqual(jasmine.arrayWithExactContents([
-        jasmine.objectContaining(readingPlanData1), 
+        jasmine.objectContaining(readingPlanData1),
         jasmine.objectContaining(readingPlanData2)
       ]));
     });
@@ -54,18 +54,18 @@ describe('reading plans DAO', () => {
       const readingPlanData1 = generateRandomReadingPlan();
       const readingPlanData2 = generateRandomReadingPlan();
       const readingPlanData3 = generateRandomReadingPlan();
-      
+
       await setReadingPlans([readingPlanData1, readingPlanData2, readingPlanData3]);
 
-      const newReadingPlanData1 = { 
-        userId: readingPlanData1.userId, 
-        bookId: readingPlanData1.bookId, 
-        status: 'new status 1' 
+      const newReadingPlanData1 = {
+        userId: readingPlanData1.userId,
+        bookId: readingPlanData1.bookId,
+        status: 'new status 1'
       };
-      const newReadingPlanData2 = { 
-        userId: readingPlanData2.userId, 
-        bookId: readingPlanData2.bookId, 
-        status: 'new status 2' 
+      const newReadingPlanData2 = {
+        userId: readingPlanData2.userId,
+        bookId: readingPlanData2.bookId,
+        status: 'new status 2'
       };
       await setReadingPlans([newReadingPlanData1, newReadingPlanData2]);
 
@@ -105,15 +105,15 @@ describe('reading plans DAO', () => {
       const readingPlanData3 = generateRandomReadingPlan();
       const [id1, id2, id3] = await createReadingPlans([readingPlanData1, readingPlanData2, readingPlanData3]);
 
-      const newReadingPlanData1 = { 
-        userId: readingPlanData1.userId, 
-        bookId: readingPlanData1.bookId, 
-        status: 'new status 1' 
+      const newReadingPlanData1 = {
+        userId: readingPlanData1.userId,
+        bookId: readingPlanData1.bookId,
+        status: 'new status 1'
       };
-      const newReadingPlanData2 = { 
-        userId: readingPlanData2.userId, 
-        bookId: readingPlanData2.bookId, 
-        status: 'new status 2' 
+      const newReadingPlanData2 = {
+        userId: readingPlanData2.userId,
+        bookId: readingPlanData2.bookId,
+        status: 'new status 2'
       };
 
       await updateReadingPlans([newReadingPlanData1, newReadingPlanData2]);
@@ -148,7 +148,7 @@ describe('reading plans DAO', () => {
       const readingPlansWithProps = await getReadingPlansWithProps();
 
       expect(readingPlansWithProps).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...readingPlanData1 }, 
+        { id: id1, ...readingPlanData1 },
         { id: id2, ...readingPlanData2 }
       ]));
     });

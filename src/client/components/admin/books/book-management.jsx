@@ -47,7 +47,7 @@ function BookManagement() {
       (async () => {
         const { books } = await getBookList(bookListId);
         const sortedBooks = sortBooks(books);
-        
+
         setRows(sortedBooks.map(createRow));
         setReloadData(false);
       })();
@@ -99,19 +99,19 @@ function BookManagement() {
         </Button>
         { updating ?
           <Button className={classes.button} variant="contained" color="primary" disabled>
-            Frissítés 
+            Frissítés
             <CircularProgress className={classes.circularProgress} size={20}/>
           </Button>
           :
           <Button className={classes.button} variant="contained" color="primary" onClick={triggerUpdateFromMoly} >
             Frissítés Molyról
-          </Button> 
+          </Button>
         }
       </CustomTable>
-      <BookListDetails 
-        open={bookListDetailsOpen} 
-        handleClose={handleCloseBookListDetails} 
-        bookListId={bookListId} 
+      <BookListDetails
+        open={bookListDetailsOpen}
+        handleClose={handleCloseBookListDetails}
+        bookListId={bookListId}
       />
       <BookDetails
         open={bookDetailsOpen}

@@ -29,20 +29,20 @@ function UserManagement() {
   const [reloadData, setReloadData] = React.useState(true);
   const [userDetailsOpen, setUserDetailsOpen] = React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState(null);
-  
+
   React.useEffect(() => {
     if (reloadData) {
       (async () => {
         const users = await getUsers();
         const sortedUsers = users.slice().sort((a,b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
-        
+
         setRows(sortedUsers.map(createRow));
       })();
-      
+
       setReloadData(false);
     }
   }, [reloadData]);
-  
+
   const createRow = (userData) => {
     const roleName = roleOptions.find(role => role.id === userData.role).name;
     return {
@@ -79,10 +79,10 @@ function UserManagement() {
           Új felhasználó
         </Button>
       </CustomTable>
-      <UserDetails 
-        open={userDetailsOpen} 
-        handleClose={handleCloseUserDetails} 
-        userId={selectedUserId} 
+      <UserDetails
+        open={userDetailsOpen}
+        handleClose={handleCloseUserDetails}
+        userId={selectedUserId}
         changeUserId={(newId) => setSelectedUserId(newId)}
       />
     </div>

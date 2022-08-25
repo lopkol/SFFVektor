@@ -33,7 +33,7 @@ function CustomAutocomplete(props) {
   );
 
   return (
-    <Autocomplete 
+    <Autocomplete
       renderTags={renderTags}
       noOptionsText="Nincs találat"
       getOptionLabel={getOptionLabel}

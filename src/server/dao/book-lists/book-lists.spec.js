@@ -1,6 +1,6 @@
 'use strict';
 
-const { 
+const {
   createBookList,
   updateBookList,
   getBookListById,
@@ -61,7 +61,7 @@ describe('booklists DAO', () => {
     it('updates the correct book list and only the given properties', async () => {
       const bookData1 = generateRandomBookList({ year: 1778 });
       const bookData2 = generateRandomBookList({ year: 1888 });
-      
+
       const id1 = await createBookList(bookData1);
       const id2 = await createBookList(bookData2);
 
@@ -96,7 +96,7 @@ describe('booklists DAO', () => {
 
     it('returns null if there is no book list with the given id', async () => {
       const result = await getBookListById('does-not-exist');
-      
+
       expect(result).toEqual(null);
     });
   });
@@ -118,7 +118,7 @@ describe('booklists DAO', () => {
       const bookListData1 = generateRandomBookList({ year: 1922 });
       const bookListData2 = generateRandomBookList({ year: 1823 });
       const bookListData3 = generateRandomBookList({ year: 1888 });
-      
+
       const id1 = await createBookList(bookListData1);
       const id2 = await createBookList(bookListData2);
       const id3 = await createBookList(bookListData3);
@@ -126,8 +126,8 @@ describe('booklists DAO', () => {
       const bookLists = await getBookListsWithProps();
 
       expect(bookLists).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...bookListData1 }, 
-        { id: id2, ...bookListData2 }, 
+        { id: id1, ...bookListData1 },
+        { id: id2, ...bookListData2 },
         { id: id3, ...bookListData3 }
       ]));
     });
@@ -136,7 +136,7 @@ describe('booklists DAO', () => {
       const bookListData1 = generateRandomBookList({ year: 1933, genre: 'fantasy' });
       const bookListData2 = generateRandomBookList({ year: 1933, genre: 'scifi' });
       const bookListData3 = generateRandomBookList({ year: 1734, genre: 'fantasy' });
-      
+
       const id1 = await createBookList(bookListData1);
       const id2 = await createBookList(bookListData2);
       await createBookList(bookListData3);

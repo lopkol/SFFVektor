@@ -29,8 +29,8 @@ function TagsInput({ className, field, handleChange, inputClass, labelClass }) {
         <Typography variant="subtitle2" className={classNames(labelClass, classes.label)}>
           {field.label}
         </Typography>
-        { field.onNew && 
-          <Button 
+        { field.onNew &&
+          <Button
             className={classes.button}
             variant="outlined"
             size="small"

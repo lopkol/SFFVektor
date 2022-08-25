@@ -2,7 +2,7 @@
 
 const { cloneDeep } = require('lodash');
 const React = require('react');
-const { 
+const {
   Button,
   Dialog,
   DialogActions,
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 function BookDetails({ handleClose, open, bookId }) {
   const classes = useStyles();
   const { user } = React.useContext(UserInterface);
-  
+
   const [reloadData, setReloadData] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
   const [unsavedAlertOpen, setUnsavedAlertOpen] = React.useState(false);
@@ -189,7 +189,7 @@ function BookDetails({ handleClose, open, bookId }) {
       setAuthorDetailsOpen(true);
     }
   });
-  
+
   async function updateAuthorOptions(newId = null) {
     const allAuthors = await getAuthors();
     const sortedAuthors = sortAuthors(allAuthors);
@@ -220,10 +220,10 @@ function BookDetails({ handleClose, open, bookId }) {
   }
 
   return (
-    <Dialog 
-      onClose={triggerClose} 
-      aria-labelledby="book-details" 
-      open={open} 
+    <Dialog
+      onClose={triggerClose}
+      aria-labelledby="book-details"
+      open={open}
     >
       <DialogTitle id="book-details-title" onClose={triggerClose}>
         Könyv adatai
@@ -235,47 +235,47 @@ function BookDetails({ handleClose, open, bookId }) {
           <DataDisplayPage data={bookFields}/>
         }
       </DialogContent>
-      { user.role === 'admin' && 
-        <DialogActions className={classes.DialogActions}>
-          { editMode ? 
+      { user.role === 'admin' &&
+        <DialogActions className={classes.dialogActions}>
+          { editMode ?
             <div>
-              <Button 
-                className={classes.button} 
-                onClick={exitEditMode} 
-                color="primary" 
+              <Button
+                className={classes.button}
+                onClick={exitEditMode}
+                color="primary"
                 variant="contained"
               >
                 Elvetés
               </Button>
-              <Button 
-                className={classes.button} 
-                autoFocus 
-                onClick={saveData} 
-                color="primary" 
+              <Button
+                className={classes.button}
+                autoFocus
+                onClick={saveData}
+                color="primary"
                 variant="contained"
               >
                 Mentés
-              </Button> 
+              </Button>
             </div>
             :
-            <Button 
-              className={classes.button} 
-              autoFocus 
-              onClick={() => setEditMode(true)} 
-              color="primary" 
+            <Button
+              className={classes.button}
+              autoFocus
+              onClick={() => setEditMode(true)}
+              color="primary"
               variant="contained"
             >
               Szerkesztés
-            </Button> 
-          } 
+            </Button>
+          }
         </DialogActions>
       }
-      <UnsavedDataAlert 
-        open={unsavedAlertOpen} 
-        handleCancel={handleAlertCancel} 
+      <UnsavedDataAlert
+        open={unsavedAlertOpen}
+        handleCancel={handleAlertCancel}
         handleOk={handleAlertContinue}
       />
-      <AuthorDetails 
+      <AuthorDetails
         open={authorDetailsOpen}
         handleClose={handleCloseAuthorDetails}
         authorId={selectedAuthor}

@@ -43,7 +43,7 @@ async function getBookListsWithProps(bookListData = {}) {
 
   const bookListsWithProps = await filteredBookListsRef.get();
   const bookLists = mapToDataWithId(bookListsWithProps);
-  
+
   return bookLists;
 }
 
@@ -85,7 +85,7 @@ async function updateBookListsOfJuryMember(userId, newBookListIds) {
         const juryIds = bookList.data().juryIds;
         return { ref: bookListRef, newJuryIds: juryIds.filter(juryId => juryId !== userId) };
       }));
-    
+
       const bookListsToUpdate = bookListsToAdd.concat(bookListsToRemove);
       bookListsToUpdate.map(bookListData => {
         transaction.update(bookListData.ref, { juryIds: bookListData.newJuryIds });

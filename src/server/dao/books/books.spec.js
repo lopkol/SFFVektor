@@ -35,7 +35,7 @@ describe('books DAO', () => {
       const bookData1 = generateRandomBook({ id: '1' });
       const bookData2 = generateRandomBook({ id: '2' });
       const bookData3 = generateRandomBook({ id: '3' });
-      
+
       await setBooks([bookData1, bookData2, bookData3]);
 
       const dataToChange2 = { id: '2', authorIds: ['3'], title: 'War and Peace' };
@@ -62,7 +62,7 @@ describe('books DAO', () => {
       const bookData1 = generateRandomBook({ id: '1' });
       const bookData2 = generateRandomBook({ id: '2' });
       const bookData3 = generateRandomBook({ id: '3' });
-      
+
       await setBooks([bookData1, bookData2, bookData3]);
 
       const books = await getBooksByIds(['3', '1']);
@@ -99,7 +99,7 @@ describe('books DAO', () => {
       const bookData1 = generateRandomBook({ id: '1' });
       const bookData2 = generateRandomBook({ id: '2' });
       const bookData3 = generateRandomBook({ id: '3' });
-      
+
       await setBooks([bookData1, bookData2, bookData3]);
 
       const books = await getBooksWithProps();

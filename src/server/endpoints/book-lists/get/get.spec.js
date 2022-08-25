@@ -9,12 +9,12 @@ const { setBooks } = require('../../../dao/books/books');
 const { createAuthor } = require('../../../dao/authors/authors');
 const { createBookAlternative } = require('../../../dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { 
-  generateRandomAuthor, 
+const {
+  generateRandomAuthor,
   generateRandomUser,
-  generateRandomBookAlternative, 
-  generateRandomBook, 
-  generateRandomBookList 
+  generateRandomBookAlternative,
+  generateRandomBook,
+  generateRandomBookList
 } = require('../../../../../test-helpers/generate-data');
 
 describe('GET /book-lists/:bookListId', () => {
@@ -84,9 +84,9 @@ describe('GET /book-lists/:bookListId', () => {
         { ...bookData1, authors: [{ id: authorId1, ...authorData1 }], alternatives: [{ id: alternativeId1, ...alternativeData1 }] },
         { ...bookData2, authors: [{ id: authorId2, ...authorData2 }], alternatives: [{ id: alternativeId2, ...alternativeData2 }] }
       ]),
-      jury: jasmine.arrayWithExactContents([ 
-        { id: userId2, ...userData2 }, 
-        { id: userId3, ...userData3 } 
+      jury: jasmine.arrayWithExactContents([
+        { id: userId2, ...userData2 },
+        { id: userId3, ...userData3 }
       ])
     };
 

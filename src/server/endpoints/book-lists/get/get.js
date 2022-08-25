@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
     }));
 
     const jury = await getUsersByIds(bookList.juryIds || []);
-    
+
     return res.status(200).send({ bookList, books: booksWithAuthorsAndAlternatives, jury });
 
   } catch (error) {

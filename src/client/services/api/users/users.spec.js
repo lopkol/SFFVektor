@@ -34,13 +34,13 @@ describe('client-side user related API calls', () => {
 
       const user = await getOwnData();
 
-      expect(user).toEqual({ 
-        id: userId, 
-        ...userData, 
+      expect(user).toEqual({
+        id: userId,
+        ...userData,
         bookLists: jasmine.arrayWithExactContents([
           { id: bookListId1, ...bookListData1 },
           { id: bookListId2, ...bookListData2 }
-        ]) 
+        ])
       });
     }));
   });
@@ -61,7 +61,7 @@ describe('client-side user related API calls', () => {
 
       expect(users).toEqual(jasmine.arrayWithExactContents([
         { id: userId, ...userData },
-        { id: userId1, ...userData1 }, 
+        { id: userId1, ...userData1 },
         { id: userId2, ...userData2 }
       ]));
     }));
@@ -84,16 +84,16 @@ describe('client-side user related API calls', () => {
 
       const user = await getUser(otherId);
 
-      expect(user).toEqual({ 
-        id: otherId, 
-        ...otherUserData, 
+      expect(user).toEqual({
+        id: otherId,
+        ...otherUserData,
         bookLists: jasmine.arrayWithExactContents([
           { id: bookListId1, ...bookListData1 },
           { id: bookListId2, ...bookListData2 }
-        ]) 
+        ])
       });
     }));
-    
+
 
     it('returns the user data of a non-admin user if he is trying to get his own details', withServer(async () => {
       const userData = generateRandomUser({ role: 'user' });
@@ -108,13 +108,13 @@ describe('client-side user related API calls', () => {
 
       const user = await getUser(userId);
 
-      expect(user).toEqual({ 
-        id: userId, 
-        ...userData, 
+      expect(user).toEqual({
+        id: userId,
+        ...userData,
         bookLists: jasmine.arrayWithExactContents([
           { id: bookListId1, ...bookListData1 },
           { id: bookListId2, ...bookListData2 }
-        ]) 
+        ])
       });
     }));
   });

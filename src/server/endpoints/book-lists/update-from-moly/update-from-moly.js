@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
   }
 
   const { bookListId } = req.params;
-  
+
   const bookList = await getBookListById(bookListId);
   if (!bookList) {
     return res.sendStatus(404);
@@ -73,7 +73,7 @@ module.exports = async (req, res) => {
 
   await setBooks(booksToSave);
   await updateBookList(bookListId, { bookIds: newBookIds });
-  
+
   return res.sendStatus(200);
 };
 
@@ -88,7 +88,7 @@ async function createOrGetAuthor(author) {
     const lastName = isHun ?
       names[0] :
       names[names.length - 1];
-    const firstNames = isHun ? 
+    const firstNames = isHun ?
       names.slice(1).join(' ') :
       names.slice(0, names.length - 1).join(' ');
     const id = await createAuthor({

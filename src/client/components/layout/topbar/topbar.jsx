@@ -3,13 +3,13 @@
 const React = require('react');
 const classNames = require('classnames');
 const { Link, useMatch, useParams } = require('react-router-dom');
-const { 
-  AppBar, 
-  Box, 
-  IconButton, 
-  Toolbar, 
-  Typography, 
-  makeStyles 
+const {
+  AppBar,
+  Box,
+  IconButton,
+  Toolbar,
+  Typography,
+  makeStyles
 } = require('@material-ui/core');
 const UserInterface = require('../../../lib/ui-context');
 const { getTitle, topNavbar } = require('./topbar-options');
@@ -73,20 +73,20 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
   }
 
   return (
-    <AppBar 
-      position="sticky" 
+    <AppBar
+      position="sticky"
       className={ classNames(classes.appBar, {
         [classes.appBarShift]: isSidebarOpen
       }) }
     >
       <Toolbar>
-        <IconButton 
-          onClick={ onSidebarOpen } 
+        <IconButton
+          onClick={ onSidebarOpen }
           color="inherit"
           className={ classNames(classes.menuButton, isSidebarOpen && classes.hide ) }
         >
           <MenuIcon size={30}/>
-        </IconButton> 
+        </IconButton>
         <Box className={classes.navContainer}>
           <Typography
             align="center"

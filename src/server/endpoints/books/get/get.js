@@ -8,7 +8,7 @@ const { getBookListsOfBook } = require('../../../dao/book-lists/book-lists');
 module.exports = async (req, res) => {
   try {
     const bookId = req.params.bookId;
-    
+
     const [book] = await getBooksByIds([bookId]);
     if (!book) {
       return res.sendStatus(404);

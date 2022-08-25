@@ -31,7 +31,7 @@ function YearBooks() {
       (async () => {
         const books = await getBooks(year);
         const sortedBooks = sortBooks(books);
-        
+
         setRows(sortedBooks.map(createRow));
         setReloadData(false);
       })();

@@ -8,12 +8,12 @@ const { setBooks, getBooksWithProps } = require('../../../../server/dao/books/bo
 const { createBookList, getBookListById, getBookListsWithProps } = require('../../../../server/dao/book-lists/book-lists');
 const { createBookAlternative, getBookAlternativesByIds } = require('../../../../server/dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { 
-  generateRandomAuthor, 
-  generateRandomUser, 
+const {
+  generateRandomAuthor,
+  generateRandomUser,
   generateRandomBookAlternative,
-  generateRandomBook, 
-  generateRandomBookList 
+  generateRandomBook,
+  generateRandomBookList
 } = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 const {
@@ -93,9 +93,9 @@ describe('client-side book list related API calls', () => {
           { ...bookData1, authors: [{ id: authorId1, ...authorData1 }], alternatives: [{ id: alternativeId1, ...alternativeData1 }] },
           { ...bookData2, authors: [{ id: authorId2, ...authorData2 }], alternatives: [{ id: alternativeId2, ...alternativeData2 }] }
         ]),
-        jury: jasmine.arrayWithExactContents([ 
-          { id: userId2, ...userData2 }, 
-          { id: userId3, ...userData3 } 
+        jury: jasmine.arrayWithExactContents([
+          { id: userId2, ...userData2 },
+          { id: userId3, ...userData3 }
         ])
       };
 
@@ -182,33 +182,33 @@ describe('client-side book list related API calls', () => {
       const userId = await createUser(userData);
 
       await logUserIn({ id: userId, role: 'admin' });
-  
+
       const year = '2020';
       const genre = 'scifi';
-      const bookListData = generateRandomBookList({ 
-        year, 
-        genre, 
-        url: moly.baseUrl + bookListUrl, 
-        pendingUrl: moly.baseUrl + pendingUrl, 
-        juryIds: [], 
-        bookIds: [] 
+      const bookListData = generateRandomBookList({
+        year,
+        genre,
+        url: moly.baseUrl + bookListUrl,
+        pendingUrl: moly.baseUrl + pendingUrl,
+        juryIds: [],
+        bookIds: []
       });
       const bookListId = await createBookList(bookListData);
       await updateBookListFromMoly(bookListId);
-  
+
       const bookList = await getBookListById(bookListId);
-  
+
       const booksInDb = await getBooksWithProps();
       expect(bookList.bookIds).toEqual(jasmine.arrayWithExactContents(booksInDb.map(book => book.id)));
-  
+
       await Promise.all([book1, book2, book3, book4].map(async (book, index) => {
         const [bookInDb] = await getBooksWithProps({ title: book.title });
         expect(bookInDb).toEqual(jasmine.objectContaining(book));
-  
+
         const [authorId] = bookInDb.authorIds;
         const author = await getAuthorById(authorId);
         expect(author).toEqual(jasmine.objectContaining(authors[index]));
-  
+
         const alternativeIds = bookInDb.alternativeIds;
         const alternatives = await getBookAlternativesByIds(alternativeIds);
         if (index === 2) {

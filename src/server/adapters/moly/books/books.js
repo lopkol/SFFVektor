@@ -18,7 +18,7 @@ function getAuthors(document) {
   const authorsNames = removeJunkFromString(authorDiv.textContent).split(middleDot);
   const authorLinksCollection = authorDiv.getElementsByTagName('a');
 
-  const authors = authorsNames.map((name, index) => 
+  const authors = authorsNames.map((name, index) =>
     ({
       name,
       molyUrl: moly.baseUrl + authorLinksCollection[index].href
@@ -74,8 +74,8 @@ async function getBookDetails(url) {
       name: 'magyar',
       urls: [url]
     };
-    const alternatives = originalVersion ? 
-      [hunVersion, originalVersion] : 
+    const alternatives = originalVersion ?
+      [hunVersion, originalVersion] :
       [hunVersion];
 
     const book = { authors, title, series, seriesNum, alternatives };

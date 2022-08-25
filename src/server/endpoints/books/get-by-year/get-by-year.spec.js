@@ -10,11 +10,11 @@ const { createAuthor } = require('../../../dao/authors/authors');
 const { createBookAlternative } = require('../../../dao/book-alternatives/book-alternatives');
 const { createBookList } = require('../../../dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { 
-  generateRandomUser, 
-  generateRandomAuthor, 
-  generateRandomBookAlternative, 
-  generateRandomBook, 
+const {
+  generateRandomUser,
+  generateRandomAuthor,
+  generateRandomBookAlternative,
+  generateRandomBook,
   generateRandomBookList
 } = require('../../../../../test-helpers/generate-data');
 
@@ -75,17 +75,17 @@ describe('GET /books-from-year/:year', () => {
 
     const expectedData = {
       books: jasmine.arrayWithExactContents([
-        { 
-          ...bookData1, 
-          authors: [{ id: authorId1, ...authorData1 }], 
+        {
+          ...bookData1,
+          authors: [{ id: authorId1, ...authorData1 }],
           alternatives: [{ id: alternativeId1, ...alternativeData1 }],
-          bookLists: [] 
+          bookLists: []
         },
-        { 
-          ...bookData2, 
-          authors: [{ id: authorId2, ...authorData2 }], 
+        {
+          ...bookData2,
+          authors: [{ id: authorId2, ...authorData2 }],
           alternatives: jasmine.arrayWithExactContents([
-            { id: alternativeId2, ...alternativeData2 }, 
+            { id: alternativeId2, ...alternativeData2 },
             { id: alternativeId3, ...alternativeData3 }
           ]),
           bookLists: []

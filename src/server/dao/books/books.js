@@ -6,20 +6,20 @@ const { constructQuery, mapToDataWithId } = require('../helper-functions');
 
 const bookProperties = [
   'authorIds', //array
-  'title', 
+  'title',
   'year',
-  'series', 
-  'seriesNum', 
+  'series',
+  'seriesNum',
   'isApproved', //boolean
   'isPending',  //boolean
   'alternativeIds' //array
 ];
 
-async function createBook(bookData) { 
+async function createBook(bookData) {
   const bookDataToSave = pick(bookData, bookProperties);
   const book = await firestore.collection('books').add(bookDataToSave);
   return book.id;
-} 
+}
 
 async function setBooks(booksData) {
   const batch = firestore.batch();

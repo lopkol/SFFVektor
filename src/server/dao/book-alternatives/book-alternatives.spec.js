@@ -1,6 +1,6 @@
 'use strict';
 
-const { 
+const {
   createBookAlternative,
   updateBookAlternative,
   deleteBookAlternative,
@@ -54,8 +54,8 @@ describe('book alternatives DAO', () => {
       const id2 = await createBookAlternative(alternativeData2);
       const id3 = await createBookAlternative(alternativeData3);
 
-      const newAlternativeData2 = { 
-        name: 'new name 2' 
+      const newAlternativeData2 = {
+        name: 'new name 2'
       };
 
       await updateBookAlternative(id2, newAlternativeData2);
@@ -107,7 +107,7 @@ describe('book alternatives DAO', () => {
       const bookAlternatives = await getBookAlternativesByIds([id3, id1]);
 
       expect(bookAlternatives).toEqual([
-        { id: id3, ...alternativeData3 }, 
+        { id: id3, ...alternativeData3 },
         { id: id1, ...alternativeData1 }
       ]);
     });

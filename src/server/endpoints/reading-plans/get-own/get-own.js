@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
 
     const allReadingPlans = await getReadingPlansWithProps({ userId });
     const filteredReadingPlans = allReadingPlans.filter(readingPlan => bookListData.bookIds.includes(readingPlan.bookId));
-    
+
     const existingBookIds = filteredReadingPlans.map(readingPlan => readingPlan.bookId);
     const toCreate = bookListData.bookIds.filter(bookId => !existingBookIds.includes(bookId));
     const newReadingPlansData = toCreate.map(bookId => ({

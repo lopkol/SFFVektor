@@ -43,7 +43,7 @@ describe('GET /users', () => {
 
     expect(response.body.userList).toEqual(jasmine.arrayWithExactContents([
       { id, ...userData },
-      { id: userId1, ...userData1 }, 
+      { id: userId1, ...userData1 },
       { id: userId2, ...userData2 }
     ]));
   });

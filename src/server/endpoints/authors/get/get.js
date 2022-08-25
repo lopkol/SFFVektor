@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
       return res.sendStatus(403);
     }
     const authorId = req.params.authorId;
-    
+
     const authorData = await getAuthorById(authorId);
     if (!authorData) {
       return res.sendStatus(404);

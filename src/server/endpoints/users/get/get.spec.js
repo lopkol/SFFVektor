@@ -64,13 +64,13 @@ describe('GET /users/:userId', () => {
       .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
       .expect(200);
 
-    expect(response.body.userData).toEqual({ 
-      id: otherId, 
-      ...otherUserData, 
+    expect(response.body.userData).toEqual({
+      id: otherId,
+      ...otherUserData,
       bookLists: jasmine.arrayWithExactContents([
         { id: bookListId1, ...bookListData1 },
         { id: bookListId2, ...bookListData2 }
-      ]) 
+      ])
     });
   });
 
@@ -88,13 +88,13 @@ describe('GET /users/:userId', () => {
       .set('Cookie', [createAuthorizationCookie({ id, role: 'user' })])
       .expect(200);
 
-    expect(response.body.userData).toEqual({ 
-      id, 
-      ...userData, 
+    expect(response.body.userData).toEqual({
+      id,
+      ...userData,
       bookLists: jasmine.arrayWithExactContents([
         { id: bookListId1, ...bookListData1 },
         { id: bookListId2, ...bookListData2 }
-      ]) 
+      ])
     });
   });
 });

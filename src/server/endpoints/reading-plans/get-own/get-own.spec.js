@@ -106,7 +106,7 @@ describe('GET /reading-plans/own/:bookListId', () => {
         status: 'noPlan'
       })
     ];
-    
+
     expect(response.body.readingPlans).toEqual(jasmine.arrayWithExactContents(expectedReadingPlans));
 
     const readingPlansInDb = await getReadingPlansWithProps({ userId: id });

@@ -48,20 +48,20 @@ function Sidebar({ isOpen, onClose, drawerWidth }) {
         </IconButton>
       </div>
       <Divider />
-      { user.role === 'admin' && 
-        <NavItem 
+      { user.role === 'admin' &&
+        <NavItem
           href={'/admin'}
           title="Admin"
           icon={SettingsIcon}
-        /> 
+        />
       }
-      { years.map((year, index) => 
-        <YearSidebar 
-          key={ year } 
-          year={ year } 
-          drawerWidth={ drawerWidth } 
+      { years.map((year, index) =>
+        <YearSidebar
+          key={ year }
+          year={ year }
+          drawerWidth={ drawerWidth }
           openOnLoad={index === 0}
-        />) 
+        />)
       }
     </Drawer>
   );

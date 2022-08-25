@@ -14,7 +14,7 @@ async function createUser(userData) {
     hashEmail(userDataToSave.email),
     encrypt(userDataToSave.email)
   ]);
-  
+
   if (userDataToSave.email) {
     const usersWithSameEmail = await firestore.collection('users').where('hashedEmail', '==', hashedEmail).get();
 
@@ -22,7 +22,7 @@ async function createUser(userData) {
       return null;
     }
   }
-    
+
   const dataToSave = {
     hashedEmail,
     encryptedDetails,
@@ -47,7 +47,7 @@ async function updateUser(id, userData) {
 
       if (userDataToSave.email) {
         const usersWithSameEmail = await firestore.collection('users').where('hashedEmail', '==', hashedEmail).get();
-    
+
         if (!usersWithSameEmail.empty && (usersWithSameEmail.size > 1 || usersWithSameEmail.docs[0].id !== id)) {
           return null;
         }
@@ -58,7 +58,7 @@ async function updateUser(id, userData) {
         encryptedDetails,
         ...omit(userDataToSave, 'email')
       };
-  
+
       await userRef.update(dataToSave);
     }
   } catch (error) {

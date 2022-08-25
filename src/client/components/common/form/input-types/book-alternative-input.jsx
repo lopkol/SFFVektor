@@ -136,7 +136,7 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
             >
               Új link
             </Button>
-            <Button 
+            <Button
               onClick={() => deleteAlternative(altIndex)}
               variant="outlined"
               size="small"
@@ -157,7 +157,7 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
                   value={url}
                   onChange={(event) => handleUrlChange({ altIndex, index: urlIndex, value: event.target.value })}
                 />
-                <Button 
+                <Button
                   onClick={() => deleteUrl({ altIndex, index: urlIndex })}
                   variant="outlined"
                   size="small"

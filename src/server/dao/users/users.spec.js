@@ -59,7 +59,7 @@ describe('users DAO', () => {
 
     it('returns null if there is no user with the given id', async () => {
       const result = await getUsersByIds(['does-not-exist']);
-      
+
       expect(result).toEqual([null]);
     });
   });
@@ -86,7 +86,7 @@ describe('users DAO', () => {
       const usersWithProps = await getUsersWithProps();
 
       expect(usersWithProps).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...userData1 }, 
+        { id: id1, ...userData1 },
         { id: id2, ...userData2 }
       ]));
     });
@@ -115,7 +115,7 @@ describe('users DAO', () => {
     it('returns null if we try to update the email addres to one that is already in use', async () => {
       const userData = generateRandomUser();
       const id = await createUser(userData);
-      
+
       const email = 'unicorn@gmail.com';
       const otherUserData = generateRandomUser({ email });
       await createUser(otherUserData);
@@ -128,7 +128,7 @@ describe('users DAO', () => {
     it('can always update email address to empty string', async () => {
       const userData = generateRandomUser();
       const id = await createUser(userData);
-      
+
       const otherUserData = generateRandomUser({ email: '' });
       await createUser(otherUserData);
 

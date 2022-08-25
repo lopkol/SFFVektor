@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { 
+const {
   Button,
   Dialog,
   DialogActions,
@@ -162,10 +162,10 @@ function AuthorDetails({ handleClose, open, authorId, changeAuthorId }) {
   }
 
   return (
-    <Dialog 
-      onClose={triggerClose} 
-      aria-labelledby="author-details" 
-      open={open} 
+    <Dialog
+      onClose={triggerClose}
+      aria-labelledby="author-details"
+      open={open}
     >
       <DialogTitle id="author-details-title" onClose={triggerClose}>
         Szerző adatai
@@ -178,37 +178,37 @@ function AuthorDetails({ handleClose, open, authorId, changeAuthorId }) {
         }
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
-        { editMode ? 
+        { editMode ?
           <div>
-            <Button 
-              className={classes.button} 
-              onClick={exitEditMode} 
-              color="primary" 
+            <Button
+              className={classes.button}
+              onClick={exitEditMode}
+              color="primary"
               variant="contained"
             >
               Elvetés
             </Button>
-            <Button 
-              className={classes.button} 
-              autoFocus 
-              onClick={saveData} 
-              color="primary" 
+            <Button
+              className={classes.button}
+              autoFocus
+              onClick={saveData}
+              color="primary"
               variant="contained"
             >
               Mentés
-            </Button> 
+            </Button>
           </div>
           :
-          <Button 
-            className={classes.button} 
-            autoFocus 
-            onClick={() => setEditMode(true)} 
-            color="primary" 
+          <Button
+            className={classes.button}
+            autoFocus
+            onClick={() => setEditMode(true)}
+            color="primary"
             variant="contained"
           >
             Szerkesztés
           </Button>
-        } 
+        }
       </DialogActions>
       <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue}/>
     </Dialog>

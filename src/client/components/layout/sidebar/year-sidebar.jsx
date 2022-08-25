@@ -73,12 +73,12 @@ function YearSidebar({ year, drawerWidth, openOnLoad }) {
   }
 
   return (
-    <Box 
+    <Box
       display="flex"
       flexDirection="column"
     >
       <Box width="100%">
-        <Button 
+        <Button
           className={ classes.button }
           onClick={ () => setOpen(!isOpen) }
         >
@@ -91,7 +91,7 @@ function YearSidebar({ year, drawerWidth, openOnLoad }) {
           <span className={classes.title}>
             {year}
           </span>
-          <ChevronRightIcon 
+          <ChevronRightIcon
             style={{
               padding: 0,
               transform: isOpen
@@ -109,7 +109,7 @@ function YearSidebar({ year, drawerWidth, openOnLoad }) {
       >
         <List disablePadding>
           {navItems.map((item) => (
-            <NavItem 
+            <NavItem
               indented
               href={item.href}
               key={item.title}

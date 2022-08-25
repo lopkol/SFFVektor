@@ -9,12 +9,12 @@ const readingPlanProperties = ['userId', 'bookId', 'status']; //only status can 
 async function createReadingPlans(readingPlansData) {
   try {
     const readingPlanIds = readingPlansData.map(readingPlanData => readingPlanData.userId + readingPlanData.bookId);
-    await firestore.runTransaction(async transaction => { 
+    await firestore.runTransaction(async transaction => {
       const readingPlans = await Promise.all(readingPlansData.map(async readingPlanData => {
 
         const id = readingPlanData.userId.concat(readingPlanData.bookId);
         const readingPlanRef = firestore.collection('readingPlans').doc(id);
-        const readingPlanSnapshot = await transaction.get(readingPlanRef); 
+        const readingPlanSnapshot = await transaction.get(readingPlanRef);
 
         return { id, ref: readingPlanRef, snapshot: readingPlanSnapshot };
       }));
@@ -52,12 +52,12 @@ async function updateReadingPlans(readingPlansData) {
   let readingPlanIds;
   try {
     readingPlanIds = readingPlansData.map(readingPlanData => readingPlanData.userId + readingPlanData.bookId);
-    await firestore.runTransaction(async transaction => { 
+    await firestore.runTransaction(async transaction => {
       const readingPlans = await Promise.all(readingPlansData.map(async readingPlanData => {
 
         const id = readingPlanData.userId + readingPlanData.bookId;
         const readingPlanRef = firestore.collection('readingPlans').doc(id);
-        const readingPlanSnapshot = await transaction.get(readingPlanRef); 
+        const readingPlanSnapshot = await transaction.get(readingPlanRef);
 
         return { id, ref: readingPlanRef, snapshot: readingPlanSnapshot };
       }));
@@ -77,7 +77,7 @@ async function updateReadingPlans(readingPlansData) {
   const updatedReadingPlansData = await Promise.all(readingPlanIds.map(async id => {
     if (id === null) {
       return null;
-    } 
+    }
     const readingPlan = await firestore.collection('readingPlans').doc(id).get();
     return {
       id: readingPlan.id,

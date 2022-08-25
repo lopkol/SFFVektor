@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { 
+const {
   Button,
   Dialog,
   DialogActions,
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 function UserDetails({ handleClose, open, userId, changeUserId }) {
   const classes = useStyles();
   const { user, bookLists, changeUIData } = React.useContext(UserInterface);
-  
+
   const [reloadData, setReloadData] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
   const [unsavedAlertOpen, setUnsavedAlertOpen] = React.useState(false);
@@ -87,7 +87,7 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
   const getBookListIdsOfUser = user => {
     return sortBookLists(user.bookLists).map(bookList => bookList.id);
   };
-  
+
   const createFieldsFromUser = user => {
     return emptyUserFields.map(field => {
       if (field.key === 'bookListIds') {
@@ -109,7 +109,7 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
       setReloadData(true);
     }
   }, [open]);
-  
+
   React.useEffect(() => {
     if (reloadData) {
       (async () => {
@@ -121,7 +121,7 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
           setEditMode(false);
           const userToEdit = await getUser(userId);
           setUserData(userToEdit);
-  
+
           const newUserFields = createFieldsFromUser(userToEdit);
           setUserFields(newUserFields);
         }
@@ -142,7 +142,7 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
     }
 
     const currentFields = userFields.map(field => field.value);
-    
+
     for (let i = 0; i < savedFields.length; i++) {
       if (Array.isArray(savedFields[i])) {
         if (!equalAsSets(savedFields[i], currentFields[i])) {
@@ -207,10 +207,10 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
   }
 
   return (
-    <Dialog 
-      onClose={triggerClose} 
-      aria-labelledby="user-details" 
-      open={open} 
+    <Dialog
+      onClose={triggerClose}
+      aria-labelledby="user-details"
+      open={open}
     >
       <DialogTitle id="user-details-title" onClose={triggerClose}>
         Felhasználó adatai
@@ -223,37 +223,37 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
         }
       </DialogContent>
       <DialogActions className={classes.DialogActions}>
-        { editMode ? 
+        { editMode ?
           <div>
-            <Button 
-              className={classes.button} 
-              onClick={exitEditMode} 
-              color="primary" 
+            <Button
+              className={classes.button}
+              onClick={exitEditMode}
+              color="primary"
               variant="contained"
             >
               Elvetés
             </Button>
-            <Button 
-              className={classes.button} 
-              autoFocus 
-              onClick={saveData} 
-              color="primary" 
+            <Button
+              className={classes.button}
+              autoFocus
+              onClick={saveData}
+              color="primary"
               variant="contained"
             >
               Mentés
-            </Button> 
+            </Button>
           </div>
           :
-          <Button 
-            className={classes.button} 
-            autoFocus 
-            onClick={() => setEditMode(true)} 
-            color="primary" 
+          <Button
+            className={classes.button}
+            autoFocus
+            onClick={() => setEditMode(true)}
+            color="primary"
             variant="contained"
           >
             Szerkesztés
           </Button>
-        } 
+        }
       </DialogActions>
       <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue}/>
     </Dialog>

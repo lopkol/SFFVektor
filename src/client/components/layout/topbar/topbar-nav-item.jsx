@@ -68,11 +68,11 @@ const TopbarNavItem = ({
       </Hidden>
       <Hidden mdUp>
         <Tooltip title={ <p style={{ fontSize: '16px' }} >{ title }</p> }>
-          <IconButton 
-            component={ NavLink } 
+          <IconButton
+            component={ NavLink }
             className={classes.iconButton}
-            activeClassName={classes.active} 
-            to={ to } 
+            activeClassName={classes.active}
+            to={ to }
             color="inherit"
           >
             <Icon style={{ fontSize: '24px' }} className={classes.icon}/>

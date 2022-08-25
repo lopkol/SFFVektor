@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { 
+const {
   Button,
   Dialog,
   DialogActions,
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
   const classes = useStyles();
   const { user, changeUIData } = React.useContext(UserInterface);
-  
+
   const [reloadData, setReloadData] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
   const [unsavedAlertOpen, setUnsavedAlertOpen] = React.useState(false);
@@ -52,7 +52,7 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
       .sort((a,b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
     return sortedJuryMembers.map(user => user.id);
   };
-  
+
   const createFieldsFromBookList = bookList => {
     return emptyBookListFields.map(field => {
       if (field.key === 'juryIds') {
@@ -80,7 +80,7 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
       (async () => {
         const allUsers = await getUsers();
         setUsers(allUsers);
-  
+
         setEmptyBookListFields([
           {
             key: 'year',
@@ -137,7 +137,7 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
           setEditMode(false);
           const { bookList: bookListToEdit } = await getBookList(bookListId);
           setBookListData(bookListToEdit);
-  
+
           const newBookListFields = createFieldsFromBookList(bookListToEdit);
           setBookListFields(newBookListFields);
         })();
@@ -169,7 +169,7 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
     }
     return false;
   }
- 
+
   function exitEditMode() {
     if (bookListId === null) {
       triggerClose();
@@ -216,10 +216,10 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
   }
 
   return (
-    <Dialog 
-      onClose={triggerClose} 
-      aria-labelledby="book-list-details" 
-      open={open} 
+    <Dialog
+      onClose={triggerClose}
+      aria-labelledby="book-list-details"
+      open={open}
     >
       <DialogTitle id="book-list-details-title" onClose={triggerClose}>
         Jelöltlista adatai
@@ -231,39 +231,39 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
           <DataDisplayPage data={bookListFields}/>
         }
       </DialogContent>
-      { user.role === 'admin' && 
+      { user.role === 'admin' &&
         <DialogActions className={classes.dialogActions}>
-          { editMode ? 
+          { editMode ?
             <div>
-              <Button 
-                className={classes.button} 
-                onClick={exitEditMode} 
-                color="primary" 
+              <Button
+                className={classes.button}
+                onClick={exitEditMode}
+                color="primary"
                 variant="contained"
               >
                 Elvetés
               </Button>
-              <Button 
-                className={classes.button} 
-                autoFocus 
-                onClick={saveData} 
-                color="primary" 
+              <Button
+                className={classes.button}
+                autoFocus
+                onClick={saveData}
+                color="primary"
                 variant="contained"
               >
                 Mentés
-              </Button> 
+              </Button>
             </div>
             :
-            <Button 
-              className={classes.button} 
-              autoFocus 
-              onClick={() => setEditMode(true)} 
-              color="primary" 
+            <Button
+              className={classes.button}
+              autoFocus
+              onClick={() => setEditMode(true)}
+              color="primary"
               variant="contained"
             >
               Szerkesztés
             </Button>
-          } 
+          }
         </DialogActions>
       }
       <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue}/>

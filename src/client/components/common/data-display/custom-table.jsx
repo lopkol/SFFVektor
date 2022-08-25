@@ -2,7 +2,7 @@
 
 const React = require('react');
 const classNames = require('classnames');
-const { 
+const {
   Checkbox,
   Paper,
   Table,
@@ -15,7 +15,7 @@ const {
   TableSortLabel,
   Toolbar,
   Typography,
-  lighten, 
+  lighten,
   makeStyles
 } = require('@material-ui/core');
 
@@ -68,8 +68,8 @@ function EnhancedTableHead(props) {
             padding={column.padding}
             sortDirection={orderBy === column.field ? order : false}
           >
-            { 
-              column.orderable ? 
+            {
+              column.orderable ?
                 <TableSortLabel
                   active={orderBy === column.field}
                   direction={orderBy === column.field ? order : 'asc'}
@@ -78,7 +78,7 @@ function EnhancedTableHead(props) {
                   {column.headerName}
                 </TableSortLabel> :
                 <span>{column.headerName}</span>
-            } 
+            }
           </TableCell>
         ))}
       </TableRow>
@@ -92,7 +92,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     paddingRight: 0
   },
   highlight:
-    theme.palette.type === 'light' ? 
+    theme.palette.type === 'light' ?
       {
         color: theme.palette.secondary.main,
         backgroundColor: lighten(theme.palette.secondary.light, 0.85),
@@ -249,9 +249,9 @@ function CustomTable(props) {
     <div className={classNames(classes.root, className)}>
       <Paper className={classes.paper}>
         { !noToolbar &&
-          <TableToolbar 
-            title={title} 
-            withCheckbox={ rowSelection === 'checkbox' } 
+          <TableToolbar
+            title={title}
+            withCheckbox={ rowSelection === 'checkbox' }
             numSelected={selectedRows.length}
           >
             {children}
@@ -287,12 +287,12 @@ function CustomTable(props) {
                       key={row.id}
                       selected={isItemSelected}
                     >
-                      { rowSelection === 'checkbox' && 
+                      { rowSelection === 'checkbox' &&
                         <TableCell padding="checkbox">
                           <Checkbox
                             checked={isItemSelected}
                           />
-                        </TableCell> 
+                        </TableCell>
                       }
                       { columnsWithProps.map(column => {
                         const cellProps = {
@@ -305,7 +305,7 @@ function CustomTable(props) {
                         }
 
                         return (
-                          <TableCell 
+                          <TableCell
                             key={`${row.id}_${column.field}`}
                             { ...cellProps }
                           >
@@ -324,7 +324,7 @@ function CustomTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        { !noPagination && 
+        { !noPagination &&
           <TablePagination
             rowsPerPageOptions={[5, 10, 20, 30, 50, { value: -1, label: 'Összes' }]}
             component="div"

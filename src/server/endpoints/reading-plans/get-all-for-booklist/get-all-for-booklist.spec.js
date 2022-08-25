@@ -121,7 +121,7 @@ describe('GET /reading-plans/all/:bookListId', () => {
         jasmine.objectContaining(readingPlanData4)
       ])
     ];
-    
+
     expect(response.body.readingPlansByBook).toEqual(jasmine.arrayWithExactContents(expectedReadingPlans));
   });
 });

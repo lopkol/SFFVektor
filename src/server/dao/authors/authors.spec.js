@@ -63,7 +63,7 @@ describe('authors DAO', () => {
 
     it('returns null if there is no author with the given id', async () => {
       const result = await getAuthorById('does-not-exist');
-      
+
       expect(result).toEqual(null);
     });
   });
@@ -90,7 +90,7 @@ describe('authors DAO', () => {
       const authorsWithProps = await getAuthorsWithProps();
 
       expect(authorsWithProps).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...authorData1 }, 
+        { id: id1, ...authorData1 },
         { id: id2, ...authorData2 }
       ]));
     });

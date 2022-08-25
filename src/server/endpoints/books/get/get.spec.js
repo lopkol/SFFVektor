@@ -10,11 +10,11 @@ const { createAuthor } = require('../../../dao/authors/authors');
 const { createBookAlternative } = require('../../../dao/book-alternatives/book-alternatives');
 const { createBookList } = require('../../../dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { 
-  generateRandomUser, 
-  generateRandomAuthor, 
-  generateRandomBookAlternative, 
-  generateRandomBook, 
+const {
+  generateRandomUser,
+  generateRandomAuthor,
+  generateRandomBookAlternative,
+  generateRandomBook,
   generateRandomBookList
 } = require('../../../../../test-helpers/generate-data');
 
@@ -78,12 +78,12 @@ describe('GET /books/:bookId', () => {
       .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
       .expect(200);
 
-    expect(response.body.bookData).toEqual({ 
-      ...bookData, 
+    expect(response.body.bookData).toEqual({
+      ...bookData,
       authors: jasmine.arrayWithExactContents([
         { id: authorId1, ...authorData1 },
         { id: authorId2, ...authorData2 }
-      ]), 
+      ]),
       alternatives: jasmine.arrayWithExactContents([
         { id: alternativeId1, ...alternativeData1 },
         { id: alternativeId2, ...alternativeData2 },

@@ -50,13 +50,13 @@ function Layout() {
 
   return (
     <div className={ classes.root }>
-      <Sidebar 
-        isOpen={ isSidebarOpen } 
+      <Sidebar
+        isOpen={ isSidebarOpen }
         onClose={ () => setSidebarOpen(false) }
         drawerWidth={ drawerWidth }
       />
-      <Topbar 
-        isSidebarOpen={ isSidebarOpen } 
+      <Topbar
+        isSidebarOpen={ isSidebarOpen }
         onSidebarOpen={ () => setSidebarOpen(true) }
         drawerWidth={ drawerWidth }
       />

@@ -137,7 +137,7 @@ function BookList() {
   return (
     <div>
       { readingStats &&
-        <ReadingPlanStats 
+        <ReadingPlanStats
           min={readingStats.min}
           max={readingStats.max}
         />
@@ -147,10 +147,10 @@ function BookList() {
           Részletek
         </Button>
       </CustomTable>
-      <BookListDetails 
-        open={bookListDetailsOpen} 
-        handleClose={handleCloseBookListDetails} 
-        bookListId={bookListId} 
+      <BookListDetails
+        open={bookListDetailsOpen}
+        handleClose={handleCloseBookListDetails}
+        bookListId={bookListId}
       />
       <BookDetails
         open={bookDetailsOpen}

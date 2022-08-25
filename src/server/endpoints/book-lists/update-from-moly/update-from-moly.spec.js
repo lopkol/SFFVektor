@@ -11,10 +11,10 @@ const { setBooks, getBooksWithProps, getBooksByIds } = require('../../../dao/boo
 const { createAuthor, getAuthorById } = require('../../../dao/authors/authors');
 const { createBookAlternative, getBookAlternativesByIds } = require('../../../dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { 
+const {
   generateRandomUser,
   generateRandomBook,
-  generateRandomBookList 
+  generateRandomBookList
 } = require('../../../../../test-helpers/generate-data');
 const {
   bookListUrl,
@@ -97,13 +97,13 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
 
     const year = '2020';
     const genre = 'scifi';
-    const bookListData = generateRandomBookList({ 
-      year, 
-      genre, 
-      url: moly.baseUrl + bookListUrl, 
-      pendingUrl: moly.baseUrl + pendingUrl, 
-      juryIds: [], 
-      bookIds: [] 
+    const bookListData = generateRandomBookList({
+      year,
+      genre,
+      url: moly.baseUrl + bookListUrl,
+      pendingUrl: moly.baseUrl + pendingUrl,
+      juryIds: [],
+      bookIds: []
     });
     const bookListId = await createBookList(bookListData);
 
@@ -147,13 +147,13 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
 
     const year = '2020';
     const genre = 'scifi';
-    const bookListData = generateRandomBookList({ 
-      year, 
-      genre, 
-      url: moly.baseUrl + bookListUrl, 
-      pendingUrl: moly.baseUrl + pendingUrl, 
-      juryIds: [], 
-      bookIds: [] 
+    const bookListData = generateRandomBookList({
+      year,
+      genre,
+      url: moly.baseUrl + bookListUrl,
+      pendingUrl: moly.baseUrl + pendingUrl,
+      juryIds: [],
+      bookIds: []
     });
     const bookListId = await createBookList(bookListData);
 
@@ -184,13 +184,13 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
 
     const year = '2020';
     const genre = 'scifi';
-    const bookListData = generateRandomBookList({ 
-      year, 
-      genre, 
-      url: moly.baseUrl + bookListUrl, 
-      pendingUrl: moly.baseUrl + pendingUrl, 
-      juryIds: [], 
-      bookIds: [] 
+    const bookListData = generateRandomBookList({
+      year,
+      genre,
+      url: moly.baseUrl + bookListUrl,
+      pendingUrl: moly.baseUrl + pendingUrl,
+      juryIds: [],
+      bookIds: []
     });
     const bookListId = await createBookList(bookListData);
 
@@ -217,13 +217,13 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
 
     const year = '2020';
     const genre = 'scifi';
-    const bookListData = generateRandomBookList({ 
-      year, 
-      genre, 
-      url: moly.baseUrl + bookListUrl, 
-      pendingUrl: moly.baseUrl + pendingUrl, 
-      juryIds: [], 
-      bookIds: [book3.id] 
+    const bookListData = generateRandomBookList({
+      year,
+      genre,
+      url: moly.baseUrl + bookListUrl,
+      pendingUrl: moly.baseUrl + pendingUrl,
+      juryIds: [],
+      bookIds: [book3.id]
     });
     const bookListId = await createBookList(bookListData);
 
@@ -255,13 +255,13 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
 
     const year = '2020';
     const genre = 'scifi';
-    const bookListData = generateRandomBookList({ 
-      year, 
-      genre, 
-      url: moly.baseUrl + bookListUrl, 
-      pendingUrl: moly.baseUrl + pendingUrl, 
-      juryIds: [], 
-      bookIds: [book3.id] 
+    const bookListData = generateRandomBookList({
+      year,
+      genre,
+      url: moly.baseUrl + bookListUrl,
+      pendingUrl: moly.baseUrl + pendingUrl,
+      juryIds: [],
+      bookIds: [book3.id]
     });
     const bookListId = await createBookList(bookListData);
 
@@ -291,13 +291,13 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
 
     const year = '2020';
     const genre = 'scifi';
-    const bookListData = generateRandomBookList({ 
-      year, 
-      genre, 
-      url: moly.baseUrl + bookListUrl, 
-      pendingUrl: moly.baseUrl + pendingUrl, 
-      juryIds: [], 
-      bookIds: [book3.id] 
+    const bookListData = generateRandomBookList({
+      year,
+      genre,
+      url: moly.baseUrl + bookListUrl,
+      pendingUrl: moly.baseUrl + pendingUrl,
+      juryIds: [],
+      bookIds: [book3.id]
     });
     const bookListId = await createBookList(bookListData);
 

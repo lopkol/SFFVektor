@@ -5,7 +5,7 @@ const { VscChecklist: ListIcon } = require('react-icons/vsc');
 const { IoMdGrid: TableIcon, IoMdPeople: PeopleIcon, IoMdSettings: SettingsIcon } = require('react-icons/io');
 const { AiOutlineRead: ReadingIcon } = require('react-icons/ai');
 
-const { genreOptions } = require('../../../../options'); 
+const { genreOptions } = require('../../../../options');
 const { yearWithSuffix } = require('../../../../../test-helpers/generate-data');
 
 function getTitle(type, year = null, bookListId = null) {

@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
       return res.sendStatus(403);
     }
     const bookAlternativeId = req.params.bookAlternativeId;
-    
+
     const [bookAlternativeData] = await getBookAlternativesByIds([bookAlternativeId]);
     if (!bookAlternativeData) {
       return res.sendStatus(404);

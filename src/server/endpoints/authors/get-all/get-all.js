@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     }
 
     const authors = await getAuthorsWithProps();
-    
+
     return res.status(200).send({ authors });
 
   } catch (error) {

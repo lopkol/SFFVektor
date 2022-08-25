@@ -40,10 +40,10 @@ function compareBooks(a,b) {
     } else {
       return a.title.localeCompare(b.series, 'en', { ignorePunctuation: true });
     }
-  } 
+  }
   if (!b.series) {
     return a.series.localeCompare(b.title, 'en', { ignorePunctuation: true });
-  } 
+  }
   if (a.series !== b.series) {
     return a.series.localeCompare(b.series, 'en', { ignorePunctuation: true });
   }
@@ -86,7 +86,7 @@ function yearWithSuffix(year, suffixType) {
     { endRegEx: /[1-9]00$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'zal'] },
     { endRegEx: /000$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'rel'] }
   ];
-  
+
   const suffixesOfYear = suffixesForEndings.find(number => number.endRegEx.test(year)).suffixes || types;
   const typeIndex = types.indexOf(suffixType);
 

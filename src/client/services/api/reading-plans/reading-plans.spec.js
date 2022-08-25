@@ -164,7 +164,7 @@ describe('client-side reading plan related API calls', () => {
           jasmine.objectContaining(readingPlanData4)
         ])
       ];
-      
+
       expect(res).toEqual(jasmine.arrayWithExactContents(expectedReadingPlans));
     }));
   });

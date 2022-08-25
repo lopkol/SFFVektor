@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
       const bookLists = await getBookListsOfBook(book.id);
       return { ...book, authors, alternatives, bookLists };
     }));
-    
+
     return res.status(200).send({ books: booksWithDetails });
 
   } catch (error) {

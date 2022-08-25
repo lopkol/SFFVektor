@@ -160,7 +160,7 @@ describe('PATCH /books/:bookId', () => {
     const updatedBookAlt2 = generateRandomBookAlternative();
     const dataToUpdate = {
       alternativeIds: previousAlternativeIds,
-      alternatives: [{ id: alternativeId1, ...updatedBookAlt1 }, { id: alternativeId2, ...updatedBookAlt2 }] 
+      alternatives: [{ id: alternativeId1, ...updatedBookAlt1 }, { id: alternativeId2, ...updatedBookAlt2 }]
     };
 
     await request(app.listen())
@@ -188,7 +188,7 @@ describe('PATCH /books/:bookId', () => {
     const newBookAlt2 = generateRandomBookAlternative();
     const dataToUpdate = {
       alternativeIds: [null, null],
-      alternatives: [newBookAlt1, newBookAlt2] 
+      alternatives: [newBookAlt1, newBookAlt2]
     };
 
     await request(app.listen())

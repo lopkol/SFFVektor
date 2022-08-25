@@ -78,10 +78,10 @@ function BookListManagement() {
           Új jelöltlista
         </Button>
       </CustomTable>
-      <BookListDetails 
-        open={bookListDetailsOpen} 
-        handleClose={handleCloseBookListDetails} 
-        bookListId={selectedBookListId} 
+      <BookListDetails
+        open={bookListDetailsOpen}
+        handleClose={handleCloseBookListDetails}
+        bookListId={selectedBookListId}
         changeBookListId={(newId) => setSelectedBookListId(newId)}
       />
     </div>

@@ -31,7 +31,7 @@ function DataInput({ field, handleChange }) {
 
   return (
     <div className={classes.root}>
-      { (['text', 'select', 'url'].includes(field.type)) && 
+      { (['text', 'select', 'url'].includes(field.type)) &&
         <TextInput
           className={classes.fieldContainer}
           field={field}
@@ -40,7 +40,7 @@ function DataInput({ field, handleChange }) {
           labelClass={classes.label}
         />
       }
-      { field.type === 'tags' && 
+      { field.type === 'tags' &&
         <TagsInput
           className={classes.fieldContainer}
           field={field}

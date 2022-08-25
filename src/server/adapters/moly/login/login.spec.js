@@ -4,10 +4,10 @@ const nock = require('nock');
 const { moly } = require('../../../config');
 
 const { getAuthenticityToken, getUserCredentials } = require('./login');
-const { 
-  testLoginPage, 
-  testAuthenticityToken, 
-  testRedirectPage, 
+const {
+  testLoginPage,
+  testAuthenticityToken,
+  testRedirectPage,
   testMolySessionCookie,
   testUserCredentialsCookie
 } = require('../../../../../test-helpers/moly/login');

@@ -32,6 +32,7 @@ module.exports = {
     'keyword-spacing': ['warn'],
     'no-console': 'off',
     'no-prototype-builtins': 'off',
+    'no-trailing-spaces': ['warn'],
     'no-unused-vars': 'warn',
     'object-curly-spacing': ['warn', 'always'],
     quotes: ['warn', 'single', 'avoid-escape'],

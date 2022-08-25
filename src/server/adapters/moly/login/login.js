@@ -16,10 +16,10 @@ async function getAuthenticityToken() {
     const res = await axios.get(moly.baseUrl + '/belepes', { raxConfig });
     const sessionCookie = res.headers['set-cookie'][0];
     const { document } = (new JSDOM(res.data)).window;
-  
+
     const authInputNode = document.querySelector('[name=authenticity_token]');
     const authenticityToken = authInputNode.value;
-  
+
     return { authenticityToken, sessionCookie };
   } catch (error) {
     throw new Error('login failed');
@@ -29,7 +29,7 @@ async function getAuthenticityToken() {
 async function getUserCredentials() {
   try {
     const { authenticityToken, sessionCookie } = await getAuthenticityToken();
-  
+
     const form = new FormData();
     form.append('authenticity_token', authenticityToken);
     form.append('user_session[email]', moly.sffVektorUsername);
@@ -40,14 +40,14 @@ async function getUserCredentials() {
       method: 'POST',
       body: form,
       redirect: 'manual',
-      headers: { 
+      headers: {
         ...form.getHeaders(),
         Cookie: sessionCookie
       }
     });
 
     const userCredentialsCookie = res.headers.raw()['set-cookie'][0];
-  
+
     return userCredentialsCookie;
   } catch (error) {
     throw new Error('login failed');
