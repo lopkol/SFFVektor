@@ -27,6 +27,7 @@ module.exports = {
       'warn',
       2,
       {
+        offsetTernaryExpressions: true,
         SwitchCase: 1
       }
     ],
