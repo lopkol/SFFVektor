@@ -1,7 +1,10 @@
 'use strict';
 
+require('../src/server/env-loader');
+
 const { v4: uuidv4 } = require('uuid');
-const { omit } = require('lodash');
+const uuidByString = require('uuid-by-string');
+const { omit, range } = require('lodash');
 const {
   randomItemFrom,
   distinctItemsFrom,
@@ -11,14 +14,16 @@ const {
   generateRandomAuthor
 } = require('../test-helpers/generate-data');
 const firestore = require('../src/server/dao/firestore');
-const { users } = require('../src/server/config');
 const { clearCollection } = require('../test-helpers/firestore');
 const { hashEmail, encrypt } = require('../src/server/adapters/crypto/crypto');
 
+const minUserCount = 15;
 const batch = firestore.batch();
 
+const generateDeterministicId = data => uuidByString(JSON.stringify(data));
+
 async function addUserToBatch(userData) {
-  const userId = uuidv4();
+  const userId = generateDeterministicId(userData);
 
   const [hashedEmail, encryptedDetails] = await Promise.all([
     hashEmail(userData.email),
@@ -34,10 +39,21 @@ async function addUserToBatch(userData) {
   return userId;
 }
 
+const generateUserData = index => ({
+  molyUsername: `user-${index}`,
+  email: `user-${index}@gmail.com`,
+  molyUrl: `https://moly.hu/tagok/user-${index}`,
+  role: 'user'
+});
+
 async function addUsers() {
-  console.log(users);
+  const defaultUsers = JSON.parse(process.env.DEFAULT_USERS || '[]');
+  const additionalUserCount = Math.max(minUserCount - defaultUsers.length, 0);
+  const additionalUsers =
+    additionalUserCount > 0 ? range(additionalUserCount).map(index => generateUserData(index)) : [];
+
   const userIds = await Promise.all(
-    users.map(userData => {
+    [...defaultUsers, ...additionalUsers].map(userData => {
       const userId = addUserToBatch(userData);
       return userId;
     })
