@@ -33,7 +33,6 @@ module.exports = async (req, res) => {
     await setReadingPlans(newReadingPlans);
 
     return res.sendStatus(200);
-
   } catch (error) {
     res.sendStatus(500);
   }

@@ -16,7 +16,6 @@ module.exports = async (req, res) => {
     //TODO: add bookLists of users?
 
     return res.status(200).send({ userList: users });
-
   } catch (error) {
     res.sendStatus(500);
   }

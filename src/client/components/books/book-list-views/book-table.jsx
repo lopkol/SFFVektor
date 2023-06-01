@@ -8,7 +8,9 @@ function BookTable() {
 
   return (
     <div>
-      <p>{ year } { genre } olvasások táblázatban</p>
+      <p>
+        {year} {genre} olvasások táblázatban
+      </p>
     </div>
   );
 }

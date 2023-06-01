@@ -8,7 +8,9 @@ function BookReading() {
 
   return (
     <div>
-      <p>{ year } { genre } könyvek a felhasználó olvasásai szerint rendezve</p>
+      <p>
+        {year} {genre} könyvek a felhasználó olvasásai szerint rendezve
+      </p>
     </div>
   );
 }

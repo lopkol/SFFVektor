@@ -20,7 +20,6 @@ module.exports = async (req, res) => {
     const newId = await createAuthor(newAuthor);
 
     return res.status(201).send({ id: newId });
-
   } catch (error) {
     res.sendStatus(500);
   }

@@ -5,7 +5,7 @@ const classNames = require('classnames');
 const { Button, TextField, Typography, makeStyles } = require('@material-ui/core');
 const CustomAutocomplete = require('../custom-autocomplete');
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   titleContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -29,17 +29,11 @@ function TagsInput({ className, field, handleChange, inputClass, labelClass }) {
         <Typography variant="subtitle2" className={classNames(labelClass, classes.label)}>
           {field.label}
         </Typography>
-        { field.onNew &&
-          <Button
-            className={classes.button}
-            variant="outlined"
-            size="small"
-            color="primary"
-            onClick={field.onNew}
-          >
-            { field.newButtonLabel }
+        {field.onNew && (
+          <Button className={classes.button} variant="outlined" size="small" color="primary" onClick={field.onNew}>
+            {field.newButtonLabel}
           </Button>
-        }
+        )}
       </div>
       <CustomAutocomplete
         className={inputClass}
@@ -51,12 +45,7 @@ function TagsInput({ className, field, handleChange, inputClass, labelClass }) {
         value={field.value}
         onChange={(event, newValue) => handleChange(newValue)}
         filterSelectedOptions
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-          />
-        )}
+        renderInput={params => <TextField {...params} variant="outlined" />}
       />
     </div>
   );

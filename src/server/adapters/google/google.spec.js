@@ -12,7 +12,7 @@ describe('Google adapter', () => {
       };
 
       const url = await getSsoAuthUrl(state);
-      const encodedStateFromUrl = (new URL(url)).searchParams.get('state');
+      const encodedStateFromUrl = new URL(url).searchParams.get('state');
       const stateFromUrl = JSON.parse(base64.decode(encodedStateFromUrl));
       expect(stateFromUrl).toEqual(state);
     });

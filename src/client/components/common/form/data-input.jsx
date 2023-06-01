@@ -6,9 +6,9 @@ const TagsInput = require('./input-types/tags-input');
 const TextInput = require('./input-types/text-input');
 const BookAlternativeInput = require('./input-types/book-alternative-input');
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    minWidth: 400,
+    minWidth: 400
   },
   input: {
     width: '400px'
@@ -31,7 +31,7 @@ function DataInput({ field, handleChange }) {
 
   return (
     <div className={classes.root}>
-      { (['text', 'select', 'url'].includes(field.type)) &&
+      {['text', 'select', 'url'].includes(field.type) && (
         <TextInput
           className={classes.fieldContainer}
           field={field}
@@ -39,8 +39,8 @@ function DataInput({ field, handleChange }) {
           inputClass={classes.input}
           labelClass={classes.label}
         />
-      }
-      { field.type === 'tags' &&
+      )}
+      {field.type === 'tags' && (
         <TagsInput
           className={classes.fieldContainer}
           field={field}
@@ -48,15 +48,15 @@ function DataInput({ field, handleChange }) {
           inputClass={classes.input}
           labelClass={classes.label}
         />
-      }
-      { field.type === 'alternatives' &&
+      )}
+      {field.type === 'alternatives' && (
         <BookAlternativeInput
           className={classes.fieldContainer}
           field={field}
           handleChange={handleChange}
           labelClass={classes.label}
         />
-      }
+      )}
     </div>
   );
 }

@@ -8,7 +8,7 @@ module.exports = {
   appBaseUrl: process.env.APP_BASE_URL,
   oauth: {
     clientId: process.env.OAUTH_CLIENT_ID,
-    clientSecret: process.env.OAUTH_CLIENT_SECRET,
+    clientSecret: process.env.OAUTH_CLIENT_SECRET
   },
   jwtSecret: process.env.JWT_SECRET,
   cookieName: 'jwtToken',

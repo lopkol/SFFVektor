@@ -7,7 +7,7 @@ const DataInput = require('./data-input');
 const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   }
 }));
 
@@ -30,14 +30,14 @@ function DataEditPage({ data, handleChange }) {
   return (
     <form noValidate autoComplete="off">
       <div className={classes.container}>
-        { data.map(field => (
+        {data.map(field => (
           <DataInput
             name={field.key}
             key={field.key}
             field={field}
-            handleChange={(newValue) => handleFieldChange({ key: field.key, value: newValue })}
+            handleChange={newValue => handleFieldChange({ key: field.key, value: newValue })}
           />
-        )) }
+        ))}
       </div>
     </form>
   );

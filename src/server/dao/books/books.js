@@ -11,7 +11,7 @@ const bookProperties = [
   'series',
   'seriesNum',
   'isApproved', //boolean
-  'isPending',  //boolean
+  'isPending', //boolean
   'alternativeIds' //array
 ];
 
@@ -36,13 +36,15 @@ async function setBooks(booksData) {
 }
 
 async function getBooksByIds(bookIds) {
-  const books = await Promise.all(bookIds.map(async id => {
-    const book = await firestore.collection('books').doc(id).get();
-    if (!book.exists) {
-      return null;
-    }
-    return { id, ...(book.data()) };
-  }));
+  const books = await Promise.all(
+    bookIds.map(async id => {
+      const book = await firestore.collection('books').doc(id).get();
+      if (!book.exists) {
+        return null;
+      }
+      return { id, ...book.data() };
+    })
+  );
 
   return books;
 }

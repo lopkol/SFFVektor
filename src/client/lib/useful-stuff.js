@@ -2,13 +2,13 @@
 
 const { genreOptions } = require('../../options');
 
-function compareBookLists(a,b) {
+function compareBookLists(a, b) {
   if (a.year !== b.year) {
-    return b.year-a.year;
+    return b.year - a.year;
   }
   const aIndex = genreOptions.findIndex(option => option.id === a.genre);
   const bIndex = genreOptions.findIndex(option => option.id === b.genre);
-  return aIndex-bIndex;
+  return aIndex - bIndex;
 }
 
 function sortBookLists(bookLists) {
@@ -17,11 +17,13 @@ function sortBookLists(bookLists) {
 }
 
 function sortAuthors(authors) {
-  const sortedAuthors = authors.slice().sort((a,b) => a.sortName.localeCompare(b.sortName, 'en', { ignorePunctuation: true }));
+  const sortedAuthors = authors
+    .slice()
+    .sort((a, b) => a.sortName.localeCompare(b.sortName, 'en', { ignorePunctuation: true }));
   return sortedAuthors;
 }
 
-function compareBooksByAuthors(a,b) {
+function compareBooksByAuthors(a, b) {
   const authorsOfA = sortAuthors(a.authors);
   const authorsOfB = sortAuthors(b.authors);
   const authorsStringOfA = authorsOfA.map(author => author.sortName).join(' ');
@@ -29,8 +31,8 @@ function compareBooksByAuthors(a,b) {
   return authorsStringOfA.localeCompare(authorsStringOfB, 'en', { ignorePunctuation: true });
 }
 
-function compareBooks(a,b) {
-  const authorComparison = compareBooksByAuthors(a,b);
+function compareBooks(a, b) {
+  const authorComparison = compareBooksByAuthors(a, b);
   if (authorComparison !== 0) {
     return authorComparison;
   }
@@ -94,7 +96,7 @@ function yearWithSuffix(year, suffixType) {
 }
 
 function nameOfBookList(bookListId) {
-  const year = bookListId.slice(0,4);
+  const year = bookListId.slice(0, 4);
   const genre = bookListId.slice(4);
   const genreName = genreOptions.find(option => option.id === genre).name;
   return `${yearWithSuffix(year, 'es')} ${genreName} jelöltlista`;

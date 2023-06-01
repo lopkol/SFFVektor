@@ -12,11 +12,9 @@ const CustomTable = require('../../common/data-display/custom-table');
 const { sortBooks, nameOfBookList } = require('../../../lib/useful-stuff');
 const { getBookList, updateBookListFromMoly } = require('../../../services/api/book-lists/book-lists');
 
-const columns = [
-  { field: 'authorAndTitle', headerName: '', orderable: false }
-];
+const columns = [{ field: 'authorAndTitle', headerName: '', orderable: false }];
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(2)
   },
@@ -54,11 +52,11 @@ function BookManagement() {
     }
   }, [reloadData]);
 
-  const createRow = (book) => {
+  const createRow = book => {
     return {
       id: book.id,
       fields: {
-        authorAndTitle: <BookWithMolyLinks book={book}/>
+        authorAndTitle: <BookWithMolyLinks book={book} />
       },
       darkerBackground: book.isPending,
       onClick: () => handleOpenBookDetails(book.id)
@@ -80,7 +78,7 @@ function BookManagement() {
     setBookListDetailsOpen(false);
   };
 
-  const handleOpenBookDetails = (bookId) => {
+  const handleOpenBookDetails = bookId => {
     setSelectedBookId(bookId);
     setBookDetailsOpen(true);
   };
@@ -93,31 +91,28 @@ function BookManagement() {
 
   return (
     <div>
-      <CustomTable title={nameOfBookList(bookListId)} rows={ rows } columns={ columns } rowSelection="click">
-        <Button className={classes.button} variant="contained" color="primary" onClick={ () => handleOpenBookListDetails(bookListId) }>
+      <CustomTable title={nameOfBookList(bookListId)} rows={rows} columns={columns} rowSelection="click">
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={() => handleOpenBookListDetails(bookListId)}
+        >
           Részletek
         </Button>
-        { updating ?
+        {updating ? (
           <Button className={classes.button} variant="contained" color="primary" disabled>
             Frissítés
-            <CircularProgress className={classes.circularProgress} size={20}/>
+            <CircularProgress className={classes.circularProgress} size={20} />
           </Button>
-          :
-          <Button className={classes.button} variant="contained" color="primary" onClick={triggerUpdateFromMoly} >
+        ) : (
+          <Button className={classes.button} variant="contained" color="primary" onClick={triggerUpdateFromMoly}>
             Frissítés Molyról
           </Button>
-        }
+        )}
       </CustomTable>
-      <BookListDetails
-        open={bookListDetailsOpen}
-        handleClose={handleCloseBookListDetails}
-        bookListId={bookListId}
-      />
-      <BookDetails
-        open={bookDetailsOpen}
-        handleClose={handleCloseBookDetails}
-        bookId={selectedBookId}
-      />
+      <BookListDetails open={bookListDetailsOpen} handleClose={handleCloseBookListDetails} bookListId={bookListId} />
+      <BookDetails open={bookDetailsOpen} handleClose={handleCloseBookDetails} bookId={selectedBookId} />
     </div>
   );
 }

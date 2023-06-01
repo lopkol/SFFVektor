@@ -18,15 +18,16 @@ module.exports = async (req, res) => {
     const year = req.params.year;
 
     const books = await getBooksWithProps({ year });
-    const booksWithDetails = await Promise.all(books.map(async book => {
-      const authors = await Promise.all(book.authorIds.map(async authorId => await getAuthorById(authorId)));
-      const alternatives = await getBookAlternativesByIds(book.alternativeIds);
-      const bookLists = await getBookListsOfBook(book.id);
-      return { ...book, authors, alternatives, bookLists };
-    }));
+    const booksWithDetails = await Promise.all(
+      books.map(async book => {
+        const authors = await Promise.all(book.authorIds.map(async authorId => await getAuthorById(authorId)));
+        const alternatives = await getBookAlternativesByIds(book.alternativeIds);
+        const bookLists = await getBookListsOfBook(book.id);
+        return { ...book, authors, alternatives, bookLists };
+      })
+    );
 
     return res.status(200).send({ books: booksWithDetails });
-
   } catch (error) {
     res.sendStatus(500);
   }

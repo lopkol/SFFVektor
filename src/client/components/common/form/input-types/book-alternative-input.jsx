@@ -2,15 +2,10 @@
 
 const React = require('react');
 const classNames = require('classnames');
-const {
-  Button,
-  TextField,
-  Typography,
-  makeStyles
-} = require('@material-ui/core');
+const { Button, TextField, Typography, makeStyles } = require('@material-ui/core');
 const { Delete: DeleteIcon } = require('@material-ui/icons');
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   titleContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -19,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
   altContainer: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   altTitleContainer: {
     display: 'flex',
@@ -48,12 +43,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1.5)
   },
   button: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   deleteButton: {
     marginBottom: theme.spacing(1),
     borderRadius: '20px',
-    minWidth: '40px',
+    minWidth: '40px'
   }
 }));
 
@@ -106,17 +101,11 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
         <Typography variant="subtitle2" className={classNames(labelClass, classes.label)}>
           Alternatívák
         </Typography>
-        <Button
-          className={classes.button}
-          variant="outlined"
-          color="primary"
-          size="small"
-          onClick={newAlternative}
-        >
+        <Button className={classes.button} variant="outlined" color="primary" size="small" onClick={newAlternative}>
           Új alternatíva
         </Button>
       </div>
-      { field.value.map((alternative, altIndex) => (
+      {field.value.map((alternative, altIndex) => (
         <div className={classes.altContainer} key={altIndex}>
           <div className={classes.altTitleContainer}>
             <TextField
@@ -125,7 +114,7 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
               size="small"
               name={altIndex}
               value={alternative.name}
-              onChange={(event) => handleNameChange({ index: altIndex, value: event.target.value })}
+              onChange={event => handleNameChange({ index: altIndex, value: event.target.value })}
             />
             <Button
               className={classes.button}
@@ -143,11 +132,11 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
               color="primary"
               className={classes.deleteButton}
             >
-              <DeleteIcon size={20}/>
+              <DeleteIcon size={20} />
             </Button>
           </div>
           <div className={classes.urlListContainer}>
-            { alternative.urls.map((url, urlIndex) => (
+            {alternative.urls.map((url, urlIndex) => (
               <div className={classes.urlFieldContainer} key={urlIndex}>
                 <TextField
                   className={classes.urlInput}
@@ -155,7 +144,7 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
                   size="small"
                   name={urlIndex}
                   value={url}
-                  onChange={(event) => handleUrlChange({ altIndex, index: urlIndex, value: event.target.value })}
+                  onChange={event => handleUrlChange({ altIndex, index: urlIndex, value: event.target.value })}
                 />
                 <Button
                   onClick={() => deleteUrl({ altIndex, index: urlIndex })}
@@ -164,13 +153,13 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
                   color="primary"
                   className={classes.deleteButton}
                 >
-                  <DeleteIcon/>
+                  <DeleteIcon />
                 </Button>
               </div>
-            )) }
+            ))}
           </div>
         </div>
-      )) }
+      ))}
     </div>
   );
 }

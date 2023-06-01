@@ -5,9 +5,7 @@ const { Button, makeStyles } = require('@material-ui/core');
 const { nameOfBookList } = require('../../../lib/useful-stuff');
 const CustomTable = require('../../common/data-display/custom-table');
 
-const columns = [
-  { field: 'column', headerName: '', orderable: false }
-];
+const columns = [{ field: 'column', headerName: '', orderable: false }];
 const rows = [
   {
     id: 1,
@@ -17,7 +15,7 @@ const rows = [
   }
 ];
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(2)
   }

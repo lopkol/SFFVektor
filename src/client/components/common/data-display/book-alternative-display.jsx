@@ -1,37 +1,25 @@
 'use strict';
 
 const React = require('react');
-const {
-  Link,
-  List,
-  ListItem
-} = require('@material-ui/core');
+const { Link, List, ListItem } = require('@material-ui/core');
 
 function BookAlternativeDisplay({ alternatives }) {
-
   return (
     <List dense disablePadding>
-      { alternatives.map(alternative => (
+      {alternatives.map(alternative => (
         <ListItem key={alternative.id}>
           <List dense disablePadding>
-            <div>
-              {alternative.name}
-            </div>
-            { alternative.urls.map((url, idx) => (
+            <div>{alternative.name}</div>
+            {alternative.urls.map((url, idx) => (
               <ListItem key={idx}>
-                <Link
-                  color="inherit"
-                  href={url}
-                  target="_blank"
-                  rel="noopener"
-                >
+                <Link color="inherit" href={url} target="_blank" rel="noopener">
                   {url}
                 </Link>
               </ListItem>
             ))}
           </List>
         </ListItem>
-      )) }
+      ))}
     </List>
   );
 }

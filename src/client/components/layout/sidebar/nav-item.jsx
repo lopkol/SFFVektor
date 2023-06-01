@@ -5,7 +5,7 @@ const { NavLink } = require('react-router-dom');
 const classNames = require('classnames');
 const { Button, ListItem, makeStyles } = require('@material-ui/core');
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   item: {
     display: 'flex',
     paddingTop: 0,
@@ -41,25 +41,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NavItem = ({
-  indented,
-  className,
-  href,
-  icon: Icon,
-  title,
-  ...rest
-}) => {
+const NavItem = ({ indented, className, href, icon: Icon, title, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <ListItem
-      className={classNames(classes.item, className)}
-      disableGutters
-      {...rest}
-    >
+    <ListItem className={classNames(classes.item, className)} disableGutters {...rest}>
       <Button
         activeClassName={classes.active}
-        className={ classNames(classes.button, indented ? classes.indented : classes.largerFont) }
+        className={classNames(classes.button, indented ? classes.indented : classes.largerFont)}
         component={NavLink}
         to={href}
       >
@@ -71,9 +60,7 @@ const NavItem = ({
             }}
           />
         )}
-        <span className={classes.title}>
-          {title}
-        </span>
+        <span className={classes.title}>{title}</span>
       </Button>
     </ListItem>
   );

@@ -1,13 +1,7 @@
 'use strict';
 
 const React = require('react');
-const {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  makeStyles
-} = require('@material-ui/core');
+const { Button, Dialog, DialogActions, DialogContent, makeStyles } = require('@material-ui/core');
 const DialogTitle = require('../../common/dialogs/dialog-title');
 const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
 const DataDisplayPage = require('../../common/data-display/data-display-page');
@@ -20,7 +14,7 @@ const { getBookList, updateBookList, saveBookList } = require('../../../services
 const { getUsers } = require('../../../services/api/users/users');
 const { genreOptions } = require('../../../../options');
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
   },
@@ -29,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogContent: {
     padding: theme.spacing(1)
-  },
+  }
 }));
 
 function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
@@ -49,7 +43,7 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
     const juryMembers = juryIds.map(id => users.find(user => user.id === id));
     const sortedJuryMembers = juryMembers
       .slice()
-      .sort((a,b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
+      .sort((a, b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
     return sortedJuryMembers.map(user => user.id);
   };
 
@@ -216,44 +210,32 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
   }
 
   return (
-    <Dialog
-      onClose={triggerClose}
-      aria-labelledby="book-list-details"
-      open={open}
-    >
+    <Dialog onClose={triggerClose} aria-labelledby="book-list-details" open={open}>
       <DialogTitle id="book-list-details-title" onClose={triggerClose}>
         Jelöltlista adatai
       </DialogTitle>
       <DialogContent className={classes.dialogContent} dividers>
-        { editMode ?
-          <DataEditPage data={bookListFields} handleChange={(newBookListFields) => setBookListFields(newBookListFields)}/>
-          :
-          <DataDisplayPage data={bookListFields}/>
-        }
+        {editMode ? (
+          <DataEditPage
+            data={bookListFields}
+            handleChange={newBookListFields => setBookListFields(newBookListFields)}
+          />
+        ) : (
+          <DataDisplayPage data={bookListFields} />
+        )}
       </DialogContent>
-      { user.role === 'admin' &&
+      {user.role === 'admin' && (
         <DialogActions className={classes.dialogActions}>
-          { editMode ?
+          {editMode ? (
             <div>
-              <Button
-                className={classes.button}
-                onClick={exitEditMode}
-                color="primary"
-                variant="contained"
-              >
+              <Button className={classes.button} onClick={exitEditMode} color="primary" variant="contained">
                 Elvetés
               </Button>
-              <Button
-                className={classes.button}
-                autoFocus
-                onClick={saveData}
-                color="primary"
-                variant="contained"
-              >
+              <Button className={classes.button} autoFocus onClick={saveData} color="primary" variant="contained">
                 Mentés
               </Button>
             </div>
-            :
+          ) : (
             <Button
               className={classes.button}
               autoFocus
@@ -263,10 +245,10 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
             >
               Szerkesztés
             </Button>
-          }
+          )}
         </DialogActions>
-      }
-      <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue}/>
+      )}
+      <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue} />
     </Dialog>
   );
 }

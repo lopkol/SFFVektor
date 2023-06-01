@@ -15,33 +15,43 @@ const BookManagement = require('./components/admin/books/book-management');
 
 const adminRoutes = [
   { path: '/', element: <Layout /> },
-  { path: 'admin', element: <Layout />, children: [
-    { path: '', element: <Navigate to="users" /> },
-    { path: 'users', element: <UserManagement /> },
-    { path: 'book-lists', element: <BookListManagement /> }
-  ] },
-  { path: 'books/:year', element: <Layout />, children: [
-    { path: '', element: <YearBooks /> }
-  ] },
-  { path: 'book-lists/:bookListId', element: <Layout />, children: [
-    { path: '', element: <Navigate to="list" /> },
-    { path: 'list', element: <BookList /> },
-    { path: 'reading', element: <BookReading /> },
-    { path: 'table', element: <BookTable /> },
-    { path: 'admin', element: <BookManagement /> }
-  ] },
+  {
+    path: 'admin',
+    element: <Layout />,
+    children: [
+      { path: '', element: <Navigate to="users" /> },
+      { path: 'users', element: <UserManagement /> },
+      { path: 'book-lists', element: <BookListManagement /> }
+    ]
+  },
+  { path: 'books/:year', element: <Layout />, children: [{ path: '', element: <YearBooks /> }] },
+  {
+    path: 'book-lists/:bookListId',
+    element: <Layout />,
+    children: [
+      { path: '', element: <Navigate to="list" /> },
+      { path: 'list', element: <BookList /> },
+      { path: 'reading', element: <BookReading /> },
+      { path: 'table', element: <BookTable /> },
+      { path: 'admin', element: <BookManagement /> }
+    ]
+  },
   { path: 'home', element: <Navigate to="/" /> },
   { path: '*', element: <NotFound /> }
 ];
 
 const routes = [
   { path: '/', element: <Layout /> },
-  { path: 'book-lists/:bookListId', element: <Layout />,  children: [
-    { path: '', element: <Navigate to="list" /> },
-    { path: 'list', element: <BookList /> },
-    { path: 'reading', element: <BookReading /> },
-    { path: 'table', element: <BookTable /> }
-  ] },
+  {
+    path: 'book-lists/:bookListId',
+    element: <Layout />,
+    children: [
+      { path: '', element: <Navigate to="list" /> },
+      { path: 'list', element: <BookList /> },
+      { path: 'reading', element: <BookReading /> },
+      { path: 'table', element: <BookTable /> }
+    ]
+  },
   { path: 'home', element: <Navigate to="/" /> },
   { path: '*', element: <NotFound /> }
 ];

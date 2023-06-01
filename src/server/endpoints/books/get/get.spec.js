@@ -30,9 +30,7 @@ describe('GET /books/:bookId', () => {
   });
 
   it('responds with 401 if called without jwt', async () => {
-    await request(app.listen())
-      .get('/api/books/something')
-      .expect(401);
+    await request(app.listen()).get('/api/books/something').expect(401);
   });
 
   it('responds with 404 if a book with the given id does not exist', async () => {
@@ -63,7 +61,10 @@ describe('GET /books/:bookId', () => {
     const alternativeId2 = await createBookAlternative(alternativeData2);
     const alternativeId3 = await createBookAlternative(alternativeData3);
 
-    const bookData = generateRandomBook({ authorIds: [authorId1, authorId2], alternativeIds: [alternativeId1, alternativeId2, alternativeId3] });
+    const bookData = generateRandomBook({
+      authorIds: [authorId1, authorId2],
+      alternativeIds: [alternativeId1, alternativeId2, alternativeId3]
+    });
     const bookId = bookData.id;
     await setBooks([bookData]);
 
@@ -87,7 +88,7 @@ describe('GET /books/:bookId', () => {
       alternatives: jasmine.arrayWithExactContents([
         { id: alternativeId1, ...alternativeData1 },
         { id: alternativeId2, ...alternativeData2 },
-        { id: alternativeId3, ...alternativeData3 },
+        { id: alternativeId3, ...alternativeData3 }
       ]),
       bookLists: jasmine.arrayWithExactContents([
         { id: bookListId1, ...bookListData1 },

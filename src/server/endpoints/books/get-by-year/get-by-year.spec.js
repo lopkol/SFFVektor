@@ -30,9 +30,7 @@ describe('GET /books-from-year/:year', () => {
   });
 
   it('responds with 401 if called without jwt', async () => {
-    await request(app.listen())
-      .get('/api/books-from-year/2020')
-      .expect(401);
+    await request(app.listen()).get('/api/books-from-year/2020').expect(401);
   });
 
   it('responds with 403 if the user is not admin', async () => {
@@ -65,7 +63,11 @@ describe('GET /books-from-year/:year', () => {
 
     const bookData0 = generateRandomBook({ year: '1999' });
     const bookData1 = generateRandomBook({ year, authorIds: [authorId1], alternativeIds: [alternativeId1] });
-    const bookData2 = generateRandomBook({ year, authorIds: [authorId2], alternativeIds: [alternativeId2, alternativeId3] });
+    const bookData2 = generateRandomBook({
+      year,
+      authorIds: [authorId2],
+      alternativeIds: [alternativeId2, alternativeId3]
+    });
     await setBooks([bookData0, bookData1, bookData2]);
 
     const response = await request(app.listen())
@@ -90,7 +92,7 @@ describe('GET /books-from-year/:year', () => {
           ]),
           bookLists: []
         }
-      ]),
+      ])
     };
 
     expect(response.body).toEqual(expectedData);
@@ -139,10 +141,12 @@ describe('GET /books-from-year/:year', () => {
           ...bookData2,
           authors: [],
           alternatives: [],
-          bookLists: [{
-            ...bookListData1,
-            id: bookListId1
-          }]
+          bookLists: [
+            {
+              ...bookListData1,
+              id: bookListId1
+            }
+          ]
         }
       ])
     };

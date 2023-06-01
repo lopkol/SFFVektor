@@ -10,16 +10,11 @@ const { clearCollection } = require('../../../../../test-helpers/firestore');
 
 describe('GET /authors/:authorId', () => {
   beforeEach(async () => {
-    await Promise.all([
-      clearCollection('users'),
-      clearCollection('authors')
-    ]);
+    await Promise.all([clearCollection('users'), clearCollection('authors')]);
   });
 
   it('responds with 401 if called without jwt', async () => {
-    await request(app.listen())
-      .get('/api/authors/something')
-      .expect(401);
+    await request(app.listen()).get('/api/authors/something').expect(401);
   });
 
   it('responds with 403 if the user is not admin', async () => {

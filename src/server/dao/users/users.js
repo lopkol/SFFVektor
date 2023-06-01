@@ -75,21 +75,23 @@ async function updateUser(id, userData) {
 }
 
 async function getUsersByIds(userIds, { withDetails = true } = {}) {
-  const users = await Promise.all(userIds.map(async id => {
-    const user = await firestore.collection('users').doc(id).get();
-    if (!user.exists) {
-      return null;
-    }
-    const encryptedData = user.data().encryptedDetails;
-    const userData = omit(user.data(), ['hashedEmail', 'encryptedDetails']);
+  const users = await Promise.all(
+    userIds.map(async id => {
+      const user = await firestore.collection('users').doc(id).get();
+      if (!user.exists) {
+        return null;
+      }
+      const encryptedData = user.data().encryptedDetails;
+      const userData = omit(user.data(), ['hashedEmail', 'encryptedDetails']);
 
-    if (!withDetails) {
+      if (!withDetails) {
+        return { id, ...userData };
+      }
+
+      userData.email = await decrypt(encryptedData);
       return { id, ...userData };
-    }
-
-    userData.email = await decrypt(encryptedData);
-    return { id, ...userData };
-  }));
+    })
+  );
 
   return users;
 }
@@ -112,15 +114,17 @@ async function getUsersWithProps(props = {}, { withDetails = true } = {}) {
   const userSnapshotsWithProps = await filteredUsersRef.get();
   const users = mapToDataWithId(userSnapshotsWithProps);
 
-  const dataToReturn = await Promise.all(users.map(async user => {
-    const encryptedData = user.encryptedDetails;
-    const userData = omit(user, ['hashedEmail', 'encryptedDetails']);
-    if (!withDetails) {
+  const dataToReturn = await Promise.all(
+    users.map(async user => {
+      const encryptedData = user.encryptedDetails;
+      const userData = omit(user, ['hashedEmail', 'encryptedDetails']);
+      if (!withDetails) {
+        return userData;
+      }
+      userData.email = await decrypt(encryptedData);
       return userData;
-    }
-    userData.email = await decrypt(encryptedData);
-    return userData;
-  }));
+    })
+  );
 
   return dataToReturn;
 }

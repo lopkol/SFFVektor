@@ -6,9 +6,9 @@ const bookListUrl = '/listak/2020-as-science-fiction-megjelenesek';
 const pendingUrl = '/polcok/besorolasra-var-2020';
 
 const bookUrls = [
-  '/konyvek/lily-brooks-dalton-az-ejfeli-egbolt', 
-  '/konyvek/octavia-e-butler-hibridek', 
-  '/konyvek/bedo-zsuzsanna-plastic-love', 
+  '/konyvek/lily-brooks-dalton-az-ejfeli-egbolt',
+  '/konyvek/octavia-e-butler-hibridek',
+  '/konyvek/bedo-zsuzsanna-plastic-love',
   '/konyvek/sophie-mackintosh-kek-sorsjegy'
 ];
 
@@ -88,8 +88,8 @@ const originalVersions = [
   {
     name: 'eredeti',
     urls: ['https://moly.hu/konyvek/octavia-e-butler-imago']
-  }, 
-  {}, 
+  },
+  {},
   {
     name: 'eredeti',
     urls: ['https://moly.hu/konyvek/sophie-mackintosh-blue-ticket']
@@ -1232,7 +1232,6 @@ $('#show_icons').html('<a class="edit button_icon for_users tooltip" title="MenÃ
   gtag('config', 'UA-95515-23', { 'anonymize_ip': true });
 </script>
 </body></html>`;
-
 
 module.exports = {
   bookListUrl,

@@ -8,22 +8,23 @@ const UserInterface = require('../../../lib/ui-context');
 const YearSidebar = require('./year-sidebar');
 const NavItem = require('./nav-item');
 
-const useStyles = (drawerWidth) => makeStyles((theme) => ({
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  }
-}))();
+const useStyles = drawerWidth =>
+  makeStyles(theme => ({
+    drawer: {
+      width: drawerWidth,
+      flexShrink: 0
+    },
+    drawerPaper: {
+      width: drawerWidth
+    },
+    drawerHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      padding: theme.spacing(0, 1),
+      ...theme.mixins.toolbar,
+      justifyContent: 'flex-end'
+    }
+  }))();
 
 function Sidebar({ isOpen, onClose, drawerWidth }) {
   const classes = useStyles(drawerWidth);
@@ -33,36 +34,25 @@ function Sidebar({ isOpen, onClose, drawerWidth }) {
 
   return (
     <Drawer
-      className={ classes.drawer }
+      className={classes.drawer}
       variant="persistent"
       anchor="left"
-      open={ isOpen }
-      onClose={ onClose }
+      open={isOpen}
+      onClose={onClose}
       classes={{
         paper: classes.drawerPaper
       }}
     >
       <div className={classes.drawerHeader}>
-        <IconButton onClick={ onClose }>
+        <IconButton onClick={onClose}>
           <ChevronLeftIcon />
         </IconButton>
       </div>
       <Divider />
-      { user.role === 'admin' &&
-        <NavItem
-          href={'/admin'}
-          title="Admin"
-          icon={SettingsIcon}
-        />
-      }
-      { years.map((year, index) =>
-        <YearSidebar
-          key={ year }
-          year={ year }
-          drawerWidth={ drawerWidth }
-          openOnLoad={index === 0}
-        />)
-      }
+      {user.role === 'admin' && <NavItem href={'/admin'} title="Admin" icon={SettingsIcon} />}
+      {years.map((year, index) => (
+        <YearSidebar key={year} year={year} drawerWidth={drawerWidth} openOnLoad={index === 0} />
+      ))}
     </Drawer>
   );
 }

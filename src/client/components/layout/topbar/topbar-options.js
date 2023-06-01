@@ -15,7 +15,7 @@ function getTitle(type, year = null, bookListId = null) {
   if (type === 'bookList') {
     const genre = bookListId.slice(4);
     const genreName = genreOptions.find(option => option.id === genre).name;
-    return `${bookListId.slice(0,4)} ${genreName}`;
+    return `${bookListId.slice(0, 4)} ${genreName}`;
   }
 
   if (type === 'yearBooks') {
@@ -39,7 +39,7 @@ const topNavbar = [
         id: 'users',
         name: 'Felhasználók',
         to: 'users',
-        icon: PeopleIcon,
+        icon: PeopleIcon
       },
       {
         id: 'bookLists',

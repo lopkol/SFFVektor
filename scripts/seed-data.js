@@ -20,10 +20,7 @@ const batch = firestore.batch();
 async function addUserToBatch(userData) {
   const userId = uuidv4();
 
-  const [hashedEmail, encryptedDetails] = await Promise.all([
-    hashEmail(userData.email),
-    encrypt(userData.email)
-  ]);
+  const [hashedEmail, encryptedDetails] = await Promise.all([hashEmail(userData.email), encrypt(userData.email)]);
   const dataToSave = {
     hashedEmail,
     encryptedDetails,
@@ -53,10 +50,14 @@ async function addAuthorToBatch(props = {}) {
 }
 
 async function addAuthors(count) {
-  const authorIds = await Promise.all(Array(count).fill(null).map(() => {
-    const authorId = addAuthorToBatch();
-    return authorId;
-  }));
+  const authorIds = await Promise.all(
+    Array(count)
+      .fill(null)
+      .map(() => {
+        const authorId = addAuthorToBatch();
+        return authorId;
+      })
+  );
   return authorIds;
 }
 
@@ -68,10 +69,14 @@ async function addBookAlternativeToBatch(props = {}) {
 }
 
 async function addAlternatives(count) {
-  const alternativeIds = await Promise.all(Array(count).fill(null).map(() => {
-    const alternativeId = addBookAlternativeToBatch();
-    return alternativeId;
-  }));
+  const alternativeIds = await Promise.all(
+    Array(count)
+      .fill(null)
+      .map(() => {
+        const alternativeId = addBookAlternativeToBatch();
+        return alternativeId;
+      })
+  );
   return alternativeIds;
 }
 
@@ -83,17 +88,18 @@ async function addBookToBatch(props = {}) {
 }
 
 async function addBooksWithRandomAuthorsAndAlternatives(count, authorIds, alternativeIds) {
-
   const bookIds = await Promise.all(
-    Array(count).fill(null).map(async (element, index) => {
-      const authorNumOfBook = randomItemFrom([1,1,1,1,1,1,2,3]);
-      const authorIdsOfBook = distinctItemsFrom(authorIds, authorNumOfBook);
+    Array(count)
+      .fill(null)
+      .map(async (element, index) => {
+        const authorNumOfBook = randomItemFrom([1, 1, 1, 1, 1, 1, 2, 3]);
+        const authorIdsOfBook = distinctItemsFrom(authorIds, authorNumOfBook);
 
-      const alternativeId = alternativeIds[index];
+        const alternativeId = alternativeIds[index];
 
-      const bookId = await addBookToBatch({ authorIds: authorIdsOfBook, alternativeIds: [alternativeId] });
-      return bookId;
-    })
+        const bookId = await addBookToBatch({ authorIds: authorIdsOfBook, alternativeIds: [alternativeId] });
+        return bookId;
+      })
   );
   return bookIds;
 }

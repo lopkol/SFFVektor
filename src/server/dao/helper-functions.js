@@ -20,7 +20,7 @@ function mapToDataWithId(querySnapshot) {
   querySnapshot.forEach(async document => {
     dataWithId.push({
       id: document.id,
-      ...(document.data())
+      ...document.data()
     });
   });
 

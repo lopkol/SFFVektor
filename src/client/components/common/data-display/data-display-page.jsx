@@ -1,16 +1,10 @@
 'use strict';
 
 const React = require('react');
-const {
-  Link,
-  List,
-  ListItem,
-  Typography,
-  makeStyles
-} = require('@material-ui/core');
+const { Link, List, ListItem, Typography, makeStyles } = require('@material-ui/core');
 const BookAlternativeDisplay = require('./book-alternative-display');
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column'
@@ -27,31 +21,30 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.grey[500]
   },
   value: {
-    minHeight: theme.typography.fontSize*2
+    minHeight: theme.typography.fontSize * 2
   }
 }));
 
 function getDisplayValue(field) {
   if (field.type === 'select') {
-    return <ListItem>{ field.options.find(option => option.id === field.value).name }</ListItem>;
+    return <ListItem>{field.options.find(option => option.id === field.value).name}</ListItem>;
   } else if (field.type === 'tags') {
-    const nameList = field.value.map(optionId => <ListItem key={optionId}>{ field.options.find(option => option.id === optionId).name }</ListItem> );
-    return <List dense>{ nameList }</List>;
+    const nameList = field.value.map(optionId => (
+      <ListItem key={optionId}>{field.options.find(option => option.id === optionId).name}</ListItem>
+    ));
+    return <List dense>{nameList}</List>;
   } else if (field.type === 'alternatives') {
-    return <BookAlternativeDisplay alternatives={field.value}/>;
+    return <BookAlternativeDisplay alternatives={field.value} />;
   } else if (field.type === 'url') {
-    return <ListItem>
-      <Link
-        color="inherit"
-        href={field.value}
-        target="_blank"
-        rel="noopener"
-      >
-        { field.value }
-      </Link>
-    </ListItem>;
+    return (
+      <ListItem>
+        <Link color="inherit" href={field.value} target="_blank" rel="noopener">
+          {field.value}
+        </Link>
+      </ListItem>
+    );
   }
-  return <ListItem>{ field.value }</ListItem>;
+  return <ListItem>{field.value}</ListItem>;
 }
 
 function DataDisplayPage({ data }) {
@@ -59,16 +52,14 @@ function DataDisplayPage({ data }) {
 
   return (
     <div className={classes.root}>
-      { data.map(field => (
+      {data.map(field => (
         <div className={classes.fieldContainer} key={field.key}>
           <Typography variant="subtitle2" className={classes.label}>
             {field.label}
           </Typography>
-          <div className={classes.value}>
-            {getDisplayValue(field)}
-          </div>
+          <div className={classes.value}>{getDisplayValue(field)}</div>
         </div>
-      )) }
+      ))}
     </div>
   );
 }

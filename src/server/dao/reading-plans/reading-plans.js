@@ -10,14 +10,15 @@ async function createReadingPlans(readingPlansData) {
   try {
     const readingPlanIds = readingPlansData.map(readingPlanData => readingPlanData.userId + readingPlanData.bookId);
     await firestore.runTransaction(async transaction => {
-      const readingPlans = await Promise.all(readingPlansData.map(async readingPlanData => {
+      const readingPlans = await Promise.all(
+        readingPlansData.map(async readingPlanData => {
+          const id = readingPlanData.userId.concat(readingPlanData.bookId);
+          const readingPlanRef = firestore.collection('readingPlans').doc(id);
+          const readingPlanSnapshot = await transaction.get(readingPlanRef);
 
-        const id = readingPlanData.userId.concat(readingPlanData.bookId);
-        const readingPlanRef = firestore.collection('readingPlans').doc(id);
-        const readingPlanSnapshot = await transaction.get(readingPlanRef);
-
-        return { id, ref: readingPlanRef, snapshot: readingPlanSnapshot };
-      }));
+          return { id, ref: readingPlanRef, snapshot: readingPlanSnapshot };
+        })
+      );
 
       readingPlans.map((readingPlan, index) => {
         if (readingPlan.snapshot.exists) {
@@ -53,14 +54,15 @@ async function updateReadingPlans(readingPlansData) {
   try {
     readingPlanIds = readingPlansData.map(readingPlanData => readingPlanData.userId + readingPlanData.bookId);
     await firestore.runTransaction(async transaction => {
-      const readingPlans = await Promise.all(readingPlansData.map(async readingPlanData => {
+      const readingPlans = await Promise.all(
+        readingPlansData.map(async readingPlanData => {
+          const id = readingPlanData.userId + readingPlanData.bookId;
+          const readingPlanRef = firestore.collection('readingPlans').doc(id);
+          const readingPlanSnapshot = await transaction.get(readingPlanRef);
 
-        const id = readingPlanData.userId + readingPlanData.bookId;
-        const readingPlanRef = firestore.collection('readingPlans').doc(id);
-        const readingPlanSnapshot = await transaction.get(readingPlanRef);
-
-        return { id, ref: readingPlanRef, snapshot: readingPlanSnapshot };
-      }));
+          return { id, ref: readingPlanRef, snapshot: readingPlanSnapshot };
+        })
+      );
 
       readingPlans.map((readingPlan, index) => {
         if (!readingPlan.snapshot.exists) {
@@ -74,16 +76,18 @@ async function updateReadingPlans(readingPlansData) {
     throw new Error('Unsuccesful data update');
   }
 
-  const updatedReadingPlansData = await Promise.all(readingPlanIds.map(async id => {
-    if (id === null) {
-      return null;
-    }
-    const readingPlan = await firestore.collection('readingPlans').doc(id).get();
-    return {
-      id: readingPlan.id,
-      ...readingPlan.data()
-    };
-  }));
+  const updatedReadingPlansData = await Promise.all(
+    readingPlanIds.map(async id => {
+      if (id === null) {
+        return null;
+      }
+      const readingPlan = await firestore.collection('readingPlans').doc(id).get();
+      return {
+        id: readingPlan.id,
+        ...readingPlan.data()
+      };
+    })
+  );
 
   return updatedReadingPlansData;
 }

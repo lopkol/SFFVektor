@@ -10,16 +10,11 @@ const { generateRandomUser, generateRandomBookList } = require('../../../../../t
 
 describe('GET /book-lists', () => {
   beforeEach(async () => {
-    await Promise.all([
-      clearCollection('users'),
-      clearCollection('bookLists'),
-    ]);
+    await Promise.all([clearCollection('users'), clearCollection('bookLists')]);
   });
 
   it('responds with 401 if called without jwt', async () => {
-    await request(app.listen())
-      .get('/api/book-lists')
-      .expect(401);
+    await request(app.listen()).get('/api/book-lists').expect(401);
   });
 
   it('returns with 200 with the book lists', async () => {

@@ -11,7 +11,7 @@ const Sidebar = require('./sidebar/sidebar');
 
 const drawerWidth = 160;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -24,46 +24,39 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      duration: theme.transitions.duration.leavingScreen
     }),
     marginLeft: '0'
   },
   contentContainerShift: {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
+      duration: theme.transitions.duration.enteringScreen
     }),
-    marginLeft: `${drawerWidth}px`,
+    marginLeft: `${drawerWidth}px`
   },
   content: {
     flex: '1 1 auto',
     height: '100%',
     overflow: 'auto',
-    padding: theme.spacing(3),
+    padding: theme.spacing(3)
   }
 }));
-
 
 function Layout() {
   const [isSidebarOpen, setSidebarOpen] = React.useState(true);
   const classes = useStyles();
 
   return (
-    <div className={ classes.root }>
-      <Sidebar
-        isOpen={ isSidebarOpen }
-        onClose={ () => setSidebarOpen(false) }
-        drawerWidth={ drawerWidth }
-      />
-      <Topbar
-        isSidebarOpen={ isSidebarOpen }
-        onSidebarOpen={ () => setSidebarOpen(true) }
-        drawerWidth={ drawerWidth }
-      />
-      <div className={ classNames(classes.contentContainer, {
-        [classes.contentContainerShift]: isSidebarOpen
-      }) }>
-        <main className={ classes.content }>
+    <div className={classes.root}>
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} drawerWidth={drawerWidth} />
+      <Topbar isSidebarOpen={isSidebarOpen} onSidebarOpen={() => setSidebarOpen(true)} drawerWidth={drawerWidth} />
+      <div
+        className={classNames(classes.contentContainer, {
+          [classes.contentContainerShift]: isSidebarOpen
+        })}
+      >
+        <main className={classes.content}>
           <Outlet />
         </main>
       </div>

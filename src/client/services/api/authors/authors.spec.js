@@ -11,10 +11,7 @@ const { getAuthors, getAuthor, updateAuthor, saveAuthor } = require('./authors')
 
 describe('client-side author related API calls', () => {
   beforeEach(async () => {
-    await Promise.all([
-      clearCollection('users'),
-      clearCollection('authors')
-    ]);
+    await Promise.all([clearCollection('users'), clearCollection('authors')]);
   });
 
   afterEach(async () => {
@@ -22,79 +19,93 @@ describe('client-side author related API calls', () => {
   });
 
   describe('getAuthors', () => {
-    it('returns the author list', withServer(async () => {
-      const userData = generateRandomUser({ role: 'admin' });
-      const userId = await createUser(userData);
+    it(
+      'returns the author list',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'admin' });
+        const userId = await createUser(userData);
 
-      await logUserIn({ id: userId, role: 'admin' });
+        await logUserIn({ id: userId, role: 'admin' });
 
-      const authorData1 = await generateRandomAuthor();
-      const authorData2 = await generateRandomAuthor();
-      const authorData3 = await generateRandomAuthor();
-      const authorId1 = await createAuthor(authorData1);
-      const authorId2 = await createAuthor(authorData2);
-      const authorId3 = await createAuthor(authorData3);
+        const authorData1 = await generateRandomAuthor();
+        const authorData2 = await generateRandomAuthor();
+        const authorData3 = await generateRandomAuthor();
+        const authorId1 = await createAuthor(authorData1);
+        const authorId2 = await createAuthor(authorData2);
+        const authorId3 = await createAuthor(authorData3);
 
-      const authors = await getAuthors();
+        const authors = await getAuthors();
 
-      expect(authors).toEqual(jasmine.arrayWithExactContents([
-        { id: authorId1, ...authorData1 },
-        { id: authorId2, ...authorData2 },
-        { id: authorId3, ...authorData3 }
-      ]));
-    }));
+        expect(authors).toEqual(
+          jasmine.arrayWithExactContents([
+            { id: authorId1, ...authorData1 },
+            { id: authorId2, ...authorData2 },
+            { id: authorId3, ...authorData3 }
+          ])
+        );
+      })
+    );
   });
 
   describe('getAuthor', () => {
-    it('returns the author', withServer(async () => {
-      const userData = generateRandomUser({ role: 'admin' });
-      const userId = await createUser(userData);
+    it(
+      'returns the author',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'admin' });
+        const userId = await createUser(userData);
 
-      await logUserIn({ id: userId, role: 'admin' });
+        await logUserIn({ id: userId, role: 'admin' });
 
-      const authorData = await generateRandomAuthor();
-      const authorId = await createAuthor(authorData);
+        const authorData = await generateRandomAuthor();
+        const authorId = await createAuthor(authorData);
 
-      const author = await getAuthor(authorId);
+        const author = await getAuthor(authorId);
 
-      expect(author).toEqual({ id: authorId, ...authorData });
-    }));
+        expect(author).toEqual({ id: authorId, ...authorData });
+      })
+    );
   });
 
   describe('updateAuthor', () => {
-    it('updates the author', withServer(async () => {
-      const userData = generateRandomUser({ role: 'admin' });
-      const userId = await createUser(userData);
+    it(
+      'updates the author',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'admin' });
+        const userId = await createUser(userData);
 
-      await logUserIn({ id: userId, role: 'admin' });
+        await logUserIn({ id: userId, role: 'admin' });
 
-      const authorData = generateRandomAuthor();
-      const authorId = await createAuthor(authorData);
+        const authorData = generateRandomAuthor();
+        const authorId = await createAuthor(authorData);
 
-      const dataToUpdate = { name: 'Harry Potter' };
+        const dataToUpdate = { name: 'Harry Potter' };
 
-      const response = await updateAuthor(authorId, dataToUpdate);
-      const authorInDb = await getAuthorById(authorId);
-      const expectedData = { id: authorId, ...authorData, ...dataToUpdate };
+        const response = await updateAuthor(authorId, dataToUpdate);
+        const authorInDb = await getAuthorById(authorId);
+        const expectedData = { id: authorId, ...authorData, ...dataToUpdate };
 
-      expect(response).toEqual(expectedData);
-      expect(authorInDb).toEqual(expectedData);
-    }));
+        expect(response).toEqual(expectedData);
+        expect(authorInDb).toEqual(expectedData);
+      })
+    );
   });
 
   describe('saveAuthor', () => {
-    it('creates an author with the given data', withServer(async () => {
-      const userData = generateRandomUser({ role: 'admin' });
-      const userId = await createUser(userData);
+    it(
+      'creates an author with the given data',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'admin' });
+        const userId = await createUser(userData);
 
-      await logUserIn({ id: userId, role: 'admin' });
+        await logUserIn({ id: userId, role: 'admin' });
 
-      const newAuthorData = generateRandomAuthor();
+        const newAuthorData = generateRandomAuthor();
 
-      const newId = await saveAuthor(newAuthorData);
+        const newId = await saveAuthor(newAuthorData);
 
-      const authorInDb = await getAuthorById(newId);
-      expect(authorInDb).toEqual({ id: newId, ...newAuthorData });
-    }));
+        const authorInDb = await getAuthorById(newId);
+        expect(authorInDb).toEqual({ id: newId, ...newAuthorData });
+      })
+    );
   });
 });

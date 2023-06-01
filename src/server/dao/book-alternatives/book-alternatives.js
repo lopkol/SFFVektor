@@ -25,7 +25,7 @@ async function updateBookAlternative(id, alternativeData) {
   }
 
   const alternative = await firestore.collection('bookAlternatives').doc(id).get();
-  return { id, ...(alternative.data()) };
+  return { id, ...alternative.data() };
 }
 
 async function deleteBookAlternative(id) {
@@ -40,13 +40,15 @@ async function deleteBookAlternative(id) {
 }
 
 async function getBookAlternativesByIds(alternativeIds) {
-  const alternatives = await Promise.all(alternativeIds.map(async id => {
-    const alternative = await firestore.collection('bookAlternatives').doc(id).get();
-    if (!alternative.exists) {
-      return null;
-    }
-    return { id, ...(alternative.data()) };
-  }));
+  const alternatives = await Promise.all(
+    alternativeIds.map(async id => {
+      const alternative = await firestore.collection('bookAlternatives').doc(id).get();
+      if (!alternative.exists) {
+        return null;
+      }
+      return { id, ...alternative.data() };
+    })
+  );
 
   return alternatives;
 }

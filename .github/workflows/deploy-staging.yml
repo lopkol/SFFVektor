@@ -39,11 +39,11 @@ jobs:
           export_default_credentials: false
       - id: deploy-server-container
         run: gcloud builds submit --gcs-log-dir gs://sffvektor-cloudbuild-logs/staging --tag gcr.io/sffvektor/staging
-#     - id: seed-staging-db
-#       run: node scripts/seed-data.js
-#       env:
-#         FIRESTORE_PROJECT_ID: sffvektor
-#         GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      #     - id: seed-staging-db
+      #       run: node scripts/seed-data.js
+      #       env:
+      #         FIRESTORE_PROJECT_ID: sffvektor
+      #         GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
       - id: deploy-service
         uses: google-github-actions/deploy-cloudrun@main
         with:

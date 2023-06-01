@@ -12,32 +12,37 @@ module.exports = async (req, res) => {
       return res.sendStatus(404);
     }
 
-    const readingPlansByBook = await Promise.all(bookListData.bookIds.map(async bookId => {
-      const readingPlansForBook = await getReadingPlansWithProps({ bookId });
-      return readingPlansForBook;
-    }));
+    const readingPlansByBook = await Promise.all(
+      bookListData.bookIds.map(async bookId => {
+        const readingPlansForBook = await getReadingPlansWithProps({ bookId });
+        return readingPlansForBook;
+      })
+    );
 
     let readingPlansToCreate = [];
     readingPlansByBook.forEach((readingPlansOfBook, index) => {
       const existingUserIds = readingPlansOfBook.map(readingPlan => readingPlan.userId);
       const missingUserIds = bookListData.juryIds.filter(id => !existingUserIds.includes(id));
-      readingPlansToCreate = readingPlansToCreate.concat(missingUserIds.map(id => ({
-        userId: id,
-        bookId: bookListData.bookIds[index],
-        status: 'noPlan'
-      })));
+      readingPlansToCreate = readingPlansToCreate.concat(
+        missingUserIds.map(id => ({
+          userId: id,
+          bookId: bookListData.bookIds[index],
+          status: 'noPlan'
+        }))
+      );
     });
     if (readingPlansToCreate.length) {
       await createReadingPlans(readingPlansToCreate);
     }
 
-    const allReadingPlansByBook = await Promise.all(bookListData.bookIds.map(async bookId => {
-      const readingPlansForBook = await getReadingPlansWithProps({ bookId });
-      return readingPlansForBook;
-    }));
+    const allReadingPlansByBook = await Promise.all(
+      bookListData.bookIds.map(async bookId => {
+        const readingPlansForBook = await getReadingPlansWithProps({ bookId });
+        return readingPlansForBook;
+      })
+    );
 
     return res.status(200).send({ readingPlansByBook: allReadingPlansByBook });
-
   } catch (error) {
     res.sendStatus(500);
   }

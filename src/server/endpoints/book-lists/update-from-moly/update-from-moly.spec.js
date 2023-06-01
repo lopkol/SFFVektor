@@ -49,12 +49,18 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
     ]);
 
     nock(moly.baseUrl)
-      .get(bookListUrl).reply(200, bookListPage)
-      .get(pendingUrl).reply(200, pendingPage)
-      .get(bookUrls[0]).reply(200, bookPage1)
-      .get(bookUrls[1]).reply(200, bookPage2)
-      .get(bookUrls[2]).reply(200, bookPage3)
-      .get(bookUrls[3]).reply(200, bookPage4);
+      .get(bookListUrl)
+      .reply(200, bookListPage)
+      .get(pendingUrl)
+      .reply(200, pendingPage)
+      .get(bookUrls[0])
+      .reply(200, bookPage1)
+      .get(bookUrls[1])
+      .reply(200, bookPage2)
+      .get(bookUrls[2])
+      .reply(200, bookPage3)
+      .get(bookUrls[3])
+      .reply(200, bookPage4);
   });
 
   afterEach(() => {
@@ -63,9 +69,7 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
   });
 
   it('responds with 401 if called without jwt', async () => {
-    await request(app.listen())
-      .post('/api/book-lists/2000scifi/moly-update')
-      .expect(401);
+    await request(app.listen()).post('/api/book-lists/2000scifi/moly-update').expect(401);
   });
 
   it('responds with 404 if the book list does not exist', async () => {
@@ -117,25 +121,29 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
     const booksInDb = await getBooksWithProps();
     expect(bookList.bookIds).toEqual(jasmine.arrayWithExactContents(booksInDb.map(book => book.id)));
 
-    await Promise.all([book1, book2, book3, book4].map(async (book, index) => {
-      const [bookInDb] = await getBooksWithProps({ title: book.title });
-      expect(bookInDb).toEqual(jasmine.objectContaining(book));
+    await Promise.all(
+      [book1, book2, book3, book4].map(async (book, index) => {
+        const [bookInDb] = await getBooksWithProps({ title: book.title });
+        expect(bookInDb).toEqual(jasmine.objectContaining(book));
 
-      const [authorId] = bookInDb.authorIds;
-      const author = await getAuthorById(authorId);
-      expect(author).toEqual(jasmine.objectContaining(authors[index]));
+        const [authorId] = bookInDb.authorIds;
+        const author = await getAuthorById(authorId);
+        expect(author).toEqual(jasmine.objectContaining(authors[index]));
 
-      const alternativeIds = bookInDb.alternativeIds;
-      const alternatives = await getBookAlternativesByIds(alternativeIds);
-      if (index === 2) {
-        expect(alternatives).toEqual([jasmine.objectContaining(hunVersions[2])]);
-      } else {
-        expect(alternatives).toEqual(jasmine.arrayWithExactContents([
-          jasmine.objectContaining(hunVersions[index]),
-          jasmine.objectContaining(originalVersions[index])
-        ]));
-      }
-    }));
+        const alternativeIds = bookInDb.alternativeIds;
+        const alternatives = await getBookAlternativesByIds(alternativeIds);
+        if (index === 2) {
+          expect(alternatives).toEqual([jasmine.objectContaining(hunVersions[2])]);
+        } else {
+          expect(alternatives).toEqual(
+            jasmine.arrayWithExactContents([
+              jasmine.objectContaining(hunVersions[index]),
+              jasmine.objectContaining(originalVersions[index])
+            ])
+          );
+        }
+      })
+    );
   });
 
   it('does not update author if it already exists, gets the author ID correctly', async () => {

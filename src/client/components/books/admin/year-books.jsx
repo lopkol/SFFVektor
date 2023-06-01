@@ -10,12 +10,9 @@ const CustomTable = require('../../common/data-display/custom-table');
 const { sortBooks } = require('../../../lib/useful-stuff');
 const { getBooks } = require('../../../services/api/books/books');
 
-const columns = [
-  { field: 'authorAndTitle', headerName: '', orderable: false }
-];
+const columns = [{ field: 'authorAndTitle', headerName: '', orderable: false }];
 
 function YearBooks() {
-
   const { year } = useParams();
   const [reloadData, setReloadData] = React.useState(true);
   const [rows, setRows] = React.useState([]);
@@ -38,18 +35,18 @@ function YearBooks() {
     }
   }, [reloadData]);
 
-  const createRow = (book) => {
+  const createRow = book => {
     return {
       id: book.id,
       fields: {
-        authorAndTitle: <BookWithMolyLinks book={book}/>
+        authorAndTitle: <BookWithMolyLinks book={book} />
       },
       darkerBackground: book.isPending,
       onClick: () => handleOpenBookDetails(book.id)
     };
   };
 
-  const handleOpenBookDetails = (bookId) => {
+  const handleOpenBookDetails = bookId => {
     setSelectedBookId(bookId);
     setBookDetailsOpen(true);
   };
@@ -62,16 +59,10 @@ function YearBooks() {
 
   return (
     <div>
-      <CustomTable title={ `Könyvek ${year}` } rows={ rows } columns={ columns } rowSelection="click">
-      </CustomTable>
-      <BookDetails
-        open={bookDetailsOpen}
-        handleClose={handleCloseBookDetails}
-        bookId={selectedBookId}
-      />
+      <CustomTable title={`Könyvek ${year}`} rows={rows} columns={columns} rowSelection="click"></CustomTable>
+      <BookDetails open={bookDetailsOpen} handleClose={handleCloseBookDetails} bookId={selectedBookId} />
     </div>
   );
 }
 
 module.exports = YearBooks;
-

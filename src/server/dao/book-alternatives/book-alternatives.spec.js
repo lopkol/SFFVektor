@@ -62,11 +62,13 @@ describe('book alternatives DAO', () => {
 
       const res = await getBookAlternativesWithProps();
 
-      expect(res).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...alternativeData1 },
-        { id: id2, ...alternativeData2, ...newAlternativeData2 },
-        { id: id3, ...alternativeData3 }
-      ]));
+      expect(res).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...alternativeData1 },
+          { id: id2, ...alternativeData2, ...newAlternativeData2 },
+          { id: id3, ...alternativeData3 }
+        ])
+      );
     });
   });
 
@@ -88,10 +90,12 @@ describe('book alternatives DAO', () => {
       expect(res).toEqual({ id: id2, ...alternativeData2 });
 
       const alternativesInDb = await getBookAlternativesWithProps();
-      expect(alternativesInDb).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...alternativeData1 },
-        { id: id3, ...alternativeData3 }
-      ]));
+      expect(alternativesInDb).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...alternativeData1 },
+          { id: id3, ...alternativeData3 }
+        ])
+      );
     });
   });
 
@@ -174,11 +178,13 @@ describe('book alternatives DAO', () => {
 
       const res = await getBookAlternativesWithProps();
 
-      expect(res).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...alternativeData1 },
-        { id: id2, ...alternativeData2 },
-        { id: id3, ...alternativeData3 }
-      ]));
+      expect(res).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...alternativeData1 },
+          { id: id2, ...alternativeData2 },
+          { id: id3, ...alternativeData3 }
+        ])
+      );
     });
 
     it('returns the book alternatives with the given properties', async () => {
@@ -191,10 +197,12 @@ describe('book alternatives DAO', () => {
 
       const res = await getBookAlternativesWithProps({ name: 'magyar' });
 
-      expect(res).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...alternativeData1 },
-        { id: id3, ...alternativeData3 }
-      ]));
+      expect(res).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...alternativeData1 },
+          { id: id3, ...alternativeData3 }
+        ])
+      );
     });
   });
 });

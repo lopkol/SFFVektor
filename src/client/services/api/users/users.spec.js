@@ -10,10 +10,7 @@ const { logUserIn, logUserOut } = require('../../../../../test-helpers/authoriza
 
 describe('client-side user related API calls', () => {
   beforeEach(async () => {
-    await Promise.all([
-      clearCollection('users'),
-      clearCollection('bookLists')
-    ]);
+    await Promise.all([clearCollection('users'), clearCollection('bookLists')]);
   });
 
   afterEach(() => {
@@ -21,149 +18,171 @@ describe('client-side user related API calls', () => {
   });
 
   describe('getOwnData', () => {
-    it('returns own user data', withServer(async () => {
-      const userData = generateRandomUser({ role: 'user' });
-      const userId = await createUser(userData);
+    it(
+      'returns own user data',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'user' });
+        const userId = await createUser(userData);
 
-      await logUserIn({ id: userId, role: 'user' });
+        await logUserIn({ id: userId, role: 'user' });
 
-      const bookListData1 = generateRandomBookList({ year: 2020, juryIds: [userId] });
-      const bookListData2 = generateRandomBookList({ year: 2019, juryIds: [userId] });
-      const bookListId1 = await createBookList(bookListData1);
-      const bookListId2 = await createBookList(bookListData2);
+        const bookListData1 = generateRandomBookList({ year: 2020, juryIds: [userId] });
+        const bookListData2 = generateRandomBookList({ year: 2019, juryIds: [userId] });
+        const bookListId1 = await createBookList(bookListData1);
+        const bookListId2 = await createBookList(bookListData2);
 
-      const user = await getOwnData();
+        const user = await getOwnData();
 
-      expect(user).toEqual({
-        id: userId,
-        ...userData,
-        bookLists: jasmine.arrayWithExactContents([
-          { id: bookListId1, ...bookListData1 },
-          { id: bookListId2, ...bookListData2 }
-        ])
-      });
-    }));
+        expect(user).toEqual({
+          id: userId,
+          ...userData,
+          bookLists: jasmine.arrayWithExactContents([
+            { id: bookListId1, ...bookListData1 },
+            { id: bookListId2, ...bookListData2 }
+          ])
+        });
+      })
+    );
   });
 
   describe('getUsers', () => {
-    it('returns the user list if current user is admin', withServer(async () => {
-      const userData = generateRandomUser({ role: 'admin' });
-      const userId = await createUser(userData);
+    it(
+      'returns the user list if current user is admin',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'admin' });
+        const userId = await createUser(userData);
 
-      await logUserIn({ id: userId, role: 'admin' });
+        await logUserIn({ id: userId, role: 'admin' });
 
-      const userData1 = generateRandomUser();
-      const userData2 = generateRandomUser();
-      const userId1 = await createUser(userData1);
-      const userId2 = await createUser(userData2);
+        const userData1 = generateRandomUser();
+        const userData2 = generateRandomUser();
+        const userId1 = await createUser(userData1);
+        const userId2 = await createUser(userData2);
 
-      const users = await getUsers();
+        const users = await getUsers();
 
-      expect(users).toEqual(jasmine.arrayWithExactContents([
-        { id: userId, ...userData },
-        { id: userId1, ...userData1 },
-        { id: userId2, ...userData2 }
-      ]));
-    }));
+        expect(users).toEqual(
+          jasmine.arrayWithExactContents([
+            { id: userId, ...userData },
+            { id: userId1, ...userData1 },
+            { id: userId2, ...userData2 }
+          ])
+        );
+      })
+    );
   });
 
   describe('getUser', () => {
-    it('returns the user data if current user is admin', withServer(async () => {
-      const userData = generateRandomUser({ role: 'admin' });
-      const userId = await createUser(userData);
+    it(
+      'returns the user data if current user is admin',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'admin' });
+        const userId = await createUser(userData);
 
-      await logUserIn({ id: userId, role: 'admin' });
+        await logUserIn({ id: userId, role: 'admin' });
 
-      const otherUserData = generateRandomUser({ email: 'b@gmail.com' });
-      const otherId = await createUser(otherUserData);
+        const otherUserData = generateRandomUser({ email: 'b@gmail.com' });
+        const otherId = await createUser(otherUserData);
 
-      const bookListData1 = generateRandomBookList({ year: 2020, juryIds: [otherId, userId] });
-      const bookListData2 = generateRandomBookList({ year: 2019, juryIds: [otherId] });
-      const bookListId1 = await createBookList(bookListData1);
-      const bookListId2 = await createBookList(bookListData2);
+        const bookListData1 = generateRandomBookList({ year: 2020, juryIds: [otherId, userId] });
+        const bookListData2 = generateRandomBookList({ year: 2019, juryIds: [otherId] });
+        const bookListId1 = await createBookList(bookListData1);
+        const bookListId2 = await createBookList(bookListData2);
 
-      const user = await getUser(otherId);
+        const user = await getUser(otherId);
 
-      expect(user).toEqual({
-        id: otherId,
-        ...otherUserData,
-        bookLists: jasmine.arrayWithExactContents([
-          { id: bookListId1, ...bookListData1 },
-          { id: bookListId2, ...bookListData2 }
-        ])
-      });
-    }));
+        expect(user).toEqual({
+          id: otherId,
+          ...otherUserData,
+          bookLists: jasmine.arrayWithExactContents([
+            { id: bookListId1, ...bookListData1 },
+            { id: bookListId2, ...bookListData2 }
+          ])
+        });
+      })
+    );
 
+    it(
+      'returns the user data of a non-admin user if he is trying to get his own details',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'user' });
+        const userId = await createUser(userData);
 
-    it('returns the user data of a non-admin user if he is trying to get his own details', withServer(async () => {
-      const userData = generateRandomUser({ role: 'user' });
-      const userId = await createUser(userData);
+        await logUserIn({ id: userId, role: 'user' });
 
-      await logUserIn({ id: userId, role: 'user' });
+        const bookListData1 = generateRandomBookList({ year: 2020, juryIds: [userId] });
+        const bookListData2 = generateRandomBookList({ year: 2019, juryIds: [userId] });
+        const bookListId1 = await createBookList(bookListData1);
+        const bookListId2 = await createBookList(bookListData2);
 
-      const bookListData1 = generateRandomBookList({ year: 2020, juryIds: [userId] });
-      const bookListData2 = generateRandomBookList({ year: 2019, juryIds: [userId] });
-      const bookListId1 = await createBookList(bookListData1);
-      const bookListId2 = await createBookList(bookListData2);
+        const user = await getUser(userId);
 
-      const user = await getUser(userId);
-
-      expect(user).toEqual({
-        id: userId,
-        ...userData,
-        bookLists: jasmine.arrayWithExactContents([
-          { id: bookListId1, ...bookListData1 },
-          { id: bookListId2, ...bookListData2 }
-        ])
-      });
-    }));
+        expect(user).toEqual({
+          id: userId,
+          ...userData,
+          bookLists: jasmine.arrayWithExactContents([
+            { id: bookListId1, ...bookListData1 },
+            { id: bookListId2, ...bookListData2 }
+          ])
+        });
+      })
+    );
   });
 
   describe('saveUser', () => {
-    it('creates a new user with the given data if current user is admin, returns the user id', withServer(async () => {
-      const userData = generateRandomUser({ role: 'admin', email: 'a@gmail.com' });
-      const userId = await createUser(userData);
+    it(
+      'creates a new user with the given data if current user is admin, returns the user id',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'admin', email: 'a@gmail.com' });
+        const userId = await createUser(userData);
 
-      await logUserIn({ id: userId, role: 'admin' });
+        await logUserIn({ id: userId, role: 'admin' });
 
-      const newUserData = generateRandomUser({ email: 'b@gmail.com' });
-      const newId = await saveUser(newUserData);
+        const newUserData = generateRandomUser({ email: 'b@gmail.com' });
+        const newId = await saveUser(newUserData);
 
-      const [newUser] = await getUsersWithProps({ email: 'b@gmail.com' });
+        const [newUser] = await getUsersWithProps({ email: 'b@gmail.com' });
 
-      expect(newUser).toEqual({ id: newId, ...newUserData });
-    }));
+        expect(newUser).toEqual({ id: newId, ...newUserData });
+      })
+    );
   });
 
   describe('updateUser', () => {
-    it('updates the given user correctly if current user is admin', withServer(async () => {
-      const userData = generateRandomUser({ role: 'admin', email: 'a@gmail.com' });
-      const userId = await createUser(userData);
+    it(
+      'updates the given user correctly if current user is admin',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'admin', email: 'a@gmail.com' });
+        const userId = await createUser(userData);
 
-      await logUserIn({ id: userId, role: 'admin' });
+        await logUserIn({ id: userId, role: 'admin' });
 
-      const otherUserData = generateRandomUser({ email: 'b@gmail.com' });
-      const otherId = await createUser(otherUserData);
-      const userDataToUpdate = { molyUsername: 'karika' };
+        const otherUserData = generateRandomUser({ email: 'b@gmail.com' });
+        const otherId = await createUser(otherUserData);
+        const userDataToUpdate = { molyUsername: 'karika' };
 
-      await updateUser(otherId, userDataToUpdate);
+        await updateUser(otherId, userDataToUpdate);
 
-      const [updatedUser] = await getUsersWithProps({ email: 'b@gmail.com' });
+        const [updatedUser] = await getUsersWithProps({ email: 'b@gmail.com' });
 
-      expect(updatedUser).toEqual({ id: otherId, ...otherUserData, ...userDataToUpdate });
-    }));
+        expect(updatedUser).toEqual({ id: otherId, ...otherUserData, ...userDataToUpdate });
+      })
+    );
 
-    it('updates a non-admin user correctly if he is trying to modify his own details', withServer(async () => {
-      const userData = generateRandomUser({ role: 'user', email: 'a@gmail.com' });
-      const userId = await createUser(userData);
-      await logUserIn({ id: userId, role: 'user' });
+    it(
+      'updates a non-admin user correctly if he is trying to modify his own details',
+      withServer(async () => {
+        const userData = generateRandomUser({ role: 'user', email: 'a@gmail.com' });
+        const userId = await createUser(userData);
+        await logUserIn({ id: userId, role: 'user' });
 
-      const userDataToUpdate = { molyUsername: 'karika' };
-      await updateUser(userId, userDataToUpdate);
+        const userDataToUpdate = { molyUsername: 'karika' };
+        await updateUser(userId, userDataToUpdate);
 
-      const [updatedUser] = await getUsersWithProps({ email: 'a@gmail.com' });
+        const [updatedUser] = await getUsersWithProps({ email: 'a@gmail.com' });
 
-      expect(updatedUser).toEqual({ id: userId, ...userData, ...userDataToUpdate });
-    }));
+        expect(updatedUser).toEqual({ id: userId, ...userData, ...userDataToUpdate });
+      })
+    );
   });
 });

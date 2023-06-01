@@ -21,7 +21,7 @@ const columns = [
   { field: 'readingPlan', headerName: 'Olvasási státusz', orderable: false }
 ];
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(2)
   }
@@ -103,11 +103,11 @@ function BookList() {
     }
   }, [reloadData]);
 
-  const createRow = (book) => {
+  const createRow = book => {
     return {
       id: book.id,
       fields: {
-        authorAndTitle: <BookWithMolyLinks book={book}/>,
+        authorAndTitle: <BookWithMolyLinks book={book} />,
         readingPlan: readingPlanOptions.find(option => option.id === book.readingPlan).name
       },
       darkerBackground: book.isPending,
@@ -123,7 +123,7 @@ function BookList() {
     setBookListDetailsOpen(false);
   };
 
-  const handleOpenBookDetails = (bookId) => {
+  const handleOpenBookDetails = bookId => {
     setSelectedBookId(bookId);
     setBookDetailsOpen(true);
   };
@@ -136,30 +136,21 @@ function BookList() {
 
   return (
     <div>
-      { readingStats &&
-        <ReadingPlanStats
-          min={readingStats.min}
-          max={readingStats.max}
-        />
-      }
-      <CustomTable title={nameOfBookList(bookListId)} rows={ rows } columns={ columns } rowSelection="click">
-        <Button className={classes.button} variant="contained" color="primary" onClick={ () => handleOpenBookListDetails(bookListId) }>
+      {readingStats && <ReadingPlanStats min={readingStats.min} max={readingStats.max} />}
+      <CustomTable title={nameOfBookList(bookListId)} rows={rows} columns={columns} rowSelection="click">
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={() => handleOpenBookListDetails(bookListId)}
+        >
           Részletek
         </Button>
       </CustomTable>
-      <BookListDetails
-        open={bookListDetailsOpen}
-        handleClose={handleCloseBookListDetails}
-        bookListId={bookListId}
-      />
-      <BookDetails
-        open={bookDetailsOpen}
-        handleClose={handleCloseBookDetails}
-        bookId={selectedBookId}
-      />
+      <BookListDetails open={bookListDetailsOpen} handleClose={handleCloseBookListDetails} bookListId={bookListId} />
+      <BookDetails open={bookDetailsOpen} handleClose={handleCloseBookDetails} bookId={selectedBookId} />
     </div>
   );
 }
 
 module.exports = BookList;
-

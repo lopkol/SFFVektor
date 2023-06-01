@@ -26,7 +26,6 @@ module.exports = async (req, res) => {
     await updateBookListsOfJuryMember(newId, newBookListIds);
 
     return res.status(201).send({ id: newId });
-
   } catch (error) {
     res.sendStatus(500);
   }

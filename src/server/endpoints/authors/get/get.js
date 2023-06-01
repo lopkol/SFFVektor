@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const userData = req.jwtData;
 
     const canGetAuthor = await isAdmin(userData.id);
-    if (!(canGetAuthor)) {
+    if (!canGetAuthor) {
       return res.sendStatus(403);
     }
     const authorId = req.params.authorId;
@@ -19,7 +19,6 @@ module.exports = async (req, res) => {
     }
 
     return res.status(200).send({ authorData });
-
   } catch (error) {
     res.sendStatus(500);
   }

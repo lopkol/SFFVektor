@@ -23,7 +23,6 @@ module.exports = async (req, res) => {
     }
 
     return res.status(200).send({ bookListData: updatedBookListData });
-
   } catch (error) {
     res.sendStatus(500);
   }

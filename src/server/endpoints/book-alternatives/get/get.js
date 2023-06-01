@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const userData = req.jwtData;
 
     const canGetBookAlternative = await isAdmin(userData.id);
-    if (!(canGetBookAlternative)) {
+    if (!canGetBookAlternative) {
       return res.sendStatus(403);
     }
     const bookAlternativeId = req.params.bookAlternativeId;
@@ -19,7 +19,6 @@ module.exports = async (req, res) => {
     }
 
     return res.status(200).send({ bookAlternativeData });
-
   } catch (error) {
     res.sendStatus(500);
   }

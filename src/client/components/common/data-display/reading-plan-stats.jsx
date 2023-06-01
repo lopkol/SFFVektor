@@ -28,8 +28,8 @@ function ReadingPlanStats(props) {
     fields: {
       header: capitalize(type),
       book: row.book,
-      read: <font color={ row.read >= readingLimit(row.book) ? 'green' : 'red' }>{ row.read }</font>,
-      plan: <font color={ row.plan >= readingLimit(row.book) ? 'green' : 'red' }>{ row.plan }</font>
+      read: <font color={row.read >= readingLimit(row.book) ? 'green' : 'red'}>{row.read}</font>,
+      plan: <font color={row.plan >= readingLimit(row.book) ? 'green' : 'red'}>{row.plan}</font>
     }
   });
 

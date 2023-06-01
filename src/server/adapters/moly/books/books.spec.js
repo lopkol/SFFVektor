@@ -1,12 +1,7 @@
 'use strict';
 
 const nock = require('nock');
-const {
-  getBookDetails,
-  getBooksFromList,
-  getBooksFromShelf,
-  getBooksReadByUser
-} = require('./books');
+const { getBookDetails, getBooksFromList, getBooksFromShelf, getBooksReadByUser } = require('./books');
 const {
   testBookUrl,
   testAuthors,
@@ -37,9 +32,7 @@ describe('Moly books adapter', () => {
 
   describe('getBookDetails', () => {
     it('returns book details correctly', async () => {
-      nock(moly.baseUrl)
-        .get(testBookUrl)
-        .reply(200, testBookPage);
+      nock(moly.baseUrl).get(testBookUrl).reply(200, testBookPage);
 
       const res = await getBookDetails(moly.baseUrl + testBookUrl);
 
@@ -69,9 +62,7 @@ describe('Moly books adapter', () => {
 
   describe('getBooksFromShelf', () => {
     it('returns the book urls of the shelf', async () => {
-      nock(moly.baseUrl)
-        .get(testBookShelfUrl)
-        .reply(200, testBookShelfPage);
+      nock(moly.baseUrl).get(testBookShelfUrl).reply(200, testBookShelfPage);
 
       const res = await getBooksFromShelf(moly.baseUrl + testBookShelfUrl);
 
@@ -81,11 +72,12 @@ describe('Moly books adapter', () => {
 
   describe('getBooksFromList', () => {
     it('returns the book urls of the list', async () => {
-      nock(moly.baseUrl)
-        .get(`${testUserMolyUrl}/olvasmanylista-teljes`)
-        .reply(200, testReadingListPage);
+      nock(moly.baseUrl).get(`${testUserMolyUrl}/olvasmanylista-teljes`).reply(200, testReadingListPage);
 
-      const res = await getBooksReadByUser(moly.baseUrl + testUserMolyUrl, 'user_credentials=0dfbbd1cd6a678974d1a7146755a980fa2781ecc4bbf2931c75f909986c9274c93a527bdfe8683a1e03b1b469154cb3dc8f7e8671f78cf542607379eabba2760%3A%3A301775%3A%3A2021-05-23T20%3A15%3A19%2B02%3A00; Path=/; Secure; HttpOnly;');
+      const res = await getBooksReadByUser(
+        moly.baseUrl + testUserMolyUrl,
+        'user_credentials=0dfbbd1cd6a678974d1a7146755a980fa2781ecc4bbf2931c75f909986c9274c93a527bdfe8683a1e03b1b469154cb3dc8f7e8671f78cf542607379eabba2760%3A%3A301775%3A%3A2021-05-23T20%3A15%3A19%2B02%3A00; Path=/; Secure; HttpOnly;'
+      );
 
       expect(res).toEqual(jasmine.arrayWithExactContents(testBookIds));
     });

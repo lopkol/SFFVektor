@@ -7,7 +7,6 @@ module.exports = async (req, res) => {
     const bookLists = await getBookListsWithProps();
 
     return res.status(200).send({ bookLists });
-
   } catch (error) {
     res.sendStatus(500);
   }

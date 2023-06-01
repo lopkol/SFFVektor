@@ -7,9 +7,16 @@ const app = require('../../../app');
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser } = require('../../../dao/users/users');
 const { setBooks, getBooksByIds } = require('../../../dao/books/books');
-const { createBookAlternative, getBookAlternativesWithProps } = require('../../../dao/book-alternatives/book-alternatives');
+const {
+  createBookAlternative,
+  getBookAlternativesWithProps
+} = require('../../../dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { generateRandomUser, generateRandomBook, generateRandomBookAlternative } = require('../../../../../test-helpers/generate-data');
+const {
+  generateRandomUser,
+  generateRandomBook,
+  generateRandomBookAlternative
+} = require('../../../../../test-helpers/generate-data');
 
 describe('PATCH /books/:bookId', () => {
   beforeEach(async () => {
@@ -22,9 +29,7 @@ describe('PATCH /books/:bookId', () => {
   });
 
   it('responds with 401 if called without jwt', async () => {
-    await request(app.listen())
-      .patch('/api/books/something')
-      .expect(401);
+    await request(app.listen()).patch('/api/books/something').expect(401);
   });
 
   it('responds with 403 if the user is not admin', async () => {
@@ -160,7 +165,10 @@ describe('PATCH /books/:bookId', () => {
     const updatedBookAlt2 = generateRandomBookAlternative();
     const dataToUpdate = {
       alternativeIds: previousAlternativeIds,
-      alternatives: [{ id: alternativeId1, ...updatedBookAlt1 }, { id: alternativeId2, ...updatedBookAlt2 }]
+      alternatives: [
+        { id: alternativeId1, ...updatedBookAlt1 },
+        { id: alternativeId2, ...updatedBookAlt2 }
+      ]
     };
 
     await request(app.listen())
@@ -170,10 +178,12 @@ describe('PATCH /books/:bookId', () => {
       .expect(200);
 
     const alternativesInDb = await getBookAlternativesWithProps();
-    expect(alternativesInDb).toEqual(jasmine.arrayWithExactContents([
-      { id: alternativeId1, ...updatedBookAlt1 },
-      { id: alternativeId2, ...updatedBookAlt2 }
-    ]));
+    expect(alternativesInDb).toEqual(
+      jasmine.arrayWithExactContents([
+        { id: alternativeId1, ...updatedBookAlt1 },
+        { id: alternativeId2, ...updatedBookAlt2 }
+      ])
+    );
   });
 
   it('creates the new alternatives', async () => {
@@ -198,10 +208,9 @@ describe('PATCH /books/:bookId', () => {
       .expect(200);
 
     const alternativesInDb = await getBookAlternativesWithProps();
-    expect(alternativesInDb).toEqual(jasmine.arrayWithExactContents([
-      jasmine.objectContaining(newBookAlt1),
-      jasmine.objectContaining(newBookAlt2)
-    ]));
+    expect(alternativesInDb).toEqual(
+      jasmine.arrayWithExactContents([jasmine.objectContaining(newBookAlt1), jasmine.objectContaining(newBookAlt2)])
+    );
   });
 
   it('updates the book alternative ids (on the book) correctly', async () => {

@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-  cookieName: 'jwtToken',
+  cookieName: 'jwtToken'
   //apiUrl: 'http://localhost:9966'
 };

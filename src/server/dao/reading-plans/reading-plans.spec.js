@@ -1,6 +1,11 @@
 'use strict';
 
-const { createReadingPlans, setReadingPlans, updateReadingPlans, getReadingPlansWithProps } = require('./reading-plans');
+const {
+  createReadingPlans,
+  setReadingPlans,
+  updateReadingPlans,
+  getReadingPlansWithProps
+} = require('./reading-plans');
 const { clearCollection } = require('../../../../test-helpers/firestore');
 const { generateRandomReadingPlan } = require('../../../../test-helpers/generate-data');
 const { v4: uuidv4 } = require('uuid');
@@ -17,10 +22,12 @@ describe('reading plans DAO', () => {
       const [id1, id2] = await createReadingPlans([readingPlanData1, readingPlanData2]);
 
       const readingPlansInDb = await getReadingPlansWithProps();
-      expect(readingPlansInDb).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...readingPlanData1 },
-        { id: id2, ...readingPlanData2 }
-      ]));
+      expect(readingPlansInDb).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...readingPlanData1 },
+          { id: id2, ...readingPlanData2 }
+        ])
+      );
     });
 
     it('returns null if a reading plan for the same user and book already exists', async () => {
@@ -44,10 +51,12 @@ describe('reading plans DAO', () => {
       await setReadingPlans([readingPlanData1, readingPlanData2]);
       const booksInDb = await getReadingPlansWithProps();
 
-      expect(booksInDb).toEqual(jasmine.arrayWithExactContents([
-        jasmine.objectContaining(readingPlanData1),
-        jasmine.objectContaining(readingPlanData2)
-      ]));
+      expect(booksInDb).toEqual(
+        jasmine.arrayWithExactContents([
+          jasmine.objectContaining(readingPlanData1),
+          jasmine.objectContaining(readingPlanData2)
+        ])
+      );
     });
 
     it('updates the correct reading plans and only the given properties', async () => {
@@ -71,11 +80,13 @@ describe('reading plans DAO', () => {
 
       const res = await getReadingPlansWithProps();
 
-      expect(res).toEqual(jasmine.arrayWithExactContents([
-        jasmine.objectContaining({ ...readingPlanData1, ...newReadingPlanData1 }),
-        jasmine.objectContaining({ ...readingPlanData2, ...newReadingPlanData2 }),
-        jasmine.objectContaining(readingPlanData3)
-      ]));
+      expect(res).toEqual(
+        jasmine.arrayWithExactContents([
+          jasmine.objectContaining({ ...readingPlanData1, ...newReadingPlanData1 }),
+          jasmine.objectContaining({ ...readingPlanData2, ...newReadingPlanData2 }),
+          jasmine.objectContaining(readingPlanData3)
+        ])
+      );
     });
   });
 
@@ -120,11 +131,13 @@ describe('reading plans DAO', () => {
 
       const res = await getReadingPlansWithProps();
 
-      expect(res).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...readingPlanData1, ...newReadingPlanData1 },
-        { id: id2, ...readingPlanData2, ...newReadingPlanData2 },
-        { id: id3, ...readingPlanData3 }
-      ]));
+      expect(res).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...readingPlanData1, ...newReadingPlanData1 },
+          { id: id2, ...readingPlanData2, ...newReadingPlanData2 },
+          { id: id3, ...readingPlanData3 }
+        ])
+      );
     });
   });
 
@@ -147,10 +160,12 @@ describe('reading plans DAO', () => {
 
       const readingPlansWithProps = await getReadingPlansWithProps();
 
-      expect(readingPlansWithProps).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...readingPlanData1 },
-        { id: id2, ...readingPlanData2 }
-      ]));
+      expect(readingPlansWithProps).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...readingPlanData1 },
+          { id: id2, ...readingPlanData2 }
+        ])
+      );
     });
 
     it('returns the reading plans with the given properties', async () => {

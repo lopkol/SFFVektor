@@ -19,7 +19,7 @@ function CustomAutocomplete(props) {
 
   const renderTags = (value, getCustomizedTagProps) => (
     <div>
-      { value.map((optionId, index) => (
+      {value.map((optionId, index) => (
         <Chip
           key={optionId}
           label={getOptionLabel(optionId)}
@@ -28,7 +28,7 @@ function CustomAutocomplete(props) {
           {...getCustomizedTagProps({ index })}
           {...ChipProps}
         />
-      )) }
+      ))}
     </div>
   );
 

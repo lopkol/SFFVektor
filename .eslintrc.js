@@ -10,10 +10,7 @@ module.exports = {
     node: true,
     es6: true
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended'
-  ],
+  extends: ['eslint:recommended', 'plugin:react/recommended'],
   globals: {
     expectAsync: 'readonly'
   },
@@ -26,9 +23,13 @@ module.exports = {
     //'react-hooks/exhaustive-deps': 'warn',
     'eol-last': 'warn',
     eqeqeq: 'warn',
-    indent: ['warn', 2, {
-      SwitchCase: 1
-    }],
+    indent: [
+      'warn',
+      2,
+      {
+        SwitchCase: 1
+      }
+    ],
     'keyword-spacing': ['warn'],
     'no-console': 'off',
     'no-prototype-builtins': 'off',

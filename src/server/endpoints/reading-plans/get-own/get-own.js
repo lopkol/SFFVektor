@@ -20,7 +20,9 @@ module.exports = async (req, res) => {
     }
 
     const allReadingPlans = await getReadingPlansWithProps({ userId });
-    const filteredReadingPlans = allReadingPlans.filter(readingPlan => bookListData.bookIds.includes(readingPlan.bookId));
+    const filteredReadingPlans = allReadingPlans.filter(readingPlan =>
+      bookListData.bookIds.includes(readingPlan.bookId)
+    );
 
     const existingBookIds = filteredReadingPlans.map(readingPlan => readingPlan.bookId);
     const toCreate = bookListData.bookIds.filter(bookId => !existingBookIds.includes(bookId));
@@ -41,7 +43,6 @@ module.exports = async (req, res) => {
     const readingPlans = filteredReadingPlans.concat(newReadingPlans);
 
     return res.status(200).send({ readingPlans });
-
   } catch (error) {
     res.sendStatus(500);
   }

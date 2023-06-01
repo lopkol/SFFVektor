@@ -19,9 +19,7 @@ describe('Moly login', () => {
 
   describe('getAuthenticityToken', () => {
     it('returns moly session cookie from the header and the authenticity token from the html, tries several times', async () => {
-      nock(moly.baseUrl)
-        .get('/belepes')
-        .reply(404);
+      nock(moly.baseUrl).get('/belepes').reply(404);
 
       nock(moly.baseUrl)
         .get('/belepes')

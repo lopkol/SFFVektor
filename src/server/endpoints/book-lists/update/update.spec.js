@@ -11,16 +11,11 @@ const { generateRandomUser, generateRandomBookList } = require('../../../../../t
 
 describe('PATCH /book-lists/:bookListId', () => {
   beforeEach(async () => {
-    await Promise.all([
-      clearCollection('users'),
-      clearCollection('bookLists')
-    ]);
+    await Promise.all([clearCollection('users'), clearCollection('bookLists')]);
   });
 
   it('responds with 401 if called without jwt', async () => {
-    await request(app.listen())
-      .patch('/api/book-lists/something')
-      .expect(401);
+    await request(app.listen()).patch('/api/book-lists/something').expect(401);
   });
 
   it('responds with 403 if the user is not admin', async () => {

@@ -13,9 +13,7 @@ describe('GET /users', () => {
   });
 
   it('responds with 401 if called without jwt', async () => {
-    await request(app.listen())
-      .get('/api/users')
-      .expect(401);
+    await request(app.listen()).get('/api/users').expect(401);
   });
 
   it('responds with 403 if the user is not admin', async () => {
@@ -41,10 +39,12 @@ describe('GET /users', () => {
       .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
       .expect(200);
 
-    expect(response.body.userList).toEqual(jasmine.arrayWithExactContents([
-      { id, ...userData },
-      { id: userId1, ...userData1 },
-      { id: userId2, ...userData2 }
-    ]));
+    expect(response.body.userList).toEqual(
+      jasmine.arrayWithExactContents([
+        { id, ...userData },
+        { id: userId1, ...userData1 },
+        { id: userId2, ...userData2 }
+      ])
+    );
   });
 });

@@ -2,13 +2,7 @@
 
 const { cloneDeep } = require('lodash');
 const React = require('react');
-const {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  makeStyles
-} = require('@material-ui/core');
+const { Button, Dialog, DialogActions, DialogContent, makeStyles } = require('@material-ui/core');
 
 const DialogTitle = require('../../common/dialogs/dialog-title');
 const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
@@ -23,7 +17,7 @@ const { sortAuthors, equalAsSets } = require('../../../lib/useful-stuff');
 const { getBook, updateBook } = require('../../../services/api/books/books');
 const { getAuthors } = require('../../../services/api/authors/authors');
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
   },
@@ -102,7 +96,7 @@ function BookDetails({ handleClose, open, bookId }) {
             key: 'alternatives',
             value: [],
             label: 'Alternatívák',
-            type: 'alternatives',
+            type: 'alternatives'
           }
         ];
         setEmptyBookFields(emptyFields);
@@ -115,9 +109,7 @@ function BookDetails({ handleClose, open, bookId }) {
     }
   }, [reloadData]);
 
-  const createFieldsFromBook = (fieldArray, book) => fieldArray.map(field => (
-    { ...field, value: book[field.key] }
-  ));
+  const createFieldsFromBook = (fieldArray, book) => fieldArray.map(field => ({ ...field, value: book[field.key] }));
 
   function hasUnsavedData() {
     if (!editMode) {
@@ -220,44 +212,29 @@ function BookDetails({ handleClose, open, bookId }) {
   }
 
   return (
-    <Dialog
-      onClose={triggerClose}
-      aria-labelledby="book-details"
-      open={open}
-    >
+    <Dialog onClose={triggerClose} aria-labelledby="book-details" open={open}>
       <DialogTitle id="book-details-title" onClose={triggerClose}>
         Könyv adatai
       </DialogTitle>
       <DialogContent className={classes.dialogContent} dividers>
-        { editMode ?
-          <DataEditPage data={bookFields} handleChange={(newBookFields) => setBookFields(newBookFields)}/>
-          :
-          <DataDisplayPage data={bookFields}/>
-        }
+        {editMode ? (
+          <DataEditPage data={bookFields} handleChange={newBookFields => setBookFields(newBookFields)} />
+        ) : (
+          <DataDisplayPage data={bookFields} />
+        )}
       </DialogContent>
-      { user.role === 'admin' &&
+      {user.role === 'admin' && (
         <DialogActions className={classes.dialogActions}>
-          { editMode ?
+          {editMode ? (
             <div>
-              <Button
-                className={classes.button}
-                onClick={exitEditMode}
-                color="primary"
-                variant="contained"
-              >
+              <Button className={classes.button} onClick={exitEditMode} color="primary" variant="contained">
                 Elvetés
               </Button>
-              <Button
-                className={classes.button}
-                autoFocus
-                onClick={saveData}
-                color="primary"
-                variant="contained"
-              >
+              <Button className={classes.button} autoFocus onClick={saveData} color="primary" variant="contained">
                 Mentés
               </Button>
             </div>
-            :
+          ) : (
             <Button
               className={classes.button}
               autoFocus
@@ -267,19 +244,15 @@ function BookDetails({ handleClose, open, bookId }) {
             >
               Szerkesztés
             </Button>
-          }
+          )}
         </DialogActions>
-      }
-      <UnsavedDataAlert
-        open={unsavedAlertOpen}
-        handleCancel={handleAlertCancel}
-        handleOk={handleAlertContinue}
-      />
+      )}
+      <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue} />
       <AuthorDetails
         open={authorDetailsOpen}
         handleClose={handleCloseAuthorDetails}
         authorId={selectedAuthor}
-        changeAuthorId={(newId) => addNewAuthor(newId)}
+        changeAuthorId={newId => addNewAuthor(newId)}
       />
     </Dialog>
   );

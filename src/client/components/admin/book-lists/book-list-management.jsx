@@ -14,7 +14,7 @@ const columns = [
   { field: 'url', headerName: 'Moly lista link', orderable: true }
 ];
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(2)
   },
@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     }
   }
 }));
-
 
 function BookListManagement() {
   const classes = useStyles();
@@ -36,23 +35,24 @@ function BookListManagement() {
   const { bookLists, changeUIData } = React.useContext(UserInterface);
 
   React.useEffect(() => {
-    const createRow = (bookList) => {
+    const createRow = bookList => {
       const genreName = genreOptions.find(option => option.id === bookList.genre).name;
       return {
         id: bookList.id,
         fields: {
           year: bookList.year,
           genre: genreName,
-          url:
-          <a
-            className={classes.molyLink}
-            href={bookList.url}
-            target="_blank"
-            rel="noreferrer"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {bookList.url}
-          </a>
+          url: (
+            <a
+              className={classes.molyLink}
+              href={bookList.url}
+              target="_blank"
+              rel="noreferrer"
+              onClick={e => e.stopPropagation()}
+            >
+              {bookList.url}
+            </a>
+          )
         },
         onClick: () => handleOpenBookListDetails(bookList.id)
       };
@@ -60,7 +60,7 @@ function BookListManagement() {
     setRows(bookLists.map(createRow));
   }, [bookLists]);
 
-  const handleOpenBookListDetails = (bookListId) => {
+  const handleOpenBookListDetails = bookListId => {
     setSelectedBookListId(bookListId);
     setBookListDetailsOpen(true);
   };
@@ -71,10 +71,15 @@ function BookListManagement() {
     changeUIData();
   };
 
-  return  (
+  return (
     <div>
-      <CustomTable title="Jelöltlisták" rows={ rows } columns={ columns } rowSelection="click">
-        <Button className={classes.button} variant="contained" color="primary" onClick={ () => handleOpenBookListDetails(null) }>
+      <CustomTable title="Jelöltlisták" rows={rows} columns={columns} rowSelection="click">
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={() => handleOpenBookListDetails(null)}
+        >
           Új jelöltlista
         </Button>
       </CustomTable>
@@ -82,7 +87,7 @@ function BookListManagement() {
         open={bookListDetailsOpen}
         handleClose={handleCloseBookListDetails}
         bookListId={selectedBookListId}
-        changeBookListId={(newId) => setSelectedBookListId(newId)}
+        changeBookListId={newId => setSelectedBookListId(newId)}
       />
     </div>
   );

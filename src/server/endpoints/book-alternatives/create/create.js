@@ -20,7 +20,6 @@ module.exports = async (req, res) => {
     const newId = await createBookAlternative(newBookAlternative);
 
     return res.status(201).send({ id: newId });
-
   } catch (error) {
     res.sendStatus(500);
   }

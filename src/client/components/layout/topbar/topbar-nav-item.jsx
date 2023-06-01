@@ -5,7 +5,7 @@ const { NavLink } = require('react-router-dom');
 const classNames = require('classnames');
 const { Button, Hidden, IconButton, Tooltip, makeStyles } = require('@material-ui/core');
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   button: {
     fontWeight: theme.typography.fontWeightMedium,
     marginTop: theme.spacing(1.5),
@@ -34,13 +34,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TopbarNavItem = ({
-  className,
-  to,
-  icon: Icon,
-  title,
-  ...rest
-}) => {
+const TopbarNavItem = ({ className, to, icon: Icon, title, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -48,7 +42,7 @@ const TopbarNavItem = ({
       <Hidden smDown>
         <Button
           activeClassName={classes.active}
-          className={ classNames(classes.button, className) }
+          className={classNames(classes.button, className)}
           component={NavLink}
           to={to}
           {...rest}
@@ -61,21 +55,19 @@ const TopbarNavItem = ({
               }}
             />
           )}
-          <span className={classes.title}>
-            {title}
-          </span>
+          <span className={classes.title}>{title}</span>
         </Button>
       </Hidden>
       <Hidden mdUp>
-        <Tooltip title={ <p style={{ fontSize: '16px' }} >{ title }</p> }>
+        <Tooltip title={<p style={{ fontSize: '16px' }}>{title}</p>}>
           <IconButton
-            component={ NavLink }
+            component={NavLink}
             className={classes.iconButton}
             activeClassName={classes.active}
-            to={ to }
+            to={to}
             color="inherit"
           >
-            <Icon style={{ fontSize: '24px' }} className={classes.icon}/>
+            <Icon style={{ fontSize: '24px' }} className={classes.icon} />
           </IconButton>
         </Tooltip>
       </Hidden>

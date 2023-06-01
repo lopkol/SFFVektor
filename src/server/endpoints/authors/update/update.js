@@ -22,7 +22,6 @@ module.exports = async (req, res) => {
     }
 
     return res.status(200).send({ authorData: updatedAuthorData });
-
   } catch (error) {
     res.sendStatus(500);
   }

@@ -3,7 +3,10 @@
 const { getBookListById, updateBookList } = require('../../../dao/book-lists/book-lists');
 const { getBooksByIds, setBooks } = require('../../../dao/books/books');
 const { createAuthor, getAuthorsWithProps } = require('../../../dao/authors/authors');
-const { createBookAlternative, getBookAlternativeWithUrl } = require('../../../dao/book-alternatives/book-alternatives');
+const {
+  createBookAlternative,
+  getBookAlternativeWithUrl
+} = require('../../../dao/book-alternatives/book-alternatives');
 
 const { getBookDetails, getBooksFromList, getBooksFromShelf } = require('../../../adapters/moly/books/books');
 
@@ -31,23 +34,27 @@ module.exports = async (req, res) => {
   const bookUrlsFromList = await getBooksFromList(url);
   const bookUrlsFromPendingShelf = await getBooksFromShelf(pendingUrl);
 
-  const booksFromList = await Promise.all(bookUrlsFromList.map(async book => {
-    const details = await getBookDetails(book.url);
-    return {
-      details,
-      year,
-      ...book
-    };
-  }));
+  const booksFromList = await Promise.all(
+    bookUrlsFromList.map(async book => {
+      const details = await getBookDetails(book.url);
+      return {
+        details,
+        year,
+        ...book
+      };
+    })
+  );
 
-  const booksFromPendingShelf = await Promise.all(bookUrlsFromPendingShelf.map(async book => {
-    const details = await getBookDetails(book.url);
-    return {
-      details,
-      year,
-      ...book
-    };
-  }));
+  const booksFromPendingShelf = await Promise.all(
+    bookUrlsFromPendingShelf.map(async book => {
+      const details = await getBookDetails(book.url);
+      return {
+        details,
+        year,
+        ...book
+      };
+    })
+  );
 
   let booksToSave = [];
   let newBookIds = [];
@@ -85,19 +92,14 @@ async function createOrGetAuthor(author) {
     const hunChars = /[áéíóúöüőű]/i;
     const isHun = hunChars.test(name);
     const names = name.split(' ');
-    const lastName = isHun ?
-      names[0] :
-      names[names.length - 1];
-    const firstNames = isHun ?
-      names.slice(1).join(' ') :
-      names.slice(0, names.length - 1).join(' ');
+    const lastName = isHun ? names[0] : names[names.length - 1];
+    const firstNames = isHun ? names.slice(1).join(' ') : names.slice(0, names.length - 1).join(' ');
     const id = await createAuthor({
       name,
       sortName: `${lastName}, ${firstNames}`,
       isApproved: false
     });
     return id;
-
   } else {
     const id = authorsWithName[0].id;
     return id;
@@ -111,7 +113,6 @@ async function createOrGetBookAlternative(bookAlternative) {
   if (!alternativeWithUrl) {
     const id = await createBookAlternative(bookAlternative);
     return id;
-
   } else {
     const id = alternativeWithUrl.id;
     return id;
@@ -135,7 +136,9 @@ async function constructBookDataToSave(book, isPending) {
   }
 
   const authorIds = await Promise.all(book.details.authors.map(author => createOrGetAuthor(author)));
-  const alternativeIds = await Promise.all(book.details.alternatives.map(alternative => createOrGetBookAlternative(alternative)));
+  const alternativeIds = await Promise.all(
+    book.details.alternatives.map(alternative => createOrGetBookAlternative(alternative))
+  );
 
   return {
     id: book.id,

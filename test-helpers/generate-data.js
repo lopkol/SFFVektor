@@ -4,12 +4,82 @@ const { v4: uuidv4 } = require('uuid');
 const { roleOptions, genreOptions, readingPlanOptions } = require('../src/options');
 const years = ['1977', '1976', '1975', '1974', '1973'];
 
-const surnames = ['kovács', 'szabó', 'lakatos', 'kolompár', 'vastag', 'szőrös', 'pumpás', 'gonosz', 'csúnya', 'kövér', 'tóth', 'nagy', 'kis'];
-const givenNames = ['oszkár', 'béla', 'lajos', 'géza', 'tihamér', 'ildikó', 'katalin', 'anikó', 'rozi', 'nikolett', 'kristóf', 'andrás', 'dezső', 'ferenc', 'lili'];
+const surnames = [
+  'kovács',
+  'szabó',
+  'lakatos',
+  'kolompár',
+  'vastag',
+  'szőrös',
+  'pumpás',
+  'gonosz',
+  'csúnya',
+  'kövér',
+  'tóth',
+  'nagy',
+  'kis'
+];
+const givenNames = [
+  'oszkár',
+  'béla',
+  'lajos',
+  'géza',
+  'tihamér',
+  'ildikó',
+  'katalin',
+  'anikó',
+  'rozi',
+  'nikolett',
+  'kristóf',
+  'andrás',
+  'dezső',
+  'ferenc',
+  'lili'
+];
 
-const adjectives = ['titokzatos', 'kegyetlen', 'földönkívüli', 'csúnya', 'gonosz', 'szőrös', 'kövér', 'láthatatlan', 'péniszfejű', 'vonatpótló autóbusszal közlekedő', 'náthás', 'féltékeny', 'harapós'];
-const actors = ['törpék', 'alienek', 'majomkutyák', 'törpenyulak', 'orkok', 'amazonok', 'kísértetek', 'kecskék', 'szerzetesek', 'mágusok', 'óriáskígyók', 'fenyőfák', 'szoftverfejlesztők'];
-const actions = ['lázadása', 'véres bosszúja', 'támadása', 'titka', 'rejtélye', 'háborúja', 'szigete', 'hihetetlen kalandjai', 'reneszánsza', 'örök körforgása', 'szexuális élete'];
+const adjectives = [
+  'titokzatos',
+  'kegyetlen',
+  'földönkívüli',
+  'csúnya',
+  'gonosz',
+  'szőrös',
+  'kövér',
+  'láthatatlan',
+  'péniszfejű',
+  'vonatpótló autóbusszal közlekedő',
+  'náthás',
+  'féltékeny',
+  'harapós'
+];
+const actors = [
+  'törpék',
+  'alienek',
+  'majomkutyák',
+  'törpenyulak',
+  'orkok',
+  'amazonok',
+  'kísértetek',
+  'kecskék',
+  'szerzetesek',
+  'mágusok',
+  'óriáskígyók',
+  'fenyőfák',
+  'szoftverfejlesztők'
+];
+const actions = [
+  'lázadása',
+  'véres bosszúja',
+  'támadása',
+  'titka',
+  'rejtélye',
+  'háborúja',
+  'szigete',
+  'hihetetlen kalandjai',
+  'reneszánsza',
+  'örök körforgása',
+  'szexuális élete'
+];
 
 function yearWithSuffix(year, suffixType) {
   const types = ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'vel'];
@@ -33,7 +103,7 @@ function yearWithSuffix(year, suffixType) {
     { endRegEx: /[1-9]00$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'zal'] },
     { endRegEx: /000$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'rel'] }
   ];
-  
+
   const suffixesOfYear = suffixesForEndings.find(number => number.endRegEx.test(year)).suffixes || types;
   const typeIndex = types.indexOf(suffixType);
 
@@ -41,12 +111,7 @@ function yearWithSuffix(year, suffixType) {
 }
 
 function removeHungarianAccents(str) {
-  return str
-    .replace(/á/g, 'a')
-    .replace(/é/g, 'e')
-    .replace(/í/g, 'i')
-    .replace(/[óöő]/g, 'o')
-    .replace(/[úüű]/g, 'u');
+  return str.replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i').replace(/[óöő]/g, 'o').replace(/[úüű]/g, 'u');
 }
 
 function turnToUrl(str) {
@@ -89,7 +154,7 @@ function generateRandomAuthor(props = {}) {
   const givenName = capitalize(randomItemFrom(givenNames));
 
   return {
-    name:`${surname} ${givenName}` ,
+    name: `${surname} ${givenName}`,
     sortName: `${surname}, ${givenName}`,
     isApproved: randomBoolean(),
     ...props
@@ -128,8 +193,10 @@ function generateRandomBook(props = {}) {
   const adjective = randomItemFrom(adjectives);
   const actor = randomItemFrom(actors);
   const action = randomItemFrom(actions);
-  const authorNum = randomItemFrom([1,1,1,1,1,1,2,3]);
-  const authorIds = Array(authorNum).fill(null).map(() => uuidv4());
+  const authorNum = randomItemFrom([1, 1, 1, 1, 1, 1, 2, 3]);
+  const authorIds = Array(authorNum)
+    .fill(null)
+    .map(() => uuidv4());
 
   return {
     id: uuidv4(),
@@ -137,7 +204,7 @@ function generateRandomBook(props = {}) {
     year,
     title: `A ${adjective} ${actor} ${action}`,
     series: `${capitalize(adjective)} ${actor}`,
-    seriesNum: randomIntBetween(1,6),
+    seriesNum: randomIntBetween(1, 6),
     isApproved: randomBoolean(),
     isPending: randomBoolean(),
     alternativeIds: [],
@@ -160,7 +227,7 @@ function generateRandomReadingPlan(props = {}) {
 
 function generateRandomBookList(props = {}) {
   const year = props.year || randomItemFrom(years);
-  const genre = props.genre || (randomItemFrom(genreOptions)).id;
+  const genre = props.genre || randomItemFrom(genreOptions).id;
   const longNameOfGenre = genre === 'fantasy' ? 'fantasy' : 'science fiction';
   const nameOfList = `${yearWithSuffix(year, 'es')} ${longNameOfGenre} megjelenések`;
   const nameOfPendingShelf = `Besorolásra vár ${year}`;

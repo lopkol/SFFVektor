@@ -39,7 +39,6 @@ describe('booklists DAO', () => {
 
   describe('updateBookList', () => {
     it('returns null if id does not exist', async () => {
-
       const res = await updateBookList('2013scifi', { url: 'some url' });
 
       expect(res).toBe(null);
@@ -125,11 +124,13 @@ describe('booklists DAO', () => {
 
       const bookLists = await getBookListsWithProps();
 
-      expect(bookLists).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...bookListData1 },
-        { id: id2, ...bookListData2 },
-        { id: id3, ...bookListData3 }
-      ]));
+      expect(bookLists).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...bookListData1 },
+          { id: id2, ...bookListData2 },
+          { id: id3, ...bookListData3 }
+        ])
+      );
     });
 
     it('returns the book lists with the given properties', async () => {
@@ -143,10 +144,12 @@ describe('booklists DAO', () => {
 
       const bookLists = await getBookListsWithProps({ year: 1933 });
 
-      expect(bookLists).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...bookListData1 },
-        { id: id2, ...bookListData2 }
-      ]));
+      expect(bookLists).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...bookListData1 },
+          { id: id2, ...bookListData2 }
+        ])
+      );
     });
   });
 
@@ -162,10 +165,12 @@ describe('booklists DAO', () => {
 
       const bookLists = await getBookListsOfBook('3');
 
-      expect(bookLists).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...bookListData1 },
-        { id: id3, ...bookListData3 }
-      ]));
+      expect(bookLists).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...bookListData1 },
+          { id: id3, ...bookListData3 }
+        ])
+      );
     });
   });
 
@@ -181,10 +186,12 @@ describe('booklists DAO', () => {
 
       const bookLists = await getBookListsOfJuryMember('3');
 
-      expect(bookLists).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...bookListData1 },
-        { id: id3, ...bookListData3 }
-      ]));
+      expect(bookLists).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...bookListData1 },
+          { id: id3, ...bookListData3 }
+        ])
+      );
     });
   });
 
@@ -202,11 +209,13 @@ describe('booklists DAO', () => {
 
       const bookLists = await getBookListsWithProps();
 
-      expect(bookLists).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...bookListData1, juryIds: jasmine.arrayWithExactContents(['3', '1']) },
-        { id: id2, ...bookListData2, juryIds: jasmine.arrayWithExactContents(['7', '2', '1', '4']) },
-        { id: id3, ...bookListData3, juryIds: jasmine.arrayWithExactContents(['3', '7', '4']) }
-      ]));
+      expect(bookLists).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...bookListData1, juryIds: jasmine.arrayWithExactContents(['3', '1']) },
+          { id: id2, ...bookListData2, juryIds: jasmine.arrayWithExactContents(['7', '2', '1', '4']) },
+          { id: id3, ...bookListData3, juryIds: jasmine.arrayWithExactContents(['3', '7', '4']) }
+        ])
+      );
     });
 
     it('works even if user had no book lists earlier', async () => {
@@ -222,11 +231,13 @@ describe('booklists DAO', () => {
 
       const bookLists = await getBookListsWithProps();
 
-      expect(bookLists).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...bookListData1, juryIds: jasmine.arrayWithExactContents(['3', '1']) },
-        { id: id2, ...bookListData2, juryIds: jasmine.arrayWithExactContents(['7', '2', '1', '4']) },
-        { id: id3, ...bookListData3, juryIds: jasmine.arrayWithExactContents(['3', '7', '4']) }
-      ]));
+      expect(bookLists).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...bookListData1, juryIds: jasmine.arrayWithExactContents(['3', '1']) },
+          { id: id2, ...bookListData2, juryIds: jasmine.arrayWithExactContents(['7', '2', '1', '4']) },
+          { id: id3, ...bookListData3, juryIds: jasmine.arrayWithExactContents(['3', '7', '4']) }
+        ])
+      );
     });
   });
 });

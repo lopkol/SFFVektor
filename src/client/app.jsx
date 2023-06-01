@@ -39,7 +39,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <UserInterface.Provider value={{ user, bookLists, changeUIData: () => setReload(true) }}>
-        { user.role === 'admin' ? adminRouter : router }
+        {user.role === 'admin' ? adminRouter : router}
       </UserInterface.Provider>
     </ThemeProvider>
   );

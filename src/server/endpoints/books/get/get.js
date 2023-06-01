@@ -21,7 +21,6 @@ module.exports = async (req, res) => {
     const bookData = { ...book, authors, alternatives, bookLists };
 
     return res.status(200).send({ bookData });
-
   } catch (error) {
     res.sendStatus(500);
   }

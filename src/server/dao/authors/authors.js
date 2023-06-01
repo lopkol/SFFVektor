@@ -22,7 +22,7 @@ async function updateAuthor(id, authorData) {
   }
 
   const author = await firestore.collection('authors').doc(id).get();
-  return { id, ...(author.data()) };
+  return { id, ...author.data() };
 }
 
 async function getAuthorById(id) {
@@ -30,7 +30,7 @@ async function getAuthorById(id) {
   if (!author.exists) {
     return null;
   }
-  return { id, ...(author.data()) };
+  return { id, ...author.data() };
 }
 
 async function getAuthorsWithProps(authorData = {}) {

@@ -24,7 +24,6 @@ module.exports = async (req, res) => {
     }
 
     return res.status(201).send({ id: newId });
-
   } catch (error) {
     res.sendStatus(500);
   }

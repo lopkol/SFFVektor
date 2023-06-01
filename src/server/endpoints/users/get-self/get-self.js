@@ -16,7 +16,6 @@ module.exports = async (req, res) => {
     const bookLists = await getBookListsOfJuryMember(userId);
 
     return res.status(200).send({ userData: { bookLists, ...userData } });
-
   } catch (error) {
     res.sendStatus(500);
   }

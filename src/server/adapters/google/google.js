@@ -10,11 +10,7 @@ const authScopes = [
 ];
 const redirectUrl = `${config.appBaseUrl}/auth`;
 
-const oauth2Client = new google.auth.OAuth2(
-  config.oauth.clientId,
-  config.oauth.clientSecret,
-  redirectUrl
-);
+const oauth2Client = new google.auth.OAuth2(config.oauth.clientId, config.oauth.clientSecret, redirectUrl);
 
 function getSsoAuthUrl(state) {
   return oauth2Client.generateAuthUrl({
@@ -27,7 +23,7 @@ function getSsoAuthUrl(state) {
 async function getUserInfo(authorizationCode) {
   const { tokens } = await oauth2Client.getToken(authorizationCode);
   const userinfo = await google.oauth2('v2').userinfo.get({
-    access_token: tokens.access_token,
+    access_token: tokens.access_token
   });
   return userinfo.data;
 }

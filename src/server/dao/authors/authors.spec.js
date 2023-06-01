@@ -48,7 +48,12 @@ describe('authors DAO', () => {
       await updateAuthor(id, { name });
       const authorsInDb = await getAuthorsWithProps();
 
-      expect(authorsInDb).toEqual(jasmine.arrayWithExactContents([{ id, ...authorData, name }, { id: otherId, ...otherAuthorData }]));
+      expect(authorsInDb).toEqual(
+        jasmine.arrayWithExactContents([
+          { id, ...authorData, name },
+          { id: otherId, ...otherAuthorData }
+        ])
+      );
     });
   });
 
@@ -89,10 +94,12 @@ describe('authors DAO', () => {
 
       const authorsWithProps = await getAuthorsWithProps();
 
-      expect(authorsWithProps).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...authorData1 },
-        { id: id2, ...authorData2 }
-      ]));
+      expect(authorsWithProps).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...authorData1 },
+          { id: id2, ...authorData2 }
+        ])
+      );
     });
 
     it('returns the authors with the given properties', async () => {

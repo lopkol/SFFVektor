@@ -18,12 +18,10 @@ function getAuthors(document) {
   const authorsNames = removeJunkFromString(authorDiv.textContent).split(middleDot);
   const authorLinksCollection = authorDiv.getElementsByTagName('a');
 
-  const authors = authorsNames.map((name, index) =>
-    ({
-      name,
-      molyUrl: moly.baseUrl + authorLinksCollection[index].href
-    })
-  );
+  const authors = authorsNames.map((name, index) => ({
+    name,
+    molyUrl: moly.baseUrl + authorLinksCollection[index].href
+  }));
   return authors;
 }
 
@@ -64,7 +62,7 @@ function getOriginal(document) {
 async function getBookDetails(url) {
   try {
     const res = await axios.get(url, { raxConfig });
-    const { document } = (new JSDOM(res.data)).window;
+    const { document } = new JSDOM(res.data).window;
 
     const authors = getAuthors(document);
     const { title, series, seriesNum } = getTitleAndSeries(document);
@@ -74,9 +72,7 @@ async function getBookDetails(url) {
       name: 'magyar',
       urls: [url]
     };
-    const alternatives = originalVersion ?
-      [hunVersion, originalVersion] :
-      [hunVersion];
+    const alternatives = originalVersion ? [hunVersion, originalVersion] : [hunVersion];
 
     const book = { authors, title, series, seriesNum, alternatives };
 
@@ -111,17 +107,19 @@ async function getBooksFromListPage(document) {
 async function getBooksFromList(url) {
   try {
     const res = await axios.get(url, { raxConfig });
-    const { document } = (new JSDOM(res.data)).window;
+    const { document } = new JSDOM(res.data).window;
 
     const otherPages = await getOtherPages(document);
     const books = await getBooksFromListPage(document);
 
-    const otherPagesBooks = await Promise.all(otherPages.map(async pageUrl => {
-      const response = await axios.get(pageUrl, { raxConfig });
-      const { document: doc } = (new JSDOM(response.data)).window;
+    const otherPagesBooks = await Promise.all(
+      otherPages.map(async pageUrl => {
+        const response = await axios.get(pageUrl, { raxConfig });
+        const { document: doc } = new JSDOM(response.data).window;
 
-      return getBooksFromListPage(doc);
-    }));
+        return getBooksFromListPage(doc);
+      })
+    );
 
     const bookUrls = books.concat(...otherPagesBooks);
 
@@ -150,17 +148,19 @@ async function getBooksFromShelfPage(document) {
 async function getBooksFromShelf(url) {
   try {
     const res = await axios.get(url, { raxConfig });
-    const { document } = (new JSDOM(res.data)).window;
+    const { document } = new JSDOM(res.data).window;
 
     const otherPages = await getOtherPages(document);
     const books = await getBooksFromShelfPage(document);
 
-    const otherPagesBooks = await Promise.all(otherPages.map(async pageUrl => {
-      const response = await axios.get(pageUrl, { raxConfig });
-      const { document: doc } = (new JSDOM(response.data)).window;
+    const otherPagesBooks = await Promise.all(
+      otherPages.map(async pageUrl => {
+        const response = await axios.get(pageUrl, { raxConfig });
+        const { document: doc } = new JSDOM(response.data).window;
 
-      return getBooksFromShelfPage(doc);
-    }));
+        return getBooksFromShelfPage(doc);
+      })
+    );
 
     const bookUrls = books.concat(...otherPagesBooks);
 
@@ -181,8 +181,11 @@ function getBookIdsFromReadingList(document) {
 
 async function getBooksReadByUser(userMolyUrl, userCredentialsCookie) {
   try {
-    const res = await axios.get(`${userMolyUrl}/olvasmanylista-teljes`, { raxConfig, headers: { Cookie: userCredentialsCookie } });
-    const { document } = (new JSDOM(res.data)).window;
+    const res = await axios.get(`${userMolyUrl}/olvasmanylista-teljes`, {
+      raxConfig,
+      headers: { Cookie: userCredentialsCookie }
+    });
+    const { document } = new JSDOM(res.data).window;
 
     return getBookIdsFromReadingList(document);
   } catch (e) {

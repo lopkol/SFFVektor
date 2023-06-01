@@ -15,12 +15,11 @@ const columns = [
   { field: 'role', headerName: 'Státusz', orderable: true }
 ];
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(2)
   }
 }));
-
 
 function UserManagement() {
   const classes = useStyles();
@@ -34,7 +33,9 @@ function UserManagement() {
     if (reloadData) {
       (async () => {
         const users = await getUsers();
-        const sortedUsers = users.slice().sort((a,b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
+        const sortedUsers = users
+          .slice()
+          .sort((a, b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
 
         setRows(sortedUsers.map(createRow));
       })();
@@ -43,7 +44,7 @@ function UserManagement() {
     }
   }, [reloadData]);
 
-  const createRow = (userData) => {
+  const createRow = userData => {
     const roleName = roleOptions.find(role => role.id === userData.role).name;
     return {
       id: userData.id,
@@ -51,7 +52,7 @@ function UserManagement() {
         molyUsername: (
           <span>
             {userData.molyUsername}
-            <MolyLink url={userData.molyUrl}/>
+            <MolyLink url={userData.molyUrl} />
           </span>
         ),
         email: userData.email,
@@ -61,7 +62,7 @@ function UserManagement() {
     };
   };
 
-  const handleOpenUserDetails = (userId) => {
+  const handleOpenUserDetails = userId => {
     setSelectedUserId(userId);
     setUserDetailsOpen(true);
   };
@@ -72,10 +73,15 @@ function UserManagement() {
     setReloadData(true);
   };
 
-  return  (
+  return (
     <div>
-      <CustomTable title="Felhasználók" rows={ rows } columns={ columns } rowSelection="click">
-        <Button className={classes.button} variant="contained" color="primary" onClick={ () => handleOpenUserDetails(null) }>
+      <CustomTable title="Felhasználók" rows={rows} columns={columns} rowSelection="click">
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={() => handleOpenUserDetails(null)}
+        >
           Új felhasználó
         </Button>
       </CustomTable>
@@ -83,7 +89,7 @@ function UserManagement() {
         open={userDetailsOpen}
         handleClose={handleCloseUserDetails}
         userId={selectedUserId}
-        changeUserId={(newId) => setSelectedUserId(newId)}
+        changeUserId={newId => setSelectedUserId(newId)}
       />
     </div>
   );

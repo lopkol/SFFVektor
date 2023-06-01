@@ -85,10 +85,12 @@ describe('users DAO', () => {
 
       const usersWithProps = await getUsersWithProps();
 
-      expect(usersWithProps).toEqual(jasmine.arrayWithExactContents([
-        { id: id1, ...userData1 },
-        { id: id2, ...userData2 }
-      ]));
+      expect(usersWithProps).toEqual(
+        jasmine.arrayWithExactContents([
+          { id: id1, ...userData1 },
+          { id: id2, ...userData2 }
+        ])
+      );
     });
 
     it('returns the users with the given properties', async () => {
@@ -159,7 +161,12 @@ describe('users DAO', () => {
       await updateUser(id, { email, name });
       const usersInDb = await getUsersWithProps();
 
-      expect(usersInDb).toEqual(jasmine.arrayWithExactContents([{ ...userData, id, name, email }, { ...otherUserData, id: otherId }]));
+      expect(usersInDb).toEqual(
+        jasmine.arrayWithExactContents([
+          { ...userData, id, name, email },
+          { ...otherUserData, id: otherId }
+        ])
+      );
     });
   });
 

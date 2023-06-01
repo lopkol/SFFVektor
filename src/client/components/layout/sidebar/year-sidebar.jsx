@@ -10,7 +10,7 @@ const NavItem = require('./nav-item');
 const { genreOptions } = require('../../../../options');
 const { sortBookLists } = require('../../../lib/useful-stuff');
 
-const getIconOfGenre = (genre) => {
+const getIconOfGenre = genre => {
   switch (genre) {
     case 'scifi':
       return RobotIcon;
@@ -23,7 +23,7 @@ const getIconOfGenre = (genre) => {
 
 const capitalize = text => text[0].toUpperCase() + text.slice(1);
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   icon: {
     marginRight: theme.spacing(1)
   },
@@ -63,59 +63,38 @@ function YearSidebar({ year, drawerWidth, openOnLoad }) {
   });
 
   if (user.role === 'admin') {
-    navItems.push(
-      {
-        title: 'Könyvek',
-        href: `/books/${year}`,
-        icon: SettingsIcon
-      }
-    );
+    navItems.push({
+      title: 'Könyvek',
+      href: `/books/${year}`,
+      icon: SettingsIcon
+    });
   }
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-    >
+    <Box display="flex" flexDirection="column">
       <Box width="100%">
-        <Button
-          className={ classes.button }
-          onClick={ () => setOpen(!isOpen) }
-        >
+        <Button className={classes.button} onClick={() => setOpen(!isOpen)}>
           <CalendarIcon
             className={classes.icon}
             style={{
               fontSize: '24'
             }}
           />
-          <span className={classes.title}>
-            {year}
-          </span>
+          <span className={classes.title}>{year}</span>
           <ChevronRightIcon
             style={{
               padding: 0,
-              transform: isOpen
-                ? 'rotate(90deg)'
-                : 'rotate(0deg)',
+              transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
               transitionDuration: '0.3s',
-              transitionProperty: 'transform',
+              transitionProperty: 'transform'
             }}
           />
         </Button>
       </Box>
-      <Collapse
-        in={isOpen}
-        timeout="auto"
-      >
+      <Collapse in={isOpen} timeout="auto">
         <List disablePadding>
-          {navItems.map((item) => (
-            <NavItem
-              indented
-              href={item.href}
-              key={item.title}
-              title={item.title}
-              icon={item.icon}
-            />
+          {navItems.map(item => (
+            <NavItem indented href={item.href} key={item.title} title={item.title} icon={item.icon} />
           ))}
         </List>
       </Collapse>

@@ -15,7 +15,7 @@ async function getAuthenticityToken() {
   try {
     const res = await axios.get(moly.baseUrl + '/belepes', { raxConfig });
     const sessionCookie = res.headers['set-cookie'][0];
-    const { document } = (new JSDOM(res.data)).window;
+    const { document } = new JSDOM(res.data).window;
 
     const authInputNode = document.querySelector('[name=authenticity_token]');
     const authenticityToken = authInputNode.value;
