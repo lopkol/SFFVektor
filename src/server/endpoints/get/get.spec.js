@@ -17,7 +17,10 @@ describe('GET /', () => {
 
   it('should not redirect and return HTML when called with valid JWT', async () => {
     const validToken = encode({ some: 'data' });
-    const response = await request(app.listen()).get('/').set('Cookie', `${cookieName}=${validToken}`).expect(200);
+    const response = await request(app.listen())
+      .get('/')
+      .set('Cookie', `${cookieName}=${validToken}`)
+      .expect(200);
 
     const returnedHtml = response.text;
     expect(returnedHtml.includes('<div id="app"></div>'));

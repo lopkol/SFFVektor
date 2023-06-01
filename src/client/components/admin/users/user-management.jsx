@@ -35,7 +35,9 @@ function UserManagement() {
         const users = await getUsers();
         const sortedUsers = users
           .slice()
-          .sort((a, b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
+          .sort((a, b) =>
+            a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true })
+          );
 
         setRows(sortedUsers.map(createRow));
       })();

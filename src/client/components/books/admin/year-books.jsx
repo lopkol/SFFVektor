@@ -59,8 +59,17 @@ function YearBooks() {
 
   return (
     <div>
-      <CustomTable title={`Könyvek ${year}`} rows={rows} columns={columns} rowSelection="click"></CustomTable>
-      <BookDetails open={bookDetailsOpen} handleClose={handleCloseBookDetails} bookId={selectedBookId} />
+      <CustomTable
+        title={`Könyvek ${year}`}
+        rows={rows}
+        columns={columns}
+        rowSelection="click"
+      ></CustomTable>
+      <BookDetails
+        open={bookDetailsOpen}
+        handleClose={handleCloseBookDetails}
+        bookId={selectedBookId}
+      />
     </div>
   );
 }

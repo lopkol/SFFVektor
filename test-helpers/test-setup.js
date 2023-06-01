@@ -1,6 +1,10 @@
 'use strict';
 
-require('dotenv-haphap').config('environment/.env', 'environment/test.env', 'environment/confidential.env');
+require('dotenv-haphap').config(
+  'environment/.env',
+  'environment/test.env',
+  'environment/confidential.env'
+);
 require('@babel/register');
 const JasmineDom = require('@testing-library/jasmine-dom').default;
 const setupJsdomGlobal = require('jsdom-global');

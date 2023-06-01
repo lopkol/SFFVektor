@@ -9,7 +9,10 @@ const { createUser } = require('../../../dao/users/users');
 const { createBookList, getBookListById } = require('../../../dao/book-lists/book-lists');
 const { setBooks, getBooksWithProps, getBooksByIds } = require('../../../dao/books/books');
 const { createAuthor, getAuthorById } = require('../../../dao/authors/authors');
-const { createBookAlternative, getBookAlternativesByIds } = require('../../../dao/book-alternatives/book-alternatives');
+const {
+  createBookAlternative,
+  getBookAlternativesByIds
+} = require('../../../dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 const {
   generateRandomUser,
@@ -119,7 +122,9 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
     const bookList = await getBookListById(bookListId);
 
     const booksInDb = await getBooksWithProps();
-    expect(bookList.bookIds).toEqual(jasmine.arrayWithExactContents(booksInDb.map(book => book.id)));
+    expect(bookList.bookIds).toEqual(
+      jasmine.arrayWithExactContents(booksInDb.map(book => book.id))
+    );
 
     await Promise.all(
       [book1, book2, book3, book4].map(async (book, index) => {
@@ -173,7 +178,9 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
     const bookList = await getBookListById(bookListId);
 
     const booksInDb = await getBooksWithProps();
-    expect(bookList.bookIds).toEqual(jasmine.arrayWithExactContents(booksInDb.map(book => book.id)));
+    expect(bookList.bookIds).toEqual(
+      jasmine.arrayWithExactContents(booksInDb.map(book => book.id))
+    );
 
     const [book] = await getBooksByIds([book4.id]);
 
@@ -258,7 +265,11 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
 
     const authorData = authors[1];
     const existingAuthorId = await createAuthor(authorData);
-    const bookData = generateRandomBook({ ...book3, authorIds: [existingAuthorId], isApproved: true }); //wrong author, missing alternatives
+    const bookData = generateRandomBook({
+      ...book3,
+      authorIds: [existingAuthorId],
+      isApproved: true
+    }); //wrong author, missing alternatives
     await setBooks([bookData]);
 
     const year = '2020';
@@ -294,7 +305,12 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
 
     const authorData = authors[1];
     const existingAuthorId = await createAuthor(authorData);
-    const bookData = generateRandomBook({ ...book2, authorIds: [existingAuthorId], isApproved: true, isPending: true });
+    const bookData = generateRandomBook({
+      ...book2,
+      authorIds: [existingAuthorId],
+      isApproved: true,
+      isPending: true
+    });
     await setBooks([bookData]);
 
     const year = '2020';
@@ -315,7 +331,9 @@ describe('POST /book-lists/:bookListId/moly-update', () => {
       .expect(200);
 
     const [book] = await getBooksByIds([book2.id]);
-    expect(book).toEqual(jasmine.objectContaining({ ...book2, isApproved: true, isPending: false }));
+    expect(book).toEqual(
+      jasmine.objectContaining({ ...book2, isApproved: true, isPending: false })
+    );
     const [authorId] = book.authorIds;
     const alternativeIds = book.alternativeIds;
 

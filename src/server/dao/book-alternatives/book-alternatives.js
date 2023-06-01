@@ -54,7 +54,10 @@ async function getBookAlternativesByIds(alternativeIds) {
 }
 
 async function getBookAlternativeWithUrl(url) {
-  const bookAlternatives = await firestore.collection('bookAlternatives').where('urls', 'array-contains', url).get();
+  const bookAlternatives = await firestore
+    .collection('bookAlternatives')
+    .where('urls', 'array-contains', url)
+    .get();
   if (bookAlternatives.size === 0) {
     return null;
   }

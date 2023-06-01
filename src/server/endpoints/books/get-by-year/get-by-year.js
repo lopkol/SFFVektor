@@ -20,7 +20,9 @@ module.exports = async (req, res) => {
     const books = await getBooksWithProps({ year });
     const booksWithDetails = await Promise.all(
       books.map(async book => {
-        const authors = await Promise.all(book.authorIds.map(async authorId => await getAuthorById(authorId)));
+        const authors = await Promise.all(
+          book.authorIds.map(async authorId => await getAuthorById(authorId))
+        );
         const alternatives = await getBookAlternativesByIds(book.alternativeIds);
         const bookLists = await getBookListsOfBook(book.id);
         return { ...book, authors, alternatives, bookLists };

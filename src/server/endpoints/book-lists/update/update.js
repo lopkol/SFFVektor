@@ -16,7 +16,10 @@ module.exports = async (req, res) => {
     const bookListId = req.params.bookListId;
     const bookListData = req.body.bookListData;
 
-    const updatedBookListData = await updateBookList(bookListId, omit(bookListData, ['year', 'genre']));
+    const updatedBookListData = await updateBookList(
+      bookListId,
+      omit(bookListData, ['year', 'genre'])
+    );
 
     if (updatedBookListData === null) {
       return res.sendStatus(404);

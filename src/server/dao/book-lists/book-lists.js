@@ -48,7 +48,10 @@ async function getBookListsWithProps(bookListData = {}) {
 }
 
 async function getBookListsOfBook(bookId) {
-  const bookListsOfBook = await firestore.collection('bookLists').where('bookIds', 'array-contains', bookId).get();
+  const bookListsOfBook = await firestore
+    .collection('bookLists')
+    .where('bookIds', 'array-contains', bookId)
+    .get();
   const bookLists = mapToDataWithId(bookListsOfBook);
 
   return bookLists;
@@ -67,13 +70,19 @@ async function getBookListsOfJuryMember(userId) {
 async function updateBookListsOfJuryMember(userId, newBookListIds) {
   try {
     await firestore.runTransaction(async transaction => {
-      const bookListsOfJuryMemberRefs = firestore.collection('bookLists').where('juryIds', 'array-contains', userId);
+      const bookListsOfJuryMemberRefs = firestore
+        .collection('bookLists')
+        .where('juryIds', 'array-contains', userId);
       const bookListsOfJuryMember = await transaction.get(bookListsOfJuryMemberRefs);
       let bookListIdsOfJuryMember = [];
       bookListsOfJuryMember.forEach(bookList => bookListIdsOfJuryMember.push(bookList.id));
 
-      const bookListIdsToRemove = bookListIdsOfJuryMember.filter(bookListId => !newBookListIds.includes(bookListId));
-      const bookListIdsToAdd = newBookListIds.filter(bookListId => !bookListIdsOfJuryMember.includes(bookListId));
+      const bookListIdsToRemove = bookListIdsOfJuryMember.filter(
+        bookListId => !newBookListIds.includes(bookListId)
+      );
+      const bookListIdsToAdd = newBookListIds.filter(
+        bookListId => !bookListIdsOfJuryMember.includes(bookListId)
+      );
 
       const bookListsToAdd = await Promise.all(
         bookListIdsToAdd.map(async bookListId => {

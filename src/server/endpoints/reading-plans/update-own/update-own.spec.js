@@ -10,12 +10,19 @@ const {
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser } = require('../../../dao/users/users');
 const { createBookList } = require('../../../dao/book-lists/book-lists');
-const { createReadingPlans, getReadingPlansWithProps } = require('../../../dao/reading-plans/reading-plans');
+const {
+  createReadingPlans,
+  getReadingPlansWithProps
+} = require('../../../dao/reading-plans/reading-plans');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 
 describe('PUT /reading-plans/own/:bookListId', () => {
   beforeEach(async () => {
-    await Promise.all([clearCollection('users'), clearCollection('bookLists'), clearCollection('readingPlans')]);
+    await Promise.all([
+      clearCollection('users'),
+      clearCollection('bookLists'),
+      clearCollection('readingPlans')
+    ]);
   });
 
   it('responds with 401 if called without jwt', async () => {
@@ -94,8 +101,14 @@ describe('PUT /reading-plans/own/:bookListId', () => {
     });
     const bookListId = await createBookList(bookListData);
 
-    const readingPlanUpdate1 = generateRandomReadingPlan({ userId: id, bookId: readingPlanData1.bookId });
-    const readingPlanUpdate3 = generateRandomReadingPlan({ userId: id, bookId: readingPlanData3.bookId });
+    const readingPlanUpdate1 = generateRandomReadingPlan({
+      userId: id,
+      bookId: readingPlanData1.bookId
+    });
+    const readingPlanUpdate3 = generateRandomReadingPlan({
+      userId: id,
+      bookId: readingPlanData3.bookId
+    });
 
     await request(app.listen())
       .put(`/api/reading-plans/own/${bookListId}`)
@@ -132,7 +145,10 @@ describe('PUT /reading-plans/own/:bookListId', () => {
     });
     const bookListId = await createBookList(bookListData);
 
-    const readingPlanUpdate1 = generateRandomReadingPlan({ userId: id, bookId: readingPlanData1.bookId });
+    const readingPlanUpdate1 = generateRandomReadingPlan({
+      userId: id,
+      bookId: readingPlanData1.bookId
+    });
     const newReadingPlan1 = generateRandomReadingPlan({ userId: id, bookId: bookId1 });
     const newReadingPlan2 = generateRandomReadingPlan({ userId: id, bookId: bookId2 });
 

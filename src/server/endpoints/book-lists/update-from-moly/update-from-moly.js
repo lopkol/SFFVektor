@@ -8,7 +8,11 @@ const {
   getBookAlternativeWithUrl
 } = require('../../../dao/book-alternatives/book-alternatives');
 
-const { getBookDetails, getBooksFromList, getBooksFromShelf } = require('../../../adapters/moly/books/books');
+const {
+  getBookDetails,
+  getBooksFromList,
+  getBooksFromShelf
+} = require('../../../adapters/moly/books/books');
 
 const { isAdmin } = require('../../../lib/permissions');
 const { genreOptions } = require('../../../../options');
@@ -93,7 +97,9 @@ async function createOrGetAuthor(author) {
     const isHun = hunChars.test(name);
     const names = name.split(' ');
     const lastName = isHun ? names[0] : names[names.length - 1];
-    const firstNames = isHun ? names.slice(1).join(' ') : names.slice(0, names.length - 1).join(' ');
+    const firstNames = isHun
+      ? names.slice(1).join(' ')
+      : names.slice(0, names.length - 1).join(' ');
     const id = await createAuthor({
       name,
       sortName: `${lastName}, ${firstNames}`,
@@ -135,7 +141,9 @@ async function constructBookDataToSave(book, isPending) {
     }
   }
 
-  const authorIds = await Promise.all(book.details.authors.map(author => createOrGetAuthor(author)));
+  const authorIds = await Promise.all(
+    book.details.authors.map(author => createOrGetAuthor(author))
+  );
   const alternativeIds = await Promise.all(
     book.details.alternatives.map(alternative => createOrGetBookAlternative(alternative))
   );

@@ -5,9 +5,15 @@ const app = require('../../../app');
 
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser } = require('../../../dao/users/users');
-const { createBookAlternative, getBookAlternativesByIds } = require('../../../dao/book-alternatives/book-alternatives');
+const {
+  createBookAlternative,
+  getBookAlternativesByIds
+} = require('../../../dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { generateRandomUser, generateRandomBookAlternative } = require('../../../../../test-helpers/generate-data');
+const {
+  generateRandomUser,
+  generateRandomBookAlternative
+} = require('../../../../../test-helpers/generate-data');
 
 describe('PATCH /book-alternatives/:bookAlternativeId', () => {
   beforeEach(async () => {
@@ -66,7 +72,11 @@ describe('PATCH /book-alternatives/:bookAlternativeId', () => {
     const updatedBookAlternativeData = response.body.bookAlternativeData;
     const [updatedBookAlternativeInDb] = await getBookAlternativesByIds([bookAlternativeId]);
 
-    const expectedBookAlternativeData = { id: bookAlternativeId, ...bookAlternativeData, ...dataToUpdate };
+    const expectedBookAlternativeData = {
+      id: bookAlternativeId,
+      ...bookAlternativeData,
+      ...dataToUpdate
+    };
 
     expect(updatedBookAlternativeData).toEqual(expectedBookAlternativeData);
     expect(updatedBookAlternativeInDb).toEqual(expectedBookAlternativeData);

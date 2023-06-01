@@ -162,7 +162,10 @@ function AuthorDetails({ handleClose, open, authorId, changeAuthorId }) {
       </DialogTitle>
       <DialogContent className={classes.dialogContent} dividers>
         {editMode ? (
-          <DataEditPage data={authorFields} handleChange={newAuthorFields => setAuthorFields(newAuthorFields)} />
+          <DataEditPage
+            data={authorFields}
+            handleChange={newAuthorFields => setAuthorFields(newAuthorFields)}
+          />
         ) : (
           <DataDisplayPage data={authorFields} />
         )}
@@ -170,10 +173,21 @@ function AuthorDetails({ handleClose, open, authorId, changeAuthorId }) {
       <DialogActions className={classes.dialogActions}>
         {editMode ? (
           <div>
-            <Button className={classes.button} onClick={exitEditMode} color="primary" variant="contained">
+            <Button
+              className={classes.button}
+              onClick={exitEditMode}
+              color="primary"
+              variant="contained"
+            >
               Elvetés
             </Button>
-            <Button className={classes.button} autoFocus onClick={saveData} color="primary" variant="contained">
+            <Button
+              className={classes.button}
+              autoFocus
+              onClick={saveData}
+              color="primary"
+              variant="contained"
+            >
               Mentés
             </Button>
           </div>
@@ -189,7 +203,11 @@ function AuthorDetails({ handleClose, open, authorId, changeAuthorId }) {
           </Button>
         )}
       </DialogActions>
-      <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue} />
+      <UnsavedDataAlert
+        open={unsavedAlertOpen}
+        handleCancel={handleAlertCancel}
+        handleOk={handleAlertContinue}
+      />
     </Dialog>
   );
 }

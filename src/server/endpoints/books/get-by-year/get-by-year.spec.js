@@ -62,7 +62,11 @@ describe('GET /books-from-year/:year', () => {
     const year = '2020';
 
     const bookData0 = generateRandomBook({ year: '1999' });
-    const bookData1 = generateRandomBook({ year, authorIds: [authorId1], alternativeIds: [alternativeId1] });
+    const bookData1 = generateRandomBook({
+      year,
+      authorIds: [authorId1],
+      alternativeIds: [alternativeId1]
+    });
     const bookData2 = generateRandomBook({
       year,
       authorIds: [authorId2],
@@ -110,8 +114,16 @@ describe('GET /books-from-year/:year', () => {
     const bookData2 = generateRandomBook({ id: bookId2, year, authorIds: [], alternativeIds: [] });
     await setBooks([bookData1, bookData2]);
 
-    const bookListData1 = generateRandomBookList({ year, genre: 'fantasy', bookIds: [bookId1, bookId2, '3'] });
-    const bookListData2 = generateRandomBookList({ year, genre: 'scifi', bookIds: ['4', bookId1, '5'] });
+    const bookListData1 = generateRandomBookList({
+      year,
+      genre: 'fantasy',
+      bookIds: [bookId1, bookId2, '3']
+    });
+    const bookListData2 = generateRandomBookList({
+      year,
+      genre: 'scifi',
+      bookIds: ['4', bookId1, '5']
+    });
     const bookListId1 = await createBookList(bookListData1);
     const bookListId2 = await createBookList(bookListData2);
 

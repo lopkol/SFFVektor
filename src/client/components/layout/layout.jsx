@@ -49,8 +49,16 @@ function Layout() {
 
   return (
     <div className={classes.root}>
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} drawerWidth={drawerWidth} />
-      <Topbar isSidebarOpen={isSidebarOpen} onSidebarOpen={() => setSidebarOpen(true)} drawerWidth={drawerWidth} />
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        drawerWidth={drawerWidth}
+      />
+      <Topbar
+        isSidebarOpen={isSidebarOpen}
+        onSidebarOpen={() => setSidebarOpen(true)}
+        drawerWidth={drawerWidth}
+      />
       <div
         className={classNames(classes.contentContainer, {
           [classes.contentContainerShift]: isSidebarOpen

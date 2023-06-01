@@ -15,7 +15,11 @@ const { clearCollection } = require('../../../../../test-helpers/firestore');
 
 describe('GET /reading-plans/all/:bookListId', () => {
   beforeEach(async () => {
-    await Promise.all([clearCollection('users'), clearCollection('bookLists'), clearCollection('readingPlans')]);
+    await Promise.all([
+      clearCollection('users'),
+      clearCollection('bookLists'),
+      clearCollection('readingPlans')
+    ]);
   });
 
   it('responds with 401 if called without jwt', async () => {
@@ -42,9 +46,18 @@ describe('GET /reading-plans/all/:bookListId', () => {
     const readingPlanData1 = generateRandomReadingPlan({ userId: userId1 });
     const readingPlanData2 = generateRandomReadingPlan({ userId: userId1 });
     const readingPlanData3 = generateRandomReadingPlan({ userId: userId1 });
-    const readingPlanData4 = generateRandomReadingPlan({ userId: userId2, bookId: readingPlanData1.bookId });
-    const readingPlanData5 = generateRandomReadingPlan({ userId: userId2, bookId: readingPlanData2.bookId });
-    const readingPlanData6 = generateRandomReadingPlan({ userId: userId2, bookId: readingPlanData3.bookId });
+    const readingPlanData4 = generateRandomReadingPlan({
+      userId: userId2,
+      bookId: readingPlanData1.bookId
+    });
+    const readingPlanData5 = generateRandomReadingPlan({
+      userId: userId2,
+      bookId: readingPlanData2.bookId
+    });
+    const readingPlanData6 = generateRandomReadingPlan({
+      userId: userId2,
+      bookId: readingPlanData3.bookId
+    });
 
     await createReadingPlans([
       readingPlanData1,
@@ -99,9 +112,17 @@ describe('GET /reading-plans/all/:bookListId', () => {
     const readingPlanData3 = generateRandomReadingPlan({ userId: userId2, bookId: bookId2 });
     const readingPlanData4 = generateRandomReadingPlan({ userId: userId2, bookId: bookId3 });
 
-    await createReadingPlans([readingPlanData1, readingPlanData2, readingPlanData3, readingPlanData4]);
+    await createReadingPlans([
+      readingPlanData1,
+      readingPlanData2,
+      readingPlanData3,
+      readingPlanData4
+    ]);
 
-    const bookListData = generateRandomBookList({ juryIds: [userId1, userId2], bookIds: [bookId1, bookId2, bookId3] });
+    const bookListData = generateRandomBookList({
+      juryIds: [userId1, userId2],
+      bookIds: [bookId1, bookId2, bookId3]
+    });
     const bookListId = await createBookList(bookListData);
 
     const response = await request(app.listen())
@@ -132,6 +153,8 @@ describe('GET /reading-plans/all/:bookListId', () => {
       ])
     ];
 
-    expect(response.body.readingPlansByBook).toEqual(jasmine.arrayWithExactContents(expectedReadingPlans));
+    expect(response.body.readingPlansByBook).toEqual(
+      jasmine.arrayWithExactContents(expectedReadingPlans)
+    );
   });
 });

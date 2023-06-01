@@ -2,7 +2,10 @@
 
 const request = require('supertest');
 const app = require('../../../app');
-const { generateRandomUser, generateRandomBookList } = require('../../../../../test-helpers/generate-data');
+const {
+  generateRandomUser,
+  generateRandomBookList
+} = require('../../../../../test-helpers/generate-data');
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser, getUsersByIds } = require('../../../dao/users/users');
 const { createBookList, getBookListsOfJuryMember } = require('../../../dao/book-lists/book-lists');
@@ -54,7 +57,10 @@ describe('POST /users/new', () => {
     const bookListId1 = await createBookList(bookListData1);
     const bookListId2 = await createBookList(bookListData2);
 
-    const newUserData = generateRandomUser({ email: 'b@gmail.com', bookListIds: [bookListId1, bookListId2] });
+    const newUserData = generateRandomUser({
+      email: 'b@gmail.com',
+      bookListIds: [bookListId1, bookListId2]
+    });
 
     const response = await request(app.listen())
       .post('/api/users/new')

@@ -10,12 +10,19 @@ const {
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser } = require('../../../dao/users/users');
 const { createBookList } = require('../../../dao/book-lists/book-lists');
-const { createReadingPlans, getReadingPlansWithProps } = require('../../../dao/reading-plans/reading-plans');
+const {
+  createReadingPlans,
+  getReadingPlansWithProps
+} = require('../../../dao/reading-plans/reading-plans');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 
 describe('GET /reading-plans/own/:bookListId', () => {
   beforeEach(async () => {
-    await Promise.all([clearCollection('users'), clearCollection('bookLists'), clearCollection('readingPlans')]);
+    await Promise.all([
+      clearCollection('users'),
+      clearCollection('bookLists'),
+      clearCollection('readingPlans')
+    ]);
   });
 
   it('responds with 401 if called without jwt', async () => {
@@ -113,11 +120,16 @@ describe('GET /reading-plans/own/:bookListId', () => {
       })
     ];
 
-    expect(response.body.readingPlans).toEqual(jasmine.arrayWithExactContents(expectedReadingPlans));
+    expect(response.body.readingPlans).toEqual(
+      jasmine.arrayWithExactContents(expectedReadingPlans)
+    );
 
     const readingPlansInDb = await getReadingPlansWithProps({ userId: id });
     expect(readingPlansInDb).toEqual(
-      jasmine.arrayWithExactContents([...expectedReadingPlans, jasmine.objectContaining(readingPlanData2)])
+      jasmine.arrayWithExactContents([
+        ...expectedReadingPlans,
+        jasmine.objectContaining(readingPlanData2)
+      ])
     );
   });
 });

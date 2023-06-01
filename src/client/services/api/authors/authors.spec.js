@@ -4,7 +4,10 @@ const { withServer } = require('../../../../../test-helpers/server');
 const { createUser } = require('../../../../server/dao/users/users');
 const { createAuthor, getAuthorById } = require('../../../../server/dao/authors/authors');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { generateRandomAuthor, generateRandomUser } = require('../../../../../test-helpers/generate-data');
+const {
+  generateRandomAuthor,
+  generateRandomUser
+} = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 
 const { getAuthors, getAuthor, updateAuthor, saveAuthor } = require('./authors');

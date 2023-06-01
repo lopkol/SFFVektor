@@ -109,7 +109,8 @@ function BookDetails({ handleClose, open, bookId }) {
     }
   }, [reloadData]);
 
-  const createFieldsFromBook = (fieldArray, book) => fieldArray.map(field => ({ ...field, value: book[field.key] }));
+  const createFieldsFromBook = (fieldArray, book) =>
+    fieldArray.map(field => ({ ...field, value: book[field.key] }));
 
   function hasUnsavedData() {
     if (!editMode) {
@@ -218,7 +219,10 @@ function BookDetails({ handleClose, open, bookId }) {
       </DialogTitle>
       <DialogContent className={classes.dialogContent} dividers>
         {editMode ? (
-          <DataEditPage data={bookFields} handleChange={newBookFields => setBookFields(newBookFields)} />
+          <DataEditPage
+            data={bookFields}
+            handleChange={newBookFields => setBookFields(newBookFields)}
+          />
         ) : (
           <DataDisplayPage data={bookFields} />
         )}
@@ -227,10 +231,21 @@ function BookDetails({ handleClose, open, bookId }) {
         <DialogActions className={classes.dialogActions}>
           {editMode ? (
             <div>
-              <Button className={classes.button} onClick={exitEditMode} color="primary" variant="contained">
+              <Button
+                className={classes.button}
+                onClick={exitEditMode}
+                color="primary"
+                variant="contained"
+              >
                 Elvetés
               </Button>
-              <Button className={classes.button} autoFocus onClick={saveData} color="primary" variant="contained">
+              <Button
+                className={classes.button}
+                autoFocus
+                onClick={saveData}
+                color="primary"
+                variant="contained"
+              >
                 Mentés
               </Button>
             </div>
@@ -247,7 +262,11 @@ function BookDetails({ handleClose, open, bookId }) {
           )}
         </DialogActions>
       )}
-      <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue} />
+      <UnsavedDataAlert
+        open={unsavedAlertOpen}
+        handleCancel={handleAlertCancel}
+        handleOk={handleAlertContinue}
+      />
       <AuthorDetails
         open={authorDetailsOpen}
         handleClose={handleCloseAuthorDetails}

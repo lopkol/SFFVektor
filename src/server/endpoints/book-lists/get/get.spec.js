@@ -61,8 +61,14 @@ describe('GET /book-lists/:bookListId', () => {
     const alternativeId1 = await createBookAlternative(alternativeData1);
     const alternativeId2 = await createBookAlternative(alternativeData2);
 
-    const bookData1 = generateRandomBook({ authorIds: [authorId1], alternativeIds: [alternativeId1] });
-    const bookData2 = generateRandomBook({ authorIds: [authorId2], alternativeIds: [alternativeId2] });
+    const bookData1 = generateRandomBook({
+      authorIds: [authorId1],
+      alternativeIds: [alternativeId1]
+    });
+    const bookData2 = generateRandomBook({
+      authorIds: [authorId2],
+      alternativeIds: [alternativeId2]
+    });
     await setBooks([bookData1, bookData2]);
 
     const bookListData = await generateRandomBookList({

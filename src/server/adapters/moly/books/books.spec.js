@@ -1,7 +1,12 @@
 'use strict';
 
 const nock = require('nock');
-const { getBookDetails, getBooksFromList, getBooksFromShelf, getBooksReadByUser } = require('./books');
+const {
+  getBookDetails,
+  getBooksFromList,
+  getBooksFromShelf,
+  getBooksReadByUser
+} = require('./books');
 const {
   testBookUrl,
   testAuthors,
@@ -72,7 +77,9 @@ describe('Moly books adapter', () => {
 
   describe('getBooksFromList', () => {
     it('returns the book urls of the list', async () => {
-      nock(moly.baseUrl).get(`${testUserMolyUrl}/olvasmanylista-teljes`).reply(200, testReadingListPage);
+      nock(moly.baseUrl)
+        .get(`${testUserMolyUrl}/olvasmanylista-teljes`)
+        .reply(200, testReadingListPage);
 
       const res = await getBooksReadByUser(
         moly.baseUrl + testUserMolyUrl,

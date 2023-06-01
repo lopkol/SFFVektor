@@ -80,7 +80,9 @@ describe('booklists DAO', () => {
 
       const bookListsInDb = await getBookListsWithProps();
 
-      expect(bookListsInDb).toEqual(jasmine.arrayWithExactContents([expectedBookData1, expectedBookData2]));
+      expect(bookListsInDb).toEqual(
+        jasmine.arrayWithExactContents([expectedBookData1, expectedBookData2])
+      );
     });
   });
 
@@ -212,7 +214,11 @@ describe('booklists DAO', () => {
       expect(bookLists).toEqual(
         jasmine.arrayWithExactContents([
           { id: id1, ...bookListData1, juryIds: jasmine.arrayWithExactContents(['3', '1']) },
-          { id: id2, ...bookListData2, juryIds: jasmine.arrayWithExactContents(['7', '2', '1', '4']) },
+          {
+            id: id2,
+            ...bookListData2,
+            juryIds: jasmine.arrayWithExactContents(['7', '2', '1', '4'])
+          },
           { id: id3, ...bookListData3, juryIds: jasmine.arrayWithExactContents(['3', '7', '4']) }
         ])
       );
@@ -234,7 +240,11 @@ describe('booklists DAO', () => {
       expect(bookLists).toEqual(
         jasmine.arrayWithExactContents([
           { id: id1, ...bookListData1, juryIds: jasmine.arrayWithExactContents(['3', '1']) },
-          { id: id2, ...bookListData2, juryIds: jasmine.arrayWithExactContents(['7', '2', '1', '4']) },
+          {
+            id: id2,
+            ...bookListData2,
+            juryIds: jasmine.arrayWithExactContents(['7', '2', '1', '4'])
+          },
           { id: id3, ...bookListData3, juryIds: jasmine.arrayWithExactContents(['3', '7', '4']) }
         ])
       );

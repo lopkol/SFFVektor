@@ -30,7 +30,13 @@ function TagsInput({ className, field, handleChange, inputClass, labelClass }) {
           {field.label}
         </Typography>
         {field.onNew && (
-          <Button className={classes.button} variant="outlined" size="small" color="primary" onClick={field.onNew}>
+          <Button
+            className={classes.button}
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={field.onNew}
+          >
             {field.newButtonLabel}
           </Button>
         )}

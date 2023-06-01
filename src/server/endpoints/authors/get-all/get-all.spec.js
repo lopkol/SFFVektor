@@ -6,7 +6,10 @@ const { createAuthorizationCookie } = require('../../../../../test-helpers/autho
 const { createUser } = require('../../../dao/users/users');
 const { createAuthor } = require('../../../dao/authors/authors');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { generateRandomUser, generateRandomAuthor } = require('../../../../../test-helpers/generate-data');
+const {
+  generateRandomUser,
+  generateRandomAuthor
+} = require('../../../../../test-helpers/generate-data');
 
 describe('GET /authors', () => {
   beforeEach(async () => {

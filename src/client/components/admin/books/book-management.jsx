@@ -10,7 +10,10 @@ const BookWithMolyLinks = require('../../books/book-with-moly-links');
 const CustomTable = require('../../common/data-display/custom-table');
 
 const { sortBooks, nameOfBookList } = require('../../../lib/useful-stuff');
-const { getBookList, updateBookListFromMoly } = require('../../../services/api/book-lists/book-lists');
+const {
+  getBookList,
+  updateBookListFromMoly
+} = require('../../../services/api/book-lists/book-lists');
 
 const columns = [{ field: 'authorAndTitle', headerName: '', orderable: false }];
 
@@ -91,7 +94,12 @@ function BookManagement() {
 
   return (
     <div>
-      <CustomTable title={nameOfBookList(bookListId)} rows={rows} columns={columns} rowSelection="click">
+      <CustomTable
+        title={nameOfBookList(bookListId)}
+        rows={rows}
+        columns={columns}
+        rowSelection="click"
+      >
         <Button
           className={classes.button}
           variant="contained"
@@ -106,13 +114,26 @@ function BookManagement() {
             <CircularProgress className={classes.circularProgress} size={20} />
           </Button>
         ) : (
-          <Button className={classes.button} variant="contained" color="primary" onClick={triggerUpdateFromMoly}>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            onClick={triggerUpdateFromMoly}
+          >
             Frissítés Molyról
           </Button>
         )}
       </CustomTable>
-      <BookListDetails open={bookListDetailsOpen} handleClose={handleCloseBookListDetails} bookListId={bookListId} />
-      <BookDetails open={bookDetailsOpen} handleClose={handleCloseBookDetails} bookId={selectedBookId} />
+      <BookListDetails
+        open={bookListDetailsOpen}
+        handleClose={handleCloseBookListDetails}
+        bookListId={bookListId}
+      />
+      <BookDetails
+        open={bookDetailsOpen}
+        handleClose={handleCloseBookDetails}
+        bookId={selectedBookId}
+      />
     </div>
   );
 }

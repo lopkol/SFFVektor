@@ -24,7 +24,10 @@ async function canEditReadingPlans(userId, bookListId) {
   if (!isActive) {
     return false;
   }
-  const [isAdminUser, bookListData] = await Promise.all([isAdmin(userId), getBookListById(bookListId)]);
+  const [isAdminUser, bookListData] = await Promise.all([
+    isAdmin(userId),
+    getBookListById(bookListId)
+  ]);
   if (!bookListData) {
     return false;
   }

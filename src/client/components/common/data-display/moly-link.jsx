@@ -22,7 +22,13 @@ function MolyLink({ url }) {
   const classes = useStyles();
 
   return (
-    <a className={classes.molyLink} href={url} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}>
+    <a
+      className={classes.molyLink}
+      href={url}
+      target="_blank"
+      rel="noreferrer"
+      onClick={e => e.stopPropagation()}
+    >
       m
     </a>
   );

@@ -1,7 +1,10 @@
 'use strict';
 
 const { getBookListById } = require('../../../dao/book-lists/book-lists');
-const { createReadingPlans, getReadingPlansWithProps } = require('../../../dao/reading-plans/reading-plans');
+const {
+  createReadingPlans,
+  getReadingPlansWithProps
+} = require('../../../dao/reading-plans/reading-plans');
 
 module.exports = async (req, res) => {
   try {

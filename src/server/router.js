@@ -16,7 +16,10 @@ router.get('/book-lists', require('./endpoints/book-lists/get-all/get-all'));
 router.get('/book-lists/:bookListId', require('./endpoints/book-lists/get/get'));
 router.post('/book-lists/new', require('./endpoints/book-lists/create/create'));
 router.patch('/book-lists/:bookListId', require('./endpoints/book-lists/update/update'));
-router.post('/book-lists/:bookListId/moly-update', require('./endpoints/book-lists/update-from-moly/update-from-moly'));
+router.post(
+  '/book-lists/:bookListId/moly-update',
+  require('./endpoints/book-lists/update-from-moly/update-from-moly')
+);
 
 router.get('/books-from-year/:year', require('./endpoints/books/get-by-year/get-by-year'));
 router.get('/books/:bookId', require('./endpoints/books/get/get'));
@@ -27,12 +30,21 @@ router.get('/authors/:authorId', require('./endpoints/authors/get/get'));
 router.post('/authors/new', require('./endpoints/authors/create/create'));
 router.patch('/authors/:authorId', require('./endpoints/authors/update/update'));
 
-router.get('/book-alternatives/:bookAlternativeId', require('./endpoints/book-alternatives/get/get'));
+router.get(
+  '/book-alternatives/:bookAlternativeId',
+  require('./endpoints/book-alternatives/get/get')
+);
 router.post('/book-alternatives/new', require('./endpoints/book-alternatives/create/create'));
-router.patch('/book-alternatives/:bookAlternativeId', require('./endpoints/book-alternatives/update/update'));
+router.patch(
+  '/book-alternatives/:bookAlternativeId',
+  require('./endpoints/book-alternatives/update/update')
+);
 
 router.get('/reading-plans/own/:bookListId', require('./endpoints/reading-plans/get-own/get-own'));
-router.put('/reading-plans/own/:bookListId', require('./endpoints/reading-plans/update-own/update-own'));
+router.put(
+  '/reading-plans/own/:bookListId',
+  require('./endpoints/reading-plans/update-own/update-own')
+);
 router.get(
   '/reading-plans/all/:bookListId',
   require('./endpoints/reading-plans/get-all-for-booklist/get-all-for-booklist')

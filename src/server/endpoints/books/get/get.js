@@ -14,7 +14,9 @@ module.exports = async (req, res) => {
       return res.sendStatus(404);
     }
 
-    const authors = await Promise.all(book.authorIds.map(async authorId => await getAuthorById(authorId)));
+    const authors = await Promise.all(
+      book.authorIds.map(async authorId => await getAuthorById(authorId))
+    );
     const alternatives = await getBookAlternativesByIds(book.alternativeIds);
     const bookLists = await getBookListsOfBook(bookId);
 

@@ -26,7 +26,11 @@ function hashEmail(email) {
 let dataEncryptionKey;
 async function getDataEncryptionKey() {
   if (!dataEncryptionKey) {
-    dataEncryptionKey = await scrypt(config.dataEncryption.secret, dataEncryptionSalt, keyLengthInBytes);
+    dataEncryptionKey = await scrypt(
+      config.dataEncryption.secret,
+      dataEncryptionSalt,
+      keyLengthInBytes
+    );
   }
 
   return dataEncryptionKey;
@@ -35,7 +39,11 @@ async function getDataEncryptionKey() {
 async function encrypt(data) {
   const initializationVector = await crypto.randomBytes(initializationVectorLength);
   const encryptionKey = await getDataEncryptionKey();
-  const cipher = crypto.createCipheriv(dataEncryptionAlgorithm, encryptionKey, initializationVector);
+  const cipher = crypto.createCipheriv(
+    dataEncryptionAlgorithm,
+    encryptionKey,
+    initializationVector
+  );
 
   const stringifiedData = JSON.stringify(data);
   let encryptedData = cipher.update(stringifiedData, 'utf8', 'hex');
@@ -48,7 +56,11 @@ async function decrypt(encryptedData) {
   const [cypherText, initializationVectorAsString] = encryptedData.split('_');
   const initializationVector = Buffer.from(initializationVectorAsString, 'hex');
   const encryptionKey = await getDataEncryptionKey();
-  const decipher = crypto.createDecipheriv(dataEncryptionAlgorithm, encryptionKey, initializationVector);
+  const decipher = crypto.createDecipheriv(
+    dataEncryptionAlgorithm,
+    encryptionKey,
+    initializationVector
+  );
 
   let stringifiedData = decipher.update(cypherText, 'hex', 'utf8');
   stringifiedData += decipher.final('utf8');

@@ -101,7 +101,13 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
         <Typography variant="subtitle2" className={classNames(labelClass, classes.label)}>
           Alternatívák
         </Typography>
-        <Button className={classes.button} variant="outlined" color="primary" size="small" onClick={newAlternative}>
+        <Button
+          className={classes.button}
+          variant="outlined"
+          color="primary"
+          size="small"
+          onClick={newAlternative}
+        >
           Új alternatíva
         </Button>
       </div>
@@ -144,7 +150,9 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
                   size="small"
                   name={urlIndex}
                   value={url}
-                  onChange={event => handleUrlChange({ altIndex, index: urlIndex, value: event.target.value })}
+                  onChange={event =>
+                    handleUrlChange({ altIndex, index: urlIndex, value: event.target.value })
+                  }
                 />
                 <Button
                   onClick={() => deleteUrl({ altIndex, index: urlIndex })}

@@ -98,20 +98,32 @@ function yearWithSuffix(year, suffixType) {
     { endRegEx: /10$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'zel'] },
     { endRegEx: /20$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'szal'] },
     { endRegEx: /30$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'cal'] },
-    { endRegEx: /[4579]0$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'nel'] },
+    {
+      endRegEx: /[4579]0$/,
+      suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'nel']
+    },
     { endRegEx: /[68]0$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'nal'] },
-    { endRegEx: /[1-9]00$/, suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'zal'] },
+    {
+      endRegEx: /[1-9]00$/,
+      suffixes: ['ban', 'as', 'tól', 'ból', 'ra', 'ról', 'hoz', 'nak', 'zal']
+    },
     { endRegEx: /000$/, suffixes: ['ben', 'es', 'től', 'ből', 're', 'ről', 'hez', 'nek', 'rel'] }
   ];
 
-  const suffixesOfYear = suffixesForEndings.find(number => number.endRegEx.test(year)).suffixes || types;
+  const suffixesOfYear =
+    suffixesForEndings.find(number => number.endRegEx.test(year)).suffixes || types;
   const typeIndex = types.indexOf(suffixType);
 
   return `${year}-${suffixesOfYear[typeIndex]}`;
 }
 
 function removeHungarianAccents(str) {
-  return str.replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i').replace(/[óöő]/g, 'o').replace(/[úüű]/g, 'u');
+  return str
+    .replace(/á/g, 'a')
+    .replace(/é/g, 'e')
+    .replace(/í/g, 'i')
+    .replace(/[óöő]/g, 'o')
+    .replace(/[úüű]/g, 'u');
 }
 
 function turnToUrl(str) {
@@ -127,7 +139,9 @@ function randomItemFrom(array) {
 
 function distinctItemsFrom(array, minCount, maxCount = minCount) {
   if (minCount > array.length || minCount > maxCount) {
-    throw new Error(`Invalid parameters: ${JSON.stringify({ array, minCount, maxCount }, null, 2)}`);
+    throw new Error(
+      `Invalid parameters: ${JSON.stringify({ array, minCount, maxCount }, null, 2)}`
+    );
   }
   const max = Math.min(array.length, maxCount);
   const count = randomIntBetween(minCount, max);

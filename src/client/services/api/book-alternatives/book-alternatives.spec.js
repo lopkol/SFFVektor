@@ -7,10 +7,17 @@ const {
   getBookAlternativesByIds
 } = require('../../../../server/dao/book-alternatives/book-alternatives');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { generateRandomBookAlternative, generateRandomUser } = require('../../../../../test-helpers/generate-data');
+const {
+  generateRandomBookAlternative,
+  generateRandomUser
+} = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 
-const { getBookAlternative, updateBookAlternative, saveBookAlternative } = require('./book-alternatives');
+const {
+  getBookAlternative,
+  updateBookAlternative,
+  saveBookAlternative
+} = require('./book-alternatives');
 
 describe('client-side book alternative related API calls', () => {
   beforeEach(async () => {

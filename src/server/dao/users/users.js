@@ -16,7 +16,10 @@ async function createUser(userData) {
   ]);
 
   if (userDataToSave.email) {
-    const usersWithSameEmail = await firestore.collection('users').where('hashedEmail', '==', hashedEmail).get();
+    const usersWithSameEmail = await firestore
+      .collection('users')
+      .where('hashedEmail', '==', hashedEmail)
+      .get();
 
     if (!usersWithSameEmail.empty) {
       return null;
@@ -46,9 +49,15 @@ async function updateUser(id, userData) {
       ]);
 
       if (userDataToSave.email) {
-        const usersWithSameEmail = await firestore.collection('users').where('hashedEmail', '==', hashedEmail).get();
+        const usersWithSameEmail = await firestore
+          .collection('users')
+          .where('hashedEmail', '==', hashedEmail)
+          .get();
 
-        if (!usersWithSameEmail.empty && (usersWithSameEmail.size > 1 || usersWithSameEmail.docs[0].id !== id)) {
+        if (
+          !usersWithSameEmail.empty &&
+          (usersWithSameEmail.size > 1 || usersWithSameEmail.docs[0].id !== id)
+        ) {
           return null;
         }
       }

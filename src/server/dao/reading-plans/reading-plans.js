@@ -8,7 +8,9 @@ const readingPlanProperties = ['userId', 'bookId', 'status']; //only status can 
 
 async function createReadingPlans(readingPlansData) {
   try {
-    const readingPlanIds = readingPlansData.map(readingPlanData => readingPlanData.userId + readingPlanData.bookId);
+    const readingPlanIds = readingPlansData.map(
+      readingPlanData => readingPlanData.userId + readingPlanData.bookId
+    );
     await firestore.runTransaction(async transaction => {
       const readingPlans = await Promise.all(
         readingPlansData.map(async readingPlanData => {
@@ -52,7 +54,9 @@ async function setReadingPlans(readingPlansData) {
 async function updateReadingPlans(readingPlansData) {
   let readingPlanIds;
   try {
-    readingPlanIds = readingPlansData.map(readingPlanData => readingPlanData.userId + readingPlanData.bookId);
+    readingPlanIds = readingPlansData.map(
+      readingPlanData => readingPlanData.userId + readingPlanData.bookId
+    );
     await firestore.runTransaction(async transaction => {
       const readingPlans = await Promise.all(
         readingPlansData.map(async readingPlanData => {

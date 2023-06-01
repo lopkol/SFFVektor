@@ -209,7 +209,10 @@ describe('PATCH /books/:bookId', () => {
 
     const alternativesInDb = await getBookAlternativesWithProps();
     expect(alternativesInDb).toEqual(
-      jasmine.arrayWithExactContents([jasmine.objectContaining(newBookAlt1), jasmine.objectContaining(newBookAlt2)])
+      jasmine.arrayWithExactContents([
+        jasmine.objectContaining(newBookAlt1),
+        jasmine.objectContaining(newBookAlt2)
+      ])
     );
   });
 

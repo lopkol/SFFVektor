@@ -114,7 +114,11 @@ describe('reading plans DAO', () => {
       const readingPlanData1 = generateRandomReadingPlan();
       const readingPlanData2 = generateRandomReadingPlan();
       const readingPlanData3 = generateRandomReadingPlan();
-      const [id1, id2, id3] = await createReadingPlans([readingPlanData1, readingPlanData2, readingPlanData3]);
+      const [id1, id2, id3] = await createReadingPlans([
+        readingPlanData1,
+        readingPlanData2,
+        readingPlanData3
+      ]);
 
       const newReadingPlanData1 = {
         userId: readingPlanData1.userId,

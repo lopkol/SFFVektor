@@ -18,7 +18,8 @@ jQuery.timeago.settings.lang="hu";
 
 const testAuthenticityToken =
   'einDW8byF/gASpQRfCnitOOa0s7jX7bF781YoSPhVcs3Bg0WXitgS9BNSXM/1XpKxuEjKF9FfqmIauFCAFzfxA==';
-const testRedirectPage = '<html><body>You are being <a href="https://moly.hu/">redirected</a>.</body></html>';
+const testRedirectPage =
+  '<html><body>You are being <a href="https://moly.hu/">redirected</a>.</body></html>';
 const testMolySessionCookie =
   '_moly_session=THl0Nm5kZlhGRlpCZkNtMVNOMVJ1UzVhODNrb2tkYVlCcWw2cDJ1Y3JISjhDZUdGdmN1aXNYK2U5UHQwVGJWbyswR2dmRVBCR1dPRkZCeitmQ0FMempobEIwMmFlOTNYNzc0b2VYV1RMY3F4a3ROMkl0WXpYejIvU25PQXpJWmk3RDkxZ1I0eGh4U05MaXUxaWsvelpYemlZcGU1MUVRVDIvOUVmR2txVFpUU0Z6UTFvalpDNHVOOEVkY1J1M3RtbVhCb2hXTDNZYUcvSTBoR1BhQUlSc01XYWtvaWI2VCtqdjRHbTJkK0J3MWZ6TkYxeDJTN0JCakZ0R3d4OURJd1E3YnlJdFhmbzhTLzZjbmF5S003ZTRuY2wvVUpsTFpjazJzb0RHOWFmb0RxdVQ3ZmRRTXBHdFh3M2pVL0djV2Fpd2E1YklyLzEzdUdyVmZCNlQyejA2OC9KTGtZUUZOcElveVU5dHBPZlhSK1ZtcW9ZOFBMVmhVanFqUTF6aHo3MnIzZlorN2RkT3lHa3BmZGVIWXoyZz09LS1UQ0RZN0JHZGplVTRxdTI2SlRNNUlRPT0%3D--fa1518c7ffb45b570a7fdca6aef3438a42f7c7ae; path=/; secure; HttpOnly';
 const testUserCredentialsCookie =

@@ -60,7 +60,11 @@ describe('client-side book related API calls', () => {
         const year = '2020';
 
         const bookData0 = generateRandomBook({ year: '1999' });
-        const bookData1 = generateRandomBook({ year, authorIds: [authorId1], alternativeIds: [alternativeId1] });
+        const bookData1 = generateRandomBook({
+          year,
+          authorIds: [authorId1],
+          alternativeIds: [alternativeId1]
+        });
         const bookData2 = generateRandomBook({
           year,
           authorIds: [authorId2],
@@ -73,7 +77,11 @@ describe('client-side book related API calls', () => {
           genre: 'fantasy',
           bookIds: [bookData1.id, bookData2.id, '3']
         });
-        const bookListData2 = generateRandomBookList({ year, genre: 'scifi', bookIds: ['4', bookData1.id, '5'] });
+        const bookListData2 = generateRandomBookList({
+          year,
+          genre: 'scifi',
+          bookIds: ['4', bookData1.id, '5']
+        });
         const bookListId1 = await createBookList(bookListData1);
         const bookListId2 = await createBookList(bookListData2);
 
@@ -145,8 +153,16 @@ describe('client-side book related API calls', () => {
         await setBooks([bookData]);
 
         const year = bookData.year;
-        const bookListData1 = generateRandomBookList({ year, genre: 'fantasy', bookIds: [bookId, '6', '3'] });
-        const bookListData2 = generateRandomBookList({ year, genre: 'scifi', bookIds: ['4', bookId, '5'] });
+        const bookListData1 = generateRandomBookList({
+          year,
+          genre: 'fantasy',
+          bookIds: [bookId, '6', '3']
+        });
+        const bookListData2 = generateRandomBookList({
+          year,
+          genre: 'scifi',
+          bookIds: ['4', bookId, '5']
+        });
         const bookListId1 = await createBookList(bookListData1);
         const bookListId2 = await createBookList(bookListData2);
 

@@ -14,7 +14,11 @@ module.exports = async (req, res) => {
 
     const newBookAlternative = req.body.bookAlternativeData;
 
-    if (!newBookAlternative.name || !newBookAlternative.urls || newBookAlternative.urls.length === 0) {
+    if (
+      !newBookAlternative.name ||
+      !newBookAlternative.urls ||
+      newBookAlternative.urls.length === 0
+    ) {
       return res.sendStatus(400);
     }
     const newId = await createBookAlternative(newBookAlternative);

@@ -10,7 +10,9 @@ async function getBookAlternative(bookAlternativeId) {
 }
 
 async function updateBookAlternative(bookAlternativeId, bookAlternativeData) {
-  const response = await api.patch(`/api/book-alternatives/${bookAlternativeId}`, { bookAlternativeData });
+  const response = await api.patch(`/api/book-alternatives/${bookAlternativeId}`, {
+    bookAlternativeData
+  });
   return response.data.bookAlternativeData;
 }
 

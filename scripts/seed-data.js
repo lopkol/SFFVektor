@@ -20,7 +20,10 @@ const batch = firestore.batch();
 async function addUserToBatch(userData) {
   const userId = uuidv4();
 
-  const [hashedEmail, encryptedDetails] = await Promise.all([hashEmail(userData.email), encrypt(userData.email)]);
+  const [hashedEmail, encryptedDetails] = await Promise.all([
+    hashEmail(userData.email),
+    encrypt(userData.email)
+  ]);
   const dataToSave = {
     hashedEmail,
     encryptedDetails,
@@ -97,14 +100,19 @@ async function addBooksWithRandomAuthorsAndAlternatives(count, authorIds, altern
 
         const alternativeId = alternativeIds[index];
 
-        const bookId = await addBookToBatch({ authorIds: authorIdsOfBook, alternativeIds: [alternativeId] });
+        const bookId = await addBookToBatch({
+          authorIds: authorIdsOfBook,
+          alternativeIds: [alternativeId]
+        });
         return bookId;
       })
   );
   return bookIds;
 }
 
-async function addBookListToBatch(props = { year: 2000, genre: 'scifi', juryIds: [], bookIds: [] }) {
+async function addBookListToBatch(
+  props = { year: 2000, genre: 'scifi', juryIds: [], bookIds: [] }
+) {
   const bookListId = props.year + props.genre;
   const newBookListRef = await firestore.collection('bookLists').doc(bookListId);
   await batch.set(newBookListRef, generateRandomBookList(props));

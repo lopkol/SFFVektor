@@ -2,7 +2,10 @@
 
 const request = require('supertest');
 const app = require('../../../app');
-const { generateRandomUser, generateRandomBookAlternative } = require('../../../../../test-helpers/generate-data');
+const {
+  generateRandomUser,
+  generateRandomBookAlternative
+} = require('../../../../../test-helpers/generate-data');
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser } = require('../../../dao/users/users');
 const { createBookAlternative } = require('../../../dao/book-alternatives/book-alternatives');
@@ -54,6 +57,9 @@ describe('GET /book-alternatives/:bookAlternativeId', () => {
       .set('Cookie', [createAuthorizationCookie({ id, role: 'admin' })])
       .expect(200);
 
-    expect(response.body.bookAlternativeData).toEqual({ id: bookAlternativeId, ...bookAlternativeData });
+    expect(response.body.bookAlternativeData).toEqual({
+      id: bookAlternativeId,
+      ...bookAlternativeData
+    });
   });
 });

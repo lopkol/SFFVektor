@@ -24,8 +24,19 @@ const useStyles = makeStyles(theme => ({
 function NoJuryMemberView({ bookListId, handleOpenBookListDetails }) {
   const classes = useStyles();
   return (
-    <CustomTable title={nameOfBookList(bookListId)} rows={rows} columns={columns} noPagination rowSelection="none">
-      <Button className={classes.button} variant="contained" color="primary" onClick={handleOpenBookListDetails}>
+    <CustomTable
+      title={nameOfBookList(bookListId)}
+      rows={rows}
+      columns={columns}
+      noPagination
+      rowSelection="none"
+    >
+      <Button
+        className={classes.button}
+        variant="contained"
+        color="primary"
+        onClick={handleOpenBookListDetails}
+      >
         Részletek
       </Button>
     </CustomTable>

@@ -10,7 +10,11 @@ const authScopes = [
 ];
 const redirectUrl = `${config.appBaseUrl}/auth`;
 
-const oauth2Client = new google.auth.OAuth2(config.oauth.clientId, config.oauth.clientSecret, redirectUrl);
+const oauth2Client = new google.auth.OAuth2(
+  config.oauth.clientId,
+  config.oauth.clientSecret,
+  redirectUrl
+);
 
 function getSsoAuthUrl(state) {
   return oauth2Client.generateAuthUrl({

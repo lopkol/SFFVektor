@@ -7,7 +7,10 @@ const { createAuthorizationCookie } = require('../../../../../test-helpers/autho
 const { createUser } = require('../../../dao/users/users');
 const { createBookList, getBookListById } = require('../../../dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
-const { generateRandomUser, generateRandomBookList } = require('../../../../../test-helpers/generate-data');
+const {
+  generateRandomUser,
+  generateRandomBookList
+} = require('../../../../../test-helpers/generate-data');
 
 describe('PATCH /book-lists/:bookListId', () => {
   beforeEach(async () => {

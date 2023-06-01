@@ -207,7 +207,10 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
       </DialogTitle>
       <DialogContent className={classes.dialogContent} dividers>
         {editMode ? (
-          <DataEditPage data={userFields} handleChange={newUserFields => setUserFields(newUserFields)} />
+          <DataEditPage
+            data={userFields}
+            handleChange={newUserFields => setUserFields(newUserFields)}
+          />
         ) : (
           <DataDisplayPage data={userFields} />
         )}
@@ -215,10 +218,21 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
       <DialogActions className={classes.DialogActions}>
         {editMode ? (
           <div>
-            <Button className={classes.button} onClick={exitEditMode} color="primary" variant="contained">
+            <Button
+              className={classes.button}
+              onClick={exitEditMode}
+              color="primary"
+              variant="contained"
+            >
               Elvetés
             </Button>
-            <Button className={classes.button} autoFocus onClick={saveData} color="primary" variant="contained">
+            <Button
+              className={classes.button}
+              autoFocus
+              onClick={saveData}
+              color="primary"
+              variant="contained"
+            >
               Mentés
             </Button>
           </div>
@@ -234,7 +248,11 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
           </Button>
         )}
       </DialogActions>
-      <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue} />
+      <UnsavedDataAlert
+        open={unsavedAlertOpen}
+        handleCancel={handleAlertCancel}
+        handleOk={handleAlertContinue}
+      />
     </Dialog>
   );
 }

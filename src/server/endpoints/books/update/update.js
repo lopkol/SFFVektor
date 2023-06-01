@@ -35,13 +35,17 @@ module.exports = async (req, res) => {
       const alternativesToDelete = previousAlternativeIds.filter(
         alternativeId => !newBookData.alternativeIds.includes(alternativeId)
       );
-      await Promise.all(alternativesToDelete.map(alternativeId => deleteBookAlternative(alternativeId)));
+      await Promise.all(
+        alternativesToDelete.map(alternativeId => deleteBookAlternative(alternativeId))
+      );
     }
 
     if (newBookData.alternatives && newBookData.alternativeIds) {
       const alternativesToUpdate = newBookData.alternatives.filter(alternative => alternative.id);
       await Promise.all(
-        alternativesToUpdate.map(alternative => updateBookAlternative(alternative.id, omit(alternative, 'id')))
+        alternativesToUpdate.map(alternative =>
+          updateBookAlternative(alternative.id, omit(alternative, 'id'))
+        )
       );
 
       const alternativesToCreate = newBookData.alternatives.filter(alternative => !alternative.id);

@@ -37,7 +37,9 @@ describe('Moly login', () => {
         .get('/belepes')
         .reply(200, testLoginPage, { 'set-cookie': [testMolySessionCookie] })
         .post('/azonositas')
-        .reply(302, testRedirectPage, { 'set-cookie': [testUserCredentialsCookie, testMolySessionCookie] });
+        .reply(302, testRedirectPage, {
+          'set-cookie': [testUserCredentialsCookie, testMolySessionCookie]
+        });
 
       const userCredentials = await getUserCredentials();
 

@@ -30,7 +30,9 @@ function Sidebar({ isOpen, onClose, drawerWidth }) {
   const classes = useStyles(drawerWidth);
 
   const { user, bookLists } = React.useContext(UserInterface);
-  const years = bookLists.map(bookList => bookList.year).filter((value, index, self) => self.indexOf(value) === index);
+  const years = bookLists
+    .map(bookList => bookList.year)
+    .filter((value, index, self) => self.indexOf(value) === index);
 
   return (
     <Drawer

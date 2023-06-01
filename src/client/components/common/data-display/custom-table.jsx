@@ -27,7 +27,9 @@ function ascendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'asc' ? (a, b) => ascendingComparator(a, b, orderBy) : (a, b) => -ascendingComparator(a, b, orderBy);
+  return order === 'asc'
+    ? (a, b) => ascendingComparator(a, b, orderBy)
+    : (a, b) => -ascendingComparator(a, b, orderBy);
 }
 
 function stableSort(array, comparator) {
@@ -183,7 +185,8 @@ const useStyles = makeStyles(theme => ({
 
 function CustomTable(props) {
   const classes = useStyles();
-  const { title, columns, rows, className, rowSelection, children, noPagination, noToolbar } = props;
+  const { title, columns, rows, className, rowSelection, children, noPagination, noToolbar } =
+    props;
   const columnsWithProps = columns.map(column => ({ ...columnDefaultProps, ...column }));
 
   const [order, setOrder] = React.useState('asc');
@@ -214,7 +217,10 @@ function CustomTable(props) {
       } else if (selectedIndex === selectedRows.length - 1) {
         newSelected = newSelected.concat(selectedRows.slice(0, -1));
       } else if (selectedIndex > 0) {
-        newSelected = newSelected.concat(selectedRows.slice(0, selectedIndex), selectedRows.slice(selectedIndex + 1));
+        newSelected = newSelected.concat(
+          selectedRows.slice(0, selectedIndex),
+          selectedRows.slice(selectedIndex + 1)
+        );
       }
 
       setSelectedRows(newSelected);
@@ -241,12 +247,21 @@ function CustomTable(props) {
     <div className={classNames(classes.root, className)}>
       <Paper className={classes.paper}>
         {!noToolbar && (
-          <TableToolbar title={title} withCheckbox={rowSelection === 'checkbox'} numSelected={selectedRows.length}>
+          <TableToolbar
+            title={title}
+            withCheckbox={rowSelection === 'checkbox'}
+            numSelected={selectedRows.length}
+          >
             {children}
           </TableToolbar>
         )}
         <TableContainer>
-          <Table className={classes.table} aria-labelledby="tableTitle" size="small" aria-label="enhanced table">
+          <Table
+            className={classes.table}
+            aria-labelledby="tableTitle"
+            size="small"
+            aria-label="enhanced table"
+          >
             <EnhancedTableHead
               classes={classes}
               columns={columnsWithProps}

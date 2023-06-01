@@ -1,7 +1,12 @@
 'use strict';
 
 const React = require('react');
-const { DialogTitle: MuiDialogTitle, IconButton, Typography, withStyles } = require('@material-ui/core');
+const {
+  DialogTitle: MuiDialogTitle,
+  IconButton,
+  Typography,
+  withStyles
+} = require('@material-ui/core');
 const { Close: CloseIcon } = require('@material-ui/icons');
 
 const titleStyles = theme => ({

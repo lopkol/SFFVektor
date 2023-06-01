@@ -43,7 +43,13 @@ const {
 } = require('../../../../../test-helpers/moly/book-list-moly-update');
 const { moly } = require('../../../../server/config');
 
-const { getBookList, getBookLists, updateBookList, saveBookList, updateBookListFromMoly } = require('./book-lists');
+const {
+  getBookList,
+  getBookLists,
+  updateBookList,
+  saveBookList,
+  updateBookListFromMoly
+} = require('./book-lists');
 
 describe('client-side book list related API calls', () => {
   beforeEach(async () => {
@@ -84,8 +90,14 @@ describe('client-side book list related API calls', () => {
         const alternativeId1 = await createBookAlternative(alternativeData1);
         const alternativeId2 = await createBookAlternative(alternativeData2);
 
-        const bookData1 = generateRandomBook({ authorIds: [authorId1], alternativeIds: [alternativeId1] });
-        const bookData2 = generateRandomBook({ authorIds: [authorId2], alternativeIds: [alternativeId2] });
+        const bookData1 = generateRandomBook({
+          authorIds: [authorId1],
+          alternativeIds: [alternativeId1]
+        });
+        const bookData2 = generateRandomBook({
+          authorIds: [authorId2],
+          alternativeIds: [alternativeId2]
+        });
         await setBooks([bookData1, bookData2]);
 
         const bookListData = await generateRandomBookList({
@@ -237,7 +249,9 @@ describe('client-side book list related API calls', () => {
         const bookList = await getBookListById(bookListId);
 
         const booksInDb = await getBooksWithProps();
-        expect(bookList.bookIds).toEqual(jasmine.arrayWithExactContents(booksInDb.map(book => book.id)));
+        expect(bookList.bookIds).toEqual(
+          jasmine.arrayWithExactContents(booksInDb.map(book => book.id))
+        );
 
         await Promise.all(
           [book1, book2, book3, book4].map(async (book, index) => {

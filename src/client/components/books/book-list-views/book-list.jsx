@@ -13,7 +13,10 @@ const ReadingPlanStats = require('../../common/data-display/reading-plan-stats')
 
 const { sortBooks, nameOfBookList } = require('../../../lib/useful-stuff');
 const { getBookList } = require('../../../services/api/book-lists/book-lists');
-const { getOwnReadingPlans, updateOwnReadingPlans } = require('../../../services/api/reading-plans/reading-plans');
+const {
+  getOwnReadingPlans,
+  updateOwnReadingPlans
+} = require('../../../services/api/reading-plans/reading-plans');
 const { readingPlanOptions } = require('../../../../options');
 
 const columns = [
@@ -137,7 +140,12 @@ function BookList() {
   return (
     <div>
       {readingStats && <ReadingPlanStats min={readingStats.min} max={readingStats.max} />}
-      <CustomTable title={nameOfBookList(bookListId)} rows={rows} columns={columns} rowSelection="click">
+      <CustomTable
+        title={nameOfBookList(bookListId)}
+        rows={rows}
+        columns={columns}
+        rowSelection="click"
+      >
         <Button
           className={classes.button}
           variant="contained"
@@ -147,8 +155,16 @@ function BookList() {
           Részletek
         </Button>
       </CustomTable>
-      <BookListDetails open={bookListDetailsOpen} handleClose={handleCloseBookListDetails} bookListId={bookListId} />
-      <BookDetails open={bookDetailsOpen} handleClose={handleCloseBookDetails} bookId={selectedBookId} />
+      <BookListDetails
+        open={bookListDetailsOpen}
+        handleClose={handleCloseBookListDetails}
+        bookListId={bookListId}
+      />
+      <BookDetails
+        open={bookDetailsOpen}
+        handleClose={handleCloseBookDetails}
+        bookId={selectedBookId}
+      />
     </div>
   );
 }

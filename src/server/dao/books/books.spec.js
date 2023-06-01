@@ -53,7 +53,9 @@ describe('books DAO', () => {
 
       const booksInDb = await getBooksWithProps();
 
-      expect(booksInDb).toEqual(jasmine.arrayWithExactContents([bookData1, expectedBookData2, expectedBookData3]));
+      expect(booksInDb).toEqual(
+        jasmine.arrayWithExactContents([bookData1, expectedBookData2, expectedBookData3])
+      );
     });
   });
 
@@ -108,15 +110,39 @@ describe('books DAO', () => {
     });
 
     it('returns the books with the given properties', async () => {
-      const bookData1 = generateRandomBook({ authorIds: ['22'], series: 'Harry Potter', isApproved: false });
-      const bookData2 = generateRandomBook({ authorIds: ['22'], series: 'Harry Potter', isApproved: true });
-      const bookData3 = generateRandomBook({ authorIds: ['1'], series: 'Lord of the Rings', isApproved: false });
-      const bookData4 = generateRandomBook({ authorIds: ['3'], series: 'Harry Potter', isApproved: false });
-      const bookData5 = generateRandomBook({ authorIds: ['22'], series: 'Harry Potter', isApproved: false });
+      const bookData1 = generateRandomBook({
+        authorIds: ['22'],
+        series: 'Harry Potter',
+        isApproved: false
+      });
+      const bookData2 = generateRandomBook({
+        authorIds: ['22'],
+        series: 'Harry Potter',
+        isApproved: true
+      });
+      const bookData3 = generateRandomBook({
+        authorIds: ['1'],
+        series: 'Lord of the Rings',
+        isApproved: false
+      });
+      const bookData4 = generateRandomBook({
+        authorIds: ['3'],
+        series: 'Harry Potter',
+        isApproved: false
+      });
+      const bookData5 = generateRandomBook({
+        authorIds: ['22'],
+        series: 'Harry Potter',
+        isApproved: false
+      });
 
       await setBooks([bookData1, bookData2, bookData3, bookData4, bookData5]);
 
-      const books = await getBooksWithProps({ authorIds: ['22'], series: 'Harry Potter', isApproved: false });
+      const books = await getBooksWithProps({
+        authorIds: ['22'],
+        series: 'Harry Potter',
+        isApproved: false
+      });
 
       expect(books).toEqual(jasmine.arrayWithExactContents([bookData1, bookData5]));
     });

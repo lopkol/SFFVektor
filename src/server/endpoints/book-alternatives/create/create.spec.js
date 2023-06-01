@@ -2,7 +2,10 @@
 
 const request = require('supertest');
 const app = require('../../../app');
-const { generateRandomUser, generateRandomBookAlternative } = require('../../../../../test-helpers/generate-data');
+const {
+  generateRandomUser,
+  generateRandomBookAlternative
+} = require('../../../../../test-helpers/generate-data');
 const { createAuthorizationCookie } = require('../../../../../test-helpers/authorization');
 const { createUser } = require('../../../dao/users/users');
 const { getBookAlternativesByIds } = require('../../../dao/book-alternatives/book-alternatives');

@@ -2,7 +2,10 @@
 
 const { withServer } = require('../../../../../test-helpers/server');
 const { createUser } = require('../../../../server/dao/users/users');
-const { createReadingPlans, getReadingPlansWithProps } = require('../../../../server/dao/reading-plans/reading-plans');
+const {
+  createReadingPlans,
+  getReadingPlansWithProps
+} = require('../../../../server/dao/reading-plans/reading-plans');
 const { createBookList } = require('../../../../server/dao/book-lists/book-lists');
 const { clearCollection } = require('../../../../../test-helpers/firestore');
 const {
@@ -12,11 +15,19 @@ const {
 } = require('../../../../../test-helpers/generate-data');
 const { logUserIn, logUserOut } = require('../../../../../test-helpers/authorization');
 
-const { getOwnReadingPlans, updateOwnReadingPlans, getAllReadingPlansForBookList } = require('./reading-plans');
+const {
+  getOwnReadingPlans,
+  updateOwnReadingPlans,
+  getAllReadingPlansForBookList
+} = require('./reading-plans');
 
 describe('client-side reading plan related API calls', () => {
   beforeEach(async () => {
-    await Promise.all([clearCollection('users'), clearCollection('bookLists'), clearCollection('readingPlans')]);
+    await Promise.all([
+      clearCollection('users'),
+      clearCollection('bookLists'),
+      clearCollection('readingPlans')
+    ]);
   });
 
   afterEach(async () => {
@@ -84,7 +95,10 @@ describe('client-side reading plan related API calls', () => {
 
         const readingPlansInDb = await getReadingPlansWithProps({ userId });
         expect(readingPlansInDb).toEqual(
-          jasmine.arrayWithExactContents([...expectedReadingPlans, jasmine.objectContaining(readingPlanData2)])
+          jasmine.arrayWithExactContents([
+            ...expectedReadingPlans,
+            jasmine.objectContaining(readingPlanData2)
+          ])
         );
       })
     );
@@ -113,11 +127,18 @@ describe('client-side reading plan related API calls', () => {
         });
         const bookListId = await createBookList(bookListData);
 
-        const readingPlanUpdate1 = generateRandomReadingPlan({ userId, bookId: readingPlanData1.bookId });
+        const readingPlanUpdate1 = generateRandomReadingPlan({
+          userId,
+          bookId: readingPlanData1.bookId
+        });
         const newReadingPlan1 = generateRandomReadingPlan({ userId, bookId: bookId1 });
         const newReadingPlan2 = generateRandomReadingPlan({ userId, bookId: bookId2 });
 
-        await updateOwnReadingPlans(bookListId, [readingPlanUpdate1, newReadingPlan2, newReadingPlan1]);
+        await updateOwnReadingPlans(bookListId, [
+          readingPlanUpdate1,
+          newReadingPlan2,
+          newReadingPlan1
+        ]);
 
         const readingPlansInDb = await getReadingPlansWithProps({ userId });
         expect(readingPlansInDb).toEqual(
@@ -153,7 +174,12 @@ describe('client-side reading plan related API calls', () => {
         const readingPlanData3 = generateRandomReadingPlan({ userId: userId2, bookId: bookId2 });
         const readingPlanData4 = generateRandomReadingPlan({ userId: userId2, bookId: bookId3 });
 
-        await createReadingPlans([readingPlanData1, readingPlanData2, readingPlanData3, readingPlanData4]);
+        await createReadingPlans([
+          readingPlanData1,
+          readingPlanData2,
+          readingPlanData3,
+          readingPlanData4
+        ]);
 
         const bookListData = generateRandomBookList({
           juryIds: [userId1, userId2],

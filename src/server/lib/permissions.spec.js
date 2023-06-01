@@ -4,7 +4,10 @@ const { isActiveUser, isAdmin, canEditReadingPlans } = require('./permissions');
 const { clearCollection } = require('../../../test-helpers/firestore');
 const { createUser } = require('../dao/users/users');
 const { createBookList } = require('../dao/book-lists/book-lists');
-const { generateRandomUser, generateRandomBookList } = require('../../../test-helpers/generate-data');
+const {
+  generateRandomUser,
+  generateRandomBookList
+} = require('../../../test-helpers/generate-data');
 
 describe('permission checkers', () => {
   beforeEach(async () => {

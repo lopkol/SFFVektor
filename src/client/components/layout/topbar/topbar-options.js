@@ -2,7 +2,11 @@
 
 const { GiWhiteBook: BookIcon } = require('react-icons/gi');
 const { VscChecklist: ListIcon } = require('react-icons/vsc');
-const { IoMdGrid: TableIcon, IoMdPeople: PeopleIcon, IoMdSettings: SettingsIcon } = require('react-icons/io');
+const {
+  IoMdGrid: TableIcon,
+  IoMdPeople: PeopleIcon,
+  IoMdSettings: SettingsIcon
+} = require('react-icons/io');
 const { AiOutlineRead: ReadingIcon } = require('react-icons/ai');
 
 const { genreOptions } = require('../../../../options');

@@ -2,7 +2,11 @@
 
 const React = require('react');
 const { Box, Button, Collapse, List, makeStyles } = require('@material-ui/core');
-const { ChevronRight: ChevronRightIcon, Settings: SettingsIcon, Today: CalendarIcon } = require('@material-ui/icons');
+const {
+  ChevronRight: ChevronRightIcon,
+  Settings: SettingsIcon,
+  Today: CalendarIcon
+} = require('@material-ui/icons');
 const { FaRobot: RobotIcon, FaDragon: DragonIcon } = require('react-icons/fa');
 
 const UserInterface = require('../../../lib/ui-context');
@@ -94,7 +98,13 @@ function YearSidebar({ year, drawerWidth, openOnLoad }) {
       <Collapse in={isOpen} timeout="auto">
         <List disablePadding>
           {navItems.map(item => (
-            <NavItem indented href={item.href} key={item.title} title={item.title} icon={item.icon} />
+            <NavItem
+              indented
+              href={item.href}
+              key={item.title}
+              title={item.title}
+              icon={item.icon}
+            />
           ))}
         </List>
       </Collapse>

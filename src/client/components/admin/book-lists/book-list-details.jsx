@@ -10,7 +10,11 @@ const DataEditPage = require('../../common/form/data-edit-page');
 const UserInterface = require('../../../lib/ui-context');
 const { equalAsSets } = require('../../../lib/useful-stuff');
 
-const { getBookList, updateBookList, saveBookList } = require('../../../services/api/book-lists/book-lists');
+const {
+  getBookList,
+  updateBookList,
+  saveBookList
+} = require('../../../services/api/book-lists/book-lists');
 const { getUsers } = require('../../../services/api/users/users');
 const { genreOptions } = require('../../../../options');
 
@@ -43,7 +47,9 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
     const juryMembers = juryIds.map(id => users.find(user => user.id === id));
     const sortedJuryMembers = juryMembers
       .slice()
-      .sort((a, b) => a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true }));
+      .sort((a, b) =>
+        a.molyUsername.localeCompare(b.molyUsername, 'en', { ignorePunctuation: true })
+      );
     return sortedJuryMembers.map(user => user.id);
   };
 
@@ -228,10 +234,21 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
         <DialogActions className={classes.dialogActions}>
           {editMode ? (
             <div>
-              <Button className={classes.button} onClick={exitEditMode} color="primary" variant="contained">
+              <Button
+                className={classes.button}
+                onClick={exitEditMode}
+                color="primary"
+                variant="contained"
+              >
                 Elvetés
               </Button>
-              <Button className={classes.button} autoFocus onClick={saveData} color="primary" variant="contained">
+              <Button
+                className={classes.button}
+                autoFocus
+                onClick={saveData}
+                color="primary"
+                variant="contained"
+              >
                 Mentés
               </Button>
             </div>
@@ -248,7 +265,11 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
           )}
         </DialogActions>
       )}
-      <UnsavedDataAlert open={unsavedAlertOpen} handleCancel={handleAlertCancel} handleOk={handleAlertContinue} />
+      <UnsavedDataAlert
+        open={unsavedAlertOpen}
+        handleCancel={handleAlertCancel}
+        handleOk={handleAlertContinue}
+      />
     </Dialog>
   );
 }

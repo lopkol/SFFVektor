@@ -30,7 +30,9 @@ function getDisplayValue(field) {
     return <ListItem>{field.options.find(option => option.id === field.value).name}</ListItem>;
   } else if (field.type === 'tags') {
     const nameList = field.value.map(optionId => (
-      <ListItem key={optionId}>{field.options.find(option => option.id === optionId).name}</ListItem>
+      <ListItem key={optionId}>
+        {field.options.find(option => option.id === optionId).name}
+      </ListItem>
     ));
     return <List dense>{nameList}</List>;
   } else if (field.type === 'alternatives') {

@@ -15,7 +15,10 @@ module.exports = async (req, res) => {
     const bookAlternativeId = req.params.bookAlternativeId;
     const bookAlternativeData = req.body.bookAlternativeData;
 
-    const updatedBookAlternativeData = await updateBookAlternative(bookAlternativeId, bookAlternativeData);
+    const updatedBookAlternativeData = await updateBookAlternative(
+      bookAlternativeId,
+      bookAlternativeData
+    );
 
     if (updatedBookAlternativeData === null) {
       return res.sendStatus(404);
