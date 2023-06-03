@@ -17,6 +17,15 @@ module.exports = merge(commonConfig, {
       }
     })
   ],
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        enforce: 'pre',
+        use: ['source-map-loader']
+      }
+    ]
+  },
   devServer: {
     stats: 'minimal',
     port: 7878,
