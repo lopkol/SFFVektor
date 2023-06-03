@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { makeStyles } = require('@material-ui/core');
+const { makeStyles } = require('@mui/styles');
 const CustomTable = require('./custom-table');
 const { capitalize } = require('../../../lib/useful-stuff');
 const { readingLimit } = require('../../../../options');

@@ -1,7 +1,8 @@
 'use strict';
 
 const React = require('react');
-const { Button, makeStyles } = require('@material-ui/core');
+const { Button } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 const { nameOfBookList } = require('../../../lib/useful-stuff');
 const CustomTable = require('../../common/data-display/custom-table');
 

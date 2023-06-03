@@ -4,7 +4,8 @@ const { assign } = require('lodash');
 const React = require('react');
 const { useParams } = require('react-router-dom');
 
-const { Button, makeStyles } = require('@material-ui/core');
+const { Button } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 const BookListDetails = require('../../admin/book-lists/book-list-details');
 const BookDetails = require('../../admin/books/book-details');
 const BookWithMolyLinks = require('../../books/book-with-moly-links');

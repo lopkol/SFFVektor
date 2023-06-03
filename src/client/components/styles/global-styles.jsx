@@ -1,6 +1,7 @@
 'use strict';
 
-const { createStyles, makeStyles } = require('@material-ui/core');
+const { createStyles } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 
 const useStyles = makeStyles(theme =>
   createStyles({

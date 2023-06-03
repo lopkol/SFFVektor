@@ -15,9 +15,9 @@ const {
   TableSortLabel,
   Toolbar,
   Typography,
-  lighten,
-  makeStyles
-} = require('@material-ui/core');
+  lighten
+} = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 
 function ascendingComparator(a, b, orderBy) {
   if (orderBy === null) {
@@ -92,7 +92,7 @@ const useToolbarStyles = makeStyles(theme => ({
     paddingRight: 0
   },
   highlight:
-    theme.palette.type === 'light'
+    theme.palette.mode === 'light'
       ? {
           color: theme.palette.secondary.main,
           backgroundColor: lighten(theme.palette.secondary.light, 0.85)
@@ -145,7 +145,7 @@ function TableToolbar(props) {
 const columnDefaultProps = {
   component: 'td',
   align: 'left',
-  padding: 'default',
+  padding: 'normal',
   orderable: false,
   hiddenButton: false
 };
@@ -327,8 +327,8 @@ function CustomTable(props) {
             count={rows.length}
             rowsPerPage={rowsPerPage}
             page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
             labelRowsPerPage="Oldalméret:"
             labelDisplayedRows={({ from, to, count }) => {
               if (to !== -1) {

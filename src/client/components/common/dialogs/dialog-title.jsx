@@ -1,13 +1,9 @@
 'use strict';
 
 const React = require('react');
-const {
-  DialogTitle: MuiDialogTitle,
-  IconButton,
-  Typography,
-  withStyles
-} = require('@material-ui/core');
-const { Close: CloseIcon } = require('@material-ui/icons');
+const { DialogTitle: MuiDialogTitle, IconButton, Typography } = require('@mui/material');
+const { withStyles } = require('@mui/styles');
+const { Close: CloseIcon } = require('@mui/icons-material');
 
 const titleStyles = theme => ({
   root: {
@@ -28,7 +24,12 @@ const DialogTitle = withStyles(titleStyles)(props => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+        <IconButton
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={onClose}
+          size="large"
+        >
           <CloseIcon />
         </IconButton>
       ) : null}

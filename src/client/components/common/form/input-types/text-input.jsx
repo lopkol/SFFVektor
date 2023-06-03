@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { MenuItem, TextField, Typography } = require('@material-ui/core');
+const { MenuItem, TextField, Typography } = require('@mui/material');
 
 function TextInput({ className, field, handleChange, inputClass, labelClass }) {
   return (

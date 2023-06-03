@@ -1,12 +1,13 @@
 'use strict';
 
 const React = require('react');
-const { Box, Button, Collapse, List, makeStyles } = require('@material-ui/core');
+const { Box, Button, Collapse, List } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 const {
   ChevronRight: ChevronRightIcon,
   Settings: SettingsIcon,
   Today: CalendarIcon
-} = require('@material-ui/icons');
+} = require('@mui/icons-material');
 const { FaRobot: RobotIcon, FaDragon: DragonIcon } = require('react-icons/fa');
 
 const UserInterface = require('../../../lib/ui-context');
@@ -32,6 +33,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1)
   },
   button: {
+    color: theme.palette.text.primary,
     fontSize: 'larger',
     fontWeight: theme.typography.fontWeightMedium,
     justifyContent: 'flex-start',

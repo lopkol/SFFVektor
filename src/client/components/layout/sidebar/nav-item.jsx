@@ -3,7 +3,8 @@
 const React = require('react');
 const { NavLink } = require('react-router-dom');
 const classNames = require('classnames');
-const { Button, ListItem, makeStyles } = require('@material-ui/core');
+const { Button, ListItem } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 
 const useStyles = makeStyles(theme => ({
   item: {

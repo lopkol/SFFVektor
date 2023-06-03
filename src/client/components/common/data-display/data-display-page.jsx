@@ -1,7 +1,8 @@
 'use strict';
 
 const React = require('react');
-const { Link, List, ListItem, Typography, makeStyles } = require('@material-ui/core');
+const { Link, List, ListItem, Typography } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 const BookAlternativeDisplay = require('./book-alternative-display');
 
 const useStyles = makeStyles(theme => ({

@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { makeStyles } = require('@material-ui/core');
+const { makeStyles } = require('@mui/styles');
 const DataInput = require('./data-input');
 
 const useStyles = makeStyles(() => ({

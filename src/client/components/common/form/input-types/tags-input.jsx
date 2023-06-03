@@ -2,7 +2,8 @@
 
 const React = require('react');
 const classNames = require('classnames');
-const { Button, TextField, Typography, makeStyles } = require('@material-ui/core');
+const { Button, TextField, Typography } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 const CustomAutocomplete = require('../custom-autocomplete');
 
 const useStyles = makeStyles(theme => ({

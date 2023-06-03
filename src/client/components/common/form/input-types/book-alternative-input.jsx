@@ -2,8 +2,9 @@
 
 const React = require('react');
 const classNames = require('classnames');
-const { Button, TextField, Typography, makeStyles } = require('@material-ui/core');
-const { Delete: DeleteIcon } = require('@material-ui/icons');
+const { Button, TextField, Typography } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
+const { Delete: DeleteIcon } = require('@mui/icons-material');
 
 const useStyles = makeStyles(theme => ({
   titleContainer: {

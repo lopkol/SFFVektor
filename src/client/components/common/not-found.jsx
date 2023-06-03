@@ -2,7 +2,8 @@
 
 const React = require('react');
 const { Link } = require('react-router-dom');
-const { Typography, Button, makeStyles } = require('@material-ui/core');
+const { Typography, Button } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 
 const useStyles = makeStyles(theme => ({
   root: {

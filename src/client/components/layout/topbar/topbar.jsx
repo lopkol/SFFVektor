@@ -3,11 +3,12 @@
 const React = require('react');
 const classNames = require('classnames');
 const { Link, useMatch, useParams } = require('react-router-dom');
-const { AppBar, Box, IconButton, Toolbar, Typography, makeStyles } = require('@material-ui/core');
+const { AppBar, Box, IconButton, Toolbar, Typography } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 const UserInterface = require('../../../lib/ui-context');
 const { getTitle, topNavbar } = require('./topbar-options');
 
-const { Menu: MenuIcon } = require('@material-ui/icons');
+const { Menu: MenuIcon } = require('@mui/icons-material');
 const SffVektorIcon = require('../../styles/sff-vektor-icon');
 const TopbarNavItem = require('./topbar-nav-item');
 
@@ -81,6 +82,7 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
           onClick={onSidebarOpen}
           color="inherit"
           className={classNames(classes.menuButton, isSidebarOpen && classes.hide)}
+          size="large"
         >
           <MenuIcon size={30} />
         </IconButton>
@@ -92,7 +94,7 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
             <TopbarNavItem key={button.id} title={button.name} to={button.to} icon={button.icon} />
           ))}
         </Box>
-        <IconButton color="inherit" component={Link} to={'/'}>
+        <IconButton color="inherit" component={Link} to={'/'} size="large">
           <SffVektorIcon color="white" size={30} />
         </IconButton>
       </Toolbar>

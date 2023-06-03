@@ -4,7 +4,7 @@ const React = require('react');
 const classNames = require('classnames');
 
 const { Outlet } = require('react-router-dom');
-const { makeStyles } = require('@material-ui/core');
+const { makeStyles } = require('@mui/styles');
 
 const Topbar = require('./topbar/topbar');
 const Sidebar = require('./sidebar/sidebar');

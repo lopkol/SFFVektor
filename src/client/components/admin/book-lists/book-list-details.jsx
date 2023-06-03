@@ -1,7 +1,8 @@
 'use strict';
 
 const React = require('react');
-const { Button, Dialog, DialogActions, DialogContent, makeStyles } = require('@material-ui/core');
+const { Button, Dialog, DialogActions, DialogContent } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 const DialogTitle = require('../../common/dialogs/dialog-title');
 const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
 const DataDisplayPage = require('../../common/data-display/data-display-page');

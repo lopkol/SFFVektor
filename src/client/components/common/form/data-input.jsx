@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { makeStyles } = require('@material-ui/core');
+const { makeStyles } = require('@mui/styles');
 const TagsInput = require('./input-types/tags-input');
 const TextInput = require('./input-types/text-input');
 const BookAlternativeInput = require('./input-types/book-alternative-input');

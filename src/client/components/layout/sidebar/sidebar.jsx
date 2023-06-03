@@ -1,8 +1,9 @@
 'use strict';
 
 const React = require('react');
-const { Drawer, Divider, IconButton, makeStyles } = require('@material-ui/core');
-const { ChevronLeft: ChevronLeftIcon, Settings: SettingsIcon } = require('@material-ui/icons');
+const { Drawer, Divider, IconButton } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
+const { ChevronLeft: ChevronLeftIcon, Settings: SettingsIcon } = require('@mui/icons-material');
 
 const UserInterface = require('../../../lib/ui-context');
 const YearSidebar = require('./year-sidebar');
@@ -46,7 +47,7 @@ function Sidebar({ isOpen, onClose, drawerWidth }) {
       }}
     >
       <div className={classes.drawerHeader}>
-        <IconButton onClick={onClose}>
+        <IconButton onClick={onClose} size="large">
           <ChevronLeftIcon />
         </IconButton>
       </div>

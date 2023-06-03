@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { Link, List, ListItem } = require('@material-ui/core');
+const { Link, List, ListItem } = require('@mui/material');
 
 function BookAlternativeDisplay({ alternatives }) {
   return (

@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { Button, Dialog, DialogActions, DialogTitle } = require('@material-ui/core');
+const { Button, Dialog, DialogActions, DialogTitle } = require('@mui/material');
 
 function UnsavedDataAlert({ open, handleCancel, handleOk }) {
   return (

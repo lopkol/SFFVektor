@@ -2,7 +2,7 @@
 
 const React = require('react');
 const { useRoutes } = require('react-router-dom');
-const { ThemeProvider } = require('@material-ui/core');
+const { StyledEngineProvider, ThemeProvider } = require('@mui/material');
 
 const GlobalStyles = require('./components/styles/global-styles');
 const theme = require('./components/styles/theme');
@@ -36,12 +36,14 @@ function App() {
   const router = useRoutes(routes);
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <UserInterface.Provider value={{ user, bookLists, changeUIData: () => setReload(true) }}>
-        {user.role === 'admin' ? adminRouter : router}
-      </UserInterface.Provider>
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <UserInterface.Provider value={{ user, bookLists, changeUIData: () => setReload(true) }}>
+          {user.role === 'admin' ? adminRouter : router}
+        </UserInterface.Provider>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }
 

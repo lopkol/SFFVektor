@@ -3,7 +3,8 @@
 const React = require('react');
 const { NavLink } = require('react-router-dom');
 const classNames = require('classnames');
-const { Button, Hidden, IconButton, Tooltip, makeStyles } = require('@material-ui/core');
+const { Button, Hidden, IconButton, Tooltip } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -39,7 +40,7 @@ const TopbarNavItem = ({ className, to, icon: Icon, title, ...rest }) => {
 
   return (
     <div>
-      <Hidden smDown>
+      <Hidden mdDown>
         <Button
           activeClassName={classes.active}
           className={classNames(classes.button, className)}
@@ -66,6 +67,7 @@ const TopbarNavItem = ({ className, to, icon: Icon, title, ...rest }) => {
             activeClassName={classes.active}
             to={to}
             color="inherit"
+            size="large"
           >
             <Icon style={{ fontSize: '24px' }} className={classes.icon} />
           </IconButton>

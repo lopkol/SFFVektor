@@ -1,8 +1,8 @@
 'use strict';
 
 const React = require('react');
-const { Chip } = require('@material-ui/core');
-const { Autocomplete } = require('@material-ui/lab');
+const { Chip } = require('@mui/material');
+const { Autocomplete } = require('@mui/lab');
 
 /*const useStyles = makeStyles(() => ({
   chips: {

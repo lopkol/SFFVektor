@@ -3,7 +3,8 @@
 const React = require('react');
 const { useParams } = require('react-router-dom');
 
-const { Button, CircularProgress, makeStyles } = require('@material-ui/core');
+const { Button, CircularProgress } = require('@mui/material');
+const { makeStyles } = require('@mui/styles');
 const BookListDetails = require('../book-lists/book-list-details');
 const BookDetails = require('./book-details');
 const BookWithMolyLinks = require('../../books/book-with-moly-links');
