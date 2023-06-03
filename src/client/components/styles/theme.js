@@ -1,6 +1,7 @@
 'use strict';
 
-const { createTheme, colors } = require('@mui/material');
+const { colors } = require('@mui/material');
+const { createTheme } = require('@mui/material/styles');
 
 const theme = createTheme({
   palette: {

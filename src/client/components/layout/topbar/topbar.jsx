@@ -12,41 +12,38 @@ const { Menu: MenuIcon } = require('@mui/icons-material');
 const SffVektorIcon = require('../../styles/sff-vektor-icon');
 const TopbarNavItem = require('./topbar-nav-item');
 
-const useStyles = drawerWidth =>
-  makeStyles(theme => ({
-    appBar: {
-      background: 'linear-gradient(75deg, #0b3f69, #000010)',
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
-      })
-    },
-    appBarShift: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen
-      })
-    },
-    navContainer: {
-      flexGrow: 1,
-      display: 'flex',
-      justifyContent: 'center'
-    },
-    title: {
-      margin: theme.spacing(2)
-    },
-    menuButton: {
-      marginRight: theme.spacing(1)
-    },
-    hide: {
-      display: 'none'
-    }
-  }))();
+const useStyles = makeStyles(theme => ({
+  appBar: {
+    background: 'linear-gradient(75deg, #0b3f69, #000010)',
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  navContainer: {
+    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  title: {
+    margin: theme.spacing(2)
+  },
+  menuButton: {
+    marginRight: theme.spacing(1)
+  },
+  hide: {
+    display: 'none'
+  }
+}));
 
 function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
-  const classes = useStyles(drawerWidth);
+  const classes = useStyles();
   const { user } = React.useContext(UserInterface);
   const { bookListId, year } = useParams();
 
@@ -70,12 +67,20 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
     buttons = buttons.slice(0, 3);
   }
 
+  const appBarStyle = isSidebarOpen
+    ? {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth + 'px'
+      }
+    : {};
+
   return (
     <AppBar
       position="sticky"
       className={classNames(classes.appBar, {
         [classes.appBarShift]: isSidebarOpen
       })}
+      sx={appBarStyle}
     >
       <Toolbar>
         <IconButton

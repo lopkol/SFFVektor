@@ -1,50 +1,47 @@
 'use strict';
 
-const { createStyles } = require('@mui/material');
 const { makeStyles } = require('@mui/styles');
 
-const useStyles = makeStyles(theme =>
-  createStyles({
-    '@global': {
-      '*': {
-        boxSizing: 'border-box',
-        margin: 0,
-        padding: 0
-      },
-      html: {
-        '-webkit-font-smoothing': 'antialiased',
-        '-moz-osx-font-smoothing': 'grayscale',
-        'min-height': '100%',
-        width: '100%'
-      },
-      body: {
-        backgroundColor: '#f4f6f8',
-        height: '100%',
-        width: '100%',
-        'font-family': 'Montserrat',
+const useStyles = makeStyles(theme => ({
+  '@global': {
+    '*': {
+      boxSizing: 'border-box',
+      margin: 0,
+      padding: 0
+    },
+    html: {
+      '-webkit-font-smoothing': 'antialiased',
+      '-moz-osx-font-smoothing': 'grayscale',
+      'min-height': '100%',
+      width: '100%'
+    },
+    body: {
+      backgroundColor: '#f4f6f8',
+      height: '100%',
+      width: '100%',
+      'font-family': 'Montserrat',
+      color: theme.palette.text.primary
+    },
+    main: {
+      padding: '10px',
+      height: '100%',
+      width: '100%'
+    },
+    a: {
+      textDecoration: 'none',
+      '&:link, &:visited, &:hover': {
         color: theme.palette.text.primary
       },
-      main: {
-        padding: '10px',
-        height: '100%',
-        width: '100%'
-      },
-      a: {
-        textDecoration: 'none',
-        '&:link, &:visited, &:hover': {
-          color: theme.palette.text.primary
-        },
-        '&:active': {
-          color: theme.palette.primary.main
-        }
-      },
-      '#app': {
-        height: '100%',
-        width: '100%'
+      '&:active': {
+        color: theme.palette.primary.main
       }
+    },
+    '#app': {
+      height: '100%',
+      width: '100%'
     }
-  })
-);
+  }
+}));
 
 function GlobalStyles() {
   useStyles();

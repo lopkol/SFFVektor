@@ -2,7 +2,7 @@
 
 const React = require('react');
 const { useRoutes } = require('react-router-dom');
-const { StyledEngineProvider, ThemeProvider } = require('@mui/material');
+const { StyledEngineProvider, ThemeProvider } = require('@mui/material/styles');
 
 const GlobalStyles = require('./components/styles/global-styles');
 const theme = require('./components/styles/theme');

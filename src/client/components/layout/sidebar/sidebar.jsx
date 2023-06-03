@@ -9,26 +9,18 @@ const UserInterface = require('../../../lib/ui-context');
 const YearSidebar = require('./year-sidebar');
 const NavItem = require('./nav-item');
 
-const useStyles = drawerWidth =>
-  makeStyles(theme => ({
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0
-    },
-    drawerPaper: {
-      width: drawerWidth
-    },
-    drawerHeader: {
-      display: 'flex',
-      alignItems: 'center',
-      padding: theme.spacing(0, 1),
-      ...theme.mixins.toolbar,
-      justifyContent: 'flex-end'
-    }
-  }))();
+const useStyles = makeStyles(theme => ({
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end'
+  }
+}));
 
 function Sidebar({ isOpen, onClose, drawerWidth }) {
-  const classes = useStyles(drawerWidth);
+  const classes = useStyles();
 
   const { user, bookLists } = React.useContext(UserInterface);
   const years = bookLists
@@ -37,14 +29,12 @@ function Sidebar({ isOpen, onClose, drawerWidth }) {
 
   return (
     <Drawer
-      className={classes.drawer}
+      sx={{ flexShrink: 0, width: drawerWidth + 'px' }}
       variant="persistent"
       anchor="left"
       open={isOpen}
       onClose={onClose}
-      classes={{
-        paper: classes.drawerPaper
-      }}
+      PaperProps={{ sx: { width: drawerWidth + 'px' } }}
     >
       <div className={classes.drawerHeader}>
         <IconButton onClick={onClose} size="large">
