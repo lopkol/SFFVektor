@@ -17,22 +17,22 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-start',
     padding: '10px 8px',
     textTransform: 'none',
-    width: '100%'
+    width: '100%',
+    '&.active': {
+      '& $title': {
+        fontWeight: theme.typography.fontWeightBold,
+        color: theme.palette.primary.dark
+      },
+      '& $icon': {
+        color: theme.palette.primary.dark
+      }
+    }
   },
   icon: {
     marginRight: theme.spacing(1)
   },
   title: {
     marginRight: 'auto'
-  },
-  active: {
-    '& $title': {
-      fontWeight: theme.typography.fontWeightBold,
-      color: theme.palette.primary.dark
-    },
-    '& $icon': {
-      color: theme.palette.primary.dark
-    }
   },
   indented: {
     paddingLeft: theme.spacing(2)
@@ -48,7 +48,6 @@ const NavItem = ({ indented, className, href, icon: Icon, title, ...rest }) => {
   return (
     <ListItem className={classNames(classes.item, className)} disableGutters {...rest}>
       <Button
-        activeClassName={classes.active}
         className={classNames(classes.button, indented ? classes.indented : classes.largerFont)}
         component={NavLink}
         to={href}

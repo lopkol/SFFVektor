@@ -6,32 +6,35 @@ const classNames = require('classnames');
 const { Button, Hidden, IconButton, Tooltip } = require('@mui/material');
 const { makeStyles } = require('@mui/styles');
 
+const getActiveButtonStyle = theme => ({
+  '& $title': {
+    fontWeight: theme.typography.fontWeightBold,
+    color: theme.palette.primary.light
+  },
+  '& $icon': {
+    color: theme.palette.primary.light
+  }
+});
+
 const useStyles = makeStyles(theme => ({
   button: {
     fontWeight: theme.typography.fontWeightMedium,
     marginTop: theme.spacing(1.5),
     marginLeft: theme.spacing(1),
     padding: theme.spacing(1),
-    textTransform: 'none'
+    textTransform: 'none',
+    '&.active': getActiveButtonStyle(theme)
   },
   icon: {
     color: theme.palette.common.white
   },
   iconButton: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+    '&.active': getActiveButtonStyle(theme)
   },
   title: {
     color: theme.palette.common.white,
     marginLeft: theme.spacing(1)
-  },
-  active: {
-    '& $title': {
-      fontWeight: theme.typography.fontWeightBold,
-      color: theme.palette.primary.light
-    },
-    '& $icon': {
-      color: theme.palette.primary.light
-    }
   }
 }));
 
@@ -42,7 +45,6 @@ const TopbarNavItem = ({ className, to, icon: Icon, title, ...rest }) => {
     <div>
       <Hidden mdDown>
         <Button
-          activeClassName={classes.active}
           className={classNames(classes.button, className)}
           component={NavLink}
           to={to}
@@ -64,7 +66,6 @@ const TopbarNavItem = ({ className, to, icon: Icon, title, ...rest }) => {
           <IconButton
             component={NavLink}
             className={classes.iconButton}
-            activeClassName={classes.active}
             to={to}
             color="inherit"
             size="large"
