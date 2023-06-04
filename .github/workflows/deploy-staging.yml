@@ -16,7 +16,7 @@ jobs:
       - id: setup-node
         uses: actions/setup-node@v2
         with:
-          node-version: '14.15.4'
+          node-version: '18.16.0'
       - id: install-dependencies
         run: npm ci
       - id: run-tests
