@@ -42,15 +42,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map(el => el[0]);
 }
 
-const useTableHeadStyles = makeStyles(theme => ({
-  headCell: {
-    fontWeight: theme.typography.fontWeightMedium,
-    fontSize: '1.1rem'
-  }
-}));
-
 function EnhancedTableHead(props) {
-  const classes = useTableHeadStyles();
   const { columns, order, orderBy, onRequestSort, withCheckbox } = props;
   const createSortHandler = property => event => {
     onRequestSort(event, property);
@@ -62,7 +54,7 @@ function EnhancedTableHead(props) {
         {withCheckbox && <TableCell padding="checkbox" />}
         {columns.map(column => (
           <TableCell
-            className={classes.headCell}
+            sx={{ fontWeight: theme => theme.typography.fontWeightMedium, fontSize: '1.1rem' }}
             key={column.field}
             align={column.align}
             padding={column.padding}
@@ -87,10 +79,6 @@ function EnhancedTableHead(props) {
 }
 
 const useToolbarStyles = makeStyles(theme => ({
-  root: {
-    paddingLeft: 0,
-    paddingRight: 0
-  },
   highlight:
     theme.palette.mode === 'light'
       ? {
@@ -122,7 +110,8 @@ function TableToolbar(props) {
 
   return (
     <Toolbar
-      className={classNames(classes.root, {
+      sx={{ paddingX: 0 }}
+      className={classNames({
         [classes.highlight]: withCheckbox && numSelected > 0
       })}
     >

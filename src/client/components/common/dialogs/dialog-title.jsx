@@ -2,31 +2,16 @@
 
 const React = require('react');
 const { DialogTitle: MuiDialogTitle, IconButton, Typography } = require('@mui/material');
-const { withStyles } = require('@mui/styles');
 const { Close: CloseIcon } = require('@mui/icons-material');
 
-const titleStyles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2)
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500]
-  }
-});
-
-const DialogTitle = withStyles(titleStyles)(props => {
-  const { children, classes, onClose, ...other } = props;
+const DialogTitle = ({ children, onClose, ...otherProps }) => {
   return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+    <MuiDialogTitle sx={{ margin: 0, padding: 2 }} component="div" {...otherProps}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
         <IconButton
           aria-label="close"
-          className={classes.closeButton}
+          sx={{ position: 'absolute', right: 1, top: 1, color: theme => theme.palette.grey[500] }}
           onClick={onClose}
           size="large"
         >
@@ -35,6 +20,6 @@ const DialogTitle = withStyles(titleStyles)(props => {
       ) : null}
     </MuiDialogTitle>
   );
-});
+};
 
 module.exports = DialogTitle;

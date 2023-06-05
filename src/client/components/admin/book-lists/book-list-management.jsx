@@ -1,8 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { Button } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
+const { Button, Link } = require('@mui/material');
 const BookListDetails = require('./book-list-details');
 const CustomTable = require('../../common/data-display/custom-table');
 
@@ -15,17 +14,7 @@ const columns = [
   { field: 'url', headerName: 'Moly lista link', orderable: true }
 ];
 
-const useStyles = makeStyles({
-  molyLink: {
-    '&:hover': {
-      textDecoration: 'underline'
-    }
-  }
-});
-
 function BookListManagement() {
-  const classes = useStyles();
-
   const [rows, setRows] = React.useState([]);
   const [bookListDetailsOpen, setBookListDetailsOpen] = React.useState(false);
   const [selectedBookListId, setSelectedBookListId] = React.useState(null);
@@ -41,15 +30,20 @@ function BookListManagement() {
           year: bookList.year,
           genre: genreName,
           url: (
-            <a
-              className={classes.molyLink}
+            <Link
+              sx={{
+                textDecoration: 'none',
+                '&:hover': {
+                  textDecoration: 'underline'
+                }
+              }}
               href={bookList.url}
               target="_blank"
               rel="noreferrer"
               onClick={e => e.stopPropagation()}
             >
               {bookList.url}
-            </a>
+            </Link>
           )
         },
         onClick: () => handleOpenBookListDetails(bookList.id)

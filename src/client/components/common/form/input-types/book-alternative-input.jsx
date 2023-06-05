@@ -1,21 +1,10 @@
 'use strict';
 
 const React = require('react');
-const { Button, TextField, Typography } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
+const { Box, Button, TextField, Typography } = require('@mui/material');
 const { Delete: DeleteIcon } = require('@mui/icons-material');
 
-const useStyles = makeStyles(theme => ({
-  urlListContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: theme.spacing(2)
-  }
-}));
-
 function BookAlternativeInput({ className, field, handleChange, labelClass }) {
-  const classes = useStyles();
-
   function newAlternative() {
     let newValue = JSON.parse(JSON.stringify(field.value));
     newValue.push({
@@ -109,7 +98,7 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
               <DeleteIcon size={20} />
             </Button>
           </div>
-          <div className={classes.urlListContainer}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: 2 }}>
             {alternative.urls.map((url, urlIndex) => (
               <div
                 style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
@@ -136,7 +125,7 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
                 </Button>
               </div>
             ))}
-          </div>
+          </Box>
         </div>
       ))}
     </div>
