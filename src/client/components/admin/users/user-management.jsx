@@ -2,7 +2,6 @@
 
 const React = require('react');
 const { Button } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
 const UserDetails = require('./user-details');
 const MolyLink = require('../../common/data-display/moly-link');
 const CustomTable = require('../../common/data-display/custom-table');
@@ -16,15 +15,7 @@ const columns = [
   { field: 'role', headerName: 'Státusz', orderable: true }
 ];
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(2)
-  }
-}));
-
 function UserManagement() {
-  const classes = useStyles();
-
   const [rows, setRows] = React.useState([]);
   const [reloadData, setReloadData] = React.useState(true);
   const [userDetailsOpen, setUserDetailsOpen] = React.useState(false);
@@ -80,7 +71,7 @@ function UserManagement() {
     <div>
       <CustomTable title="Felhasználók" rows={rows} columns={columns} rowSelection="click">
         <Button
-          className={classes.button}
+          sx={{ margin: 2 }}
           variant="contained"
           color="primary"
           onClick={() => handleOpenUserDetails(null)}

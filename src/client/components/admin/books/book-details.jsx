@@ -3,7 +3,6 @@
 const { cloneDeep } = require('lodash');
 const React = require('react');
 const { Button, Dialog, DialogActions, DialogContent } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
 
 const DialogTitle = require('../../common/dialogs/dialog-title');
 const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
@@ -18,20 +17,7 @@ const { sortAuthors, equalAsSets } = require('../../../lib/useful-stuff');
 const { getBook, updateBook } = require('../../../services/api/books/books');
 const { getAuthors } = require('../../../services/api/authors/authors');
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  },
-  dialogActions: {
-    padding: theme.spacing(1)
-  },
-  dialogContent: {
-    padding: theme.spacing(1)
-  }
-}));
-
 function BookDetails({ handleClose, open, bookId }) {
-  const classes = useStyles();
   const { user } = React.useContext(UserInterface);
 
   const [reloadData, setReloadData] = React.useState(false);
@@ -218,7 +204,7 @@ function BookDetails({ handleClose, open, bookId }) {
       <DialogTitle id="book-details-title" onClose={triggerClose}>
         Könyv adatai
       </DialogTitle>
-      <DialogContent className={classes.dialogContent} dividers>
+      <DialogContent sx={{ padding: 1 }} dividers>
         {editMode ? (
           <DataEditPage
             data={bookFields}
@@ -229,19 +215,14 @@ function BookDetails({ handleClose, open, bookId }) {
         )}
       </DialogContent>
       {user.role === 'admin' && (
-        <DialogActions className={classes.dialogActions}>
+        <DialogActions sx={{ padding: 1 }}>
           {editMode ? (
             <div>
-              <Button
-                className={classes.button}
-                onClick={exitEditMode}
-                color="primary"
-                variant="contained"
-              >
+              <Button sx={{ margin: 1 }} onClick={exitEditMode} color="primary" variant="contained">
                 Elvetés
               </Button>
               <Button
-                className={classes.button}
+                sx={{ margin: 1 }}
                 autoFocus
                 onClick={saveData}
                 color="primary"
@@ -252,7 +233,7 @@ function BookDetails({ handleClose, open, bookId }) {
             </div>
           ) : (
             <Button
-              className={classes.button}
+              sx={{ margin: 1 }}
               autoFocus
               onClick={() => setEditMode(true)}
               color="primary"

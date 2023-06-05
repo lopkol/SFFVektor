@@ -5,7 +5,6 @@ const React = require('react');
 const { useParams } = require('react-router-dom');
 
 const { Button } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
 const BookListDetails = require('../../admin/book-lists/book-list-details');
 const BookDetails = require('../../admin/books/book-details');
 const BookWithMolyLinks = require('../../books/book-with-moly-links');
@@ -25,15 +24,7 @@ const columns = [
   { field: 'readingPlan', headerName: 'Olvasási státusz', orderable: false }
 ];
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(2)
-  }
-}));
-
 function BookList() {
-  const classes = useStyles();
-
   const { bookListId } = useParams();
   const [reloadData, setReloadData] = React.useState(true);
   const [rows, setRows] = React.useState([]);
@@ -148,7 +139,7 @@ function BookList() {
         rowSelection="click"
       >
         <Button
-          className={classes.button}
+          sx={{ margin: 2 }}
           variant="contained"
           color="primary"
           onClick={() => handleOpenBookListDetails(bookListId)}

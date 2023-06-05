@@ -1,38 +1,26 @@
 'use strict';
 
 const React = require('react');
-const classNames = require('classnames');
 const { Button, TextField, Typography } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
 const CustomAutocomplete = require('../custom-autocomplete');
 
-const useStyles = makeStyles(theme => ({
-  titleContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between'
-  },
-  button: {
-    marginBottom: theme.spacing(0.5)
-  },
-  label: {
-    marginTop: theme.spacing(1)
-  }
-}));
-
 function TagsInput({ className, field, handleChange, inputClass, labelClass }) {
-  const classes = useStyles();
-
   return (
     <div className={className}>
-      <div className={classes.titleContainer}>
-        <Typography variant="subtitle2" className={classNames(labelClass, classes.label)}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'space-between'
+        }}
+      >
+        <Typography variant="subtitle2" sx={{ marginTop: 1 }} className={labelClass}>
           {field.label}
         </Typography>
         {field.onNew && (
           <Button
-            className={classes.button}
+            sx={{ marginBottom: 0.5 }}
             variant="outlined"
             size="small"
             color="primary"

@@ -40,9 +40,6 @@ const useStyles = makeStyles(theme => ({
     padding: '10px 8px',
     textTransform: 'none',
     width: '100%'
-  },
-  title: {
-    marginRight: 'auto'
   }
 }));
 
@@ -80,13 +77,8 @@ function YearSidebar({ year, drawerWidth, openOnLoad }) {
     <Box display="flex" flexDirection="column">
       <Box width="100%">
         <Button className={classes.button} onClick={() => setOpen(!isOpen)}>
-          <CalendarIcon
-            className={classes.icon}
-            style={{
-              fontSize: '24'
-            }}
-          />
-          <span className={classes.title}>{year}</span>
+          <CalendarIcon sx={{ marginRight: 1, fontSize: '24px' }} />
+          <span style={{ marginRight: 'auto' }}>{year}</span>
           <ChevronRightIcon
             style={{
               padding: 0,

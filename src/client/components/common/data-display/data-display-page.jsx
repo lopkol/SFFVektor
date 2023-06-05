@@ -6,10 +6,6 @@ const { makeStyles } = require('@mui/styles');
 const BookAlternativeDisplay = require('./book-alternative-display');
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
   fieldContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -17,9 +13,6 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2),
     marginTop: theme.spacing(2),
     minWidth: '400px'
-  },
-  label: {
-    color: theme.palette.grey[500]
   },
   value: {
     minHeight: theme.typography.fontSize * 2
@@ -54,10 +47,10 @@ function DataDisplayPage({ data }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       {data.map(field => (
         <div className={classes.fieldContainer} key={field.key}>
-          <Typography variant="subtitle2" className={classes.label}>
+          <Typography variant="subtitle2" sx={{ color: theme => theme.palette.grey[500] }}>
             {field.label}
           </Typography>
           <div className={classes.value}>{getDisplayValue(field)}</div>

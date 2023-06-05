@@ -7,9 +7,6 @@ const TextInput = require('./input-types/text-input');
 const BookAlternativeInput = require('./input-types/book-alternative-input');
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    minWidth: 400
-  },
   input: {
     width: '400px'
   },
@@ -30,7 +27,7 @@ function DataInput({ field, handleChange }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div style={{ minWidth: '400px' }}>
       {['text', 'select', 'url'].includes(field.type) && (
         <TextInput
           className={classes.fieldContainer}

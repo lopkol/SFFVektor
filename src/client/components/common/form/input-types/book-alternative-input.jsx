@@ -1,55 +1,15 @@
 'use strict';
 
 const React = require('react');
-const classNames = require('classnames');
 const { Button, TextField, Typography } = require('@mui/material');
 const { makeStyles } = require('@mui/styles');
 const { Delete: DeleteIcon } = require('@mui/icons-material');
 
 const useStyles = makeStyles(theme => ({
-  titleContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between'
-  },
-  altContainer: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  altTitleContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  altNameInput: {
-    width: '250px',
-    marginBottom: theme.spacing(1)
-  },
   urlListContainer: {
     display: 'flex',
     flexDirection: 'column',
     marginLeft: theme.spacing(2)
-  },
-  urlFieldContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  urlInput: {
-    width: '320px',
-    marginBottom: theme.spacing(1)
-  },
-  label: {
-    marginTop: theme.spacing(1.5)
-  },
-  button: {
-    marginBottom: theme.spacing(1)
-  },
-  deleteButton: {
-    marginBottom: theme.spacing(1),
-    borderRadius: '20px',
-    minWidth: '40px'
   }
 }));
 
@@ -98,12 +58,19 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
 
   return (
     <div className={className}>
-      <div className={classes.titleContainer}>
-        <Typography variant="subtitle2" className={classNames(labelClass, classes.label)}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'space-between'
+        }}
+      >
+        <Typography variant="subtitle2" sx={{ marginTop: 1.5 }} className={labelClass}>
           Alternatívák
         </Typography>
         <Button
-          className={classes.button}
+          sx={{ marginBottom: 1 }}
           variant="outlined"
           color="primary"
           size="small"
@@ -113,10 +80,10 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
         </Button>
       </div>
       {field.value.map((alternative, altIndex) => (
-        <div className={classes.altContainer} key={altIndex}>
-          <div className={classes.altTitleContainer}>
+        <div style={{ display: 'flex', flexDirection: 'column' }} key={altIndex}>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <TextField
-              className={classes.altNameInput}
+              sx={{ width: '250px', marginBottom: 1 }}
               variant="outlined"
               size="small"
               name={altIndex}
@@ -124,7 +91,7 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
               onChange={event => handleNameChange({ index: altIndex, value: event.target.value })}
             />
             <Button
-              className={classes.button}
+              sx={{ marginBottom: 1 }}
               variant="outlined"
               color="primary"
               size="small"
@@ -137,16 +104,19 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
               variant="outlined"
               size="small"
               color="primary"
-              className={classes.deleteButton}
+              sx={{ marginBottom: 1, borderRadius: '20px', minWidth: '40px' }}
             >
               <DeleteIcon size={20} />
             </Button>
           </div>
           <div className={classes.urlListContainer}>
             {alternative.urls.map((url, urlIndex) => (
-              <div className={classes.urlFieldContainer} key={urlIndex}>
+              <div
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+                key={urlIndex}
+              >
                 <TextField
-                  className={classes.urlInput}
+                  sx={{ width: '320px', marginBottom: 1 }}
                   variant="outlined"
                   size="small"
                   name={urlIndex}
@@ -160,7 +130,7 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
                   variant="outlined"
                   size="small"
                   color="primary"
-                  className={classes.deleteButton}
+                  sx={{ marginBottom: 1, borderRadius: '20px', minWidth: '40px' }}
                 >
                   <DeleteIcon />
                 </Button>

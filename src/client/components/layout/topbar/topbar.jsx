@@ -25,20 +25,6 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen
     })
-  },
-  navContainer: {
-    flexGrow: 1,
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  title: {
-    margin: theme.spacing(2)
-  },
-  menuButton: {
-    marginRight: theme.spacing(1)
-  },
-  hide: {
-    display: 'none'
   }
 }));
 
@@ -83,16 +69,13 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
       sx={appBarStyle}
     >
       <Toolbar>
-        <IconButton
-          onClick={onSidebarOpen}
-          color="inherit"
-          className={classNames(classes.menuButton, isSidebarOpen && classes.hide)}
-          size="large"
-        >
-          <MenuIcon size={30} />
-        </IconButton>
-        <Box className={classes.navContainer}>
-          <Typography align="center" className={classes.title} color="inherit" variant="h5">
+        {!isSidebarOpen && (
+          <IconButton onClick={onSidebarOpen} color="inherit" sx={{ marginRight: 1 }} size="large">
+            <MenuIcon size={30} />
+          </IconButton>
+        )}
+        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+          <Typography align="center" sx={{ margin: 2 }} color="inherit" variant="h5">
             {title}
           </Typography>
           {buttons.map(button => (

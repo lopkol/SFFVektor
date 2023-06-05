@@ -2,7 +2,6 @@
 
 const React = require('react');
 const { Button } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
 const { nameOfBookList } = require('../../../lib/useful-stuff');
 const CustomTable = require('../../common/data-display/custom-table');
 
@@ -16,14 +15,7 @@ const rows = [
   }
 ];
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(2)
-  }
-}));
-
 function NoJuryMemberView({ bookListId, handleOpenBookListDetails }) {
-  const classes = useStyles();
   return (
     <CustomTable
       title={nameOfBookList(bookListId)}
@@ -33,7 +25,7 @@ function NoJuryMemberView({ bookListId, handleOpenBookListDetails }) {
       rowSelection="none"
     >
       <Button
-        className={classes.button}
+        sx={{ margin: 2 }}
         variant="contained"
         color="primary"
         onClick={handleOpenBookListDetails}

@@ -2,7 +2,6 @@
 
 const React = require('react');
 const { Button, Dialog, DialogActions, DialogContent } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
 const DialogTitle = require('../../common/dialogs/dialog-title');
 const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
 const DataDisplayPage = require('../../common/data-display/data-display-page');
@@ -12,21 +11,7 @@ const { equalAsSets } = require('../../../lib/useful-stuff');
 
 const { getAuthor, updateAuthor, saveAuthor } = require('../../../services/api/authors/authors');
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  },
-  dialogActions: {
-    padding: theme.spacing(1)
-  },
-  dialogContent: {
-    padding: theme.spacing(1)
-  }
-}));
-
 function AuthorDetails({ handleClose, open, authorId, changeAuthorId }) {
-  const classes = useStyles();
-
   const [reloadData, setReloadData] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
   const [unsavedAlertOpen, setUnsavedAlertOpen] = React.useState(false);
@@ -161,7 +146,7 @@ function AuthorDetails({ handleClose, open, authorId, changeAuthorId }) {
       <DialogTitle id="author-details-title" onClose={triggerClose}>
         Szerző adatai
       </DialogTitle>
-      <DialogContent className={classes.dialogContent} dividers>
+      <DialogContent sx={{ padding: 1 }} dividers>
         {editMode ? (
           <DataEditPage
             data={authorFields}
@@ -171,19 +156,14 @@ function AuthorDetails({ handleClose, open, authorId, changeAuthorId }) {
           <DataDisplayPage data={authorFields} />
         )}
       </DialogContent>
-      <DialogActions className={classes.dialogActions}>
+      <DialogActions sx={{ padding: 1 }}>
         {editMode ? (
           <div>
-            <Button
-              className={classes.button}
-              onClick={exitEditMode}
-              color="primary"
-              variant="contained"
-            >
+            <Button sx={{ margin: 1 }} onClick={exitEditMode} color="primary" variant="contained">
               Elvetés
             </Button>
             <Button
-              className={classes.button}
+              sx={{ margin: 1 }}
               autoFocus
               onClick={saveData}
               color="primary"
@@ -194,7 +174,7 @@ function AuthorDetails({ handleClose, open, authorId, changeAuthorId }) {
           </div>
         ) : (
           <Button
-            className={classes.button}
+            sx={{ margin: 1 }}
             autoFocus
             onClick={() => setEditMode(true)}
             color="primary"

@@ -2,7 +2,6 @@
 
 const React = require('react');
 const { Button, Dialog, DialogActions, DialogContent } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
 const DialogTitle = require('../../common/dialogs/dialog-title');
 const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
 const DataDisplayPage = require('../../common/data-display/data-display-page');
@@ -15,20 +14,7 @@ const { getUser, saveUser, updateUser } = require('../../../services/api/users/u
 const { roleOptions, genreOptions } = require('../../../../options');
 const { sortBookLists } = require('../../../lib/useful-stuff');
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  },
-  dialogActions: {
-    padding: theme.spacing(1)
-  },
-  dialogContent: {
-    padding: theme.spacing(1)
-  }
-}));
-
 function UserDetails({ handleClose, open, userId, changeUserId }) {
-  const classes = useStyles();
   const { user, bookLists, changeUIData } = React.useContext(UserInterface);
 
   const [reloadData, setReloadData] = React.useState(false);
@@ -206,7 +192,7 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
       <DialogTitle id="user-details-title" onClose={triggerClose}>
         Felhasználó adatai
       </DialogTitle>
-      <DialogContent className={classes.dialogContent} dividers>
+      <DialogContent sx={{ padding: 1 }} dividers>
         {editMode ? (
           <DataEditPage
             data={userFields}
@@ -216,19 +202,14 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
           <DataDisplayPage data={userFields} />
         )}
       </DialogContent>
-      <DialogActions className={classes.DialogActions}>
+      <DialogActions sx={{ padding: 1 }}>
         {editMode ? (
           <div>
-            <Button
-              className={classes.button}
-              onClick={exitEditMode}
-              color="primary"
-              variant="contained"
-            >
+            <Button sx={{ margin: 1 }} onClick={exitEditMode} color="primary" variant="contained">
               Elvetés
             </Button>
             <Button
-              className={classes.button}
+              sx={{ margin: 1 }}
               autoFocus
               onClick={saveData}
               color="primary"
@@ -239,7 +220,7 @@ function UserDetails({ handleClose, open, userId, changeUserId }) {
           </div>
         ) : (
           <Button
-            className={classes.button}
+            sx={{ margin: 1 }}
             autoFocus
             onClick={() => setEditMode(true)}
             color="primary"

@@ -11,9 +11,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     padding: theme.spacing(5),
     alignItems: 'center'
-  },
-  title: {
-    marginBottom: theme.spacing(4)
   }
 }));
 
@@ -21,7 +18,7 @@ function NotFound() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Typography variant="h5" className={classes.title}>
+      <Typography variant="h5" sx={{ marginBottom: 4 }}>
         A keresett oldal nem található
       </Typography>
       <Button variant="contained" component={Link} to="/" color="primary">

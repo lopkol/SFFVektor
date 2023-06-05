@@ -4,7 +4,6 @@ const React = require('react');
 const { useParams } = require('react-router-dom');
 
 const { Button, CircularProgress } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
 const BookListDetails = require('../book-lists/book-list-details');
 const BookDetails = require('./book-details');
 const BookWithMolyLinks = require('../../books/book-with-moly-links');
@@ -18,20 +17,7 @@ const {
 
 const columns = [{ field: 'authorAndTitle', headerName: '', orderable: false }];
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(2)
-  },
-  circularProgress: {
-    marginRight: theme.spacing(2.5),
-    marginLeft: theme.spacing(4),
-    color: theme.palette.grey[600]
-  }
-}));
-
 function BookManagement() {
-  const classes = useStyles();
-
   const { bookListId } = useParams();
   const [reloadData, setReloadData] = React.useState(true);
   const [updating, setUpdating] = React.useState(false);
@@ -102,7 +88,7 @@ function BookManagement() {
         rowSelection="click"
       >
         <Button
-          className={classes.button}
+          sx={{ margin: 2 }}
           variant="contained"
           color="primary"
           onClick={() => handleOpenBookListDetails(bookListId)}
@@ -110,13 +96,20 @@ function BookManagement() {
           Részletek
         </Button>
         {updating ? (
-          <Button className={classes.button} variant="contained" color="primary" disabled>
+          <Button sx={{ margin: 2 }} variant="contained" color="primary" disabled>
             Frissítés
-            <CircularProgress className={classes.circularProgress} size={20} />
+            <CircularProgress
+              sx={{
+                marginRight: 2.5,
+                marginLeft: 4,
+                color: theme => theme.palette.grey[600]
+              }}
+              size={20}
+            />
           </Button>
         ) : (
           <Button
-            className={classes.button}
+            sx={{ margin: 2 }}
             variant="contained"
             color="primary"
             onClick={triggerUpdateFromMoly}

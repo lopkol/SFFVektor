@@ -2,7 +2,6 @@
 
 const React = require('react');
 const { Button, Dialog, DialogActions, DialogContent } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
 const DialogTitle = require('../../common/dialogs/dialog-title');
 const UnsavedDataAlert = require('../../common/dialogs/unsaved-data-alert');
 const DataDisplayPage = require('../../common/data-display/data-display-page');
@@ -19,20 +18,7 @@ const {
 const { getUsers } = require('../../../services/api/users/users');
 const { genreOptions } = require('../../../../options');
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  },
-  dialogActions: {
-    padding: theme.spacing(1)
-  },
-  dialogContent: {
-    padding: theme.spacing(1)
-  }
-}));
-
 function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
-  const classes = useStyles();
   const { user, changeUIData } = React.useContext(UserInterface);
 
   const [reloadData, setReloadData] = React.useState(false);
@@ -221,7 +207,7 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
       <DialogTitle id="book-list-details-title" onClose={triggerClose}>
         Jelöltlista adatai
       </DialogTitle>
-      <DialogContent className={classes.dialogContent} dividers>
+      <DialogContent sx={{ padding: 1 }} dividers>
         {editMode ? (
           <DataEditPage
             data={bookListFields}
@@ -232,19 +218,14 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
         )}
       </DialogContent>
       {user.role === 'admin' && (
-        <DialogActions className={classes.dialogActions}>
+        <DialogActions sx={{ padding: 1 }}>
           {editMode ? (
             <div>
-              <Button
-                className={classes.button}
-                onClick={exitEditMode}
-                color="primary"
-                variant="contained"
-              >
+              <Button sx={{ margin: 1 }} onClick={exitEditMode} color="primary" variant="contained">
                 Elvetés
               </Button>
               <Button
-                className={classes.button}
+                sx={{ margin: 1 }}
                 autoFocus
                 onClick={saveData}
                 color="primary"
@@ -255,7 +236,7 @@ function BookListDetails({ handleClose, open, bookListId, changeBookListId }) {
             </div>
           ) : (
             <Button
-              className={classes.button}
+              sx={{ margin: 1 }}
               autoFocus
               onClick={() => setEditMode(true)}
               color="primary"

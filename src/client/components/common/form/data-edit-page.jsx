@@ -1,19 +1,9 @@
 'use strict';
 
 const React = require('react');
-const { makeStyles } = require('@mui/styles');
 const DataInput = require('./data-input');
 
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column'
-  }
-}));
-
 function DataEditPage({ data, handleChange }) {
-  const classes = useStyles();
-
   function handleFieldChange({ key, value }) {
     const newFields = data.map(field => {
       if (field.key === key) {
@@ -29,7 +19,7 @@ function DataEditPage({ data, handleChange }) {
 
   return (
     <form noValidate autoComplete="off">
-      <div className={classes.container}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         {data.map(field => (
           <DataInput
             name={field.key}

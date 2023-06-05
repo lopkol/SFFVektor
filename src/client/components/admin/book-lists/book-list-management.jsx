@@ -15,16 +15,13 @@ const columns = [
   { field: 'url', headerName: 'Moly lista link', orderable: true }
 ];
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(2)
-  },
+const useStyles = makeStyles({
   molyLink: {
     '&:hover': {
       textDecoration: 'underline'
     }
   }
-}));
+});
 
 function BookListManagement() {
   const classes = useStyles();
@@ -76,7 +73,7 @@ function BookListManagement() {
     <div>
       <CustomTable title="Jelöltlisták" rows={rows} columns={columns} rowSelection="click">
         <Button
-          className={classes.button}
+          sx={{ margin: 2 }}
           variant="contained"
           color="primary"
           onClick={() => handleOpenBookListDetails(null)}
