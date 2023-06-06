@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const { makeStyles } = require('@mui/styles');
+const { styled } = require('@mui/material/styles');
 const CustomTable = require('./custom-table');
 const { capitalize } = require('../../../lib/useful-stuff');
 const { readingLimit } = require('../../../../options');
@@ -13,14 +13,9 @@ const columns = [
   { field: 'read', headerName: 'Olvasott', orderable: false, align: 'center' }
 ];
 
-const useStyles = makeStyles(() => ({
-  root: {
-    maxWidth: '410px'
-  }
-}));
+const StyledTable = styled(CustomTable)({ maxWidth: '410px' });
 
 function ReadingPlanStats(props) {
-  const classes = useStyles();
   const { min, max } = props;
 
   const computeRow = (type, row) => ({
@@ -34,8 +29,7 @@ function ReadingPlanStats(props) {
   });
 
   return (
-    <CustomTable
-      className={classes.root}
+    <StyledTable
       columns={columns}
       rows={[computeRow('min', min), computeRow('max', max)]}
       rowSelection="none"

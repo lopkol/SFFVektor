@@ -2,7 +2,7 @@
 
 const React = require('react');
 const { Box, Button, Collapse, List } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
+const { styled } = require('@mui/material/styles');
 const {
   ChevronRight: ChevronRightIcon,
   Settings: SettingsIcon,
@@ -28,23 +28,17 @@ const getIconOfGenre = genre => {
 
 const capitalize = text => text[0].toUpperCase() + text.slice(1);
 
-const useStyles = makeStyles(theme => ({
-  icon: {
-    marginRight: theme.spacing(1)
-  },
-  button: {
-    color: theme.palette.text.primary,
-    fontSize: 'larger',
-    fontWeight: theme.typography.fontWeightMedium,
-    justifyContent: 'flex-start',
-    padding: '10px 8px',
-    textTransform: 'none',
-    width: '100%'
-  }
+const SidebarButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  fontSize: 'larger',
+  fontWeight: theme.typography.fontWeightMedium,
+  justifyContent: 'flex-start',
+  padding: '10px 8px',
+  textTransform: 'none',
+  width: '100%'
 }));
 
-function YearSidebar({ year, drawerWidth, openOnLoad }) {
-  const classes = useStyles(drawerWidth);
+function YearSidebar({ year, openOnLoad }) {
   const [isOpen, setOpen] = React.useState(false);
   const { user, bookLists } = React.useContext(UserInterface);
   const bookListsInYear = sortBookLists(bookLists.filter(bookList => bookList.year === year));
@@ -76,7 +70,7 @@ function YearSidebar({ year, drawerWidth, openOnLoad }) {
   return (
     <Box display="flex" flexDirection="column">
       <Box width="100%">
-        <Button className={classes.button} onClick={() => setOpen(!isOpen)}>
+        <SidebarButton onClick={() => setOpen(!isOpen)}>
           <CalendarIcon sx={{ marginRight: 1, fontSize: '24px' }} />
           <span style={{ marginRight: 'auto' }}>{year}</span>
           <ChevronRightIcon
@@ -87,7 +81,7 @@ function YearSidebar({ year, drawerWidth, openOnLoad }) {
               transitionProperty: 'transform'
             }}
           />
-        </Button>
+        </SidebarButton>
       </Box>
       <Collapse in={isOpen} timeout="auto">
         <List disablePadding>

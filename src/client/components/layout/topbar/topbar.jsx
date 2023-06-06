@@ -1,10 +1,9 @@
 'use strict';
 
 const React = require('react');
-const classNames = require('classnames');
 const { Link, useMatch, useParams } = require('react-router-dom');
 const { AppBar, Box, IconButton, Toolbar, Typography } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
+const { styled } = require('@mui/material/styles');
 const UserInterface = require('../../../lib/ui-context');
 const { getTitle, topNavbar } = require('./topbar-options');
 
@@ -12,15 +11,13 @@ const { Menu: MenuIcon } = require('@mui/icons-material');
 const SffVektorIcon = require('../../styles/sff-vektor-icon');
 const TopbarNavItem = require('./topbar-nav-item');
 
-const useStyles = makeStyles(theme => ({
-  appBar: {
-    background: 'linear-gradient(75deg, #0b3f69, #000010)',
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
-  },
-  appBarShift: {
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  background: 'linear-gradient(75deg, #0b3f69, #000010)',
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen
+  }),
+  '&.shifted': {
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen
@@ -29,7 +26,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
-  const classes = useStyles();
   const { user } = React.useContext(UserInterface);
   const { bookListId, year } = useParams();
 
@@ -61,13 +57,7 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
     : {};
 
   return (
-    <AppBar
-      position="sticky"
-      className={classNames(classes.appBar, {
-        [classes.appBarShift]: isSidebarOpen
-      })}
-      sx={appBarStyle}
-    >
+    <StyledAppBar position="sticky" className={isSidebarOpen ? 'shifted' : ''} sx={appBarStyle}>
       <Toolbar>
         {!isSidebarOpen && (
           <IconButton onClick={onSidebarOpen} color="inherit" sx={{ marginRight: 1 }} size="large">
@@ -86,7 +76,7 @@ function Topbar({ isSidebarOpen, onSidebarOpen, drawerWidth }) {
           <SffVektorIcon color="white" size={30} />
         </IconButton>
       </Toolbar>
-    </AppBar>
+    </StyledAppBar>
   );
 }
 

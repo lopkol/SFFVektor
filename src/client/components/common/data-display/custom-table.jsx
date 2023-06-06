@@ -17,7 +17,7 @@ const {
   Typography,
   lighten
 } = require('@mui/material');
-const { makeStyles } = require('@mui/styles');
+const { styled } = require('@mui/material/styles');
 
 function ascendingComparator(a, b, orderBy) {
   if (orderBy === null) {
@@ -78,8 +78,9 @@ function EnhancedTableHead(props) {
   );
 }
 
-const useToolbarStyles = makeStyles(theme => ({
-  highlight:
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  paddingX: 0,
+  '&.highlighted':
     theme.palette.mode === 'light'
       ? {
           color: theme.palette.secondary.main,
@@ -88,46 +89,34 @@ const useToolbarStyles = makeStyles(theme => ({
       : {
           color: theme.palette.text.primary,
           backgroundColor: theme.palette.secondary.dark
-        },
-  container: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  childrenContainer: {
-    display: 'flex',
-    flexDirection: 'row'
-  },
-  title: {
-    margin: theme.spacing(2)
-  }
+        }
 }));
 
-function TableToolbar(props) {
-  const classes = useToolbarStyles();
-  const { title, numSelected, withCheckbox, children } = props;
+const Container = styled('div')({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between'
+});
+
+function TableToolbar({ title, numSelected, withCheckbox, children }) {
+  const highlighted = withCheckbox && numSelected > 0;
 
   return (
-    <Toolbar
-      sx={{ paddingX: 0 }}
-      className={classNames({
-        [classes.highlight]: withCheckbox && numSelected > 0
-      })}
-    >
+    <StyledToolbar className={highlighted ? 'highlighted' : ''}>
       {withCheckbox && numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+        <Typography sx={{ margin: 2 }} color="inherit" variant="subtitle1" component="div">
           {numSelected} kijelölt sor
         </Typography>
       ) : (
-        <div className={classes.container}>
-          <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+        <Container>
+          <Typography sx={{ margin: 2 }} variant="h6" id="tableTitle" component="div">
             {title}
           </Typography>
-          <div className={classes.childrenContainer}>{children}</div>
-        </div>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>{children}</div>
+        </Container>
       )}
-    </Toolbar>
+    </StyledToolbar>
   );
 }
 
@@ -139,27 +128,18 @@ const columnDefaultProps = {
   hiddenButton: false
 };
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%'
-  },
-  paper: {
-    width: '100%',
-    marginBottom: theme.spacing(2)
-  },
-  table: {
-    minWidth: 400
-  },
-  selectableRow: {
+const CustomTableRoot = styled('div')(({ theme }) => ({
+  width: '100%',
+  '& .selectableRow': {
     cursor: 'pointer',
     '&:hover': {
       backgroundColor: lighten(theme.palette.secondary.light, 0.85)
     }
   },
-  darkerRow: {
+  '& .darkerRow': {
     backgroundColor: theme.palette.action.hover
   },
-  visuallyHidden: {
+  '& .visuallyHidden': {
     border: 0,
     clip: 'rect(0 0 0 0)',
     height: 1,
@@ -173,7 +153,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function CustomTable(props) {
-  const classes = useStyles();
   const { title, columns, rows, className, rowSelection, children, noPagination, noToolbar } =
     props;
   const columnsWithProps = columns.map(column => ({ ...columnDefaultProps, ...column }));
@@ -233,8 +212,8 @@ function CustomTable(props) {
   const pageEnd = rowsPerPage === -1 ? rows.length : page * rowsPerPage + rowsPerPage;
 
   return (
-    <div className={classNames(classes.root, className)}>
-      <Paper className={classes.paper}>
+    <CustomTableRoot style={{ width: '100%' }} className={className}>
+      <Paper sx={{ width: '100%', marginBottom: 2 }}>
         {!noToolbar && (
           <TableToolbar
             title={title}
@@ -246,13 +225,12 @@ function CustomTable(props) {
         )}
         <TableContainer>
           <Table
-            className={classes.table}
+            sx={{ minWidth: '400px' }}
             aria-labelledby="tableTitle"
             size="small"
             aria-label="enhanced table"
           >
             <EnhancedTableHead
-              classes={classes}
               columns={columnsWithProps}
               order={order}
               orderBy={orderBy}
@@ -268,8 +246,8 @@ function CustomTable(props) {
                   return (
                     <TableRow
                       className={classNames(
-                        rowSelection !== 'none' && classes.selectableRow,
-                        row.darkerBackground && classes.darkerRow
+                        rowSelection !== 'none' && 'selectableRow',
+                        row.darkerBackground && 'darkerRow'
                       )}
                       onClick={event => handleClick(event, row.id)}
                       aria-checked={isItemSelected}
@@ -329,7 +307,7 @@ function CustomTable(props) {
           />
         )}
       </Paper>
-    </div>
+    </CustomTableRoot>
   );
 }
 

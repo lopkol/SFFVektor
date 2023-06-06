@@ -4,17 +4,7 @@ const React = require('react');
 const { Chip } = require('@mui/material');
 const { Autocomplete } = require('@mui/lab');
 
-/*const useStyles = makeStyles(() => ({
-  chips: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'start'
-  }
-}));*/
-
 function CustomAutocomplete(props) {
-  //const classes = useStyles();
   const { getOptionLabel, getOptionOnClick, size, ChipProps, ...otherProps } = props;
 
   const renderTags = (value, getCustomizedTagProps) => (

@@ -4,51 +4,43 @@ const React = require('react');
 const classNames = require('classnames');
 
 const { Outlet } = require('react-router-dom');
-const { makeStyles } = require('@mui/styles');
+const { styled } = require('@mui/material/styles');
 
 const Topbar = require('./topbar/topbar');
 const Sidebar = require('./sidebar/sidebar');
 
 const drawerWidth = 160;
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    width: '100%'
-  },
-  contentContainer: {
-    display: 'flex',
-    flex: '1 1 auto',
-    overflow: 'hidden',
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    marginLeft: '0'
-  },
-  contentContainerShift: {
+const ContentContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flex: '1 1 auto',
+  overflow: 'hidden',
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen
+  }),
+  marginLeft: '0',
+  '&.shifted': {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen
     }),
     marginLeft: `${drawerWidth}px`
-  },
-  content: {
-    flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto',
-    padding: theme.spacing(3)
   }
+}));
+
+const MainContent = styled('main')(({ theme }) => ({
+  flex: '1 1 auto',
+  height: '100%',
+  overflow: 'auto',
+  padding: theme.spacing(3)
 }));
 
 function Layout() {
   const [isSidebarOpen, setSidebarOpen] = React.useState(true);
-  const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -59,15 +51,11 @@ function Layout() {
         onSidebarOpen={() => setSidebarOpen(true)}
         drawerWidth={drawerWidth}
       />
-      <div
-        className={classNames(classes.contentContainer, {
-          [classes.contentContainerShift]: isSidebarOpen
-        })}
-      >
-        <main className={classes.content}>
+      <ContentContainer className={classNames({ shifted: isSidebarOpen })}>
+        <MainContent>
           <Outlet />
-        </main>
-      </div>
+        </MainContent>
+      </ContentContainer>
     </div>
   );
 }
