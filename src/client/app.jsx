@@ -3,8 +3,9 @@
 const React = require('react');
 const { useRoutes } = require('react-router-dom');
 const { StyledEngineProvider, ThemeProvider } = require('@mui/material/styles');
+const { GlobalStyles } = require('@mui/material');
 
-const GlobalStyles = require('./components/styles/global-styles');
+const globalStyles = require('./lib/global-styles');
 const theme = require('./components/styles/theme');
 
 const { getOwnData } = require('./services/api/users/users');
@@ -38,7 +39,7 @@ function App() {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <GlobalStyles />
+        <GlobalStyles styles={globalStyles} />
         <UserInterface.Provider value={{ user, bookLists, changeUIData: () => setReload(true) }}>
           {user.role === 'admin' ? adminRouter : router}
         </UserInterface.Provider>
