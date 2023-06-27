@@ -5,8 +5,8 @@ const { useRoutes } = require('react-router-dom');
 const { StyledEngineProvider, ThemeProvider } = require('@mui/material/styles');
 const { GlobalStyles } = require('@mui/material');
 
-const globalStyles = require('./lib/global-styles');
-const theme = require('./components/styles/theme');
+const globalStyles = require('./styles/global-styles');
+const theme = require('./styles/theme');
 
 const { getOwnData } = require('./services/api/users/users');
 const { getBookLists } = require('./services/api/book-lists/book-lists');

@@ -8,7 +8,7 @@ const UserInterface = require('../../../lib/ui-context');
 const { getTitle, topNavbar } = require('./topbar-options');
 
 const { Menu: MenuIcon } = require('@mui/icons-material');
-const SffVektorIcon = require('../../styles/sff-vektor-icon');
+const SffVektorIcon = require('../../../styles/sff-vektor-icon');
 const TopbarNavItem = require('./topbar-nav-item');
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
