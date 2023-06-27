@@ -76,7 +76,6 @@
     "@mui/icons-material": "5.11.16",
     "@mui/lab": "5.0.0-alpha.132",
     "@mui/material": "5.13.3",
-    "@mui/styles": "5.13.2",
     "axios": "0.27.2",
     "base-64": "1.0.0",
     "browser-cookies": "1.2.0",
