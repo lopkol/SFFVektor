@@ -5,7 +5,7 @@ const { Chip } = require('@mui/material');
 const { Autocomplete } = require('@mui/lab');
 
 function CustomAutocomplete(props) {
-  const { getOptionLabel, getOptionOnClick, size, ChipProps, ...otherProps } = props;
+  const { getOptionLabel, getOptionOnClick, size, inputWidth, ChipProps, ...otherProps } = props;
 
   const renderTags = (value, getCustomizedTagProps) => (
     <div>
@@ -27,6 +27,7 @@ function CustomAutocomplete(props) {
       renderTags={renderTags}
       noOptionsText="Nincs találat"
       getOptionLabel={getOptionLabel}
+      sx={{ width: inputWidth }}
       {...otherProps}
     />
   );

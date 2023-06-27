@@ -4,7 +4,7 @@ const React = require('react');
 const { Box, Button, TextField, Typography } = require('@mui/material');
 const { Delete: DeleteIcon } = require('@mui/icons-material');
 
-function BookAlternativeInput({ className, field, handleChange, labelClass }) {
+function BookAlternativeInput({ className, field, handleChange }) {
   function newAlternative() {
     let newValue = JSON.parse(JSON.stringify(field.value));
     newValue.push({
@@ -55,7 +55,10 @@ function BookAlternativeInput({ className, field, handleChange, labelClass }) {
           justifyContent: 'space-between'
         }}
       >
-        <Typography variant="subtitle2" sx={{ marginTop: 1.5 }} className={labelClass}>
+        <Typography
+          variant="subtitle2"
+          sx={{ marginTop: 1.5, color: theme => theme.palette.grey[500] }}
+        >
           Alternatívák
         </Typography>
         <Button

@@ -1,60 +1,33 @@
 'use strict';
 
 const React = require('react');
-const { makeStyles } = require('@mui/styles');
 const TagsInput = require('./input-types/tags-input');
 const TextInput = require('./input-types/text-input');
 const BookAlternativeInput = require('./input-types/book-alternative-input');
+const { styled } = require('@mui/material/styles');
 
-const useStyles = makeStyles(theme => ({
-  input: {
-    width: '400px'
-  },
-  label: {
-    color: theme.palette.grey[500]
-  },
-  fieldContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    minWidth: '400px'
-  }
+const inputWidth = '400px';
+
+const InputWrapper = styled('div')(({ theme }) => ({
+  marginLeft: theme.spacing(2),
+  marginRight: theme.spacing(2),
+  marginTop: theme.spacing(2),
+  minWidth: inputWidth
 }));
 
 function DataInput({ field, handleChange }) {
-  const classes = useStyles();
-
   return (
-    <div style={{ minWidth: '400px' }}>
+    <InputWrapper>
       {['text', 'select', 'url'].includes(field.type) && (
-        <TextInput
-          className={classes.fieldContainer}
-          field={field}
-          handleChange={handleChange}
-          inputClass={classes.input}
-          labelClass={classes.label}
-        />
+        <TextInput field={field} handleChange={handleChange} inputWidth={inputWidth} />
       )}
       {field.type === 'tags' && (
-        <TagsInput
-          className={classes.fieldContainer}
-          field={field}
-          handleChange={handleChange}
-          inputClass={classes.input}
-          labelClass={classes.label}
-        />
+        <TagsInput field={field} handleChange={handleChange} inputWidth={inputWidth} />
       )}
       {field.type === 'alternatives' && (
-        <BookAlternativeInput
-          className={classes.fieldContainer}
-          field={field}
-          handleChange={handleChange}
-          labelClass={classes.label}
-        />
+        <BookAlternativeInput field={field} handleChange={handleChange} />
       )}
-    </div>
+    </InputWrapper>
   );
 }
 

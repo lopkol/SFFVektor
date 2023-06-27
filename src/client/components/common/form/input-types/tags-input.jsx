@@ -4,7 +4,7 @@ const React = require('react');
 const { Button, TextField, Typography } = require('@mui/material');
 const CustomAutocomplete = require('../custom-autocomplete');
 
-function TagsInput({ className, field, handleChange, inputClass, labelClass }) {
+function TagsInput({ className, field, handleChange, inputWidth }) {
   return (
     <div className={className}>
       <div
@@ -15,7 +15,10 @@ function TagsInput({ className, field, handleChange, inputClass, labelClass }) {
           justifyContent: 'space-between'
         }}
       >
-        <Typography variant="subtitle2" sx={{ marginTop: 1 }} className={labelClass}>
+        <Typography
+          variant="subtitle2"
+          sx={{ marginTop: 1, color: theme => theme.palette.grey[500] }}
+        >
           {field.label}
         </Typography>
         {field.onNew && (
@@ -31,7 +34,7 @@ function TagsInput({ className, field, handleChange, inputClass, labelClass }) {
         )}
       </div>
       <CustomAutocomplete
-        className={inputClass}
+        inputWidth={inputWidth}
         multiple
         name={field.key}
         options={field.options.map(option => option.id)}

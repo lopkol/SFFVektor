@@ -3,14 +3,14 @@
 const React = require('react');
 const { MenuItem, TextField, Typography } = require('@mui/material');
 
-function TextInput({ className, field, handleChange, inputClass, labelClass }) {
+function TextInput({ className, field, handleChange, inputWidth }) {
   return (
     <div className={className}>
-      <Typography variant="subtitle2" className={labelClass}>
+      <Typography variant="subtitle2" sx={{ color: theme => theme.palette.grey[500] }}>
         {field.label}
       </Typography>
       <TextField
-        className={inputClass}
+        sx={{ width: inputWidth }}
         name={field.key}
         value={field.value}
         select={field.type === 'select'}
