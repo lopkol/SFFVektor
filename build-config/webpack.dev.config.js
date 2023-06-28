@@ -27,9 +27,11 @@ module.exports = merge(commonConfig, {
     ]
   },
   devServer: {
-    stats: 'minimal',
     port: 7878,
-    publicPath: '/',
+    devMiddleware: {
+      stats: 'minimal',
+      publicPath: '/'
+    },
     hot: true,
     headers: {
       'Access-Control-Allow-Origin': '*',
