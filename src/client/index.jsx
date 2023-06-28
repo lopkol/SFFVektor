@@ -5,7 +5,6 @@ const { createRoot } = require('react-dom/client');
 const React = require('react');
 const { BrowserRouter } = require('react-router-dom');
 const App = require('./app');
-require('./style.scss');
 
 const reactRoot = createRoot(document.getElementById('app'));
 reactRoot.render(
