@@ -1,22 +1,10 @@
 'use strict';
 
 const { merge } = require('webpack-merge');
-const WebpackShellPlugin = require('webpack-shell-plugin-next');
 const commonConfig = require('./webpack.common.config');
-
-const isWindows = process.platform.startsWith('win');
-const npmCommand = isWindows ? 'npm.cmd' : 'npm';
 
 module.exports = merge(commonConfig, {
   mode: 'development',
-  plugins: [
-    new WebpackShellPlugin({
-      onBuildEnd: {
-        scripts: [`${npmCommand} run open`],
-        parallel: true
-      }
-    })
-  ],
   module: {
     rules: [
       {
