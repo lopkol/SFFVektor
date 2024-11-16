@@ -17,8 +17,7 @@ module.exports = merge(commonConfig, {
   devServer: {
     port: 7878,
     devMiddleware: {
-      stats: 'minimal',
-      publicPath: '/'
+      publicPath: '/',
     },
     hot: true,
     headers: {

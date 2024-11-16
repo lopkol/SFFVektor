@@ -57,10 +57,9 @@
     "supertest": "6.3.3",
     "terser-webpack-plugin": "5.3.9",
     "webpack": "5.96.1",
-    "webpack-cli": "4.10.0",
-    "webpack-dev-server": "4.15.1",
-    "webpack-merge": "5.9.0",
-    "webpack-shell-plugin-next": "2.3.1"
+    "webpack-cli": "5.1.4",
+    "webpack-dev-server": "5.1.0",
+    "webpack-merge": "5.9.0"
   },
   "dependencies": {
     "@emotion/react": "11.11.0",
